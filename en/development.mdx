@@ -1,0 +1,45 @@
+---
+title: 'Development Guide'
+description: 'This guide will help you integrate our API service into your application.'
+icon: 'terminal'
+---
+
+## Asynchronous Processing
+
+Our API uses an asynchronous processing mode:
+<Steps>
+<Step title="Submit Task">
+Send a generation request and obtain a Task ID
+</Step>
+<Step title="Poll Status">
+Periodically query the task status
+</Step>
+<Step title="Get Results">
+Obtain the generation results once the task is complete
+</Step>
+</Steps>
+
+## Error Handling
+
+### Common Status Codes
+
+| Code | Description | Solution |
+| --- | ------ | -------- |
+| 20000 | Success | | 
+| 20002 | Invalid Parameters | Check request parameter format |
+| 20001 | Authentication Failed | Try using a different token |
+| -1 | Server Error | Please try again later |
+
+## Best Practices
+
+1. **Cache Usage**: Generated image/video links are valid for 3 days.
+2. **Error Retries**: Implement an exponential backoff retry mechanism.
+3. **Monitor Usage**: Regularly check your API usage statistics.
+4. **Secure Storage**: Safely store and manage your API keys.
+
+## Support
+
+If you encounter any issues during development, you can get help through the following channels:
+
+* 📧 Email Support: [21154272829@qq.com](mailto:21154272829@qq.com)
+* 💬 Live Chat: Visit our website

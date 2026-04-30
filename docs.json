@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "aspen",
+  "name": "jimmyaidoc",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -9,80 +9,113 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "icon": "book-open-cover",
-          "href": "https://mintlify.com/docs"
-        },
-        {
-          "anchor": "Blog",
-          "icon": "newspaper",
-          "href": "https://mintlify.com/blog"
-        }
-      ]
-    },
-    "tabs": [
+    "languages": [
       {
-        "tab": "Guides",
-        "groups": [
+        "language": "en",
+        "name": "English",
+        "tabs": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Getting started",
+                "pages": [
+                  "en/index",
+                  "en/development"
+                ]
+              }
             ]
           },
           {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+            "tab": "API reference",
+            "groups": [
+              {
+                "group": "API documentation",
+                "pages": [
+                  "en/api-reference/introduction"
+                ]
+              },
+              {
+                "group": "Common",
+                "pages": [
+                  "en/api-reference/common/query"
+                ]
+              },
+              {
+                "group": "Sora Video",
+                "pages": [
+                  "en/api-reference/videos/create"
+                ]
+              },
+              {
+                "group": "VEO Video",
+                "pages": [
+                  "en/api-reference/veo/create-video",
+                  "en/api-reference/veo/create-frames"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
+        "language": "zh",
+        "name": "简体中文",
+        "tabs": [
           {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
+            "tab": "指南",
+            "groups": [
+              {
+                "group": "开始使用",
+                "pages": [
+                  "zh/index",
+                  "zh/development"
+                ]
+              }
             ]
           },
           {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook",
-              "api-reference/endpoint/untitled-page"
+            "tab": "API 引用",
+            "groups": [
+              {
+                "group": "API 文档",
+                "pages": [
+                  "zh/api-reference/introduction"
+                ]
+              },
+              {
+                "group": "通用",
+                "pages": [
+                  "zh/api-reference/common/query"
+                ]
+              },
+              {
+                "group": "Sora 视频",
+                "pages": [
+                  "zh/api-reference/videos/create"
+                ]
+              },
+              {
+                "group": "VEO 视频",
+                "pages": [
+                  "zh/api-reference/veo/create-video",
+                  "zh/api-reference/veo/create-frames"
+                ]
+              }
             ]
           }
         ]
       }
-    ]
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Blog",
+          "href": "https://zucczwp.github.io/",
+          "icon": "newspaper"
+        }
+      ]
+    }
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -91,33 +124,33 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Wechat",
+        "href": "https://www.jimmyai.cn/static/img/wechat-qrcode.60b26a89.png"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "控制台",
+      "href": "https://www.jimmyai.cn"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/PingZhang88215",
+      "discord": "https://discord.com/invite/c67Qq5K7",
+      "website": "https://www.jimmyai.cn"
     }
   }
 }

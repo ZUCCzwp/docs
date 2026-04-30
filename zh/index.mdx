@@ -1,0 +1,61 @@
+---
+title: "快速入门"
+description: "在几分钟内开始构建出色的文档"
+icon: 'rocket'
+---
+# 快速开始
+
+欢迎使用我们的API服务！本指南将帮助您快速开始使用图像和视频生成功能。
+
+## 第一步：获取API密钥
+
+1. 访问 [API密钥管理页面](https://www.jimmyai.cn/openapi-management)
+2. 登录您的账户
+3. 创建新的API密钥
+4. 保存您的密钥（密钥只显示一次）
+
+## 第二步：选择模型
+
+我们提供多种AI模型供您选择
+
+### 视频生成模型
+
+* **Sora2**: 专业视频生成
+
+## 第三步：发送请
+
+### 视频生成示例
+
+```bash theme={null}
+curl --request POST \
+  --url https://www.jimiai.com/api/open-api/v1/videos \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "model": "<string>",
+  "prompt": "<string>",
+  "duration": 123,
+  "orientation": "landscape",
+  "images": [
+    "<string>"
+  ]
+}
+'
+```
+
+## 第四步：查询任务状态
+
+由于我们使用异步处理模式，您需要查询任务状态来获取结果：
+
+```bash theme={null}
+curl --request GET \
+  --url https://www.jimiai.com/api/open-api/v1/videos/{taskId} \
+  --header 'Authorization: Bearer <token>'
+```
+
+## 下一步
+
+<Card title="查看API文档" icon="book" href="/zh/api-reference/introduction">
+  详细了解所有可用的API接口
+</Card>

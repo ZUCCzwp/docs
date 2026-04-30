@@ -1,0 +1,288 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Jimmy AI OpenAPI",
+    "description": "API for Jimmy AI video generation services",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.jimiai.com",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/open-api/v1/videos": {
+      "post": {
+        "summary": "Create Video Task",
+        "description": "Create a new video generation task using Sora models.",
+        "operationId": "createVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/videos/{taskId}": {
+      "get": {
+        "summary": "Query Video Task",
+        "description": "Query the status and result of a video generation task.",
+        "operationId": "queryVideo",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the task to query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task status and result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/veo/videos": {
+      "post": {
+        "summary": "Create VEO Video Task",
+        "description": "Create a new video generation task using VEO models.",
+        "operationId": "createVeoVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/veo/frames": {
+      "post": {
+        "summary": "Create VEO Frames Video Task",
+        "description": "Create a new VEO video generation task using first and last frames.",
+        "operationId": "createVeoFramesVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeoFramesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "VideoGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt",
+          "duration"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model name (e.g., sora2-gz-stable, sora2-gz-sp)"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt for video generation"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duration in seconds"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "Video orientation"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URLs"
+          }
+        }
+      },
+      "VeoFramesRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model name (e.g., veo_3_1_fast)"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "description": "Video resolution"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "Video orientation"
+          },
+          "first_frame_url": {
+            "type": "string",
+            "description": "URL of the first frame image"
+          },
+          "last_frame_url": {
+            "type": "string",
+            "description": "URL of the last frame image"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URLs"
+          }
+        }
+      },
+      "VideoGenerationResponse": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "VideoQueryResponse": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "progress": {
+            "type": "integer"
+          },
+          "model": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "completed_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "result": {
+            "type": "object",
+            "properties": {
+              "video_url": {
+                "type": "string"
+              }
+            }
+          },
+          "error_message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

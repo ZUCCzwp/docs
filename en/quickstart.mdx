@@ -1,0 +1,106 @@
+---
+title: "Quickstart"
+description: "Start using our API service quickly"
+icon: 'rocket'
+---
+
+## Documentation Index
+Fetch the complete documentation index at: https://docs.apimart.ai/llms.txt
+Use this file to discover all available pages before exploring further.
+
+# Quickstart
+
+> Quickly get started with our API service
+
+Welcome to our API service! This guide will help you quickly get started with image and video generation features.
+
+## Step 1: Get your API Key
+
+1. Visit the [API Key Management Page](https://apimart.ai/keys)
+2. Log in to your account
+3. Create a new API Key
+4. Save your key (it will only be displayed once)
+
+## Step 2: Choose a Model
+
+We offer a variety of AI models for you to choose from:
+
+### Text Generation Models
+
+* **GPT-4o**: Powerful dialogue and text generation capabilities
+* **Claude**: Anthropic's high-performance dialogue model
+* **Gemini**: Google's multimodal large language model
+
+### Image Generation Models
+
+* **GPT-4o-image**: High-quality image generation
+
+### Video Generation Models
+
+* **Sora2**: Professional video generation
+
+## Step 3: Send a Request
+
+### Text Generation Example
+
+```bash theme={null}
+curl -X POST https://api.apimart.ai/v1/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello, please introduce yourself"
+      }
+    ]
+  }'
+```
+
+### Image Generation Example
+
+```bash theme={null}
+curl -X POST https://api.apimart.ai/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o-image",
+    "prompt": "A cute panda",
+    "size": "1:1",
+    "n": 1
+  }'
+```
+
+### Video Generation Example
+
+```bash theme={null}
+curl -X POST https://api.apimart.ai/v1/videos/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "sora-2",
+    "prompt": "Waves crashing against the shore",
+    "duration": 15,
+    "aspect_ratio": "16:9"
+  }'
+```
+
+## Step 4: Query Task Status
+
+Since we use an asynchronous processing mode, you need to query the task status to get the results:
+
+```bash theme={null}
+curl -X GET https://api.apimart.ai/v1/tasks/YOUR_TASK_ID \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Next Steps
+
+<Card title="View API Reference" icon="book" href="/en/api-reference/introduction">
+  Learn more about all available API endpoints
+</Card>
+
+<Card title="Development Guide" icon="code" href="/en/development">
+  Learn how to integrate the API into your application
+</Card>

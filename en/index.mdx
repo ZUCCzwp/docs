@@ -1,0 +1,61 @@
+---
+title: "Quickstart"
+description: "Get up and running with our API in minutes"
+icon: 'rocket'
+---
+# Quickstart
+
+Welcome to our API service! This guide will help you quickly get started with image and video generation features.
+
+## Step 1: Get your API Key
+
+1. Visit the [API Key Management Page](https://www.jimmyai.cn/openapi-management)
+2. Log in to your account
+3. Create a new API Key
+4. Save your key (it will only be displayed once)
+
+## Step 2: Choose a Model
+
+We offer a variety of AI models for you to choose from:
+
+### Video Generation Models
+
+* **Sora2**: Professional video generation
+
+## Step 3: Send a Request
+
+### Video Generation Example
+
+```bash theme={null}
+curl --request POST \
+  --url https://www.jimiai.com/api/open-api/v1/videos \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "model": "<string>",
+  "prompt": "<string>",
+  "duration": 123,
+  "orientation": "landscape",
+  "images": [
+    "<string>"
+  ]
+}
+'
+```
+
+## Step 4: Query Task Status
+
+Since we use an asynchronous processing mode, you need to query the task status to get the results:
+
+```bash theme={null}
+curl --request GET \
+  --url https://www.jimiai.com/api/open-api/v1/videos/{taskId} \
+  --header 'Authorization: Bearer <token>'
+```
+
+## Next Steps
+
+<Card title="View API Reference" icon="book" href="/en/api-reference/introduction">
+  Learn more about all available API endpoints
+</Card>

@@ -38,7 +38,8 @@
               {
                 "group": "Common",
                 "pages": [
-                  "en/api-reference/common/query"
+                  "en/api-reference/common/query",
+                  "en/api-reference/images/query"
                 ]
               },
               {
@@ -50,8 +51,7 @@
               {
                 "group": "GPT Image",
                 "pages": [
-                  "en/api-reference/images/create",
-                  "en/api-reference/images/query"
+                  "en/api-reference/images/create"
                 ]
               },
               {
@@ -93,7 +93,8 @@
               {
                 "group": "通用",
                 "pages": [
-                  "zh/api-reference/common/query"
+                  "zh/api-reference/common/query",
+                  "zh/api-reference/images/query"
                 ]
               },
               {
@@ -105,8 +106,7 @@
               {
                 "group": "GPT 图片",
                 "pages": [
-                  "zh/api-reference/images/create",
-                  "zh/api-reference/images/query"
+                  "zh/api-reference/images/create"
                 ]
               },
               {

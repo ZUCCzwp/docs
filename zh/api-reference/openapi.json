@@ -242,7 +242,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: gpt-image-2)"
+            "description": "模型名称 (如: gpt-image-2, nano-banana-2)"
           },
           "prompt": {
             "type": "string",

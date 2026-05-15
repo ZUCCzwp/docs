@@ -242,7 +242,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., gpt-image-2)"
+            "description": "Model name (e.g., gpt-image-2, nano-banana-2)"
           },
           "prompt": {
             "type": "string",

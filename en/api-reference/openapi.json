@@ -260,6 +260,12 @@
               "type": "string"
             },
             "description": "Reference image URLs or base64 strings"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Image resolution (supported by gpt-image-2). Supported values: 1k, 2k, 4k.",
+            "enum": ["1k", "2k", "4k"],
+            "default": "1k"
           }
         }
       },

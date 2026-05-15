@@ -76,6 +76,65 @@
         }
       }
     },
+    "/api/open-api/v1/images": {
+      "post": {
+        "summary": "创建图片任务",
+        "description": "使用 GPT Image 2 模型创建新的图片生成任务。",
+        "operationId": "createImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/images/{taskId}": {
+      "get": {
+        "summary": "查询图片任务",
+        "description": "查询图片生成任务的状态和结果。",
+        "operationId": "queryImage",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "要查询的任务 ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "任务状态和结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/veo/videos": {
       "post": {
         "summary": "Create VEO Video Task",
@@ -147,15 +206,15 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., sora2-gz-stable, sora2-gz-sp)"
+            "description": "模型名称 (如: sora2-gz-stable, sora2-gz-sp)"
           },
           "prompt": {
             "type": "string",
-            "description": "Text prompt for video generation"
+            "description": "用于生成视频的文本提示词"
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds"
+            "description": "时长(秒)"
           },
           "orientation": {
             "type": "string",
@@ -163,14 +222,60 @@
               "landscape",
               "portrait"
             ],
-            "description": "Video orientation"
+            "description": "视频方向"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference image URLs"
+            "description": "参考图 URL 列表"
+          }
+        }
+      },
+      "ImageGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "模型名称 (如: gpt-image-2)"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "用于生成图片的文本提示词"
+          },
+          "size": {
+            "type": "string",
+            "description": "图片尺寸 (如: auto, 1:1, 3:4, 4:3)"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL 或 base64 列表"
+          }
+        }
+      },
+      "ImageGenerationResponse": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -183,11 +288,11 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., veo_3_1_fast)"
+            "description": "模型名称 (如: veo_3_1_fast)"
           },
           "prompt": {
             "type": "string",
-            "description": "Text prompt"
+            "description": "文本提示词"
           },
           "resolution": {
             "type": "string",
@@ -196,7 +301,7 @@
               "1080p",
               "4k"
             ],
-            "description": "Video resolution"
+            "description": "视频分辨率"
           },
           "orientation": {
             "type": "string",
@@ -204,22 +309,22 @@
               "landscape",
               "portrait"
             ],
-            "description": "Video orientation"
+            "description": "视频方向"
           },
           "first_frame_url": {
             "type": "string",
-            "description": "URL of the first frame image"
+            "description": "第一帧图片 URL"
           },
           "last_frame_url": {
             "type": "string",
-            "description": "URL of the last frame image"
+            "description": "最后一帧图片 URL"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference image URLs"
+            "description": "参考图 URL 列表"
           }
         }
       },
@@ -268,7 +373,12 @@
             "type": "object",
             "properties": {
               "video_url": {
-                "type": "string"
+                "type": "string",
+                "description": "生成的视频 URL"
+              },
+              "image_url": {
+                "type": "string",
+                "description": "生成的图片 URL (针对图片任务)"
               }
             }
           },

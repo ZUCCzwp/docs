@@ -48,6 +48,13 @@
                 ]
               },
               {
+                "group": "GPT Image",
+                "pages": [
+                  "en/api-reference/images/create",
+                  "en/api-reference/images/query"
+                ]
+              },
+              {
                 "group": "VEO Video",
                 "pages": [
                   "en/api-reference/veo/create-video",
@@ -93,6 +100,13 @@
                 "group": "Sora 视频",
                 "pages": [
                   "zh/api-reference/videos/create"
+                ]
+              },
+              {
+                "group": "GPT 图片",
+                "pages": [
+                  "zh/api-reference/images/create",
+                  "zh/api-reference/images/query"
                 ]
               },
               {

@@ -27,6 +27,17 @@
             ]
           },
           {
+            "tab": "FAQ",
+            "groups": [
+              {
+                "group": "FAQ",
+                "pages": [
+                  "en/faq"
+                ]
+              }
+            ]
+          },
+          {
             "tab": "API reference",
             "groups": [
               {
@@ -77,6 +88,17 @@
                 "pages": [
                   "zh/index",
                   "zh/development"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "常见问题",
+            "groups": [
+              {
+                "group": "常见问题",
+                "pages": [
+                  "zh/faq"
                 ]
               }
             ]

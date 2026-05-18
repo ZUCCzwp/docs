@@ -1,0 +1,37 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about using our API"
+icon: 'circle-question'
+---
+
+# Frequently Asked Questions (FAQ)
+
+Welcome to our FAQ page. If you can't find the answer to your question here, please [contact us](/en/development).
+
+## Account & Billing
+
+<AccordionGroup>
+  <Accordion title="How do I get an API Key?" icon="key">
+    You can log into your account and navigate to the [API Key Management Page](https://www.jimmyai.cn/openapi-management) to generate and view your unique API Key.
+  </Accordion>
+  <Accordion title="How does the billing work?" icon="credit-card">
+    We use a prepaid billing model. You need to [recharge](https://www.jimmyai.cn/recharge) your account balance (minimum $1, supporting WeChat Pay and Alipay). Different models and parameters deduct varying amounts from your balance. Requests will fail if your balance is insufficient.
+  </Accordion>
+</AccordionGroup>
+
+## Task Management & Status
+
+<AccordionGroup>
+  <Accordion title="Why did my generation request fail?" icon="circle-exclamation">
+    A task may fail for several reasons:
+    1. Invalid parameters (e.g., unsupported aspect ratios or duration) were provided.
+    2. Your account balance is insufficient to cover the cost.
+    3. High server load or temporary third-party interruptions.
+    
+    You can use the task query endpoint to retrieve the specific `error_msg` or `reason` to diagnose the issue.
+  </Accordion>
+  <Accordion title="How do I retrieve my generated results?" icon="magnifying-glass">
+    Because most generation tasks (especially video and high-res images) take time to process, our API uses an asynchronous model.
+    Upon submitting a task, you will receive a `taskId`. You should periodically poll the **Status Query API** with this ID. Once the task status changes to `completed` or `success`, the response will include the generated `url` or `mediaUrl`.
+  </Accordion>
+</AccordionGroup>

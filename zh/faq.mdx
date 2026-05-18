@@ -1,0 +1,37 @@
+---
+title: "常见问题 (FAQ)"
+description: "有关使用我们 API 的常见问题解答"
+icon: 'circle-question'
+---
+
+# 常见问题 (FAQ)
+
+欢迎来到我们的常见问题页面。如果您在这里找不到您问题的答案，请[联系我们](/zh/development)。
+
+## 账户与计费
+
+<AccordionGroup>
+  <Accordion title="如何获取 API 密钥？" icon="key">
+    您可以登录您的账户，并前往 [API 密钥管理页面](https://www.jimmyai.cn/openapi-management) 创建并获取您的专属 API 密钥。
+  </Accordion>
+  <Accordion title="API 的计费方式是什么？" icon="credit-card">
+    我们采用预付费的计费方式。您需要在您的账户中[充值](https://www.jimmyai.cn/recharge)（支持微信和支付宝，最低 1 美金起充）。不同的模型和参数调用会扣除对应的余额，当余额不足时将无法发起请求。
+  </Accordion>
+</AccordionGroup>
+
+## 任务调用与状态查询
+
+<AccordionGroup>
+  <Accordion title="为什么我的生成请求返回任务失败？" icon="circle-exclamation">
+    任务失败可能有多种原因，包括：
+    1. 您传入的参数（如图片尺寸或时长）不符合当前模型的要求。
+    2. 您的账户余额不足以支付当前请求。
+    3. 服务端暂时处于高负载状态。
+    
+    您可以通过任务查询接口获取具体的 `error_msg` 或 `reason` 以便定位问题。
+  </Accordion>
+  <Accordion title="如何获取生成成功后的结果？" icon="magnifying-glass">
+    由于大多数生成任务（特别是视频生成和高清图像生成）较为耗时，API 设计为异步模式。
+    创建任务后，您将获得一个 `taskId`，您需要通过我们的**状态查询接口**定时轮询该任务。当任务状态变为 `completed` 或 `success` 时，响应中会包含生成的 `url` 或 `mediaUrl`。
+  </Accordion>
+</AccordionGroup>

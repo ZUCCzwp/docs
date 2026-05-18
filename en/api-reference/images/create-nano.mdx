@@ -1,14 +1,12 @@
 ---
 title: 'Create Nano Banana Image'
-api: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/open-api/v1/images'
 ---
-
-Create a new image generation task using Nano Banana models.
 
 ## Request Body
 
 <ParamField body="model" type="string" required>
-  Model name. Use `nano-banana-2` or `nano-banana`.
+  Model name. Use `nano-banana-2`, `nano-banana`, or `nano-banana-pro`.
 </ParamField>
 
 <ParamField body="prompt" type="string" required>
@@ -18,26 +16,9 @@ Create a new image generation task using Nano Banana models.
 <ParamField body="size" type="string">
   Image aspect ratio/size. Supported values: `1:1`, `3:2`, `2:3`, `4:3`, `3:4`, `16:9`, `9:16`.
   
-  Default: `auto`
+  Default: `9:16`
 </ParamField>
 
 <ParamField body="images" type="array">
-  List of reference image URLs (supports single image).
+  List of reference image URLs (up to 6 images).
 </ParamField>
-
-## Response
-
-<ResponseExample>
-```json Success Response
-{
-  "code": 0,
-  "msg": "ok",
-  "data": {
-    "task_id": "img_f76d4948-e87a-4a25-a1fa-1f4803db0264",
-    "status": "processing",
-    "model": "nano-banana-2",
-    "created_at": 1715938481
-  }
-}
-```
-</ResponseExample>

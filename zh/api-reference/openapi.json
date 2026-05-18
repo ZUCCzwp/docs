@@ -79,7 +79,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "创建图片任务",
-        "description": "使用 GPT Image 2 模型创建新的图片生成任务。",
+        "description": "创建新的图片生成任务。",
         "operationId": "createImage",
         "requestBody": {
           "required": true,

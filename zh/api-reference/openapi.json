@@ -283,18 +283,31 @@
       "ImageGenerationResponse": {
         "type": "object",
         "properties": {
-          "task_id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "created_at": {
+          "code": {
             "type": "integer",
-            "format": "int64"
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
           }
         }
       },
@@ -350,59 +363,85 @@
       "VideoGenerationResponse": {
         "type": "object",
         "properties": {
-          "task_id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "created_at": {
+          "code": {
             "type": "integer",
-            "format": "int64"
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "model": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
           }
         }
       },
       "VideoQueryResponse": {
         "type": "object",
         "properties": {
-          "task_id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "progress": {
-            "type": "integer"
-          },
-          "model": {
-            "type": "string"
-          },
-          "created_at": {
+          "code": {
             "type": "integer",
-            "format": "int64"
+            "example": 0
           },
-          "completed_at": {
-            "type": "integer",
-            "format": "int64"
+          "msg": {
+            "type": "string",
+            "example": "ok"
           },
-          "result": {
+          "data": {
             "type": "object",
             "properties": {
-              "video_url": {
-                "type": "string",
-                "description": "生成的视频 URL (有效期3天)"
+              "task_id": {
+                "type": "string"
               },
-              "image_url": {
-                "type": "string",
-                "description": "生成的图片 URL (针对图片任务，有效期3天)"
+              "status": {
+                "type": "string"
+              },
+              "progress": {
+                "type": "integer"
+              },
+              "model": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "completed_at": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "result": {
+                "type": "object",
+                "properties": {
+                  "video_url": {
+                    "type": "string",
+                    "description": "生成的视频 URL (有效期3天)"
+                  },
+                  "image_url": {
+                    "type": "string",
+                    "description": "生成的图片 URL (针对图片任务，有效期3天)"
+                  }
+                }
+              },
+              "error_message": {
+                "type": "string"
               }
             }
-          },
-          "error_message": {
-            "type": "string"
           }
         }
       }

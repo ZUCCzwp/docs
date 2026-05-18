@@ -294,8 +294,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "integer",
-            "example": 0
+            "type": "string",
+            "example": "20000"
           },
           "msg": {
             "type": "string",
@@ -374,8 +374,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "integer",
-            "example": 0
+            "type": "string",
+            "example": "20000"
           },
           "msg": {
             "type": "string",
@@ -405,8 +405,8 @@
         "type": "object",
         "properties": {
           "code": {
-            "type": "integer",
-            "example": 0
+            "type": "string",
+            "example": "20000"
           },
           "msg": {
             "type": "string",

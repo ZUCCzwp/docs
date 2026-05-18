@@ -1,0 +1,43 @@
+---
+title: '创建 Nano Banana 图片'
+api: 'POST /api/open-api/v1/images'
+---
+
+使用 Nano Banana 模型创建新的图片生成任务。
+
+## 请求参数
+
+<ParamField body="model" type="string" required>
+  模型名称。固定填写 `nano-banana-2` 或 `nano-banana`。
+</ParamField>
+
+<ParamField body="prompt" type="string" required>
+  用于生成图片的文本提示词。
+</ParamField>
+
+<ParamField body="size" type="string">
+  图片尺寸/比例。支持的值：`1:1`, `3:2`, `2:3`, `4:3`, `3:4`, `16:9`, `9:16`。
+  
+  默认值：`auto`
+</ParamField>
+
+<ParamField body="images" type="array">
+  参考图 URL 列表（支持单张）。
+</ParamField>
+
+## 响应
+
+<ResponseExample>
+```json 成功响应示例
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_f76d4948-e87a-4a25-a1fa-1f4803db0264",
+    "status": "processing",
+    "model": "nano-banana-2",
+    "created_at": 1715938481
+  }
+}
+```
+</ResponseExample>

@@ -437,6 +437,16 @@
               "4k"
             ],
             "default": "1k"
+          },
+          "quality": {
+            "type": "string",
+            "description": "Image quality (supported by gpt-image-2). Supported values: low, medium, high.",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "default": "low"
           }
         }
       },

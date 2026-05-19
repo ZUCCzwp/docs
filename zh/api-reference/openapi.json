@@ -437,6 +437,16 @@
               "4k"
             ],
             "default": "1k"
+          },
+          "quality": {
+            "type": "string",
+            "description": "画质档位（由 gpt-image-2 支持）。支持的值：low (低画质), medium (中画质), high (高画质)。",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "default": "low"
           }
         }
       },

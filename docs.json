@@ -62,8 +62,7 @@
               {
                 "group": "Image Generation",
                 "pages": [
-                  "en/api-reference/images/create-gpt",
-                  "en/api-reference/images/create-nano"
+                  "en/api-reference/images/create"
                 ]
               },
               {
@@ -129,8 +128,7 @@
               {
                 "group": "图片生成",
                 "pages": [
-                  "zh/api-reference/images/create-gpt",
-                  "zh/api-reference/images/create-nano"
+                  "zh/api-reference/images/create"
                 ]
               },
               {

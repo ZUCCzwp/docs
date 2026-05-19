@@ -280,7 +280,7 @@
           },
           "resolution": {
             "type": "string",
-            "description": "图片分辨率（由 gpt-image-2, nano-banana-2 等模型支持）。支持的值：1k, 2k, 4k。",
+            "description": "图片分辨率（由 gpt-image-2, nano-banana-2 等模型支持）。支持的值：1k, 2k, 4k。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
             "enum": [
               "1k",
               "2k",

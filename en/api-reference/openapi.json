@@ -280,7 +280,7 @@
           },
           "resolution": {
             "type": "string",
-            "description": "Image resolution (supported by gpt-image-2). Supported values: 1k, 2k, 4k.",
+            "description": "Image resolution (supported by gpt-image-2). Supported values: 1k, 2k, 4k. Note: gpt-image-2 with 4K resolution only supports the following aspect ratios: 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
             "enum": [
               "1k",
               "2k",

@@ -192,6 +192,93 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/seedance/videos": {
+      "post": {
+        "summary": "Create Seedance Video Task",
+        "description": "Create a new video generation task using Seedance 2.0 models.",
+        "operationId": "createSeedanceVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/assets/audit": {
+      "post": {
+        "summary": "Submit Seedance Assets for Audit",
+        "description": "Submit raw asset URL lists (videos, images, or audios) for Seedance 2.0 moderation.",
+        "operationId": "submitSeedanceAudit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditSubmitResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/assets/status": {
+      "post": {
+        "summary": "Query Seedance Assets Status",
+        "description": "Query moderation status and details of submitted Seedance assets.",
+        "operationId": "querySeedanceAuditStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queried successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -230,6 +317,69 @@
               "type": "string"
             },
             "description": "Reference image URLs"
+          }
+        }
+      },
+      "SeedanceGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt",
+          "duration"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model name (e.g., sd2-manxue-720p, sd2-manxue-1080p, sd2-manxue-2k, sd2-manxue-4k)"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt for video generation"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duration in seconds"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "Video orientation (ignored if ratio is provided)"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URLs"
+          },
+          "ratio": {
+            "type": "string",
+            "description": "Aspect ratio of output video (e.g., 16:9, 9:16, 1:1, 4:3, 3:4, 21:9, Adaptive)"
+          },
+          "first_image": {
+            "type": "string",
+            "description": "First frame image URL"
+          },
+          "last_image": {
+            "type": "string",
+            "description": "Last frame image URL"
+          },
+          "reference_videos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference video URLs"
+          },
+          "reference_audios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference audio URLs"
           }
         }
       },
@@ -452,6 +602,138 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "SeedanceAuditSubmitRequest": {
+        "type": "object",
+        "properties": {
+          "audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of audio URLs"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of image URLs"
+          },
+          "video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of video URLs"
+          }
+        }
+      },
+      "SeedanceAuditSubmitResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "20000"
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "failed_items": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "description": "Failed items"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceAuditItem"
+                },
+                "description": "Moderation status items list"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceAuditItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "Asset ID"
+          },
+          "original_url": {
+            "type": "string",
+            "description": "Original asset URL"
+          },
+          "asset_type": {
+            "type": "string",
+            "description": "Asset type (e.g. video, image, audio)"
+          },
+          "status": {
+            "type": "string",
+            "description": "Moderation status"
+          }
+        }
+      },
+      "SeedanceAuditStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of asset IDs to query"
+          }
+        }
+      },
+      "SeedanceAuditStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "20000"
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceAuditStatusItem"
+                },
+                "description": "Asset status list"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceAuditStatusItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "Asset ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "Audit/activation status (e.g., Active means ready for use)"
           }
         }
       }

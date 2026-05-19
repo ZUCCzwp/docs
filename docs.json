@@ -71,6 +71,14 @@
                   "en/api-reference/veo/create-video",
                   "en/api-reference/veo/create-frames"
                 ]
+              },
+              {
+                "group": "Seedance Video",
+                "pages": [
+                  "en/api-reference/seedance/create",
+                  "en/api-reference/seedance/assets-audit",
+                  "en/api-reference/seedance/assets-status"
+                ]
               }
             ]
           }
@@ -136,6 +144,14 @@
                 "pages": [
                   "zh/api-reference/veo/create-video",
                   "zh/api-reference/veo/create-frames"
+                ]
+              },
+              {
+                "group": "Seedance 视频",
+                "pages": [
+                  "zh/api-reference/seedance/create",
+                  "zh/api-reference/seedance/assets-audit",
+                  "zh/api-reference/seedance/assets-status"
                 ]
               }
             ]

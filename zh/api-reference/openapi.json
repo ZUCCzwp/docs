@@ -192,6 +192,93 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/seedance/videos": {
+      "post": {
+        "summary": "Create Seedance Video Task",
+        "description": "Create a new video generation task using Seedance 2.0 models.",
+        "operationId": "createSeedanceVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/assets/audit": {
+      "post": {
+        "summary": "提交素材审核",
+        "description": "提交原始素材 URL 列表进行 Seedance 2.0 平台审核，审核通过后方可用于生成视频。",
+        "operationId": "submitSeedanceAudit",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditSubmitResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/assets/status": {
+      "post": {
+        "summary": "查询素材审核状态",
+        "description": "查询已提交审核素材的状态。",
+        "operationId": "querySeedanceAuditStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -230,6 +317,69 @@
               "type": "string"
             },
             "description": "参考图 URL 列表"
+          }
+        }
+      },
+      "SeedanceGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt",
+          "duration"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "模型名称 (如: sd2-manxue-720p, sd2-manxue-1080p, sd2-manxue-2k, sd2-manxue-4k)"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "用于生成视频的文本提示词"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "时长(秒)"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "视频方向 (如已传 ratio，则以此处为先)"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL 列表"
+          },
+          "ratio": {
+            "type": "string",
+            "description": "输出比例 (例如: 16:9, 9:16, 1:1, 4:3, 3:4, 21:9, Adaptive)"
+          },
+          "first_image": {
+            "type": "string",
+            "description": "首帧图片 URL"
+          },
+          "last_image": {
+            "type": "string",
+            "description": "尾帧图片 URL"
+          },
+          "reference_videos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考视频 URL 列表"
+          },
+          "reference_audios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考音频 URL 列表"
           }
         }
       },
@@ -452,6 +602,138 @@
                 "type": "string"
               }
             }
+          }
+        }
+      },
+      "SeedanceAuditSubmitRequest": {
+        "type": "object",
+        "properties": {
+          "audio_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "音频 URL 列表"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "图片 URL 列表"
+          },
+          "video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "视频 URL 列表"
+          }
+        }
+      },
+      "SeedanceAuditSubmitResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "20000"
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "failed_items": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "description": "失败素材列表"
+              },
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceAuditItem"
+                },
+                "description": "提交成功的审核状态条目列表"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceAuditItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "素材 ID"
+          },
+          "original_url": {
+            "type": "string",
+            "description": "原始素材 URL"
+          },
+          "asset_type": {
+            "type": "string",
+            "description": "素材类型 (如 video, image, audio)"
+          },
+          "status": {
+            "type": "string",
+            "description": "审核状态"
+          }
+        }
+      },
+      "SeedanceAuditStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "要查询的素材 ID 列表"
+          }
+        }
+      },
+      "SeedanceAuditStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "20000"
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceAuditStatusItem"
+                },
+                "description": "素材状态列表"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceAuditStatusItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "素材 ID"
+          },
+          "status": {
+            "type": "string",
+            "description": "审核/激活状态 (如 Active 表示可用)"
           }
         }
       }

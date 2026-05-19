@@ -22,3 +22,9 @@ openapi: 'POST /api/open-api/v1/images'
 <ParamField body="images" type="array">
   参考图 URL 列表（最多支持6张，也支持单张）。
 </ParamField>
+
+<ParamField body="resolution" type="string">
+  图片分辨率。支持的值：`1k`, `2k`, `4k`。
+  
+  默认值：`1k`
+</ParamField>

@@ -277,6 +277,16 @@
               "type": "string"
             },
             "description": "参考图 URL 或 base64 列表"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "图片分辨率（由 gpt-image-2, nano-banana-2 等模型支持）。支持的值：1k, 2k, 4k。",
+            "enum": [
+              "1k",
+              "2k",
+              "4k"
+            ],
+            "default": "1k"
           }
         }
       },

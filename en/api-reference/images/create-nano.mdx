@@ -22,3 +22,9 @@ openapi: 'POST /api/open-api/v1/images'
 <ParamField body="images" type="array">
   List of reference image URLs (up to 6 images).
 </ParamField>
+
+<ParamField body="resolution" type="string">
+  Image resolution. Supported values: `1k`, `2k`, `4k`.
+  
+  Default: `1k`
+</ParamField>

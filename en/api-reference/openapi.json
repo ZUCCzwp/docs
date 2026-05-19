@@ -330,7 +330,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., sd2-manxue-720p, sd2-manxue-1080p, sd2-manxue-2k, sd2-manxue-4k)"
+            "description": "Model name (e.g., sd2_mx_720p, sd2_mx_1080p, sd2_mx_2k, sd2_mx_4k)"
           },
           "prompt": {
             "type": "string",
@@ -353,7 +353,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference image URLs"
+            "description": "List of reference image asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
           },
           "ratio": {
             "type": "string",
@@ -361,25 +361,25 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First frame image URL"
+            "description": "First frame image asset link in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame image URL"
+            "description": "Last frame image asset link in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs"
+            "description": "List of reference video asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URLs"
+            "description": "List of reference audio asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
           }
         }
       },

@@ -330,7 +330,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: sd2-manxue-720p, sd2-manxue-1080p, sd2-manxue-2k, sd2-manxue-4k)"
+            "description": "模型名称 (如: sd2_mx_720p, sd2_mx_1080p, sd2_mx_2k, sd2_mx_4k)"
           },
           "prompt": {
             "type": "string",
@@ -353,7 +353,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图 URL 列表"
+            "description": "参考图 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
           },
           "ratio": {
             "type": "string",
@@ -361,25 +361,25 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL"
+            "description": "首帧图片 asset 链接，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 URL"
+            "description": "尾帧图片 asset 链接，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表"
+            "description": "参考视频 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表"
+            "description": "参考音频 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
           }
         }
       },

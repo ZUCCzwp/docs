@@ -2,3 +2,9 @@
 title: 'Create Seedance Video'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
+
+<Note>
+Any assets referenced in Seedance 2.0 video generation (including reference images `images`, first frame `first_image`, last frame `last_image`, reference videos `reference_videos`, and reference audios `reference_audios`) **must** first be submitted via the [Submit Seedance Assets for Audit](/en/api-reference/seedance/assets-audit) endpoint to obtain an `assetId`.
+
+When calling the video creation API, **the reference link format must be**: `asset://{assetId}`. Passing raw HTTP/HTTPS URLs directly will cause the request to fail.
+</Note>

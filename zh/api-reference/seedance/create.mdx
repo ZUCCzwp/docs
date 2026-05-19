@@ -2,3 +2,9 @@
 title: '创建 Seedance 视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
+
+<Note>
+Seedance 2.0 视频生成中引用的任何素材（包括参考图 `images`、首帧图片 `first_image`、尾帧图片 `last_image`、参考视频 `reference_videos`、参考音频 `reference_audios`）**必须**先通过 [提交素材审核](/zh/api-reference/seedance/assets-audit) 接口进行审核并取得 `assetId`。
+
+在调用创建视频接口时，**引用链接必须使用格式**：`asset://{assetId}`。直接传入普通的 HTTP/HTTPS 链接或未审核的地址会导致请求失败。
+</Note>

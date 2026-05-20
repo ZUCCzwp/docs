@@ -135,6 +135,35 @@
         }
       }
     },
+    "/api/open-api/v1/images/understand": {
+      "post": {
+        "summary": "Understand Image",
+        "description": "Understand and analyze uploaded images based on the Gemini 3.5 Flash model (supports e-commerce promotion analysis, etc.).",
+        "operationId": "understandImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageUnderstandingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image understood successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageUnderstandingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/veo/videos": {
       "post": {
         "summary": "Create VEO Video Task",
@@ -744,6 +773,98 @@
           "status": {
             "type": "string",
             "description": "Audit/activation status (e.g., Active means ready for use)"
+          }
+        }
+      },
+      "ImageUnderstandingRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "contents"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model name (e.g., gemini-3.5-flash)"
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeminiContent"
+            },
+            "description": "Dialogue context content"
+          }
+        }
+      },
+      "GeminiContent": {
+        "type": "object",
+        "required": [
+          "role",
+          "parts"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Role (user or model)"
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GeminiPart"
+            }
+          }
+        }
+      },
+      "GeminiPart": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text content"
+          },
+          "inline_data": {
+            "$ref": "#/components/schemas/GeminiInlineData"
+          }
+        }
+      },
+      "GeminiInlineData": {
+        "type": "object",
+        "required": [
+          "mime_type",
+          "data"
+        ],
+        "properties": {
+          "mime_type": {
+            "type": "string",
+            "description": "Media type (e.g., image/jpeg, image/png)"
+          },
+          "data": {
+            "type": "string",
+            "description": "Base64 encoded image data"
+          }
+        }
+      },
+      "ImageUnderstandingResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "20000"
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "candidates": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }

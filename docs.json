@@ -60,9 +60,10 @@
                 ]
               },
               {
-                "group": "Image Generation",
+                "group": "Image Services",
                 "pages": [
-                  "en/api-reference/images/create"
+                  "en/api-reference/images/create",
+                  "en/api-reference/images/understand"
                 ]
               },
               {
@@ -134,9 +135,10 @@
                 ]
               },
               {
-                "group": "图片生成",
+                "group": "图片服务",
                 "pages": [
-                  "zh/api-reference/images/create"
+                  "zh/api-reference/images/create",
+                  "zh/api-reference/images/understand"
                 ]
               },
               {

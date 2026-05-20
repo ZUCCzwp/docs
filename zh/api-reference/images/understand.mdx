@@ -2,3 +2,28 @@
 title: '图片理解'
 openapi: 'POST /api/open-api/v1/images/understand'
 ---
+
+### 请求示例
+
+```json
+{
+  "model": "gemini-3.5-flash",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "inline_data": {
+            "mime_type": "image/jpeg",
+            "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+          }
+        },
+        {
+          "text": "请详细描述这张图片的内容。"
+        }
+      ]
+    }
+  ]
+}
+```
+

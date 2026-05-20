@@ -2,3 +2,29 @@
 title: 'Understand Image'
 openapi: 'POST /api/open-api/v1/images/understand'
 ---
+
+
+### Request Example
+
+```json
+{
+  "model": "gemini-3.5-flash",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "inline_data": {
+            "mime_type": "image/jpeg",
+            "data": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+          }
+        },
+        {
+          "text": "Please describe the content of this image in detail."
+        }
+      ]
+    }
+  ]
+}
+```
+

@@ -1,0 +1,8 @@
+---
+title: 'Create Gemini Omni Video'
+openapi: 'POST /api/open-api/v1/gemini/omni/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>

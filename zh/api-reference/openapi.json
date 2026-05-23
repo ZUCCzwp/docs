@@ -308,6 +308,35 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/gemini/omni/videos": {
+      "post": {
+        "summary": "创建 Gemini Omni 视频任务",
+        "description": "创建 Gemini Omni 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
+        "operationId": "createGeminiOmniVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeminiOmniGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -866,6 +895,77 @@
               }
             }
           }
+        }
+      },
+      "GeminiOmniGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "Gemini-Omini",
+              "Omni-Flash-Ext",
+              "gemini-omni"
+            ],
+            "description": "模型名称。支持 Gemini-Omini、Omni-Flash-Ext、gemini-omni；服务端统一归一化为 Gemini-Omini。"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "用于生成视频的文本提示词"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 6,
+            "description": "视频时长，单位秒。不传或小于等于 0 时默认 6。"
+          },
+          "resolution": {
+            "type": "string",
+            "default": "720p",
+            "enum": [
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "description": "视频分辨率，默认 720p。"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "description": "视频比例，例如 16:9、9:16。优先级高于 orientation。"
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "视频方向。aspect_ratio 为空时生效：landscape 映射为 16:9，portrait 映射为 9:16。"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图片 URL 列表。"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "兼容 OpenAPI 通用图片字段；当 image_urls 为空时使用。"
+          }
+        },
+        "example": {
+          "model": "Gemini-Omini",
+          "prompt": "一只猫在雨夜霓虹街头奔跑，电影感，镜头低角度跟拍",
+          "duration": 6,
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "image_urls": []
         }
       }
     },

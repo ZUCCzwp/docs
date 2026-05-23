@@ -308,6 +308,35 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/gemini/omni/videos": {
+      "post": {
+        "summary": "Create Gemini Omni Video Task",
+        "description": "Create a Gemini Omni video generation task. After the task is created, use the common video task query endpoint to retrieve status and results.",
+        "operationId": "createGeminiOmniVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeminiOmniGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -866,6 +895,77 @@
               }
             }
           }
+        }
+      },
+      "GeminiOmniGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "Gemini-Omini",
+              "Omni-Flash-Ext",
+              "gemini-omni"
+            ],
+            "description": "Model name. Supports Gemini-Omini, Omni-Flash-Ext, and gemini-omni; the server normalizes aliases to Gemini-Omini."
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt for video generation"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 6,
+            "description": "Video duration in seconds. Defaults to 6 when omitted or less than or equal to 0."
+          },
+          "resolution": {
+            "type": "string",
+            "default": "720p",
+            "enum": [
+              "720p",
+              "1080p",
+              "4k"
+            ],
+            "description": "Video resolution. Defaults to 720p."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "description": "Video aspect ratio, for example 16:9 or 9:16. Takes precedence over orientation."
+          },
+          "orientation": {
+            "type": "string",
+            "enum": [
+              "landscape",
+              "portrait"
+            ],
+            "description": "Video orientation. Used only when aspect_ratio is empty: landscape maps to 16:9, portrait maps to 9:16."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URL list."
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty."
+          }
+        },
+        "example": {
+          "model": "Gemini-Omini",
+          "prompt": "A cat running through a neon rainy street, cinematic low-angle tracking shot",
+          "duration": 6,
+          "resolution": "720p",
+          "aspect_ratio": "16:9",
+          "image_urls": []
         }
       }
     },

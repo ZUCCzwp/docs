@@ -1,0 +1,8 @@
+---
+title: '创建 Gemini Omni 视频'
+openapi: 'POST /api/open-api/v1/gemini/omni/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>

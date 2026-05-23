@@ -60,6 +60,12 @@
                 ]
               },
               {
+                "group": "Gemini Omni Video",
+                "pages": [
+                  "en/api-reference/gemini-omni/create"
+                ]
+              },
+              {
                 "group": "Image Services",
                 "pages": [
                   "en/api-reference/images/create",
@@ -132,6 +138,12 @@
                 "group": "Sora 视频",
                 "pages": [
                   "zh/api-reference/videos/create"
+                ]
+              },
+              {
+                "group": "Gemini Omni 视频",
+                "pages": [
+                  "zh/api-reference/gemini-omni/create"
                 ]
               },
               {

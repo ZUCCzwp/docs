@@ -1,4 +1,10 @@
 ---
-title: '创建图片'
+title: '创建图片（异步）'
 openapi: 'POST /api/open-api/v1/images'
 ---
+
+<Note>
+本接口为**异步**任务模式，返回 `task_id` 后需通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
+
+若需**同步**文生图或图片编辑（兼容 OpenAI，成功即返回 `b64_json`），请使用 [文生图（同步）](/zh/api-reference/images/generations) 或 [编辑图片（同步）](/zh/api-reference/images/edits)。
+</Note>

@@ -164,6 +164,64 @@
         }
       }
     },
+    "/api/open-api/v1/images/generations": {
+      "post": {
+        "summary": "文生图（同步）",
+        "description": "同步文生图，兼容 OpenAI POST /v1/images/generations。成功响应后立即扣费，在 data 中返回图片结果，无需轮询。",
+        "operationId": "generateOpenAIImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "生成成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/images/edits": {
+      "post": {
+        "summary": "编辑图片（同步）",
+        "description": "同步图片编辑，兼容 OpenAI POST /v1/images/edits。使用 multipart/form-data 上传源图，成功响应后立即扣费。",
+        "operationId": "editOpenAIImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageEditRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "编辑成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/veo/videos": {
       "post": {
         "summary": "Create VEO Video Task",
@@ -966,6 +1024,230 @@
           "resolution": "720p",
           "aspect_ratio": "16:9",
           "image_urls": []
+        }
+      },
+      "OpenAIImageGenerationRequest": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "模型名称，默认 gpt-image-2",
+            "default": "gpt-image-2",
+            "example": "gpt-image-2"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "文生图提示词"
+          },
+          "size": {
+            "type": "string",
+            "description": "输出尺寸，默认 1024x1024",
+            "default": "1024x1024",
+            "example": "1024x1024"
+          },
+          "n": {
+            "type": "integer",
+            "description": "生成数量，默认 1",
+            "default": 1,
+            "minimum": 1
+          },
+          "quality": {
+            "type": "string",
+            "description": "画质档位，影响计费（gpt-image-2-low / medium / high）",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "auto"
+            ],
+            "default": "low"
+          },
+          "background": {
+            "type": "string",
+            "description": "背景类型",
+            "enum": [
+              "transparent",
+              "opaque",
+              "auto"
+            ]
+          },
+          "output_format": {
+            "type": "string",
+            "description": "输出格式",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          }
+        },
+        "example": {
+          "model": "gpt-image-2",
+          "prompt": "赛博朋克城市雨夜，霓虹招牌特写，电影画幅",
+          "size": "1024x1024",
+          "n": 1,
+          "quality": "high"
+        }
+      },
+      "OpenAIImageEditRequest": {
+        "type": "object",
+        "required": [
+          "image",
+          "prompt"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "description": "源图文件（必填，≤20MB）"
+          },
+          "mask": {
+            "type": "string",
+            "format": "binary",
+            "description": "蒙版 PNG（可选，透明区域为编辑区，≤20MB）"
+          },
+          "model": {
+            "type": "string",
+            "description": "模型名称，默认 gpt-image-2",
+            "default": "gpt-image-2"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "编辑提示词"
+          },
+          "size": {
+            "type": "string",
+            "description": "输出尺寸，默认 1024x1024",
+            "default": "1024x1024"
+          },
+          "n": {
+            "type": "integer",
+            "description": "生成数量，默认 1",
+            "default": 1,
+            "minimum": 1
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "auto"
+            ],
+            "default": "low"
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "transparent",
+              "opaque",
+              "auto"
+            ]
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          }
+        }
+      },
+      "OpenAIImageSyncResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/OpenAIImageSyncResult"
+          }
+        }
+      },
+      "OpenAIImageSyncResult": {
+        "type": "object",
+        "description": "与 OpenAI images 接口一致的结果结构",
+        "properties": {
+          "created": {
+            "type": "integer",
+            "format": "int64",
+            "description": "创建时间戳"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpenAIImageResultItem"
+            }
+          },
+          "model": {
+            "type": "string",
+            "example": "gpt-image-2"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/OpenAIImageUsage"
+          }
+        }
+      },
+      "OpenAIImageResultItem": {
+        "type": "object",
+        "properties": {
+          "b64_json": {
+            "type": "string",
+            "description": "Base64 编码的图片数据（可能较大，数 MB 级）"
+          },
+          "url": {
+            "type": "string",
+            "description": "图片 URL（若上游返回 url 而非 base64）"
+          },
+          "revised_prompt": {
+            "type": "string",
+            "description": "修订后的提示词"
+          }
+        }
+      },
+      "OpenAIImageUsage": {
+        "type": "object",
+        "properties": {
+          "input_tokens": {
+            "type": "integer"
+          },
+          "output_tokens": {
+            "type": "integer"
+          },
+          "total_tokens": {
+            "type": "integer"
+          },
+          "input_tokens_details": {
+            "type": "object",
+            "properties": {
+              "image_tokens": {
+                "type": "integer"
+              },
+              "text_tokens": {
+                "type": "integer"
+              }
+            }
+          },
+          "output_tokens_details": {
+            "type": "object",
+            "properties": {
+              "image_tokens": {
+                "type": "integer"
+              },
+              "text_tokens": {
+                "type": "integer"
+              }
+            }
+          }
         }
       }
     },

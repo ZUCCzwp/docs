@@ -164,6 +164,64 @@
         }
       }
     },
+    "/api/open-api/v1/images/generations": {
+      "post": {
+        "summary": "Text-to-Image (Sync)",
+        "description": "Synchronous text-to-image, compatible with OpenAI POST /v1/images/generations. Billed on success; returns image results in data without polling.",
+        "operationId": "generateOpenAIImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generation successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/images/edits": {
+      "post": {
+        "summary": "Edit Image (Sync)",
+        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source image via multipart/form-data; billed on success.",
+        "operationId": "editOpenAIImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageEditRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Edit successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/veo/videos": {
       "post": {
         "summary": "Create VEO Video Task",
@@ -966,6 +1024,223 @@
           "resolution": "720p",
           "aspect_ratio": "16:9",
           "image_urls": []
+        }
+      },
+      "OpenAIImageGenerationRequest": {
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Model name. Default: gpt-image-2",
+            "default": "gpt-image-2",
+            "example": "gpt-image-2"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt for image generation"
+          },
+          "size": {
+            "type": "string",
+            "description": "Output size. Default: 1024x1024",
+            "default": "1024x1024",
+            "example": "1024x1024"
+          },
+          "n": {
+            "type": "integer",
+            "description": "Number of images. Default: 1",
+            "default": 1,
+            "minimum": 1
+          },
+          "quality": {
+            "type": "string",
+            "description": "Quality tier (affects billing for gpt-image-2)",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "auto"
+            ],
+            "default": "low"
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "transparent",
+              "opaque",
+              "auto"
+            ]
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          }
+        },
+        "example": {
+          "model": "gpt-image-2",
+          "prompt": "Cyberpunk city at night in the rain, neon signs, cinematic framing",
+          "size": "1024x1024",
+          "n": 1,
+          "quality": "high"
+        }
+      },
+      "OpenAIImageEditRequest": {
+        "type": "object",
+        "required": [
+          "image",
+          "prompt"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "description": "Source image file (required, max 20MB)"
+          },
+          "mask": {
+            "type": "string",
+            "format": "binary",
+            "description": "PNG mask (optional). Transparent pixels mark the edit region (max 20MB)"
+          },
+          "model": {
+            "type": "string",
+            "default": "gpt-image-2"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Edit prompt"
+          },
+          "size": {
+            "type": "string",
+            "default": "1024x1024"
+          },
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "minimum": 1
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "auto"
+            ],
+            "default": "low"
+          },
+          "background": {
+            "type": "string",
+            "enum": [
+              "transparent",
+              "opaque",
+              "auto"
+            ]
+          },
+          "output_format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp"
+            ]
+          }
+        }
+      },
+      "OpenAIImageSyncResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/OpenAIImageSyncResult"
+          }
+        }
+      },
+      "OpenAIImageSyncResult": {
+        "type": "object",
+        "description": "OpenAI-compatible image result",
+        "properties": {
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OpenAIImageResultItem"
+            }
+          },
+          "model": {
+            "type": "string",
+            "example": "gpt-image-2"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/OpenAIImageUsage"
+          }
+        }
+      },
+      "OpenAIImageResultItem": {
+        "type": "object",
+        "properties": {
+          "b64_json": {
+            "type": "string",
+            "description": "Base64-encoded image (may be several MB)"
+          },
+          "url": {
+            "type": "string",
+            "description": "Image URL when upstream returns url instead of base64"
+          },
+          "revised_prompt": {
+            "type": "string"
+          }
+        }
+      },
+      "OpenAIImageUsage": {
+        "type": "object",
+        "properties": {
+          "input_tokens": {
+            "type": "integer"
+          },
+          "output_tokens": {
+            "type": "integer"
+          },
+          "total_tokens": {
+            "type": "integer"
+          },
+          "input_tokens_details": {
+            "type": "object",
+            "properties": {
+              "image_tokens": {
+                "type": "integer"
+              },
+              "text_tokens": {
+                "type": "integer"
+              }
+            }
+          },
+          "output_tokens_details": {
+            "type": "object",
+            "properties": {
+              "image_tokens": {
+                "type": "integer"
+              },
+              "text_tokens": {
+                "type": "integer"
+              }
+            }
+          }
         }
       }
     },

@@ -1,0 +1,14 @@
+---
+title: '文生图（同步）'
+openapi: 'POST /api/open-api/v1/images/generations'
+---
+
+<Note>
+本接口为**同步**调用，兼容 OpenAI `POST /v1/images/generations`。请求成功后**立即扣费**，并在响应 `data` 中直接返回图片结果（`b64_json` 或 `url`），无需轮询任务。
+
+与 [创建图片任务](/zh/api-reference/images/create)（异步，`POST /images`）不同：异步接口返回 `task_id`，需通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
+</Note>
+
+<Warning>
+图片生成通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**，避免中途断开。`b64_json` 体积可能达数 MB，请确保调用方与网关支持大响应体。
+</Warning>

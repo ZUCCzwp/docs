@@ -1,4 +1,10 @@
 ---
-title: 'Create Image'
+title: 'Create Image (Async)'
 openapi: 'POST /api/open-api/v1/images'
 ---
+
+<Note>
+This endpoint is **asynchronous**: it returns a `task_id`. Poll [Query Image Task](/en/api-reference/images/query) for results.
+
+For **synchronous** text-to-image or image edit (OpenAI-compatible, returns `b64_json` on success), use [Text-to-Image (Sync)](/en/api-reference/images/generations) or [Edit Image (Sync)](/en/api-reference/images/edits).
+</Note>

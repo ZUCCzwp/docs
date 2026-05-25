@@ -1,0 +1,14 @@
+---
+title: '编辑图片（同步）'
+openapi: 'POST /api/open-api/v1/images/edits'
+---
+
+<Note>
+本接口为**同步**调用，兼容 OpenAI `POST /v1/images/edits`。使用 `multipart/form-data` 上传源图，请求成功后**立即扣费**，并在响应 `data` 中直接返回编辑后的图片（`b64_json` 或 `url`）。
+
+可选 `mask` 字段：须为 **PNG**，透明区域表示需要编辑的区域。
+</Note>
+
+<Warning>
+图片编辑通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**。单文件（`image` / `mask`）不超过 **20MB**。
+</Warning>

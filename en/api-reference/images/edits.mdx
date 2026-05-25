@@ -1,0 +1,14 @@
+---
+title: 'Edit Image (Sync)'
+openapi: 'POST /api/open-api/v1/images/edits'
+---
+
+<Note>
+This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/edits`. Upload the source image via `multipart/form-data`. On success, billing is applied immediately and the edited image is returned in `data` (`b64_json` or `url`).
+
+Optional `mask`: must be a **PNG** file; transparent pixels indicate the region to edit.
+</Note>
+
+<Warning>
+Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Each file (`image` / `mask`) must be **≤ 20MB**.
+</Warning>

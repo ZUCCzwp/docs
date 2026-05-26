@@ -1050,9 +1050,8 @@
           },
           "n": {
             "type": "integer",
-            "description": "Number of images. Default: 1",
-            "default": 1,
-            "minimum": 1
+            "description": "Number of images. MAX: 1",
+            "default": 1
           },
           "quality": {
             "type": "string",
@@ -1102,11 +1101,6 @@
             "format": "binary",
             "description": "Source image file (required, max 20MB)"
           },
-          "mask": {
-            "type": "string",
-            "format": "binary",
-            "description": "PNG mask (optional). Transparent pixels mark the edit region (max 20MB)"
-          },
           "model": {
             "type": "string",
             "default": "gpt-image-2"
@@ -1121,8 +1115,7 @@
           },
           "n": {
             "type": "integer",
-            "default": 1,
-            "minimum": 1
+            "default": 1
           },
           "quality": {
             "type": "string",

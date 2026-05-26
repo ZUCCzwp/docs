@@ -1050,9 +1050,8 @@
           },
           "n": {
             "type": "integer",
-            "description": "生成数量，默认 1",
-            "default": 1,
-            "minimum": 1
+            "description": "生成数量1 不可修改",
+            "default": 1
           },
           "quality": {
             "type": "string",
@@ -1104,11 +1103,6 @@
             "format": "binary",
             "description": "源图文件（必填，≤20MB）"
           },
-          "mask": {
-            "type": "string",
-            "format": "binary",
-            "description": "蒙版 PNG（可选，透明区域为编辑区，≤20MB）"
-          },
           "model": {
             "type": "string",
             "description": "模型名称，默认 gpt-image-2",
@@ -1125,9 +1119,8 @@
           },
           "n": {
             "type": "integer",
-            "description": "生成数量，默认 1",
-            "default": 1,
-            "minimum": 1
+            "description": "生成数量限制为 1",
+            "default": 1
           },
           "quality": {
             "type": "string",

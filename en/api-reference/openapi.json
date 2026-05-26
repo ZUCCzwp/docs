@@ -1191,10 +1191,6 @@
             "type": "string",
             "description": "Base64-encoded image (may be several MB)"
           },
-          "url": {
-            "type": "string",
-            "description": "Image URL when upstream returns url instead of base64"
-          },
           "revised_prompt": {
             "type": "string"
           }

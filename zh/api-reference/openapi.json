@@ -1197,10 +1197,6 @@
             "type": "string",
             "description": "Base64 编码的图片数据（可能较大，数 MB 级）"
           },
-          "url": {
-            "type": "string",
-            "description": "图片 URL（若上游返回 url 而非 base64）"
-          },
           "revised_prompt": {
             "type": "string",
             "description": "修订后的提示词"

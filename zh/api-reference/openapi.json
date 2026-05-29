@@ -20,7 +20,7 @@
     "/api/open-api/v1/videos": {
       "post": {
         "summary": "Create Video Task",
-        "description": "Create a new video generation task using Sora models.",
+        "description": "Create a new video generation task using Sora models. Route 1 (route1): model sora2-12s, duration must be 12. Route 3: sora2-gz-stable / sora2-gz-sp. Route 6: see model config.",
         "operationId": "createVideo",
         "requestBody": {
           "required": true,
@@ -409,7 +409,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: sora2-gz-stable, sora2-gz-sp)"
+            "description": "模型名称。线路一: sora2-12s（duration 必须为 12）；线路三: sora2-gz-stable, sora2-gz-sp 等"
           },
           "prompt": {
             "type": "string",
@@ -417,7 +417,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长(秒)"
+            "description": "时长(秒)。线路一 sora2-12s 必须为 12"
           },
           "orientation": {
             "type": "string",

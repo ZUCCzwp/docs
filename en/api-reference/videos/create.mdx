@@ -2,3 +2,24 @@
 title: 'Create Video'
 openapi: 'POST /api/open-api/v1/videos'
 ---
+
+## Routes and models
+
+Assign a `route` in the OpenAPI model config, then call this endpoint. Common Sora examples:
+
+| Route | Config `route` | Model examples | Duration |
+|-------|----------------|----------------|----------|
+| Route 1 | `route1` | `sora2-12s` | **12s only** |
+| Route 3 | `route3` | `sora2-gz-stable`, `sora2-gz-sp` | Per model |
+| Route 6 | `route6` | `openai-sora-2`, etc. | Per model |
+
+### Route 1 (`sora2-12s`)
+
+- `duration` must be `12`
+- `orientation`: `landscape` → 16:9, `portrait` → 9:16
+- Optional `images`: one reference image URL for image-to-video
+- Query tasks via [Query video task](/en/api-reference/common/query)
+
+<Note>
+Result URLs are kept for about **3 days**; download promptly.
+</Note>

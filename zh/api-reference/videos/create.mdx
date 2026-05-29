@@ -2,3 +2,24 @@
 title: '创建视频'
 openapi: 'POST /api/open-api/v1/videos'
 ---
+
+## 线路与模型
+
+在开放平台为模型配置 `route` 后，通过本接口创建任务。常用 Sora 模型示例：
+
+| 线路 | `route` 配置 | 模型示例 | 时长 |
+|------|----------------|----------|------|
+| 线路一 | `route1` | `sora2-12s` | 仅 **12** 秒 |
+| 线路三 | `route3` | `sora2-gz-stable`、`sora2-gz-sp` | 按模型 |
+| 线路六 | `route6` | `openai-sora-2` 等 | 按模型 |
+
+### 线路一（`sora2-12s`）
+
+- `duration` 必须为 `12`
+- `orientation`：`landscape` → 16:9，`portrait` → 9:16
+- 可选 `images` 传一张参考图 URL（图生视频）
+- 任务查询与其它视频任务相同：[查询视频任务](/zh/api-reference/common/query)
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
+</Note>

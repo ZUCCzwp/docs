@@ -8,3 +8,7 @@ openapi: 'POST /api/open-api/v1/images'
 
 若需**同步**文生图或图片编辑（兼容 OpenAI，成功即返回 `b64_json`），请使用 [文生图（同步）](/zh/api-reference/images/generations) 或 [编辑图片（同步）](/zh/api-reference/images/edits)。
 </Note>
+
+<Note>
+异步图片任务使用 `ratio` 指定**画面比例**（如 `1:1`、`16:9`），默认 `auto`。同步 OpenAI 兼容接口（`/images/generations`、`/images/edits`）仍使用 `size` 表示**像素尺寸**（如 `1024x1024`）。
+</Note>

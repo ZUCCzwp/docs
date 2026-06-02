@@ -202,6 +202,11 @@
       },
       {
         "type": "button",
+        "label": "无限画布",
+        "href": "https://canvas.jimmyai.cn"
+      },
+      {
+        "type": "button",
         "label": "TK爆款复刻",
         "href": "https://app.jimmyai.cn"
       }

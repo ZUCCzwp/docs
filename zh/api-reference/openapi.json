@@ -196,7 +196,7 @@
     "/api/open-api/v1/images/edits": {
       "post": {
         "summary": "编辑图片（同步）",
-        "description": "同步图片编辑，兼容 OpenAI POST /v1/images/edits。使用 multipart/form-data 上传源图，成功响应后立即扣费。",
+        "description": "同步图片编辑，兼容 OpenAI POST /v1/images/edits。使用 multipart/form-data 上传源图（支持多张，字段名均为 image），成功响应后立即扣费。",
         "operationId": "editOpenAIImage",
         "requestBody": {
           "required": true,
@@ -1099,9 +1099,12 @@
         ],
         "properties": {
           "image": {
-            "type": "string",
-            "format": "binary",
-            "description": "源图文件（必填，≤20MB）"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "description": "源图文件（必填，≤20MB/张，最多16张；兼容单张上传，字段名均为 image）"
           },
           "model": {
             "type": "string",

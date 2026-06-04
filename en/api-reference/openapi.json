@@ -196,7 +196,7 @@
     "/api/open-api/v1/images/edits": {
       "post": {
         "summary": "Edit Image (Sync)",
-        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source image via multipart/form-data; billed on success.",
+        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source images via multipart/form-data (multiple files supported, all using field name `image`); billed on success.",
         "operationId": "editOpenAIImage",
         "requestBody": {
           "required": true,
@@ -1097,9 +1097,12 @@
         ],
         "properties": {
           "image": {
-            "type": "string",
-            "format": "binary",
-            "description": "Source image file (required, max 20MB)"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "description": "Source image files (required, max 20MB each, up to 16 files; single-file upload also supported, field name `image`)"
           },
           "model": {
             "type": "string",

@@ -1,0 +1,75 @@
+# JimmyAI API Documentation
+
+> JimmyAI is a unified OpenAI-compatible API gateway for image and video generation. Base URL: https://www.jimmyai.cn. Authenticate with `Authorization: Bearer <API_KEY>`. Most video and image tasks are async — create a task, then poll the query endpoint for status and results. Docs site: https://docs.jimmyai.cn
+
+## Getting Started
+
+- [Quickstart](https://docs.jimmyai.cn/en/index.md): Get your API key, recharge your account, and send your first video generation request.
+- [Development Guide](https://docs.jimmyai.cn/en/development.md): Integration patterns and best practices for building with the JimmyAI API.
+- [快速入门](https://docs.jimmyai.cn/zh/index.md): 获取 API 密钥、充值账户并发送首个视频生成请求。
+- [开发指南](https://docs.jimmyai.cn/zh/development.md): 在应用程序中集成 JimmyAI API 的指南。
+
+## FAQ
+
+- [FAQ](https://docs.jimmyai.cn/en/faq.md): Frequently asked questions about billing, authentication, and API usage.
+- [常见问题](https://docs.jimmyai.cn/zh/faq.md): 有关计费、认证和 API 使用的常见问题解答。
+
+## API Reference
+
+- [Introduction](https://docs.jimmyai.cn/en/api-reference/introduction.md): Overview of JimmyAI API capabilities — Sora, VEO, Gemini Omni, Seedance, and GPT Image models.
+- [介绍](https://docs.jimmyai.cn/zh/api-reference/introduction.md): JimmyAI API 能力概览 — Sora、VEO、Gemini Omni、Seedance 及 GPT Image 模型。
+
+### Common
+
+- [Query Video Task](https://docs.jimmyai.cn/en/api-reference/common/query.md): Query the status and result of a video generation task.
+- [Query Image Task](https://docs.jimmyai.cn/en/api-reference/images/query.md): Query the status and result of an image generation task.
+- [查询视频任务](https://docs.jimmyai.cn/zh/api-reference/common/query.md): 查询视频生成任务的状态和结果。
+- [查询图片任务](https://docs.jimmyai.cn/zh/api-reference/images/query.md): 查询图片生成任务的状态和结果。
+
+### Sora Video
+
+- [Create Video](https://docs.jimmyai.cn/en/api-reference/videos/create.md): Create a video generation task using Sora models (route1, route3, route6).
+- [创建视频](https://docs.jimmyai.cn/zh/api-reference/videos/create.md): 使用 Sora 模型创建视频生成任务。
+
+### Gemini Omni Video
+
+- [Create Gemini Omni Video](https://docs.jimmyai.cn/en/api-reference/gemini-omni/create.md): Create a Gemini Omni video generation task; poll the common query endpoint for results.
+- [创建 Gemini Omni 视频](https://docs.jimmyai.cn/zh/api-reference/gemini-omni/create.md): 创建 Gemini Omni 视频生成任务，通过通用查询接口获取结果。
+
+### Image Services
+
+- [Create Image (Async)](https://docs.jimmyai.cn/en/api-reference/images/create.md): Create an async image generation task.
+- [Text-to-Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/generations.md): Sync text-to-image, OpenAI-compatible POST /v1/images/generations.
+- [Edit Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/edits.md): Sync image editing, OpenAI-compatible POST /v1/images/edits with multipart/form-data.
+- [Understand Image](https://docs.jimmyai.cn/en/api-reference/images/understand.md): Image understanding and analysis powered by Gemini.
+- [创建图片（异步）](https://docs.jimmyai.cn/zh/api-reference/images/create.md): 创建异步图片生成任务。
+- [文生图（同步）](https://docs.jimmyai.cn/zh/api-reference/images/generations.md): 同步文生图，兼容 OpenAI POST /v1/images/generations。
+- [编辑图片（同步）](https://docs.jimmyai.cn/zh/api-reference/images/edits.md): 同步图片编辑，兼容 OpenAI POST /v1/images/edits。
+- [图片理解](https://docs.jimmyai.cn/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。
+
+### VEO Video
+
+- [Create VEO Video](https://docs.jimmyai.cn/en/api-reference/veo/create-video.md): Create a video generation task using VEO models.
+- [Create VEO Frames](https://docs.jimmyai.cn/en/api-reference/veo/create-frames.md): Create a VEO video task using first and last frame images.
+- [创建 VEO 视频](https://docs.jimmyai.cn/zh/api-reference/veo/create-video.md): 使用 VEO 模型创建视频生成任务。
+- [创建 VEO 首尾帧](https://docs.jimmyai.cn/zh/api-reference/veo/create-frames.md): 使用首尾帧图片创建 VEO 视频任务。
+
+### Seedance Video
+
+- [Create Seedance Video](https://docs.jimmyai.cn/en/api-reference/seedance/create.md): Create a video generation task using Seedance 2.0 models.
+- [Submit Assets for Audit](https://docs.jimmyai.cn/en/api-reference/seedance/assets-audit.md): Submit asset URLs for Seedance platform audit before use in video generation.
+- [Query Assets Audit Status](https://docs.jimmyai.cn/en/api-reference/seedance/assets-status.md): Query the audit status of submitted assets.
+- [创建 Seedance 视频](https://docs.jimmyai.cn/zh/api-reference/seedance/create.md): 使用 Seedance 2.0 模型创建视频生成任务。
+- [提交素材审核](https://docs.jimmyai.cn/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
+- [查询素材审核状态](https://docs.jimmyai.cn/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
+
+## OpenAPI Specs
+
+- [OpenAPI (English)](https://docs.jimmyai.cn/en/api-reference/openapi.json): Machine-readable API specification.
+- [OpenAPI (中文)](https://docs.jimmyai.cn/zh/api-reference/openapi.json): 机器可读的 API 规范。
+
+## Optional
+
+- [Blog](https://zucczwp.github.io/): JimmyAI blog and updates.
+- [Console](https://www.jimmyai.cn): Dashboard for API keys, billing, and usage.
+- [Canvas](https://canvas.jimmyai.cn): Infinite canvas creative workspace.

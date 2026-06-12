@@ -282,8 +282,8 @@
     },
     "/api/open-api/v1/seedance/videos": {
       "post": {
-        "summary": "Create Seedance Video Task",
-        "description": "Create a new video generation task using Seedance 2.0 models.",
+        "summary": "创建 Seedance 视频任务",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、经济版（seedance2.0-sp / seedance2.0-fast-sp，按次计费，直接传 URL）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -312,7 +312,7 @@
     "/api/open-api/v1/seedance/assets/audit": {
       "post": {
         "summary": "提交素材审核",
-        "description": "提交原始素材 URL 列表进行 Seedance 2.0 平台审核，审核通过后方可用于生成视频。",
+        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；经济版与 MD 可直接传公网 URL。",
         "operationId": "submitSeedanceAudit",
         "requestBody": {
           "required": true,
@@ -446,7 +446,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: sd2_mx_720p, sd2_mx_1080p, sd2_mx_2k, sd2_mx_4k)"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k（按秒）。经济版: seedance2.0-sp | seedance2.0-fast-sp（按次）。MD: seedance2.0-md | seedance2.0-fast-md（按次）"
           },
           "prompt": {
             "type": "string",
@@ -454,7 +454,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长(秒)"
+            "description": "时长（秒）。满血版 4-12；经济版 4-15；MD 1-15。默认 5"
           },
           "orientation": {
             "type": "string",
@@ -462,40 +462,40 @@
               "landscape",
               "portrait"
             ],
-            "description": "视频方向 (如已传 ratio，则以此处为先)"
+            "description": "视频方向（如已传 ratio 则以 ratio 为准）"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考图 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
+            "description": "参考图列表。满血版须为 asset://{assetId}；经济版/MD 可为 https:// URL。与首尾帧不可同时使用"
           },
           "ratio": {
             "type": "string",
-            "description": "输出比例 (例如: 16:9, 9:16, 1:1, 4:3, 3:4, 21:9, Adaptive)"
+            "description": "输出比例，如 16:9、9:16、1:1；满血版与 MD 还支持 4:3、3:4、21:9、Adaptive"
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 asset 链接，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
+            "description": "首帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 asset 链接，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
+            "description": "尾帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
+            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频 asset 链接列表，格式为 asset://{assetId} (需先通过素材审核接口提交并获取 assetId)"
+            "description": "参考音频列表。满血版/MD 支持；经济版不支持。满血版须 asset://{assetId}，MD 可为 https:// URL"
           }
         }
       },

@@ -2,3 +2,28 @@
 title: 'Submit Assets for Audit'
 openapi: 'POST /api/open-api/v1/seedance/assets/audit'
 ---
+
+Submit image, video, and audio URLs for Seedance platform review. **Required only for the full (Manxue) route** (`sd2_mx_*`). Economy and MD routes accept public URLs directly without audit.
+
+## Workflow
+
+1. Submit asset URLs via this endpoint
+2. Poll [Query Audit Status](/en/api-reference/seedance/assets-status) using each `asset_id`
+3. When status is `Active`, reference the asset as `asset://{asset_id}` in [Create Seedance Video](/en/api-reference/seedance/create)
+
+## Example
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/assets/audit' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_urls": ["https://example.com/ref.jpg"],
+    "video_urls": ["https://example.com/ref.mp4"],
+    "audio_urls": []
+  }'
+```
+
+## Response
+
+Returns an `items` array with `asset_id`, `original_url`, `asset_type`, and `status`. Status is `Pending` until approved, then `Active`.

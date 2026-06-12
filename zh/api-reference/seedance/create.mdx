@@ -3,8 +3,141 @@ title: '创建 Seedance 视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
-<Note>
-Seedance 2.0 视频生成中引用的任何素材（包括参考图 `images`、首帧图片 `first_image`、尾帧图片 `last_image`、参考视频 `reference_videos`、参考音频 `reference_audios`）**必须**先通过 [提交素材审核](/zh/api-reference/seedance/assets-audit) 接口进行审核并取得 `assetId`。
+创建 Seedance 2.0 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
-在调用创建视频接口时，**引用链接必须使用格式**：`asset://{assetId}`。直接传入普通的 HTTP/HTTPS 链接或未审核的地址会导致请求失败。
+## 模型与线路
+
+通过 `model` 字段选择线路，不同线路对素材、时长和计费方式不同：
+
+| 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
+|------|-------------|------|------|----------|
+| **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–12 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
+| **经济版（标准）** | `seedance2.0-sp` | 按次 | 4–15 秒 | 直接传 HTTP/HTTPS 图片或视频 URL，**无需审核** |
+| **经济版（快速）** | `seedance2.0-fast-sp` | 按次 | 4–15 秒 | 同上 |
+| **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL，支持参考音频 |
+| **MD（快速）** | `seedance2.0-fast-md` | 按次 | 1–15 秒 | 同上 |
+
+<Note>
+经济版与 MD 线路性价比更高，适合批量生成；满血版画质更高，支持 1080p / 2K / 4K，但素材须先审核。
+</Note>
+
+## 请求参数说明
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 见上表 |
+| `prompt` | string | 是 | 视频生成提示词 |
+| `duration` | int | 是 | 时长（秒），默认 5 |
+| `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1`；满血版还支持 `4:3`、`3:4`、`21:9`、`Adaptive` |
+| `images` | string[] | 否 | 参考图列表 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+| `reference_videos` | string[] | 否 | 参考视频列表 |
+| `reference_audios` | string[] | 否 | 参考音频列表（仅满血版、MD 支持；**经济版不支持**） |
+
+### 素材链接格式
+
+- **满血版**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 必须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
+- **经济版 / MD**：直接传入可公网访问的 `https://` 图片或视频 URL。
+
+### 通用约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**，请二选一。
+- 经济版不支持 `reference_audios`。
+
+## 示例
+
+### 经济版 — 文生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-sp",
+    "prompt": "一只橘猫在海边奔跑，电影感镜头，夕阳逆光",
+    "duration": 5,
+    "ratio": "16:9"
+  }'
+```
+
+### 经济版 — 参考图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-sp",
+    "prompt": "人物缓缓转头，微风拂动发丝",
+    "duration": 6,
+    "ratio": "9:16",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### MD — 图/视频/音频混合参考
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-md",
+    "prompt": "根据参考素材生成一段节奏感强的短视频",
+    "duration": 8,
+    "ratio": "16:9",
+    "images": ["https://example.com/scene.jpg"],
+    "reference_videos": ["https://example.com/motion.mp4"],
+    "reference_audios": ["https://example.com/bgm.mp3"]
+  }'
+```
+
+### 满血版 — 参考图（须先审核）
+
+```bash
+# 1. 提交审核（见 assets-audit 文档）
+# 2. 轮询审核状态直至 Active
+# 3. 创建视频
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "sd2_mx_720p",
+    "prompt": "镜头缓慢推进，光影变化细腻",
+    "duration": 5,
+    "ratio": "16:9",
+    "images": ["asset://your-asset-id-here"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-sp",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.video_url` 获取视频地址。
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
 </Note>

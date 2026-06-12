@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a new video generation task using Seedance 2.0 models.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), Economy (seedance2.0-sp / seedance2.0-fast-sp, per-task, public URLs), MD (seedance2.0-md / seedance2.0-fast-md, per-task, supports audio). Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -446,7 +446,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., sd2_mx_720p, sd2_mx_1080p, sd2_mx_2k, sd2_mx_4k)"
+            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). Economy: seedance2.0-sp | seedance2.0-fast-sp (per-task). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
           },
           "prompt": {
             "type": "string",
@@ -454,7 +454,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds"
+            "description": "Duration in seconds. Full 4-12; Economy 4-15; MD 1-15. Default 5"
           },
           "orientation": {
             "type": "string",
@@ -462,40 +462,40 @@
               "landscape",
               "portrait"
             ],
-            "description": "Video orientation (ignored if ratio is provided)"
+            "description": "Video orientation (ratio takes precedence if set)"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "List of reference image asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
+            "description": "Reference images. Full route: asset://{assetId}; Economy/MD: https:// URLs. Mutually exclusive with first_image/last_image"
           },
           "ratio": {
             "type": "string",
-            "description": "Aspect ratio of output video (e.g., 16:9, 9:16, 1:1, 4:3, 3:4, 21:9, Adaptive)"
+            "description": "Aspect ratio e.g. 16:9, 9:16, 1:1; Full and MD also support 4:3, 3:4, 21:9, Adaptive"
           },
           "first_image": {
             "type": "string",
-            "description": "First frame image asset link in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
+            "description": "First frame. Full: asset://{assetId}; Economy/MD: https:// URL"
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame image asset link in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
+            "description": "Last frame. Full: asset://{assetId}; Economy/MD: https:// URL"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "List of reference video asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
+            "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "List of reference audio asset links in the format asset://{assetId} (must submit and obtain assetId via asset audit endpoint first)"
+            "description": "Reference audio. Supported on Full and MD only; not on Economy. Full: asset://{assetId}; MD: https:// URL"
           }
         }
       },

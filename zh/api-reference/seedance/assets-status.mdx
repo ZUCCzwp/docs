@@ -2,3 +2,24 @@
 title: '查询素材审核状态'
 openapi: 'POST /api/open-api/v1/seedance/assets/status'
 ---
+
+查询已提交素材的审核状态，用于满血版线路。在状态为 `Active` 之前，请勿将该 `asset_id` 用于创建视频。
+
+## 请求示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/assets/status' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "asset_ids": ["asset-id-1", "asset-id-2"]
+  }'
+```
+
+## 状态值
+
+| 状态 | 说明 |
+|------|------|
+| `Pending` | 审核中 |
+| `Active` | 已通过，可用于 `asset://{asset_id}` |
+| `Failed` / `Rejected` | 未通过，需重新提交 |

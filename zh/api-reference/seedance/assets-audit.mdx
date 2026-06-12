@@ -2,3 +2,28 @@
 title: '提交素材审核'
 openapi: 'POST /api/open-api/v1/seedance/assets/audit'
 ---
+
+将图片、视频、音频素材 URL 提交至 Seedance 平台审核。**仅满血版**（`sd2_mx_*`）创建视频前必须使用本接口；经济版与 MD 线路可直接传公网 URL，无需审核。
+
+## 流程
+
+1. 调用本接口提交原始素材 URL
+2. 使用返回的 `asset_id` 轮询 [查询素材审核状态](/zh/api-reference/seedance/assets-status)
+3. 状态变为 `Active` 后，在 [创建 Seedance 视频](/zh/api-reference/seedance/create) 中以 `asset://{asset_id}` 引用
+
+## 请求示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/assets/audit' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_urls": ["https://example.com/ref.jpg"],
+    "video_urls": ["https://example.com/ref.mp4"],
+    "audio_urls": []
+  }'
+```
+
+## 响应说明
+
+返回 `items` 数组，每项包含 `asset_id`、`original_url`、`asset_type`、`status`。审核通过前 `status` 为 `Pending`，通过后为 `Active`。

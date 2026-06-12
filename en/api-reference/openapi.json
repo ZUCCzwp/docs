@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), Economy (seedance2.0-sp / seedance2.0-fast-sp, per-task, public URLs), MD (seedance2.0-md / seedance2.0-fast-md, per-task, supports audio). Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), Economy (seedance2.0-sp, per-task, public URLs), MD (seedance2.0-md / seedance2.0-fast-md, per-task, supports audio). Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -446,7 +446,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). Economy: seedance2.0-sp | seedance2.0-fast-sp (per-task). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
+            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). Economy: seedance2.0-sp (per-task). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
           },
           "prompt": {
             "type": "string",

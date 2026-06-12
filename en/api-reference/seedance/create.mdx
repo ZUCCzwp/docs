@@ -12,8 +12,7 @@ Choose the backend route with the `model` field:
 | Route | `model` values | Billing | Duration | Assets |
 |-------|----------------|---------|----------|--------|
 | **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–12 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
-| **Economy (standard)** | `seedance2.0-sp` | Per task | 4–15 s | Public HTTP/HTTPS URLs; **no audit** |
-| **Economy (fast)** | `seedance2.0-fast-sp` | Per task | 4–15 s | Same as economy standard |
+| **Economy** | `seedance2.0-sp` | Per task | 4–15 s | Public HTTP/HTTPS URLs; **no audit** |
 | **MD (standard)** | `seedance2.0-md` | Per task | 1–15 s | Public URLs; supports reference audio |
 | **MD (fast)** | `seedance2.0-fast-md` | Per task | 1–15 s | Same as MD standard |
 
@@ -68,7 +67,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-fast-sp",
+    "model": "seedance2.0-sp",
     "prompt": "Subject slowly turns head, gentle breeze in hair",
     "duration": 6,
     "ratio": "9:16",

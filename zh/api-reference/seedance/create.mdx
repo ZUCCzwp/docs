@@ -12,8 +12,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
 |------|-------------|------|------|----------|
 | **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–12 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
-| **经济版（标准）** | `seedance2.0-sp` | 按次 | 4–15 秒 | 直接传 HTTP/HTTPS 图片或视频 URL，**无需审核** |
-| **经济版（快速）** | `seedance2.0-fast-sp` | 按次 | 4–15 秒 | 同上 |
+| **经济版** | `seedance2.0-sp` | 按次 | 4–15 秒 | 直接传 HTTP/HTTPS 图片或视频 URL，**无需审核** |
 | **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL，支持参考音频 |
 | **MD（快速）** | `seedance2.0-fast-md` | 按次 | 1–15 秒 | 同上 |
 
@@ -68,7 +67,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-fast-sp",
+    "model": "seedance2.0-sp",
     "prompt": "人物缓缓转头，微风拂动发丝",
     "duration": 6,
     "ratio": "9:16",

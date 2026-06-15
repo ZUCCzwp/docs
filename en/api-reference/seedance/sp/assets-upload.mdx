@@ -1,0 +1,49 @@
+---
+title: 'SP Upload Asset'
+openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
+---
+
+Upload image, video, audio, or text assets to the Seedance SP economy asset library. Use the returned `asset_id` as `asset://{asset_id}` in [SP Create Video](/en/api-reference/seedance/sp/create).
+
+<Note>
+This endpoint is for **SP economy** models (`seedance2.0-sp` / `seedance2.0-fast-sp`). For the full Manxue route, use [Submit Asset Audit](/en/api-reference/seedance/assets-audit).
+</Note>
+
+## Request body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Asset name |
+| `type` | string | Yes | Asset type: `image`, `video`, `audio`, `text` |
+| `url` | string | Yes | Public asset URL |
+
+## Example
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/sp/assets/upload' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "reference-1",
+    "type": "image",
+    "url": "https://example.com/ref.jpg"
+  }'
+```
+
+## Response
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "asset_id": "asset_abc123"
+  }
+}
+```
+
+## Next steps
+
+1. Poll [Query Asset Detail](/en/api-reference/seedance/sp/assets-detail) or [Batch Query Asset Status](/en/api-reference/seedance/sp/assets-status)
+2. Wait until `status` is `Active`
+3. Reference `asset://{asset_id}` in video create requests

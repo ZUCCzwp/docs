@@ -1,0 +1,125 @@
+---
+title: 'SP 创建视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **经济版 SP** 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+<Note>
+本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`，须将 `model` 设为 `seedance2.0-sp` 或 `seedance2.0-fast-sp`。满血版、MD 线路见通用创建文档。
+</Note>
+
+## 模型
+
+| 模型 | 说明 | 计费 | 时长 |
+|------|------|------|------|
+| `seedance2.0-sp` | 标准 | 按秒 × 分辨率 | 4–15 秒 |
+| `seedance2.0-fast-sp` | 快速 | 按秒 × 分辨率 | 4–15 秒 |
+
+支持输出分辨率：`480p`、`720p`（默认）、`1080p`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance2.0-sp` 或 `seedance2.0-fast-sp` |
+| `prompt` | string | 是 | 视频生成提示词 |
+| `duration` | int | 是 | 时长（秒），4–15，默认 5 |
+| `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
+| `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+| `reference_videos` | string[] | 否 | 参考视频列表 |
+| `reference_audios` | string[] | 否 | 参考音频；须搭配参考图/视频或首尾帧 |
+
+## 素材说明
+
+- 可直接传入公网 `https://` URL。
+- 也可先 [上传素材](/zh/api-reference/seedance/sp/assets-upload)，再使用 `asset://{asset_id}`。
+- 涉及真人肖像时，须先 [提交真人加白](/zh/api-reference/seedance/sp/realperson-submit)，待 `Active` 后再引用。
+
+## 约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- `reference_audios` 不能单独使用，须搭配参考图、参考视频或首尾帧。
+
+## 示例
+
+### 首帧图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-sp",
+    "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
+    "duration": 5,
+    "resolution": "720p",
+    "ratio": "16:9",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+### 参考图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-sp",
+    "prompt": "人物缓缓转头，微风拂动发丝",
+    "duration": 6,
+    "ratio": "9:16",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### 使用素材库 asset
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-sp",
+    "prompt": "镜头缓慢推进，光影变化细腻",
+    "duration": 8,
+    "resolution": "1080p",
+    "ratio": "16:9",
+    "images": ["asset://your-asset-id-here"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-sp",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.video_url` 获取视频地址。
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
+</Note>

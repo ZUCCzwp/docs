@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、经济版（seedance2.0-sp，按次计费，直接传 URL）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -360,6 +360,180 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/upload": {
+      "post": {
+        "summary": "SP 上传素材",
+        "description": "上传图片、视频、音频或文本素材到 Seedance SP 经济版素材库。返回 asset_id 可用于 asset:// 引用。",
+        "operationId": "uploadSeedanceSpAsset",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetUploadResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/detail": {
+      "post": {
+        "summary": "SP 查询素材详情",
+        "description": "查询单个 Seedance SP 素材的处理状态与详情。",
+        "operationId": "querySeedanceSpAssetDetail",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetDetailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/status": {
+      "post": {
+        "summary": "SP 批量查询素材状态",
+        "description": "批量查询 Seedance SP 素材的处理状态。",
+        "operationId": "querySeedanceSpAssetBatchStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/submit": {
+      "post": {
+        "summary": "SP 提交真人加白",
+        "description": "提交真人图片素材进行加白处理，完成后可用于 SP 经济版视频生成。",
+        "operationId": "submitSeedanceSpRealPerson",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/status": {
+      "post": {
+        "summary": "SP 查询真人加白状态",
+        "description": "查询单个 Seedance SP 真人加白素材的处理状态。",
+        "operationId": "querySeedanceSpRealPersonStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/batch-status": {
+      "post": {
+        "summary": "SP 批量查询真人加白状态",
+        "description": "批量查询 Seedance SP 真人加白素材的处理状态。",
+        "operationId": "querySeedanceSpRealPersonBatchStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonBatchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonBatchStatusResponse"
                 }
               }
             }
@@ -446,7 +620,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k（按秒）。经济版: seedance2.0-sp（按次）。MD: seedance2.0-md | seedance2.0-fast-md（按次）"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k（按秒）。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次）"
           },
           "prompt": {
             "type": "string",
@@ -454,7 +628,16 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-12；经济版 4-15；MD 1-15。默认 5"
+            "description": "时长（秒）。满血版 4-12；SP 经济版 4-15；MD 1-15。默认 5"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "输出分辨率，SP 经济版有效，默认 720p"
           },
           "orientation": {
             "type": "string",
@@ -469,7 +652,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；经济版/MD 可为 https:// URL。与首尾帧不可同时使用"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP 经济版/MD 可为 https:// URL 或 asset://。与首尾帧不可同时使用"
           },
           "ratio": {
             "type": "string",
@@ -495,7 +678,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/MD 支持；经济版不支持。满血版须 asset://{assetId}，MD 可为 https:// URL"
+            "description": "参考音频列表。满血版/MD/SP 经济版支持；SP 须搭配参考图/视频或首尾帧。满血版须 asset://{assetId}，SP/MD 可为 https:// URL 或 asset://"
           }
         }
       },
@@ -860,6 +1043,302 @@
           "status": {
             "type": "string",
             "description": "审核/激活状态 (如 Active 表示可用)"
+          }
+        }
+      },
+      "SeedanceSpAssetUploadRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "url"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "素材名称"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image",
+              "video",
+              "audio",
+              "text"
+            ],
+            "description": "素材类型"
+          },
+          "url": {
+            "type": "string",
+            "description": "素材公网 URL"
+          }
+        }
+      },
+      "SeedanceSpAssetUploadResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "素材 ID，可用于 asset:// 引用"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetDetailRequest": {
+        "type": "object",
+        "required": [
+          "asset_id"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "素材 ID"
+          }
+        }
+      },
+      "SeedanceSpAssetDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string"
+              },
+              "official_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "description": "Processing / Active / Failed"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image_url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetBatchStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "素材 ID 列表"
+          }
+        }
+      },
+      "SeedanceSpAssetBatchStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetDetailItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetDetailItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "official_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "SeedanceSpRealPersonSubmitRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "真人素材名称"
+          },
+          "url": {
+            "type": "string",
+            "description": "真人图片公网 URL"
+          }
+        }
+      },
+      "SeedanceSpRealPersonStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_id"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "提交真人加白返回的 asset_id"
+          }
+        }
+      },
+      "SeedanceSpRealPersonResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string"
+              },
+              "official_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "description": "Processing / Active / Failed"
+              },
+              "asset_ref": {
+                "type": "string",
+                "description": "可用于创建任务的素材引用"
+              },
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpRealPersonBatchStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "真人素材 ID 列表"
+          }
+        }
+      },
+      "SeedanceSpRealPersonBatchStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpRealPersonItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "official_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "asset_ref": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
           }
         }
       },

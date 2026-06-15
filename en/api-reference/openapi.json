@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), Economy (seedance2.0-sp, per-task, public URLs), MD (seedance2.0-md / seedance2.0-fast-md, per-task, supports audio). Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task). Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -360,6 +360,180 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/upload": {
+      "post": {
+        "summary": "SP Upload Asset",
+        "description": "Upload image, video, audio, or text assets to the Seedance SP economy library. Returns asset_id for asset:// references.",
+        "operationId": "uploadSeedanceSpAsset",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetUploadResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/detail": {
+      "post": {
+        "summary": "SP Query Asset Detail",
+        "description": "Query processing status and metadata for a single Seedance SP asset.",
+        "operationId": "querySeedanceSpAssetDetail",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetDetailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queried successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/assets/status": {
+      "post": {
+        "summary": "SP Batch Query Asset Status",
+        "description": "Batch query processing status for Seedance SP assets.",
+        "operationId": "querySeedanceSpAssetBatchStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queried successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/submit": {
+      "post": {
+        "summary": "SP Submit Real-Person Whitelist",
+        "description": "Submit a real-person portrait for whitelist processing on the SP economy route.",
+        "operationId": "submitSeedanceSpRealPerson",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/status": {
+      "post": {
+        "summary": "SP Query Real-Person Status",
+        "description": "Query whitelist processing status for a single Seedance SP real-person asset.",
+        "operationId": "querySeedanceSpRealPersonStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queried successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/seedance/sp/realperson/batch-status": {
+      "post": {
+        "summary": "SP Batch Query Real-Person Status",
+        "description": "Batch query whitelist processing status for Seedance SP real-person assets.",
+        "operationId": "querySeedanceSpRealPersonBatchStatus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpRealPersonBatchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Queried successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonBatchStatusResponse"
                 }
               }
             }
@@ -446,7 +620,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). Economy: seedance2.0-sp (per-task). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
+            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
           },
           "prompt": {
             "type": "string",
@@ -454,7 +628,16 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-12; Economy 4-15; MD 1-15. Default 5"
+            "description": "Duration in seconds. Full 4-12; SP economy 4-15; MD 1-15. Default 5"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Output resolution for SP economy. Default 720p"
           },
           "orientation": {
             "type": "string",
@@ -469,7 +652,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference images. Full route: asset://{assetId}; Economy/MD: https:// URLs. Mutually exclusive with first_image/last_image"
+            "description": "Reference images. Full route: asset://{assetId}; SP economy/MD: https:// URL or asset://. Mutually exclusive with first_image/last_image"
           },
           "ratio": {
             "type": "string",
@@ -495,7 +678,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio. Supported on Full and MD only; not on Economy. Full: asset://{assetId}; MD: https:// URL"
+            "description": "Reference audio. Supported on Full, MD, and SP economy; SP requires paired images/videos or frames. Full: asset://{assetId}; SP/MD: https:// URL or asset://"
           }
         }
       },
@@ -860,6 +1043,302 @@
           "status": {
             "type": "string",
             "description": "Audit/activation status (e.g., Active means ready for use)"
+          }
+        }
+      },
+      "SeedanceSpAssetUploadRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "url"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Asset name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "image",
+              "video",
+              "audio",
+              "text"
+            ],
+            "description": "Asset type"
+          },
+          "url": {
+            "type": "string",
+            "description": "Public asset URL"
+          }
+        }
+      },
+      "SeedanceSpAssetUploadResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string",
+                "description": "Asset ID for asset:// references"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetDetailRequest": {
+        "type": "object",
+        "required": [
+          "asset_id"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "Asset ID"
+          }
+        }
+      },
+      "SeedanceSpAssetDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string"
+              },
+              "official_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "description": "Processing / Active / Failed"
+              },
+              "name": {
+                "type": "string"
+              },
+              "image_url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetBatchStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of asset IDs"
+          }
+        }
+      },
+      "SeedanceSpAssetBatchStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetDetailItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpAssetDetailItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "official_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "SeedanceSpRealPersonSubmitRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "url"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Real-person asset name"
+          },
+          "url": {
+            "type": "string",
+            "description": "Public portrait image URL"
+          }
+        }
+      },
+      "SeedanceSpRealPersonStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_id"
+        ],
+        "properties": {
+          "asset_id": {
+            "type": "string",
+            "description": "asset_id returned from whitelist submit"
+          }
+        }
+      },
+      "SeedanceSpRealPersonResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "asset_id": {
+                "type": "string"
+              },
+              "official_id": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string",
+                "description": "Processing / Active / Failed"
+              },
+              "asset_ref": {
+                "type": "string",
+                "description": "Reference usable in video create requests"
+              },
+              "name": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpRealPersonBatchStatusRequest": {
+        "type": "object",
+        "required": [
+          "asset_ids"
+        ],
+        "properties": {
+          "asset_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of real-person asset IDs"
+          }
+        }
+      },
+      "SeedanceSpRealPersonBatchStatusResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SeedanceSpRealPersonItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SeedanceSpRealPersonItem": {
+        "type": "object",
+        "properties": {
+          "asset_id": {
+            "type": "string"
+          },
+          "official_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "asset_ref": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
           }
         }
       },

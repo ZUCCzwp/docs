@@ -1,0 +1,49 @@
+---
+title: 'SP Submit Real-Person Whitelist'
+openapi: 'POST /api/open-api/v1/seedance/sp/realperson/submit'
+---
+
+Submit a real-person portrait for whitelist processing. Once active, the asset can be used in SP economy video generation.
+
+## Flow
+
+1. Call this endpoint with a portrait URL
+2. Poll [Query Real-Person Status](/en/api-reference/seedance/sp/realperson-status) using the returned `asset_id`
+3. When `status` is `Active`, use `asset_ref` or `asset://{asset_id}` in [SP Create Video](/en/api-reference/seedance/sp/create)
+
+## Request body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Asset name |
+| `url` | string | Yes | Public portrait image URL |
+
+## Example
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/sp/realperson/submit' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "portrait-front",
+    "url": "https://example.com/portrait.jpg"
+  }'
+```
+
+## Response
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "asset_id": "official_id_xxx",
+    "status": "Processing",
+    "asset_ref": null,
+    "name": "portrait-front",
+    "url": "https://example.com/portrait.jpg"
+  }
+}
+```
+
+After submission, `status` is usually `Processing` and `asset_ref` is `null` until processing completes.

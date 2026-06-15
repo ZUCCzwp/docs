@@ -1,0 +1,49 @@
+---
+title: 'SP 查询真人加白状态'
+openapi: 'POST /api/open-api/v1/seedance/sp/realperson/status'
+---
+
+查询 Seedance SP 经济版真人加白素材的处理状态。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `asset_id` | string | 是 | [提交真人加白](/zh/api-reference/seedance/sp/realperson-submit) 返回的 `asset_id` |
+
+## 请求示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/sp/realperson/status' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "asset_id": "official_id_xxx"
+  }'
+```
+
+## 响应字段
+
+| 字段 | 说明 |
+|------|------|
+| `asset_id` | 素材 ID |
+| `status` | `Processing` / `Active` / `Failed` |
+| `asset_ref` | 可用于创建任务的素材引用，`Active` 后返回 |
+| `name` | 素材名称 |
+| `url` | 素材 URL |
+
+## 状态值
+
+| 状态 | 说明 |
+|------|------|
+| `Processing` | 处理中，请继续轮询 |
+| `Active` | 已通过，可用于视频生成 |
+| `Failed` | 处理失败 |
+
+## 批量查询
+
+如需一次查询多个真人素材，可调用：
+
+`POST /api/open-api/v1/seedance/sp/realperson/batch-status`
+
+请求体：`{ "asset_ids": ["id1", "id2"] }`，响应结构与单条查询类似，返回 `items` 数组。

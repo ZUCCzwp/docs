@@ -1,0 +1,41 @@
+---
+title: 'SP 批量查询素材状态'
+openapi: 'POST /api/open-api/v1/seedance/sp/assets/status'
+---
+
+批量查询 Seedance SP 经济版素材的处理状态。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `asset_ids` | string[] | 是 | 素材 ID 列表 |
+
+## 请求示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/sp/assets/status' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "asset_ids": ["asset_abc123", "asset_def456"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "items": [
+      {
+        "asset_id": "asset_abc123",
+        "status": "Active",
+        "name": "参考图1"
+      }
+    ]
+  }
+}
+```

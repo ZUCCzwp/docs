@@ -12,12 +12,12 @@ Choose the backend route with the `model` field:
 | Route | `model` values | Billing | Duration | Assets |
 |-------|----------------|---------|----------|--------|
 | **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–12 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
-| **Economy** | `seedance2.0-sp` | Per task | 4–15 s | Public HTTP/HTTPS URLs; **no audit** |
+| **SP economy** | `seedance2.0-sp`, `seedance2.0-fast-sp` | Per second × resolution | 4–15 s | See [SP Create Video](/en/api-reference/seedance/sp/create) |
 | **MD (standard)** | `seedance2.0-md` | Per task | 1–15 s | Public URLs; supports reference audio |
 | **MD (fast)** | `seedance2.0-fast-md` | Per task | 1–15 s | Same as MD standard |
 
 <Note>
-Economy and MD routes are lower cost per generation and suit batch workloads. The full (Manxue) route supports up to 4K but requires asset audit before generation.
+For **SP economy** parameters and examples, see [SP Create Video](/en/api-reference/seedance/sp/create).
 </Note>
 
 ## Request fields
@@ -27,56 +27,25 @@ Economy and MD routes are lower cost per generation and suit batch workloads. Th
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | int | Yes | Length in seconds (default 5) |
+| `resolution` | string | No | Output resolution for SP economy: `480p`, `720p` (default), `1080p` |
 | `ratio` | string | No | e.g. `16:9`, `9:16`, `1:1`; full route also supports `4:3`, `3:4`, `21:9`, `Adaptive` |
 | `images` | string[] | No | Reference images |
 | `first_image` | string | No | First frame |
 | `last_image` | string | No | Last frame |
 | `reference_videos` | string[] | No | Reference videos |
-| `reference_audios` | string[] | No | Reference audio (full + MD only; **not supported on economy**) |
+| `reference_audios` | string[] | No | Reference audio |
 
 ### Asset link format
 
 - **Full (Manxue)**: All media fields must use `asset://{assetId}` after [submitting for audit](/en/api-reference/seedance/assets-audit) and waiting until status is `Active` via [audit status](/en/api-reference/seedance/assets-status).
-- **Economy / MD**: Pass publicly reachable `https://` URLs directly.
+- **SP economy**: See [SP Create Video](/en/api-reference/seedance/sp/create).
+- **MD**: Pass publicly reachable `https://` URLs directly.
 
 ### Constraints
 
 - Do not combine `images` (reference mode) with `first_image` / `last_image` (frame mode).
-- Economy routes reject `reference_audios`.
 
 ## Examples
-
-### Economy — text to video
-
-```bash
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "seedance2.0-sp",
-    "prompt": "A cat running on the beach at sunset, cinematic",
-    "duration": 5,
-    "ratio": "16:9"
-  }'
-```
-
-### Economy — reference images
-
-```bash
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "seedance2.0-sp",
-    "prompt": "Subject slowly turns head, gentle breeze in hair",
-    "duration": 6,
-    "ratio": "9:16",
-    "images": [
-      "https://example.com/ref-1.jpg",
-      "https://example.com/ref-2.jpg"
-    ]
-  }'
-```
 
 ### MD — multimodal references
 
@@ -119,7 +88,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   "data": {
     "task_id": "vid_abc123",
     "status": "queued",
-    "model": "seedance2.0-sp",
+    "model": "sd2_mx_720p",
     "created_at": 1710000000
   }
 }

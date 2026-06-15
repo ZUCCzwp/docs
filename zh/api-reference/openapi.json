@@ -967,9 +967,10 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni"
+              "gemini-omni",
+              "omni-10s"
             ],
-            "description": "模型名称。支持 Gemini-Omini、Omni-Flash-Ext、gemini-omni；服务端统一归一化为 Gemini-Omini。"
+            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini；omni-10s 为固定 10 秒模型（720p，参考图最多 7 张）。"
           },
           "prompt": {
             "type": "string",
@@ -1007,14 +1008,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图片 URL 列表。"
+            "description": "参考图片 URL 列表。omni-10s 最多 7 张。"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "兼容 OpenAPI 通用图片字段；当 image_urls 为空时使用。"
+            "description": "兼容 OpenAPI 通用图片字段；当 image_urls 为空时使用。omni-10s 最多 7 张。"
           }
         },
         "example": {

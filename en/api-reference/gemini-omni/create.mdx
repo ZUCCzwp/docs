@@ -6,3 +6,28 @@ openapi: 'POST /api/open-api/v1/gemini/omni/videos'
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `Gemini-Omini` | Standard Gemini Omni — 4/6/8/10s with 720p/1080p/4k |
+| `omni-10s` | Fixed 10s, 720p, up to 7 reference images (image or video URLs) |
+
+Aliases such as `Omni-Flash-Ext` and `gemini-omni` normalize to `Gemini-Omini`.
+
+## omni-10s example
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/gemini/omni/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "omni-10s",
+    "prompt": "Character from the reference runs through a cyberpunk street, cinematic tracking shot",
+    "aspect_ratio": "16:9",
+    "image_urls": ["https://example.com/ref1.jpg"]
+  }'
+```
+
+For `omni-10s`, `duration` and `resolution` in the request are ignored; billing uses the `omni-10s` model config (10s, 720p).

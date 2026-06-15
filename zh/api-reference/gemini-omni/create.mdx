@@ -6,3 +6,28 @@ openapi: 'POST /api/open-api/v1/gemini/omni/videos'
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `Gemini-Omini` | 标准 Gemini Omni，支持 4/6/8/10 秒与 720p/1080p/4k |
+| `omni-10s` | 固定 10 秒、720p，支持最多 7 张参考图（图片或视频 URL） |
+
+`Omni-Flash-Ext`、`gemini-omni` 等别名会归一化为 `Gemini-Omini`。
+
+## omni-10s 示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/gemini/omni/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "omni-10s",
+    "prompt": "参考素材中的角色在赛博朋克街头奔跑，电影感跟拍",
+    "aspect_ratio": "16:9",
+    "image_urls": ["https://example.com/ref1.jpg"]
+  }'
+```
+
+`omni-10s` 会忽略请求中的 `duration` 与 `resolution`，统一按 10 秒、720p 计费（模型名 `omni-10s`）。

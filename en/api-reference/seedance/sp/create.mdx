@@ -3,26 +3,28 @@ title: 'SP Create Video'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
-Create a Seedance **SP economy** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+Create a Seedance **SP** video generation task (economy or official). On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This uses the same endpoint as [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Set `model` to `seedance2.0-sp` or `seedance2.0-fast-sp`. For Full (Manxue) and MD routes, see the general create doc.
+This uses the same endpoint as [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue) and MD routes, see the general create doc.
 </Note>
 
 ## Models
 
-| Model | Variant | Billing | Duration |
-|-------|---------|---------|----------|
-| `seedance2.0-sp` | Standard | Per second × resolution | 4–15 s |
-| `seedance2.0-fast-sp` | Fast | Per second × resolution | 4–15 s |
+| Route | `model` value | Billing | Duration |
+|-------|---------------|---------|----------|
+| Economy standard | `seedance2.0-sp` | Per second × resolution | 4–15 s |
+| Economy fast | `seedance2.0-fast-sp` | Per second × resolution | 4–15 s |
+| Official standard | `seedance2.0-of-sp` | Per second × resolution | 4–15 s |
+| Official fast | `seedance2.0-of-fast-sp` | Per second × resolution | 4–15 s |
 
-Supported output resolutions: `480p`, `720p` (default), `1080p`.
+Supported output resolutions: `480p`, `720p` (default), `1080p`. Billing is **unit price × duration (seconds)**; resolution is set via `resolution`.
 
 ## Request fields
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `seedance2.0-sp` or `seedance2.0-fast-sp` |
+| `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
 | `resolution` | string | No | Output resolution: `480p`, `720p` (default), `1080p` |
@@ -46,7 +48,23 @@ Supported output resolutions: `480p`, `720p` (default), `1080p`.
 
 ## Examples
 
-### First-frame to video
+### Official — first-frame to video
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-of-sp",
+    "prompt": "Rainy street at night, girl turns and smiles, cinematic dolly-in",
+    "duration": 5,
+    "resolution": "720p",
+    "ratio": "16:9",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+### Economy — first-frame to video
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -105,7 +123,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   "data": {
     "task_id": "vid_abc123",
     "status": "queued",
-    "model": "seedance2.0-sp",
+    "model": "seedance2.0-of-sp",
     "created_at": 1710000000
   }
 }

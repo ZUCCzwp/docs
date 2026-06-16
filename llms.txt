@@ -65,13 +65,13 @@
 
 ### Seedance SP Economy
 
-- [SP Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/sp/create.md): Create a Seedance SP economy video task.
+- [SP Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/sp/create.md): Create a Seedance SP video task (economy or official).
 - [SP Upload Asset](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the SP economy library.
 - [SP Query Asset Detail](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-detail.md): Query a single SP asset status.
 - [SP Batch Query Asset Status](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-status.md): Batch query SP asset status.
 - [SP Submit Real-Person Whitelist](https://docs.jimmyai.cn/en/api-reference/seedance/sp/realperson-submit.md): Submit real-person portrait for whitelist processing.
 - [SP Query Real-Person Status](https://docs.jimmyai.cn/en/api-reference/seedance/sp/realperson-status.md): Query real-person whitelist status.
-- [SP 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 经济版视频任务。
+- [SP 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 视频任务（经济版 / 官方版）。
 - [SP 上传素材](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到 SP 经济版素材库。
 - [SP 查询素材详情](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-detail.md): 查询单个 SP 素材状态。
 - [SP 批量查询素材状态](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-status.md): 批量查询 SP 素材状态。

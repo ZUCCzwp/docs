@@ -13,11 +13,12 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 |------|-------------|------|------|----------|
 | **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–12 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
 | **经济版 SP** | `seedance2.0-sp`、`seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
+| **官方版 SP** | `seedance2.0-of-sp`、`seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
 | **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL，支持参考音频 |
 | **MD（快速）** | `seedance2.0-fast-md` | 按次 | 1–15 秒 | 同上 |
 
 <Note>
-**经济版 SP** 的完整参数与示例见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
+**SP 线路**（经济版 / 官方版）的完整参数与示例见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
 </Note>
 
 ## 请求参数说明

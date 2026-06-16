@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task). Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task). Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -620,7 +620,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
+            "description": "Model name. Full: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k (per-second). SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task)"
           },
           "prompt": {
             "type": "string",

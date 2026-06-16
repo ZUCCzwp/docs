@@ -3,26 +3,28 @@ title: 'SP 创建视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
-创建 Seedance **经济版 SP** 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+创建 Seedance **SP** 视频生成任务（经济版 / 官方版）。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Note>
-本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`，须将 `model` 设为 `seedance2.0-sp` 或 `seedance2.0-fast-sp`。满血版、MD 线路见通用创建文档。
+本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版、MD 线路见通用创建文档。
 </Note>
 
 ## 模型
 
-| 模型 | 说明 | 计费 | 时长 |
-|------|------|------|------|
-| `seedance2.0-sp` | 标准 | 按秒 × 分辨率 | 4–15 秒 |
-| `seedance2.0-fast-sp` | 快速 | 按秒 × 分辨率 | 4–15 秒 |
+| 线路 | `model` 取值 | 计费 | 时长 |
+|------|-------------|------|------|
+| 经济版标准 | `seedance2.0-sp` | 按秒 × 分辨率 | 4–15 秒 |
+| 经济版快速 | `seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 |
+| 官方版标准 | `seedance2.0-of-sp` | 按秒 × 分辨率 | 4–15 秒 |
+| 官方版快速 | `seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 |
 
-支持输出分辨率：`480p`、`720p`（默认）、`1080p`。
+支持输出分辨率：`480p`、`720p`（默认）、`1080p`。计费按「单价 × 时长（秒）」结算，分辨率通过 `resolution` 字段指定。
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance2.0-sp` 或 `seedance2.0-fast-sp` |
+| `model` | string | 是 | 见上表 |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），4–15，默认 5 |
 | `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
@@ -46,7 +48,23 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ## 示例
 
-### 首帧图生视频
+### 官方版 — 首帧图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-of-sp",
+    "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
+    "duration": 5,
+    "resolution": "720p",
+    "ratio": "16:9",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+### 经济版 — 首帧图生视频
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -105,7 +123,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   "data": {
     "task_id": "vid_abc123",
     "status": "queued",
-    "model": "seedance2.0-sp",
+    "model": "seedance2.0-of-sp",
     "created_at": 1710000000
   }
 }

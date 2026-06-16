@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -620,7 +620,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k（按秒）。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次）"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k（按秒）。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次）"
           },
           "prompt": {
             "type": "string",

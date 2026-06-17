@@ -102,6 +102,12 @@
                   "en/api-reference/seedance/sp/realperson-submit",
                   "en/api-reference/seedance/sp/realperson-status"
                 ]
+              },
+              {
+                "group": "Seedance MD",
+                "pages": [
+                  "en/api-reference/seedance/md/create"
+                ]
               }
             ]
           }
@@ -195,6 +201,12 @@
                   "zh/api-reference/seedance/sp/assets-status",
                   "zh/api-reference/seedance/sp/realperson-submit",
                   "zh/api-reference/seedance/sp/realperson-status"
+                ]
+              },
+              {
+                "group": "Seedance MD",
+                "pages": [
+                  "zh/api-reference/seedance/md/create"
                 ]
               }
             ]

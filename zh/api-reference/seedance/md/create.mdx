@@ -1,0 +1,111 @@
+---
+title: 'MD 创建视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **MD** 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+<Note>
+本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版、SP 线路见通用创建文档。
+</Note>
+
+## 模型
+
+| 线路 | `model` 取值 | 计费 | 时长 |
+|------|-------------|------|------|
+| MD 标准 | `seedance2.0-md` | 按次 | 1–15 秒 |
+| MD 快速 | `seedance2.0-fast-md` | 按次 | 1–15 秒 |
+
+输出固定 **720p**，计费按次结算，与时长无关。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 见上表 |
+| `prompt` | string | 是 | 视频生成提示词，最多 **5000** 字符 |
+| `duration` | int | 是 | 时长（秒），1–15，默认 5 |
+| `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表，最多 **4** 张 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+| `reference_videos` | string[] | 否 | 参考视频列表 |
+
+<Warning>
+MD **不支持** `reference_audios`（音频参考）。`resolution` 字段无效，输出固定 720p。
+</Warning>
+
+## 素材说明
+
+- 直接传入可公网访问的 `https://` 图片或视频 URL。
+- 不支持 SP 素材库 `asset://` 流程；满血版 `asset://` 审核流程也不适用于 MD。
+
+## 约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- `ratio` 仅支持 `16:9`、`9:16`、`1:1`。
+- `images` 最多 4 张；`prompt` 最多 5000 字符。
+- 不支持 `reference_audios`。
+
+## 示例
+
+### MD 标准 — 参考图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-md",
+    "prompt": "人物缓缓转头，微风拂动发丝，电影感光影",
+    "duration": 8,
+    "ratio": "16:9",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### MD 快速 — 首帧图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-md",
+    "prompt": "雨夜街头，女孩回头微笑，镜头缓慢推进",
+    "duration": 5,
+    "ratio": "9:16",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-md",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.video_url` 获取视频地址。
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
+</Note>

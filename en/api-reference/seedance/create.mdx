@@ -14,11 +14,11 @@ Choose the backend route with the `model` field:
 | **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–12 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
 | **SP economy** | `seedance2.0-sp`, `seedance2.0-fast-sp` | Per second × resolution | 4–15 s | See [SP Create Video](/en/api-reference/seedance/sp/create) |
 | **SP official** | `seedance2.0-of-sp`, `seedance2.0-of-fast-sp` | Per second × resolution | 4–15 s | See [SP Create Video](/en/api-reference/seedance/sp/create) |
-| **MD (standard)** | `seedance2.0-md` | Per task | 1–15 s | Public URLs; supports reference audio |
+| **MD (standard)** | `seedance2.0-md` | Per task | 1–15 s | Public URLs; see [MD Create Video](/en/api-reference/seedance/md/create) |
 | **MD (fast)** | `seedance2.0-fast-md` | Per task | 1–15 s | Same as MD standard |
 
 <Note>
-For **SP route** (economy and official) parameters and examples, see [SP Create Video](/en/api-reference/seedance/sp/create).
+For **SP route** (economy and official), see [SP Create Video](/en/api-reference/seedance/sp/create). For **MD route**, see [MD Create Video](/en/api-reference/seedance/md/create).
 </Note>
 
 ## Request fields
@@ -40,7 +40,7 @@ For **SP route** (economy and official) parameters and examples, see [SP Create 
 
 - **Full (Manxue)**: All media fields must use `asset://{assetId}` after [submitting for audit](/en/api-reference/seedance/assets-audit) and waiting until status is `Active` via [audit status](/en/api-reference/seedance/assets-status).
 - **SP economy**: See [SP Create Video](/en/api-reference/seedance/sp/create).
-- **MD**: Pass publicly reachable `https://` URLs directly.
+- **MD**: Pass publicly reachable `https://` URLs; reference audio is not supported. See [MD Create Video](/en/api-reference/seedance/md/create).
 
 ### Constraints
 
@@ -48,7 +48,9 @@ For **SP route** (economy and official) parameters and examples, see [SP Create 
 
 ## Examples
 
-### MD — multimodal references
+### MD — reference images
+
+See [MD Create Video](/en/api-reference/seedance/md/create). Minimal example:
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -60,8 +62,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
     "duration": 8,
     "ratio": "16:9",
     "images": ["https://example.com/scene.jpg"],
-    "reference_videos": ["https://example.com/motion.mp4"],
-    "reference_audios": ["https://example.com/bgm.mp3"]
+    "reference_videos": ["https://example.com/motion.mp4"]
   }'
 ```
 

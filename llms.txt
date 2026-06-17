@@ -78,6 +78,11 @@
 - [SP 提交真人加白](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。
 - [SP 查询真人加白状态](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/realperson-status.md): 查询真人加白处理状态。
 
+### Seedance MD
+
+- [MD Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
+- [MD 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
+
 ## OpenAPI Specs
 
 - [OpenAPI (English)](https://docs.jimmyai.cn/en/api-reference/openapi.json): Machine-readable API specification.

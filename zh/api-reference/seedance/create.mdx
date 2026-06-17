@@ -14,11 +14,11 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–12 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
 | **经济版 SP** | `seedance2.0-sp`、`seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
 | **官方版 SP** | `seedance2.0-of-sp`、`seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
-| **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL，支持参考音频 |
+| **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL；见 [MD 创建视频](/zh/api-reference/seedance/md/create) |
 | **MD（快速）** | `seedance2.0-fast-md` | 按次 | 1–15 秒 | 同上 |
 
 <Note>
-**SP 线路**（经济版 / 官方版）的完整参数与示例见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
+**SP 线路**（经济版 / 官方版）见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。**MD 线路**见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
 </Note>
 
 ## 请求参数说明
@@ -40,7 +40,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 - **满血版**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 必须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
 - **SP 经济版**：见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
-- **MD**：直接传入可公网访问的 `https://` 图片或视频 URL。
+- **MD**：直接传入可公网访问的 `https://` 图片或视频 URL；不支持音频参考。详见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
 
 ### 通用约束
 
@@ -48,7 +48,9 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ## 示例
 
-### MD — 图/视频/音频混合参考
+### MD — 参考图
+
+详见 [MD 创建视频](/zh/api-reference/seedance/md/create)。简要示例：
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -60,8 +62,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
     "duration": 8,
     "ratio": "16:9",
     "images": ["https://example.com/scene.jpg"],
-    "reference_videos": ["https://example.com/motion.mp4"],
-    "reference_audios": ["https://example.com/bgm.mp3"]
+    "reference_videos": ["https://example.com/motion.mp4"]
   }'
 ```
 

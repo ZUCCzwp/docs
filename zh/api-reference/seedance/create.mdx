@@ -12,6 +12,9 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
 |------|-------------|------|------|----------|
 | **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–12 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
+| **Fast** | `sd2_mx_fast_720p`、`sd2_mx_fast_1080p` | 按秒 | 4–12 秒 | 同上；不支持 `reference_videos` |
+| **视频参考** | `sd2_mx_video_720p`、`sd2_mx_video_1080p`、`sd2_mx_video_2k`、`sd2_mx_video_4k` | 按秒 | 4–12 秒 | 同上；支持 `reference_videos` |
+| **视频参考 Fast** | `sd2_mx_video_fast_720p`、`sd2_mx_video_fast_1080p` | 按秒 | 4–12 秒 | 同上；支持 `reference_videos` |
 | **经济版 SP** | `seedance2.0-sp`、`seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
 | **官方版 SP** | `seedance2.0-of-sp`、`seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
 | **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL；见 [MD 创建视频](/zh/api-reference/seedance/md/create) |
@@ -38,7 +41,8 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ### 素材链接格式
 
-- **满血版**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 必须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
+- **满血版 / Fast / 视频参考系列**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
+- **`reference_videos`**：仅 `sd2_mx_video_*`、`sd2_mx_video_fast_*` 模型支持；满血版与 Fast 系列不支持。
 - **SP 经济版**：见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
 - **MD**：直接传入可公网访问的 `https://` 图片或视频 URL；不支持音频参考。详见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
 

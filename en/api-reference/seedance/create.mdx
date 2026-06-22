@@ -12,6 +12,9 @@ Choose the backend route with the `model` field:
 | Route | `model` values | Billing | Duration | Assets |
 |-------|----------------|---------|----------|--------|
 | **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–12 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
+| **Fast** | `sd2_mx_fast_720p`, `sd2_mx_fast_1080p` | Per second | 4–12 s | Same as Manxue; `reference_videos` not supported |
+| **Video reference** | `sd2_mx_video_720p`, `sd2_mx_video_1080p`, `sd2_mx_video_2k`, `sd2_mx_video_4k` | Per second | 4–12 s | Same as Manxue; supports `reference_videos` |
+| **Video reference Fast** | `sd2_mx_video_fast_720p`, `sd2_mx_video_fast_1080p` | Per second | 4–12 s | Same as Manxue; supports `reference_videos` |
 | **SP economy** | `seedance2.0-sp`, `seedance2.0-fast-sp` | Per second × resolution | 4–15 s | See [SP Create Video](/en/api-reference/seedance/sp/create) |
 | **SP official** | `seedance2.0-of-sp`, `seedance2.0-of-fast-sp` | Per second × resolution | 4–15 s | See [SP Create Video](/en/api-reference/seedance/sp/create) |
 | **MD (standard)** | `seedance2.0-md` | Per task | 1–15 s | Public URLs; see [MD Create Video](/en/api-reference/seedance/md/create) |
@@ -38,7 +41,8 @@ For **SP route** (economy and official), see [SP Create Video](/en/api-reference
 
 ### Asset link format
 
-- **Full (Manxue)**: All media fields must use `asset://{assetId}` after [submitting for audit](/en/api-reference/seedance/assets-audit) and waiting until status is `Active` via [audit status](/en/api-reference/seedance/assets-status).
+- **Manxue / Fast / Video reference series**: Media fields must use `asset://{assetId}` after [submitting for audit](/en/api-reference/seedance/assets-audit) and waiting until status is `Active` via [audit status](/en/api-reference/seedance/assets-status).
+- **`reference_videos`**: Only `sd2_mx_video_*` and `sd2_mx_video_fast_*` models support reference videos; standard Manxue and Fast models do not.
 - **SP economy**: See [SP Create Video](/en/api-reference/seedance/sp/create).
 - **MD**: Pass publicly reachable `https://` URLs; reference audio is not supported. See [MD Create Video](/en/api-reference/seedance/md/create).
 

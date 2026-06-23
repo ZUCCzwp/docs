@@ -16,6 +16,12 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 
 Aliases such as `Omni-Flash-Ext` and `gemini-omni` normalize to `Gemini-Omini`.
 
+## Reference Video & Generation Modes
+
+The standard version of `Gemini-Omini` supports the following advanced parameters to enable video reference and custom modes:
+- `generation_type` (string): Generation mode, supporting `frame` (first-frame mode, where `image_urls` can only take 1 image as the first frame of the video) or `reference` (reference mode, where `image_urls` can accept 1 or 3 reference images). Defaults to `reference`.
+- `video_urls` (array): A list of reference video URLs (currently supports up to 1 video). **Note: `duration` is not required when uploading a reference video, and `duration` and `video_urls` cannot be passed at the same time.**
+
 ## omni-10s example
 
 ```bash
@@ -31,3 +37,4 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/gemini/omni/videos' \
 ```
 
 For `omni-10s`, `duration` and `resolution` in the request are ignored; billing uses the `omni-10s` model config (10s, 720p).
+

@@ -1458,7 +1458,7 @@
           "duration": {
             "type": "integer",
             "default": 6,
-            "description": "Video duration in seconds. Defaults to 6 when omitted or less than or equal to 0."
+            "description": "Video duration in seconds. Default: 6. Only supports: 4, 6, 8, 10. Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time."
           },
           "resolution": {
             "type": "string",
@@ -1495,6 +1495,22 @@
               "type": "string"
             },
             "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty. omni-10s supports up to 7 images."
+          },
+          "generation_type": {
+            "type": "string",
+            "default": "reference",
+            "enum": [
+              "frame",
+              "reference"
+            ],
+            "description": "Generation type. frame: first frame mode (image_urls can only accept 1 image as the first frame of the video); reference: reference mode (image_urls can accept 1 or 3 images as style/subject reference). Defaults to reference."
+          },
+          "video_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference video URL list (currently supports up to 1 video). Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time."
           }
         },
         "example": {
@@ -1503,7 +1519,9 @@
           "duration": 6,
           "resolution": "720p",
           "aspect_ratio": "16:9",
-          "image_urls": []
+          "generation_type": "reference",
+          "image_urls": [],
+          "video_urls": []
         }
       },
       "OpenAIImageGenerationRequest": {

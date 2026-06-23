@@ -5,3 +5,32 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 
 > [!IMPORTANT]
 > The video download URL (`video_url`) is valid for **3 days**. Please download or transfer it in time.
+
+### Task Status Descriptions
+
+| Status Value (status) | Description | Progress (progress) | Remarks |
+| :--- | :--- | :--- | :--- |
+| `queued` / `pending` / `submitted` | **Queued / Submitted**. The task has been successfully submitted and is waiting for scheduling. | `0` | Initial state. |
+| `processing` | **Processing**. The task has started running on the model side. | `1 - 99` | Progress updates in real-time during generation. |
+| `completed` | **Completed**. The video generation is complete. | `100` | The download link is available in the `result.video_url` field. |
+| `failed` | **Failed**. The video generation task failed. | `0` | You can view the specific cause of failure in the `error_message` field. |
+
+### State Machine Diagram
+
+```mermaid
+graph TD
+    classDef queued fill:#e0f2fe,stroke:#0284c7,stroke-width:2px;
+    classDef processing fill:#fef9c3,stroke:#ca8a04,stroke-width:2px;
+    classDef completed fill:#dcfce7,stroke:#15803d,stroke-width:2px;
+    classDef failed fill:#fee2e2,stroke:#b91c1c,stroke-width:2px;
+
+    Start((Task Created)) --> queued[queued / pending / submitted<br>Queued]
+    queued --> processing[processing<br>Processing]
+    processing --> completed[completed<br>Completed]
+    processing --> failed[failed<br>Failed]
+
+    class queued queued;
+    class processing processing;
+    class completed completed;
+    class failed failed;
+```

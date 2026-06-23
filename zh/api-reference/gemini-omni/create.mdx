@@ -16,6 +16,12 @@ openapi: 'POST /api/open-api/v1/gemini/omni/videos'
 
 `Omni-Flash-Ext`、`gemini-omni` 等别名会归一化为 `Gemini-Omini`。
 
+## 参考视频与生成模式
+
+标准版 `Gemini-Omini` 支持以下高级参数以实现视频参考和不同的使用模式：
+- `generation_type` (string)：生成类型，可选 `frame`（首帧模式，`image_urls` 只能传 1 张图片作为视频首帧）或 `reference`（参考模式，`image_urls` 可以传 1 张或 3 张图片作为参考图）。默认为 `reference`。
+- `video_urls` (array)：参考视频 URL 列表（目前最多支持 1 个视频）。**注意：上传参考视频（使用 `video_urls`）时不需要传入 `duration`，且 `duration` 与 `video_urls` 不可以同时传入。**
+
 ## omni-10s 示例
 
 ```bash
@@ -31,3 +37,4 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/gemini/omni/videos' \
 ```
 
 `omni-10s` 会忽略请求中的 `duration` 与 `resolution`，统一按 10 秒、720p 计费（模型名 `omni-10s`）。
+

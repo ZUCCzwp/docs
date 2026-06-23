@@ -1,0 +1,37 @@
+---
+title: '创建 Grok 1.5 视频'
+openapi: 'POST /api/open-api/v1/grok/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `grok-imagine-video-1.5` | Grok 1.5 视频模型，支持 10、15 秒与自定义比例，必须且仅支持提供 1 张参考图 |
+
+`grok-1.5`、`grok_1_5` 等别名会归一化为 `grok-imagine-video-1.5`。
+
+## 参数限制
+
+- **参考图片**：`grok-imagine-video-1.5` 必须搭配参考图片使用。请在 `image_urls`（或 `images`）字段中上传恰好 1 张参考图。
+- **时长**：仅支持 10 或 15 秒（默认值为 10）。
+- **比例**：支持 `16:9`、`9:16`、`1:1`、`3:2`、`2:3`（默认值为 `16:9`）。
+
+## 示例请求
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/grok/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-video-1.5",
+    "prompt": "一只精美的茶杯中缓缓注入热茶，雾气袅袅，微距镜头摄影",
+    "ratio": "16:9",
+    "duration": 10,
+    "image_urls": ["https://example.com/cup.jpg"]
+  }'
+```

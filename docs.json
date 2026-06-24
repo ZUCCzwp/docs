@@ -86,7 +86,6 @@
               {
                 "group": "VEO Video",
                 "pages": [
-                  "en/api-reference/veo/create-video",
                   "en/api-reference/veo/create-frames"
                 ]
               },
@@ -192,7 +191,6 @@
               {
                 "group": "VEO 视频",
                 "pages": [
-                  "zh/api-reference/veo/create-video",
                   "zh/api-reference/veo/create-frames"
                 ]
               },

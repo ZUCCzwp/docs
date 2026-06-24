@@ -49,9 +49,7 @@
 
 ### VEO Video
 
-- [Create VEO Video](https://docs.jimmyai.cn/en/api-reference/veo/create-video.md): Create a video generation task using VEO models.
 - [Create VEO Frames](https://docs.jimmyai.cn/en/api-reference/veo/create-frames.md): Create a VEO video task using first and last frame images.
-- [创建 VEO 视频](https://docs.jimmyai.cn/zh/api-reference/veo/create-video.md): 使用 VEO 模型创建视频生成任务。
 - [创建 VEO 首尾帧](https://docs.jimmyai.cn/zh/api-reference/veo/create-frames.md): 使用首尾帧图片创建 VEO 视频任务。
 
 ### Seedance Video

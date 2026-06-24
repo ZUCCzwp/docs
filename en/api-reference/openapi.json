@@ -222,35 +222,6 @@
         }
       }
     },
-    "/api/open-api/v1/veo/videos": {
-      "post": {
-        "summary": "Create VEO Video Task",
-        "description": "Create a new video generation task using VEO models.",
-        "operationId": "createVeoVideo",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VideoGenerationRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Task created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VideoGenerationResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "Create VEO Frames Video Task",

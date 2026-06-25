@@ -569,6 +569,175 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/soundCloning/clones": {
+      "post": {
+        "summary": "SoundClone - 提交试听任务",
+        "description": "提交声音克隆试听任务，生成试听音频并返回声音模型 ID。任务创建后请使用 GET /api/open-api/v1/audios/{id} 查询结果。",
+        "operationId": "createSoundClonePreview",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SoundCloneCloneRequest"
+              },
+              "examples": {
+                "preview": {
+                  "summary": "提交试听",
+                  "value": {
+                    "fileUrl": "https://example.com/source-audio.mp3",
+                    "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
+                    "soundVersion": "v1",
+                    "language": "Chinese"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneApiResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningClone",
+                        "status": "queued",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/soundCloning/audios": {
+      "post": {
+        "summary": "SoundClone - 提交音频生成任务",
+        "description": "使用试听任务得到的 modelId 提交正式音频生成任务。",
+        "operationId": "createSoundCloneAudio",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SoundCloneAudioRequest"
+              },
+              "examples": {
+                "production": {
+                  "summary": "提交正式音频",
+                  "value": {
+                    "modelId": "model_123456789",
+                    "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
+                    "language": "Chinese",
+                    "soundVersion": "v1",
+                    "emotion": "neutral",
+                    "speed": 1,
+                    "vol": 1,
+                    "pitch": 0,
+                    "subtitleEnable": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneApiResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningAudio",
+                        "status": "queued",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/audios/{id}": {
+      "get": {
+        "summary": "SoundClone - 查询结果",
+        "description": "查询声音克隆试听或正式音频任务的状态与结果。",
+        "operationId": "querySoundCloneResult",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "任务 ID，来自提交试听或提交音频生成接口",
+            "schema": {
+              "type": "string"
+            },
+            "example": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "任务状态与结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneQueryApiResponse"
+                },
+                "examples": {
+                  "completed": {
+                    "summary": "试听任务已完成",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningClone",
+                        "status": "completed",
+                        "modelId": "model_123456789",
+                        "audioUrl": "https://example.com/preview-audio.mp3",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1810,6 +1979,222 @@
                 "type": "integer"
               }
             }
+          }
+        }
+      },
+      "SoundCloneCloneRequest": {
+        "type": "object",
+        "required": [
+          "fileUrl"
+        ],
+        "properties": {
+          "fileUrl": {
+            "type": "string",
+            "description": "克隆声音的原音频或原视频公网 URL"
+          },
+          "contentText": {
+            "type": "string",
+            "description": "试听文本，小于 270 字"
+          },
+          "soundVersion": {
+            "type": "string",
+            "enum": [
+              "v1",
+              "v2"
+            ],
+            "default": "v1"
+          },
+          "language": {
+            "type": "string",
+            "default": "auto",
+            "description": "语言类型，如 Chinese、English"
+          }
+        },
+        "example": {
+          "fileUrl": "https://example.com/source-audio.mp3",
+          "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
+          "soundVersion": "v1",
+          "language": "Chinese"
+        }
+      },
+      "SoundCloneAudioRequest": {
+        "type": "object",
+        "required": [
+          "modelId",
+          "contentText"
+        ],
+        "properties": {
+          "modelId": {
+            "type": "string",
+            "description": "试听任务完成后返回的声音模型 ID"
+          },
+          "contentText": {
+            "type": "string",
+            "description": "生成音频的文本，小于 10000 字符"
+          },
+          "soundVersion": {
+            "type": "string",
+            "enum": [
+              "v1",
+              "v2"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "default": "auto"
+          },
+          "emotion": {
+            "type": "string",
+            "enum": [
+              "happy",
+              "sad",
+              "angry",
+              "fearful",
+              "disgusted",
+              "surprised",
+              "neutral"
+            ],
+            "default": "neutral"
+          },
+          "speed": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 2,
+            "default": 1
+          },
+          "vol": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 10,
+            "default": 1
+          },
+          "pitch": {
+            "type": "integer",
+            "minimum": -12,
+            "maximum": 12,
+            "default": 0
+          },
+          "subtitleEnable": {
+            "type": "boolean",
+            "default": false
+          },
+          "subtitleType": {
+            "type": "string",
+            "enum": [
+              "word"
+            ],
+            "description": "不传为句级别字幕"
+          }
+        },
+        "example": {
+          "modelId": "model_123456789",
+          "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
+          "language": "Chinese",
+          "soundVersion": "v1",
+          "emotion": "neutral",
+          "speed": 1,
+          "vol": 1,
+          "pitch": 0,
+          "subtitleEnable": false
+        }
+      },
+      "SoundCloneTaskData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "object": {
+            "type": "string",
+            "example": "audio"
+          },
+          "created": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "model": {
+            "type": "string",
+            "enum": [
+              "soundCloningClone",
+              "soundCloningAudio"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "processing",
+              "completed",
+              "failed"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "example": {
+          "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+          "object": "audio",
+          "created": 1781777280,
+          "model": "soundCloningClone",
+          "status": "queued",
+          "error": null
+        }
+      },
+      "SoundCloneQueryData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SoundCloneTaskData"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "modelId": {
+                "type": "string",
+                "description": "试听完成后返回"
+              },
+              "audioUrl": {
+                "type": "string"
+              },
+              "subtitleFile": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "SoundCloneApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SoundCloneTaskData"
+          }
+        }
+      },
+      "SoundCloneQueryApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SoundCloneQueryData"
           }
         }
       }

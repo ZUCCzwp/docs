@@ -1,0 +1,89 @@
+---
+title: 'Query SoundClone Task'
+openapi: 'en/api-reference/openapi.json GET /api/open-api/v1/audios/{id}'
+---
+
+<Note>
+Query preview or production audio tasks by the `id` returned from [Create Preview](/en/api-reference/sound-clone/clone-create) or [Create Audio](/en/api-reference/sound-clone/audio-create). This path is dedicated to **SoundClone** tasks.
+
+Response envelope: `{ "code": 20000, "msg": "ok", "data": { ... } }`.
+</Note>
+
+## Path parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes | Task ID from create preview or create audio response. |
+
+## Response fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Task ID |
+| `object` | string | Always `audio` |
+| `created` | integer | Creation timestamp |
+| `model` | string | `soundCloningClone` (preview) or `soundCloningAudio` (production) |
+| `status` | string | `queued` / `processing` / `completed` / `failed` |
+| `modelId` | string | Returned when preview completes; use in create audio |
+| `audioUrl` | string | Preview or production audio URL |
+| `subtitleFile` | string | Subtitle file URL when subtitle generation was enabled |
+| `error` | string | Error message on failure |
+
+## Task status
+
+| status | Meaning |
+|--------|---------|
+| `queued` | Waiting in queue |
+| `processing` | In progress |
+| `completed` | Done — read `audioUrl` (and `modelId` for preview) |
+| `failed` | Failed — read `error` |
+
+## Polling
+
+Poll every **5–10 seconds** until `status` is `completed` or `failed`.
+
+## Example
+
+```bash
+curl --request GET \
+  --url 'https://www.jimmyai.cn/api/open-api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
+  --header 'Authorization: Bearer sk_xxx'
+```
+
+## Response examples
+
+**Processing**
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningClone",
+    "status": "processing",
+    "error": null
+  }
+}
+```
+
+**Preview completed**
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningClone",
+    "status": "completed",
+    "modelId": "model_123456789",
+    "audioUrl": "https://example.com/preview-audio.mp3",
+    "error": null
+  }
+}
+```

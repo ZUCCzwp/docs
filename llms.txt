@@ -23,8 +23,10 @@
 
 - [Query Video Task](https://docs.jimmyai.cn/en/api-reference/common/query.md): Query the status and result of a video generation task.
 - [Query Image Task](https://docs.jimmyai.cn/en/api-reference/images/query.md): Query the status and result of an image generation task.
+- [Query SoundClone Task](https://docs.jimmyai.cn/en/api-reference/common/sound-clone-query.md): Poll SoundClone task status via GET /audios/{id}.
 - [查询视频任务](https://docs.jimmyai.cn/zh/api-reference/common/query.md): 查询视频生成任务的状态和结果。
 - [查询图片任务](https://docs.jimmyai.cn/zh/api-reference/images/query.md): 查询图片生成任务的状态和结果。
+- [查询声音克隆任务](https://docs.jimmyai.cn/zh/api-reference/common/sound-clone-query.md): 查询 SoundClone 任务状态与 audioUrl。
 
 ### Sora Video
 
@@ -80,6 +82,13 @@
 
 - [MD Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
 - [MD 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
+
+### SoundClone
+
+- [Create Preview Task](https://docs.jimmyai.cn/en/api-reference/sound-clone/clone-create.md): Submit voice-cloning preview from source audio/video URL.
+- [Create Audio Task](https://docs.jimmyai.cn/en/api-reference/sound-clone/audio-create.md): Generate production audio with modelId; billed per 10k characters plus voice fee on every submission.
+- [提交试听任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/clone-create.md): 提交声音克隆试听任务。
+- [提交音频生成任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/audio-create.md): 使用 modelId 生成正式音频，每次按字符 + 音色（按次）计费。
 
 ## OpenAPI Specs
 

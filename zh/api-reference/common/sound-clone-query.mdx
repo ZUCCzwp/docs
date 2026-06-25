@@ -1,0 +1,108 @@
+---
+title: '查询声音克隆任务'
+openapi: 'zh/api-reference/openapi.json GET /api/open-api/v1/audios/{id}'
+---
+
+<Note>
+使用提交 [试听任务](/zh/api-reference/sound-clone/clone-create) 或 [正式音频任务](/zh/api-reference/sound-clone/audio-create) 返回的 `id` 查询任务状态与结果。本路径专用于 **SoundClone** 声音克隆任务。
+
+响应格式：`{ "code": 20000, "msg": "ok", "data": { ... } }`。
+</Note>
+
+## 路径参数
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `id` | string | 是 | 任务 ID，来自提交试听或提交音频生成接口返回的 `id`。 |
+
+## 响应字段
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `id` | string | 任务 ID |
+| `object` | string | 固定为 `audio` |
+| `created` | integer | 任务创建时间戳 |
+| `model` | string | `soundCloningClone`（试听）或 `soundCloningAudio`（正式音频） |
+| `status` | string | `queued` / `processing` / `completed` / `failed` |
+| `modelId` | string | 试听任务完成后返回，供正式音频接口使用 |
+| `audioUrl` | string | 试听或正式音频地址 |
+| `subtitleFile` | string | 开启字幕且任务完成后返回字幕文件地址 |
+| `error` | string | 失败时的错误信息 |
+
+## 任务状态
+
+| status | 说明 |
+|--------|------|
+| `queued` | 排队中 |
+| `processing` | 处理中 |
+| `completed` | 已完成，可读取 `audioUrl`（试听任务同时返回 `modelId`） |
+| `failed` | 失败，查看 `error` |
+
+## 轮询建议
+
+建议每 **5–10 秒** 查询一次；当 `status` 为 `completed` 或 `failed` 时停止轮询。
+
+## 示例请求
+
+```bash
+curl --request GET \
+  --url 'https://www.jimmyai.cn/api/open-api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
+  --header 'Authorization: Bearer sk_xxx'
+```
+
+## 响应示例
+
+**处理中**
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningClone",
+    "status": "processing",
+    "error": null
+  }
+}
+```
+
+**试听任务已完成**
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningClone",
+    "status": "completed",
+    "modelId": "model_123456789",
+    "audioUrl": "https://example.com/preview-audio.mp3",
+    "error": null
+  }
+}
+```
+
+**正式音频任务已完成（含字幕）**
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningAudio",
+    "status": "completed",
+    "audioUrl": "https://example.com/generated-audio.mp3",
+    "subtitleFile": "https://example.com/subtitle.srt",
+    "error": null
+  }
+}
+```

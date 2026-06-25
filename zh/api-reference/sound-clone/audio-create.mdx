@@ -1,0 +1,81 @@
+---
+title: 'SoundClone - 提交音频生成任务'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/soundCloning/audios'
+---
+
+<Note>
+使用 [试听任务](/zh/api-reference/sound-clone/clone-create) 完成后返回的 `modelId` 提交正式音频生成。任务创建后请通过 [查询声音克隆任务](/zh/api-reference/common/sound-clone-query) 轮询获取 `audioUrl`。
+
+`modelId` 有效期为 **3 天**；在有效期内首次调用本接口时会自动转正，转正后可永久用于音频生成。
+
+响应格式：`{ "code": 20000, "msg": "ok", "data": { ... } }`。
+</Note>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `modelId` | string | 是 | 声音模型 ID，来自试听任务查询结果中的 `modelId`。 |
+| `contentText` | string | 是 | 需要生成音频的文本，长度小于 **10000** 字符。可在字间插入 `<#x#>` 控制停顿（`x` 为秒，范围 `0.01–99.99`，最多两位小数）。 |
+| `soundVersion` | string | 否 | 声音模型版本：`v1` 或 `v2`。 |
+| `language` | string | 否 | 语言类型，默认 `auto`。 |
+| `emotion` | string | 否 | 情感类型，默认 `neutral`。支持 `happy`、`sad`、`angry`、`fearful`、`disgusted`、`surprised`、`neutral`。 |
+| `speed` | number | 否 | 语速，范围 `[0.5, 2]`，默认 `1.0`。 |
+| `vol` | number | 否 | 音量，范围 `(0, 10]`，默认 `1.0`。 |
+| `pitch` | integer | 否 | 语调，范围 `[-12, 12]`，默认 `0`。 |
+| `subtitleEnable` | boolean | 否 | 是否生成字幕，默认 `false`。 |
+| `subtitleType` | string | 否 | 字幕类型。开启字幕时可传 `word`（字级别）；不传为句级别。 |
+
+### 支持语言（节选）
+
+**v1 / v2 均支持：** `Chinese`（中文）、`Chinese,Yue`（粤语）、`English`、`Japanese`、`Korean`、`French`、`German`、`Spanish` 等 24 种语言。
+
+**仅 v2 支持：** `Bulgarian`、`Danish`、`Hebrew`、`Malay`、`Persian`、`Swedish`、`Tamil`、`auto`（自动检测）等。
+
+## 计费说明
+
+正式音频包含两部分费用：
+
+| 模型配置名 | 说明 |
+|------------|------|
+| `sound-cloning-audio` | 按 `contentText` 字符数计费，单位为每 **1 万字符** |
+| `sound-cloning-voice` | **音色费**：每次提交正式音频任务均收取（按次，与 `modelId` 无关） |
+
+字符数统计规则与试听一致：按 Unicode 字符计数，排除 `<#x#>` 停顿标记。
+
+## 示例请求
+
+```bash
+curl --request POST \
+  --url 'https://www.jimmyai.cn/api/open-api/v1/soundCloning/audios' \
+  --header 'Authorization: Bearer sk_xxx' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "modelId": "model_123456789",
+    "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
+    "language": "Chinese",
+    "soundVersion": "v1",
+    "emotion": "neutral",
+    "speed": 1.0,
+    "vol": 1.0,
+    "pitch": 0,
+    "subtitleEnable": false
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningAudio",
+    "status": "queued",
+    "error": null
+  }
+}
+```

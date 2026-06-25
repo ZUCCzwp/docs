@@ -53,7 +53,8 @@
                 "group": "Common",
                 "pages": [
                   "en/api-reference/common/query",
-                  "en/api-reference/images/query"
+                  "en/api-reference/images/query",
+                  "en/api-reference/common/sound-clone-query"
                 ]
               },
               {
@@ -113,6 +114,13 @@
                 "pages": [
                   "en/api-reference/seedance/md/create"
                 ]
+              },
+              {
+                "group": "SoundClone",
+                "pages": [
+                  "en/api-reference/sound-clone/clone-create",
+                  "en/api-reference/sound-clone/audio-create"
+                ]
               }
             ]
           }
@@ -158,7 +166,8 @@
                 "group": "通用",
                 "pages": [
                   "zh/api-reference/common/query",
-                  "zh/api-reference/images/query"
+                  "zh/api-reference/images/query",
+                  "zh/api-reference/common/sound-clone-query"
                 ]
               },
               {
@@ -217,6 +226,13 @@
                 "group": "Seedance MD",
                 "pages": [
                   "zh/api-reference/seedance/md/create"
+                ]
+              },
+              {
+                "group": "声音克隆 SoundClone",
+                "pages": [
+                  "zh/api-reference/sound-clone/clone-create",
+                  "zh/api-reference/sound-clone/audio-create"
                 ]
               }
             ]
@@ -278,6 +294,24 @@
       "x": "https://x.com/PingZhang88215",
       "discord": "https://discord.com/invite/c67Qq5K7",
       "website": "https://www.jimmyai.cn"
+    }
+  },
+  "api": {
+    "openapi": [
+      "zh/api-reference/openapi.json",
+      "en/api-reference/openapi.json"
+    ],
+    "playground": {
+      "display": "interactive"
+    },
+    "examples": {
+      "languages": [
+        "curl",
+        "python",
+        "javascript",
+        "go"
+      ],
+      "prefill": true
     }
   }
 }

@@ -1,0 +1,75 @@
+---
+title: 'SoundClone - Create Audio Task'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/soundCloning/audios'
+---
+
+<Note>
+Use the `modelId` from a completed [preview task](/en/api-reference/sound-clone/clone-create). Poll [Query SoundClone Task](/en/api-reference/common/sound-clone-query) for the final `audioUrl`.
+
+`modelId` is valid for **3 days**. The first successful call to this endpoint within that window permanently activates the voice for future generation.
+
+Response envelope: `{ "code": 20000, "msg": "ok", "data": { ... } }`.
+</Note>
+
+## Request body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `modelId` | string | Yes | Voice model ID from preview query result. |
+| `contentText` | string | Yes | Text to synthesize, max **10,000** characters. Insert `<#x#>` between words for pauses (`x` in seconds, `0.01–99.99`). |
+| `soundVersion` | string | No | `v1` or `v2`. |
+| `language` | string | No | Language code, default `auto`. |
+| `emotion` | string | No | Default `neutral`. Values: `happy`, `sad`, `angry`, `fearful`, `disgusted`, `surprised`, `neutral`. |
+| `speed` | number | No | Speech rate `[0.5, 2]`, default `1.0`. |
+| `vol` | number | No | Volume `(0, 10]`, default `1.0`. |
+| `pitch` | integer | No | Pitch `[-12, 12]`, default `0`. |
+| `subtitleEnable` | boolean | No | Generate subtitles, default `false`. |
+| `subtitleType` | string | No | When subtitles enabled, `word` for word-level; omit for sentence-level. |
+
+## Billing
+
+Production audio has two fee components:
+
+| Model config | Description |
+|--------------|-------------|
+| `sound-cloning-audio` | Character fee per **10,000 characters** from `contentText` |
+| `sound-cloning-voice` | **Voice fee**: charged on every production audio submission (per task) |
+
+Character counting matches preview: Unicode runes, excluding `<#x#>` markers.
+
+## Example
+
+```bash
+curl --request POST \
+  --url 'https://www.jimmyai.cn/api/open-api/v1/soundCloning/audios' \
+  --header 'Authorization: Bearer sk_xxx' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "modelId": "model_123456789",
+    "contentText": "Welcome to voice cloning. This is production audio text.",
+    "language": "Chinese",
+    "soundVersion": "v1",
+    "emotion": "neutral",
+    "speed": 1.0,
+    "vol": 1.0,
+    "pitch": 0,
+    "subtitleEnable": false
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningAudio",
+    "status": "queued",
+    "error": null
+  }
+}
+```

@@ -1,0 +1,67 @@
+---
+title: 'SoundClone - Create Preview Task'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/soundCloning/clones'
+---
+
+<Note>
+SoundClone tasks are **async**. The create response returns a task `id`. Poll [Query SoundClone Task](/en/api-reference/common/sound-clone-query) until completion to obtain `modelId` and preview `audioUrl`, then call [Create Audio Task](/en/api-reference/sound-clone/audio-create) for production audio.
+
+All responses use the envelope `{ "code": 20000, "msg": "ok", "data": { ... } }`. Examples below show the `data` payload.
+</Note>
+
+## Overview
+
+Submit a voice-cloning preview task from a source audio or video URL. When the task completes, you receive a preview audio URL and a `modelId` for formal audio generation.
+
+## Request body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `fileUrl` | string | Yes | Public URL of source audio or video. No local paths or Chinese characters in the URL. Audio: `mp3`, `ogg`, `wav`, `m4a`, `aac`. Video: `mp4`, `avi`, `mov`, `mkv`, `flv`. Spoken content must be **> 15s and < 60s**. |
+| `contentText` | string | No | Preview script, max **270** characters. Uses a default line when omitted. |
+| `soundVersion` | string | No | `v1` (24 languages) or `v2` (40 languages). Default `v1`. |
+| `language` | string | No | Language code, default `auto`. Example: `Chinese`, `English`. Some languages require `v2`; see [Create Audio Task](/en/api-reference/sound-clone/audio-create). |
+
+## Billing
+
+Preview is billed **by character count** in units of **10,000 characters** (`price_mode`: `per_10k_char`).
+
+| Model config | Description |
+|--------------|-------------|
+| `sound-cloning-clone` | Preview character fee; unit price is per 10k characters |
+
+- Characters are counted as Unicode runes; `<#x#>` pause markers are excluded.
+- The default preview text counts toward billing when `contentText` is omitted.
+- Balance is checked before submission; failed tasks are refunded.
+
+## Example
+
+```bash
+curl --request POST \
+  --url 'https://www.jimmyai.cn/api/open-api/v1/soundCloning/clones' \
+  --header 'Authorization: Bearer sk_xxx' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "fileUrl": "https://example.com/source-audio.mp3",
+    "contentText": "A short preview sentence for voice cloning.",
+    "soundVersion": "v1",
+    "language": "Chinese"
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "object": "audio",
+    "created": 1781777280,
+    "model": "soundCloningClone",
+    "status": "queued",
+    "error": null
+  }
+}
+```

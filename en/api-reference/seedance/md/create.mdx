@@ -27,9 +27,9 @@ Output is fixed at **720p**. Billing is per task, independent of duration.
 | `duration` | int | Yes | Length in seconds, 1–15 (default 5) |
 | `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
 | `images` | string[] | No | Reference images, max **4** |
-| `first_image` | string | No | First frame |
-| `last_image` | string | No | Last frame |
-| `reference_videos` | string[] | No | Reference videos |
+| `first_image` | string | No | First frame; must be paired with `last_image` in frame mode |
+| `last_image` | string | No | Last frame; must be paired with `first_image` in frame mode |
+| `reference_videos` | string[] | No | Reference videos, max **3** |
 
 <Warning>
 MD does **not** support `reference_audios`. The `resolution` field is ignored; output is always 720p.
@@ -43,9 +43,11 @@ MD does **not** support `reference_audios`. The `resolution` field is ignored; o
 ## Constraints
 
 - Do not combine `images` (reference mode) with `first_image` / `last_image` (frame mode).
+- **First frame only is not supported**; in frame mode, `first_image` and `last_image` **must both be provided**.
 - `ratio` must be one of `16:9`, `9:16`, `1:1`.
 - At most 4 items in `images`; prompt at most 5000 characters.
 - `reference_audios` is not supported.
+- At most **3** items in `reference_videos`; combined reference video **duration** must not exceed **15 seconds**, combined **size** must not exceed **200MB**; each reference video resolution must be between **720px and 2160px**.
 
 ## Examples
 
@@ -67,7 +69,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   }'
 ```
 
-### MD fast — first-frame image-to-video
+### MD fast — first and last frame image-to-video
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -78,7 +80,8 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
     "prompt": "Rainy street at night, girl looks back and smiles, slow dolly in",
     "duration": 5,
     "ratio": "9:16",
-    "first_image": "https://example.com/start.png"
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
   }'
 ```
 

@@ -27,9 +27,9 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | `duration` | int | 是 | 时长（秒），1–15，默认 5 |
 | `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
 | `images` | string[] | 否 | 参考图列表，最多 **4** 张 |
-| `first_image` | string | 否 | 首帧图片 |
-| `last_image` | string | 否 | 尾帧图片 |
-| `reference_videos` | string[] | 否 | 参考视频列表 |
+| `first_image` | string | 否 | 首帧图片；首尾帧模式须与 `last_image` 同时传入 |
+| `last_image` | string | 否 | 尾帧图片；首尾帧模式须与 `first_image` 同时传入 |
+| `reference_videos` | string[] | 否 | 参考视频列表，最多 **3** 个 |
 
 <Warning>
 MD **不支持** `reference_audios`（音频参考）。`resolution` 字段无效，输出固定 720p。
@@ -43,9 +43,11 @@ MD **不支持** `reference_audios`（音频参考）。`resolution` 字段无�
 ## 约束
 
 - `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- **不支持仅传首帧图**；使用首尾帧模式时，`first_image` 与 `last_image` **必须同时传入**。
 - `ratio` 仅支持 `16:9`、`9:16`、`1:1`。
 - `images` 最多 4 张；`prompt` 最多 5000 字符。
 - 不支持 `reference_audios`。
+- `reference_videos` 最多 **3** 个；参考视频**总时长**不超过 **15 秒**，**总大小**不超过 **200MB**；单个参考视频分辨率须在 **720px–2160px** 之间。
 
 ## 示例
 
@@ -67,7 +69,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   }'
 ```
 
-### MD 快速 — 首帧图生视频
+### MD 快速 — 首尾帧图生视频
 
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
@@ -78,7 +80,8 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
     "prompt": "雨夜街头，女孩回头微笑，镜头缓慢推进",
     "duration": 5,
     "ratio": "9:16",
-    "first_image": "https://example.com/start.png"
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
   }'
 ```
 

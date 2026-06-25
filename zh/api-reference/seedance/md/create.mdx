@@ -71,6 +71,10 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
 
 ### MD 快速 — 首尾帧图生视频
 
+<Note>
+首尾帧模式下 `first_image` 与 `last_image` **必须同时传入**，不支持仅传首帧图。
+</Note>
+
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \

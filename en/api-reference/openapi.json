@@ -829,18 +829,18 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First frame. Full: asset://{assetId}; Economy/MD: https:// URL"
+            "description": "First frame. Full: asset://{assetId}; Economy/MD: https:// URL. MD frame mode requires last_image as well; first frame only is not supported"
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame. Full: asset://{assetId}; Economy/MD: https:// URL"
+            "description": "Last frame. Full: asset://{assetId}; Economy/MD: https:// URL. MD frame mode requires first_image as well"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL"
+            "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. MD: max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px"
           },
           "reference_audios": {
             "type": "array",

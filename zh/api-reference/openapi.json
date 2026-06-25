@@ -829,18 +829,18 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL"
+            "description": "首帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL。MD 首尾帧模式须与 last_image 同时传入，不支持仅传首帧"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL"
+            "description": "尾帧图片。满血版: asset://{assetId}；经济版/MD: https:// URL。MD 首尾帧模式须与 first_image 同时传入"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL"
+            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。MD 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间"
           },
           "reference_audios": {
             "type": "array",

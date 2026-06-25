@@ -71,6 +71,10 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
 
 ### MD fast — first and last frame image-to-video
 
+<Note>
+In frame mode, `first_image` and `last_image` **must both be provided**. First frame only is not supported.
+</Note>
+
 ```bash
 curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \

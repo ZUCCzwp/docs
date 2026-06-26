@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task, 720p, no audio). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create for MD details.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task, 720p, no audio). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create for MD details.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -789,7 +789,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task, 720p)"
+            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task, 720p)"
           },
           "prompt": {
             "type": "string",

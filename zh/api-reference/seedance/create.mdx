@@ -17,6 +17,8 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | **视频参考 Fast** | `sd2_mx_video_fast_720p`、`sd2_mx_video_fast_1080p` | 按秒 | 4–12 秒 | 同上；支持 `reference_videos` |
 | **经济版 SP** | `seedance2.0-sp`、`seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
 | **官方版 SP** | `seedance2.0-of-sp`、`seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create) |
+| **Mini** | `seedance2.0-mini` | 按秒 × 分辨率 | 4–15 秒 | 见 [SP 创建视频](/zh/api-reference/seedance/sp/create)（同 SP） |
+| **Mini 视频参考** | `seedance2.0-mini-video` | 按秒 × 分辨率 | 4–15 秒 | 支持 `reference_videos`，其他同 SP |
 | **MD（标准）** | `seedance2.0-md` | 按次 | 1–15 秒 | 直接传 URL；见 [MD 创建视频](/zh/api-reference/seedance/md/create) |
 | **MD（快速）** | `seedance2.0-fast-md` | 按次 | 1–15 秒 | 同上 |
 
@@ -31,7 +33,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | `model` | string | 是 | 见上表 |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），默认 5 |
-| `resolution` | string | 否 | 输出分辨率，SP 经济版支持 `480p`、`720p`（默认）、`1080p` |
+| `resolution` | string | 否 | 输出分辨率，SP/Mini 系列支持 `480p`、`720p`（默认）、`1080p` |
 | `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1`；满血版还支持 `4:3`、`3:4`、`21:9`、`Adaptive` |
 | `images` | string[] | 否 | 参考图列表 |
 | `first_image` | string | 否 | 首帧图片 |

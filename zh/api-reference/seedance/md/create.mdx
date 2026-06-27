@@ -13,8 +13,8 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 | 线路 | `model` 取值 | 计费 | 时长 |
 |------|-------------|------|------|
-| MD 标准 | `seedance2.0-md` | 按次 | 1–15 秒 |
-| MD 快速 | `seedance2.0-fast-md` | 按次 | 1–15 秒 |
+| MD 标准 | `seedance2.0-md` | 按次 | 4–15 秒 |
+| MD 快速 | `seedance2.0-fast-md` | 按次 | 4–15 秒 |
 
 输出固定 **720p**，计费按次结算，与时长无关。
 
@@ -24,7 +24,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 |------|------|------|------|
 | `model` | string | 是 | 见上表 |
 | `prompt` | string | 是 | 视频生成提示词，最多 **5000** 字符 |
-| `duration` | int | 是 | 时长（秒），1–15，默认 5 |
+| `duration` | int | 是 | 时长（秒），4–15，默认 5 |
 | `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
 | `images` | string[] | 否 | 参考图列表，最多 **4** 张 |
 | `first_image` | string | 否 | 首帧图片；首尾帧模式须与 `last_image` 同时传入 |
@@ -37,7 +37,7 @@ MD **不支持** `reference_audios`（音频参考）。`resolution` 字段无�
 
 ## 素材说明
 
-- 直接传入可公网访问的 `https://` 图片或视频 URL。
+- 直接传入可公网访问的 `https://` 图片或视频 URL。**图片不支持 GIF 格式**。
 - 不支持 SP 素材库 `asset://` 流程；满血版 `asset://` 审核流程也不适用于 MD。
 
 ## 约束
@@ -47,7 +47,7 @@ MD **不支持** `reference_audios`（音频参考）。`resolution` 字段无�
 - `ratio` 仅支持 `16:9`、`9:16`、`1:1`。
 - `images` 最多 4 张；`prompt` 最多 5000 字符。
 - 不支持 `reference_audios`。
-- `reference_videos` 最多 **3** 个；参考视频**总时长**不超过 **15 秒**，**总大小**不超过 **200MB**；单个参考视频分辨率须在 **720px–2160px** 之间。
+- `reference_videos` 最多 **3** 个；参考视频**总时长**须控制在 **4–15 秒**，**总大小**不超过 **200MB**；单个参考视频分辨率须在 **720px–2160px** 之间，视频帧率在 **24–60 帧**以内。
 
 ## 示例
 

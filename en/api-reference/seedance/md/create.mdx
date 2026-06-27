@@ -13,8 +13,8 @@ This endpoint is shared with [Create Seedance Video](/en/api-reference/seedance/
 
 | Route | `model` values | Billing | Duration |
 |-------|----------------|---------|----------|
-| MD standard | `seedance2.0-md` | Per task | 1–15 s |
-| MD fast | `seedance2.0-fast-md` | Per task | 1–15 s |
+| MD standard | `seedance2.0-md` | Per task | 4–15 s |
+| MD fast | `seedance2.0-fast-md` | Per task | 4–15 s |
 
 Output is fixed at **720p**. Billing is per task, independent of duration.
 
@@ -24,7 +24,7 @@ Output is fixed at **720p**. Billing is per task, independent of duration.
 |-------|------|----------|-------------|
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt, max **5000** characters |
-| `duration` | int | Yes | Length in seconds, 1–15 (default 5) |
+| `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
 | `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
 | `images` | string[] | No | Reference images, max **4** |
 | `first_image` | string | No | First frame; must be paired with `last_image` in frame mode |
@@ -37,7 +37,7 @@ MD does **not** support `reference_audios`. The `resolution` field is ignored; o
 
 ## Assets
 
-- Pass publicly reachable `https://` image or video URLs directly.
+- Pass publicly reachable `https://` image or video URLs directly. **Images do not support GIF format**.
 - SP asset library (`asset://`) and Full-route audit flows do not apply to MD.
 
 ## Constraints
@@ -47,7 +47,7 @@ MD does **not** support `reference_audios`. The `resolution` field is ignored; o
 - `ratio` must be one of `16:9`, `9:16`, `1:1`.
 - At most 4 items in `images`; prompt at most 5000 characters.
 - `reference_audios` is not supported.
-- At most **3** items in `reference_videos`; combined reference video **duration** must not exceed **15 seconds**, combined **size** must not exceed **200MB**; each reference video resolution must be between **720px and 2160px**.
+- At most **3** items in `reference_videos`; combined reference video **duration** must be between **4-15 seconds**, combined **size** must not exceed **200MB**; each reference video resolution must be between **720px and 2160px**, and video frame rate must be between **24-60 FPS**.
 
 ## Examples
 

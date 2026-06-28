@@ -1,0 +1,26 @@
+---
+title: 'Upload File'
+openapi: 'POST /api/open-api/v1/files/upload'
+---
+
+Upload an image, video, or audio file and receive a publicly accessible URL. Use the returned URL as reference media in video generation, image editing, and other API endpoints.
+
+<Note>
+Maximum file size is **100 MB**. The form field name must be `file`, sent as `multipart/form-data`.
+</Note>
+
+## Supported formats
+
+| Type | Extensions |
+|------|------------|
+| Image | `.jpg` `.jpeg` `.png` `.gif` `.webp` `.bmp` `.svg` |
+| Video | `.mp4` `.mov` `.avi` `.webm` `.mkv` `.m4v` `.flv` |
+| Audio | `.mp3` `.wav` `.aac` `.m4a` `.flac` `.ogg` |
+
+## Common use cases
+
+Use the returned `url` in other OpenAPI endpoints, for example:
+
+- `images` in [Create Video](/en/api-reference/videos/create)
+- `url` in [SP Upload Asset](/en/api-reference/seedance/sp/assets-upload)
+- `image_url` in [Understand Image](/en/api-reference/images/understand)

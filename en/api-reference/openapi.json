@@ -738,6 +738,50 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/files/upload": {
+      "post": {
+        "summary": "Upload File",
+        "description": "Upload an image, video, or audio file and receive a publicly accessible URL. Maximum file size is 100 MB.",
+        "operationId": "uploadFile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Upload successful",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "url": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg",
+                        "filename": "photo.jpg",
+                        "size": 102400,
+                        "mime_type": "image/jpeg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2184,6 +2228,67 @@
           },
           "data": {
             "$ref": "#/components/schemas/SoundCloneQueryData"
+          }
+        }
+      },
+      "FileUploadRequest": {
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "File to upload. Field name must be `file`."
+          }
+        }
+      },
+      "FileUploadData": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Public URL of the uploaded file",
+            "example": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Original filename",
+            "example": "photo.jpg"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "File size in bytes",
+            "example": 102400
+          },
+          "mime_type": {
+            "type": "string",
+            "description": "File MIME type",
+            "example": "image/jpeg"
+          }
+        },
+        "example": {
+          "url": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg",
+          "filename": "photo.jpg",
+          "size": 102400,
+          "mime_type": "image/jpeg"
+        }
+      },
+      "FileUploadApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/FileUploadData"
           }
         }
       }

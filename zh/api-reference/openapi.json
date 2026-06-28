@@ -738,6 +738,50 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/files/upload": {
+      "post": {
+        "summary": "上传文件",
+        "description": "上传图片、视频或音频文件，返回可公网访问的文件 URL。单文件最大 100 MB。",
+        "operationId": "uploadFile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "上传成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "url": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg",
+                        "filename": "photo.jpg",
+                        "size": 102400,
+                        "mime_type": "image/jpeg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2195,6 +2239,67 @@
           },
           "data": {
             "$ref": "#/components/schemas/SoundCloneQueryData"
+          }
+        }
+      },
+      "FileUploadRequest": {
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "要上传的文件，字段名固定为 file"
+          }
+        }
+      },
+      "FileUploadData": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "文件公网访问 URL",
+            "example": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg"
+          },
+          "filename": {
+            "type": "string",
+            "description": "原始文件名",
+            "example": "photo.jpg"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "文件大小（字节）",
+            "example": 102400
+          },
+          "mime_type": {
+            "type": "string",
+            "description": "文件 MIME 类型",
+            "example": "image/jpeg"
+          }
+        },
+        "example": {
+          "url": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg",
+          "filename": "photo.jpg",
+          "size": 102400,
+          "mime_type": "image/jpeg"
+        }
+      },
+      "FileUploadApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/FileUploadData"
           }
         }
       }

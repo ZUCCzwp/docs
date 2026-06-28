@@ -1,0 +1,26 @@
+---
+title: '上传文件'
+openapi: 'POST /api/open-api/v1/files/upload'
+---
+
+将图片、视频或音频文件上传至服务器，获取可公网访问的 URL，用于视频生成、图片编辑等接口的参考素材。
+
+<Note>
+单文件大小不超过 **100 MB**。字段名固定为 `file`，使用 `multipart/form-data` 格式。
+</Note>
+
+## 支持格式
+
+| 类型 | 扩展名 |
+|------|--------|
+| 图片 | `.jpg` `.jpeg` `.png` `.gif` `.webp` `.bmp` `.svg` |
+| 视频 | `.mp4` `.mov` `.avi` `.webm` `.mkv` `.m4v` `.flv` |
+| 音频 | `.mp3` `.wav` `.aac` `.m4a` `.flac` `.ogg` |
+
+## 使用场景
+
+返回的 `url` 可直接用于其他 OpenAPI 接口，例如：
+
+- [创建视频](/zh/api-reference/videos/create) 的 `images` 字段
+- [SP 上传素材](/zh/api-reference/seedance/sp/assets-upload) 的 `url` 字段
+- [图片理解](/zh/api-reference/images/understand) 的 `image_url` 字段

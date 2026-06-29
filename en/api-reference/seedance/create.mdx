@@ -21,9 +21,10 @@ Choose the backend route with the `model` field:
 | **Mini video ref** | `seedance2.0-mini-video` | Per second × resolution | 4–15 s | Supports `reference_videos`, same as SP |
 | **MD (Standard)** | `seedance2.0-md` | Per task | 4–15 s | Direct URL; see [MD Create Video](/en/api-reference/seedance/md/create) |
 | **MD (Fast)** | `seedance2.0-fast-md` | Per task | 4–15 s | Same as above |
+| **STD standard** | `seedance2.0-std` | Per task | 4–15 s | Direct URLs; supports up to 9 reference images and 3 reference audio clips; see [STD Create Video](/en/api-reference/seedance/md/std) |
 
 <Note>
-For **SP route** (economy and official), see [SP Create Video](/en/api-reference/seedance/sp/create). For **MD route**, see [MD Create Video](/en/api-reference/seedance/md/create).
+For **SP route** (economy and official), see [SP Create Video](/en/api-reference/seedance/sp/create). For **MD route**, see [MD Create Video](/en/api-reference/seedance/md/create). For **STD standard**, see [STD Create Video](/en/api-reference/seedance/md/std).
 </Note>
 
 ## Request fields
@@ -47,6 +48,7 @@ For **SP route** (economy and official), see [SP Create Video](/en/api-reference
 - **`reference_videos`**: Only `sd2_mx_video_*` and `sd2_mx_video_fast_*` models support reference videos; standard Manxue and Fast models do not.
 - **SP economy**: See [SP Create Video](/en/api-reference/seedance/sp/create).
 - **MD**: Pass publicly reachable `https://` URLs; reference audio is not supported. See [MD Create Video](/en/api-reference/seedance/md/create).
+- **STD standard**: Pass publicly reachable `https://` image, video, or audio URLs directly. Supports up to 9 reference images and 3 reference audio clips. Output is fixed at 720p. See [STD Create Video](/en/api-reference/seedance/md/std).
 
 ### Constraints
 

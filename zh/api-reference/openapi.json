@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，720p，不支持音频）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create 文档。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，720p，不支持音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create 和 seedance/md/std 文档。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -833,7 +833,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次，720p）"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次，720p）。STD 标准版: seedance2.0-std（按次，720p）"
           },
           "prompt": {
             "type": "string",
@@ -841,7 +841,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-12；SP 经济版 4-15；MD 1-15。默认 5"
+            "description": "时长（秒）。满血版 4-12；SP 经济版 4-15；MD 1-15；STD 标准版 4-15。默认 5"
           },
           "resolution": {
             "type": "string",
@@ -865,11 +865,11 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD 可为 https:// URL。MD 最多 4 张。与首尾帧不可同时使用"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD 可为 https:// URL。MD 最多 4 张，STD 最多 9 张。与首尾帧不可同时使用"
           },
           "ratio": {
             "type": "string",
-            "description": "输出比例。MD 仅支持 16:9、9:16、1:1；满血版还支持 4:3、3:4、21:9、Adaptive"
+            "description": "输出比例。MD 仅支持 16:9、9:16、1:1；STD 支持 21:9、16:9、4:3、1:1、3:4、9:16；满血版还支持 4:3、3:4、21:9、Adaptive"
           },
           "first_image": {
             "type": "string",
@@ -891,7 +891,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/SP 经济版支持；MD 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL 或 asset://，且须搭配参考图/视频或首尾帧"
+            "description": "参考音频列表。满血版/SP 经济版/STD 支持；MD 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL 或 asset://，且须搭配参考图/视频或首尾帧。STD 最多 3 段，首尾帧模式不支持音频参考"
           }
         }
       },

@@ -1,0 +1,134 @@
+---
+title: 'STD Create Video'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+Create a Seedance **STD** video task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+
+<Note>
+This endpoint is shared with [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Use `model: "seedance2.0-std"` to select the standard route.
+</Note>
+
+## Model
+
+| Route | `model` value | Billing | Duration | Output |
+|-------|---------------|---------|----------|--------|
+| STD standard | `seedance2.0-std` | Per task | 4–15 s | Fixed 720p |
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | Use `seedance2.0-std` |
+| `prompt` | string | Yes | Text prompt |
+| `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
+| `ratio` | string | No | `16:9` (default), `9:16`, `1:1`, `4:3`, `3:4`, or `21:9` |
+| `images` | string[] | No | Reference images, max **9** |
+| `first_image` | string | No | First frame |
+| `last_image` | string | No | Last frame |
+| `reference_videos` | string[] | No | Reference videos |
+| `reference_audios` | string[] | No | Reference audio clips, max **3** |
+
+<Warning>
+The `resolution` field is ignored. STD output is always 720p.
+</Warning>
+
+## Assets
+
+- Pass publicly reachable `https://` image, video, or audio URLs directly.
+- `reference_videos` only accepts video URLs. Put image URLs in `images`.
+- SP asset library (`asset://`) and Full-route audit flows do not apply to STD.
+
+## Constraints
+
+- Do not combine `images` (reference image mode) with `first_image` / `last_image` (frame mode).
+- Frame mode accepts `first_image`, `last_image`, or both.
+- Frame mode does not support `reference_audios`.
+- `ratio` must be one of `21:9`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16`.
+- At most 9 items in `images`.
+- At most 3 items in `reference_audios`.
+- `reference_videos` only supports video URLs, not image URLs.
+
+## Examples
+
+### Reference images
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-std",
+    "prompt": "A subject walks through city streets in morning light, steady tracking shot, cinematic lighting",
+    "duration": 8,
+    "ratio": "16:9",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### Video and audio references
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-std",
+    "prompt": "Use the motion rhythm from the reference video to create a music-driven product showcase",
+    "duration": 10,
+    "ratio": "9:16",
+    "reference_videos": [
+      "https://example.com/motion.mp4"
+    ],
+    "reference_audios": [
+      "https://example.com/music.mp3"
+    ]
+  }'
+```
+
+### First and last frame image-to-video
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-std",
+    "prompt": "Smooth transition from an indoor window scene to a rooftop city night, slow dolly in",
+    "duration": 6,
+    "ratio": "21:9",
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
+  }'
+```
+
+## Response
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-std",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Poll for result
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Statuses: `queued` → `processing` → `completed` or `failed`. Video URL is in `data.result.video_url` when completed.
+
+<Note>
+Result URLs are retained for about **3 days**. Download promptly.
+</Note>

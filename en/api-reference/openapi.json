@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task, 720p, no audio). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create for MD details.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md, per-task, 720p, no audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create and seedance/md/std for details.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -833,7 +833,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task, 720p)"
+            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution). MD: seedance2.0-md | seedance2.0-fast-md (per-task, 720p). STD standard: seedance2.0-std (per-task, 720p)"
           },
           "prompt": {
             "type": "string",
@@ -841,7 +841,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-12; SP economy 4-15; MD 1-15. Default 5"
+            "description": "Duration in seconds. Full 4-12; SP economy 4-15; MD 1-15; STD standard 4-15. Default 5"
           },
           "resolution": {
             "type": "string",
@@ -865,11 +865,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference images. Full route: asset://{assetId}; SP/MD: https:// URL. MD max 4. Mutually exclusive with first_image/last_image"
+            "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD: https:// URL. MD max 4; STD max 9. Mutually exclusive with first_image/last_image"
           },
           "ratio": {
             "type": "string",
-            "description": "Aspect ratio. MD: 16:9, 9:16, 1:1 only. Full route also supports 4:3, 3:4, 21:9, Adaptive"
+            "description": "Aspect ratio. MD: 16:9, 9:16, 1:1 only. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
           },
           "first_image": {
             "type": "string",
@@ -891,7 +891,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio. Supported on Full and SP economy (SP requires paired images/videos or frames). Not supported on MD. Full: asset://{assetId}; SP: https:// URL or asset://"
+            "description": "Reference audio. Supported on Full, SP economy, and STD. Not supported on MD. Full: asset://{assetId}; SP: https:// URL or asset://. STD max 3 clips; frame mode does not support audio references"
           }
         }
       },

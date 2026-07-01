@@ -114,6 +114,7 @@
                 "group": "Seedance MD",
                 "pages": [
                   "en/api-reference/seedance/md/create",
+                  "en/api-reference/seedance/md/fast-i2v",
                   "en/api-reference/seedance/md/std"
                 ]
               },
@@ -229,6 +230,7 @@
                 "group": "Seedance MD",
                 "pages": [
                   "zh/api-reference/seedance/md/create",
+                  "zh/api-reference/seedance/md/fast-i2v",
                   "zh/api-reference/seedance/md/std"
                 ]
               },

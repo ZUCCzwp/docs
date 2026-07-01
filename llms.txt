@@ -82,6 +82,8 @@
 
 - [MD Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
 - [MD 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
+- [Fast I2V Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/fast-i2v.md): Create a Seedance Fast I2V (seedance2.0-fast-i2v) video task.
+- [Fast I2V 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/fast-i2v.md): 创建 Seedance Fast I2V（seedance2.0-fast-i2v）视频任务。
 
 ### SoundClone
 

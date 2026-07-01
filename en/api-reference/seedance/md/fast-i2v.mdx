@@ -1,0 +1,108 @@
+---
+title: 'Fast I2V Create Video'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+Create a Seedance **Fast I2V** (`seedance2.0-fast-i2v`) video task. Only image references are supported; reference videos and reference audio are not supported. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+
+<Note>
+This endpoint is shared with [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Both the request and billing model name is `seedance2.0-fast-i2v`.
+</Note>
+
+## Model
+
+| Route | `model` value | Billing | Duration | Output |
+|-------|---------------|---------|----------|--------|
+| Fast I2V | `seedance2.0-fast-i2v` | Per task | 1–15 s | Fixed 720p |
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | Always `seedance2.0-fast-i2v` |
+| `prompt` | string | Yes | Text prompt, max **5000** characters |
+| `duration` | int | Yes | Length in seconds, 1–15 (default 5) |
+| `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
+| `images` | string[] | No | Reference images |
+| `first_image` | string | No | First frame |
+| `last_image` | string | No | Last frame |
+
+<Warning>
+`seedance2.0-fast-i2v` does **not** support `reference_videos` or `reference_audios`. The `resolution` field is ignored; output is always 720p.
+</Warning>
+
+## Assets
+
+- Pass publicly reachable `https://` image URLs directly.
+- SP asset library (`asset://`) and Full-route audit flows do not apply.
+
+## Constraints
+
+- Do not combine `images` (reference mode) with `first_image` / `last_image` (frame mode).
+- At most **9** reference images in total (`images` + non-empty `first_image` / `last_image`).
+- `ratio` must be one of `16:9`, `9:16`, `1:1`.
+- Prompt at most 5000 characters.
+
+## Examples
+
+### Reference images
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-i2v",
+    "prompt": "Subject turns slowly, breeze in hair, cinematic lighting",
+    "duration": 8,
+    "ratio": "16:9",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### First and last frame
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-i2v",
+    "prompt": "Rainy street at night, girl looks back and smiles, slow dolly in",
+    "duration": 5,
+    "ratio": "9:16",
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
+  }'
+```
+
+## Response
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-fast-i2v",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Poll for result
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Statuses: `queued` → `processing` → `completed` or `failed`. Video URL is in `data.result.video_url` when completed.
+
+<Note>
+Result URLs are retained for about **3 days**. Download promptly.
+</Note>

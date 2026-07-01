@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，720p，不支持音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create 和 seedance/md/std 文档。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md，按次计费，720p，不支持音频）、Fast I2V（seedance2.0-fast-i2v，按次计费，720p，仅图片参考最多 9 张，不支持参考视频/音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create、seedance/md/fast-i2v 和 seedance/md/std 文档。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -833,7 +833,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次，720p）。STD 标准版: seedance2.0-std（按次，720p）"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒）。MD: seedance2.0-md | seedance2.0-fast-md（按次，720p）。Fast I2V: seedance2.0-fast-i2v（按次，720p，仅图片参考）。STD 标准版: seedance2.0-std（按次，720p）"
           },
           "prompt": {
             "type": "string",
@@ -865,7 +865,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD 可为 https:// URL。MD 最多 4 张，STD 最多 9 张。与首尾帧不可同时使用"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。MD 最多 4 张，seedance2.0-fast-i2v 与 STD 最多 9 张。与首尾帧不可同时使用"
           },
           "ratio": {
             "type": "string",
@@ -884,14 +884,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。MD 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间"
+            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。MD 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/SP 经济版/STD 支持；MD 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL 或 asset://，且须搭配参考图/视频或首尾帧。STD 最多 3 段，首尾帧模式不支持音频参考"
+            "description": "参考音频列表。满血版/SP 经济版/STD 支持；MD 与 seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL 或 asset://，且须搭配参考图/视频或首尾帧。STD 最多 3 段，首尾帧模式不支持音频参考"
           }
         }
       },

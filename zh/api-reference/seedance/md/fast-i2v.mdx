@@ -1,0 +1,108 @@
+---
+title: 'Fast I2V 创建视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **Fast I2V**（`seedance2.0-fast-i2v`）视频生成任务。仅支持图片参考，不支持参考视频与参考音频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+<Note>
+本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。请求与计费模型均为 `seedance2.0-fast-i2v`。
+</Note>
+
+## 模型
+
+| 线路 | `model` 取值 | 计费 | 时长 | 输出 |
+|------|-------------|------|------|------|
+| Fast I2V | `seedance2.0-fast-i2v` | 按次 | 1–15 秒 | 固定 720p |
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定为 `seedance2.0-fast-i2v` |
+| `prompt` | string | 是 | 视频生成提示词，最多 **5000** 字符 |
+| `duration` | int | 是 | 时长（秒），1–15，默认 5 |
+| `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+
+<Warning>
+`seedance2.0-fast-i2v` **不支持** `reference_videos`（参考视频）与 `reference_audios`（参考音频）。`resolution` 字段无效，输出固定 720p。
+</Warning>
+
+## 素材说明
+
+- 直接传入可公网访问的 `https://` 图片 URL。
+- 不支持 SP 素材库 `asset://` 流程；满血版素材审核流程也不适用。
+
+## 约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- 参考图合计（`images` + `first_image` + `last_image` 中非空项）最多 **9** 张。
+- `ratio` 仅支持 `16:9`、`9:16`、`1:1`。
+- `prompt` 最多 5000 字符。
+
+## 示例
+
+### 参考图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-i2v",
+    "prompt": "人物缓缓转头，微风拂动发丝，电影感光影",
+    "duration": 8,
+    "ratio": "16:9",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg"
+    ]
+  }'
+```
+
+### 首尾帧图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-i2v",
+    "prompt": "雨夜街头，女孩回头微笑，镜头缓慢推进",
+    "duration": 5,
+    "ratio": "9:16",
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-fast-i2v",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.video_url` 获取视频地址。
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
+</Note>

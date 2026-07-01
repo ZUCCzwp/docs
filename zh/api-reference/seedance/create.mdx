@@ -21,10 +21,11 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | **Mini 视频参考** | `seedance2.0-mini-video` | 按秒 × 分辨率 | 4–15 秒 | 支持 `reference_videos`，其他同 SP |
 | **MD（标准）** | `seedance2.0-md` | 按次 | 4–15 秒 | 直接传 URL；见 [MD 创建视频](/zh/api-reference/seedance/md/create) |
 | **MD（快速）** | `seedance2.0-fast-md` | 按次 | 4–15 秒 | 同上 |
+| **Fast I2V** | `seedance2.0-fast-i2v` | 按次 | 1–15 秒 | 仅图片参考，最多 9 张；不支持参考视频/音频；见 [Fast I2V 创建视频](/zh/api-reference/seedance/md/fast-i2v) |
 | **STD 标准版** | `seedance2.0-std` | 按次 | 4–15 秒 | 直接传 URL；支持最多 9 张参考图和最多 3 段参考音频；见 [STD 创建视频](/zh/api-reference/seedance/md/std) |
 
 <Note>
-**SP 线路**（经济版 / 官方版）见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。**MD 线路**见 [MD 创建视频](/zh/api-reference/seedance/md/create)。**STD 标准版**见 [STD 创建视频](/zh/api-reference/seedance/md/std)。
+**SP 线路**（经济版 / 官方版）见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。**MD 线路**见 [MD 创建视频](/zh/api-reference/seedance/md/create)。**Fast I2V**见 [Fast I2V 创建视频](/zh/api-reference/seedance/md/fast-i2v)。**STD 标准版**见 [STD 创建视频](/zh/api-reference/seedance/md/std)。
 </Note>
 
 ## 请求参数说明
@@ -48,6 +49,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 - **`reference_videos`**：仅 `sd2_mx_video_*`、`sd2_mx_video_fast_*` 模型支持；满血版与 Fast 系列不支持。
 - **SP 经济版**：见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
 - **MD**：直接传入可公网访问的 `https://` 图片或视频 URL；不支持音频参考。详见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
+- **Fast I2V**（`seedance2.0-fast-i2v`）：仅支持图片参考（最多 9 张），不支持参考视频与音频。详见 [Fast I2V 创建视频](/zh/api-reference/seedance/md/fast-i2v)。
 - **STD 标准版**：直接传入可公网访问的 `https://` 图片、视频或音频 URL；支持最多 9 张参考图、最多 3 段参考音频，输出固定 720p。详见 [STD 创建视频](/zh/api-reference/seedance/md/std)。
 
 ### 通用约束

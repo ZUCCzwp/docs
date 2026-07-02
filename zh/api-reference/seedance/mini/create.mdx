@@ -1,0 +1,154 @@
+---
+title: 'Mini 创建视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **2.0 Mini** 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+<Note>
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版见满血版文档，SP 经济版见 [SP 创建视频](/zh/api-reference/seedance/sp/create)。
+</Note>
+
+## 模型
+
+| 线路 | 请求 `model` | 计费模型名 | 时长 |
+|------|-------------|-----------|------|
+| Mini 标准 | `seedance2.0-mini` | `seedance2.0-mini-{resolution}` | 4–15 秒 |
+| Mini 视频参考 | `seedance2.0-mini-video` | `seedance2.0-mini-{resolution}-video` | 4–15 秒 |
+
+`{resolution}` 为 `480p`、`720p`（默认）或 `1080p`，由请求字段 `resolution` 指定。
+
+## 计费说明
+
+Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
+
+| 项目 | 说明 |
+|------|------|
+| 计费方式 | **单价（元/秒）× 计费秒数** |
+| 单价来源 | 以 [控制台定价](https://open.jimmyai.cn) 中对应计费模型名为准（如 `seedance2.0-mini-720p`） |
+| 分辨率 | `480p`、`720p`（默认）、`1080p`；通过 `resolution` 字段指定 |
+| 生成时长 | `duration` 字段，范围 4–15 秒，默认 5 秒 |
+
+### 计费秒数
+
+- **`seedance2.0-mini`**：计费秒数 = 请求的 `duration`。
+- **`seedance2.0-mini-video`**（含参考视频）：计费秒数 = `duration` + **参考视频时长**（取 `reference_videos` 中第一个视频的秒数，四舍五入取整）。若无法获取参考视频时长，则回退为仅按 `duration` 计费。
+
+### 计费示例
+
+假设控制台 `seedance2.0-mini-720p` 单价为 **0.05 元/秒**：
+
+| 场景 | 请求 | 计费秒数 | 费用 |
+|------|------|---------|------|
+| 图生视频 5 秒 | `model: seedance2.0-mini`，`duration: 5`，`resolution: 720p` | 5 | 0.05 × 5 = **0.25 元** |
+| 视频参考 8 秒 + 参考视频 3 秒 | `model: seedance2.0-mini-video`，`duration: 8`，参考视频 3 秒 | 11 | 0.05 × 11 = **0.55 元** |
+
+<Note>
+实际单价因分辨率与用户专属定价而异，提交前可在控制台查看当前报价。
+</Note>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance2.0-mini` 或 `seedance2.0-mini-video` |
+| `prompt` | string | 是 | 视频生成提示词 |
+| `duration` | int | 是 | 时长（秒），4–15，默认 5 |
+| `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
+| `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+| `reference_videos` | string[] | 否 | 参考视频；仅 `seedance2.0-mini-video` 支持 |
+| `reference_audios` | string[] | 否 | 参考音频；须搭配参考图、参考视频或首尾帧 |
+
+## 素材说明
+
+- 可直接传入公网可访问的 `https://` URL。
+- 也可先通过 [文件上传](/zh/api-reference/common/files-upload) 获取 URL 后引用。
+- **无需**满血版素材审核流程。
+
+## 约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- `reference_videos` 仅 `seedance2.0-mini-video` 支持。
+- `reference_audios` 不能单独使用，须搭配参考图、参考视频或首尾帧。
+
+## 示例
+
+### Mini — 参考图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini",
+    "prompt": "人物缓缓转头，微风拂动发丝",
+    "duration": 6,
+    "resolution": "720p",
+    "ratio": "9:16",
+    "images": ["https://example.com/ref-1.jpg"]
+  }'
+```
+
+### Mini — 首尾帧图生视频
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini",
+    "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
+    "duration": 5,
+    "resolution": "1080p",
+    "ratio": "16:9",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+### Mini 视频参考
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini-video",
+    "prompt": "延续参考视频的运动节奏与镜头语言",
+    "duration": 8,
+    "resolution": "720p",
+    "ratio": "16:9",
+    "images": ["https://example.com/ref.jpg"],
+    "reference_videos": ["https://example.com/motion.mp4"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-mini",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.video_url` 获取视频地址。
+
+<Note>
+视频结果 URL 保存约 **3 天**，请及时转存。
+</Note>

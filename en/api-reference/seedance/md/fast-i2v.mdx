@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 Create a Seedance **Fast I2V** (`seedance2.0-fast-i2v`) video task. Only image references are supported; reference videos and reference audio are not supported. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This endpoint is shared with [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Both the request and billing model name is `seedance2.0-fast-i2v`.
+This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Both the request and billing model name is `seedance2.0-fast-i2v`.
 </Note>
 
 ## Model

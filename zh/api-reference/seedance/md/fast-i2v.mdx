@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建 Seedance **Fast I2V**（`seedance2.0-fast-i2v`）视频生成任务。仅支持图片参考，不支持参考视频与参考音频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Note>
-本接口与 [创建 Seedance 视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。请求与计费模型均为 `seedance2.0-fast-i2v`。
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。请求与计费模型均为 `seedance2.0-fast-i2v`。
 </Note>
 
 ## 模型

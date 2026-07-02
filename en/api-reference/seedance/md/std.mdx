@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 Create a Seedance **STD** video task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This endpoint is shared with [Create Seedance Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Use `model: "seedance2.0-std"` to select the standard route.
+This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Use `model: "seedance2.0-std"` to select the standard route.
 </Note>
 
 ## Model

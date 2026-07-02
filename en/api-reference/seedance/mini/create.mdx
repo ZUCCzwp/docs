@@ -1,0 +1,154 @@
+---
+title: 'Mini Create Video'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+Create a Seedance **2.0 Mini** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+
+<Note>
+This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for SP economy, see [SP Create Video](/en/api-reference/seedance/sp/create).
+</Note>
+
+## Models
+
+| Route | Request `model` | Billing model name | Duration |
+|-------|-----------------|-------------------|----------|
+| Mini standard | `seedance2.0-mini` | `seedance2.0-mini-{resolution}` | 4–15 s |
+| Mini video reference | `seedance2.0-mini-video` | `seedance2.0-mini-{resolution}-video` | 4–15 s |
+
+`{resolution}` is `480p`, `720p` (default), or `1080p`, set via the `resolution` field.
+
+## Billing
+
+Mini routes are billed **per second**; each resolution has its own unit price.
+
+| Item | Description |
+|------|-------------|
+| Formula | **unit price (per second) × billable seconds** |
+| Unit price | See the [console pricing](https://open.jimmyai.cn) for the billing model name (e.g. `seedance2.0-mini-720p`) |
+| Resolution | `480p`, `720p` (default), `1080p` via `resolution` |
+| Generation length | `duration` field, 4–15 seconds (default 5) |
+
+### Billable seconds
+
+- **`seedance2.0-mini`**: billable seconds = requested `duration`.
+- **`seedance2.0-mini-video`** (with reference video): billable seconds = `duration` + **reference video length** (first item in `reference_videos`, rounded to nearest second). If reference duration cannot be read, falls back to `duration` only.
+
+### Examples
+
+Assume `seedance2.0-mini-720p` unit price is **$0.05/s**:
+
+| Scenario | Request | Billable seconds | Cost |
+|----------|---------|------------------|------|
+| Image-to-video, 5 s | `model: seedance2.0-mini`, `duration: 5`, `resolution: 720p` | 5 | 0.05 × 5 = **$0.25** |
+| Video ref, 8 s + 3 s ref | `model: seedance2.0-mini-video`, `duration: 8`, 3 s reference | 11 | 0.05 × 11 = **$0.55** |
+
+<Note>
+Actual unit prices vary by resolution and per-user pricing. Check the console before submitting tasks.
+</Note>
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `seedance2.0-mini` or `seedance2.0-mini-video` |
+| `prompt` | string | Yes | Text prompt |
+| `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
+| `resolution` | string | No | Output resolution: `480p`, `720p` (default), `1080p` |
+| `ratio` | string | No | Aspect ratio, e.g. `16:9`, `9:16`, `1:1` |
+| `images` | string[] | No | Reference images |
+| `first_image` | string | No | First frame image |
+| `last_image` | string | No | Last frame image |
+| `reference_videos` | string[] | No | Reference videos; only for `seedance2.0-mini-video` |
+| `reference_audios` | string[] | No | Reference audio; must be paired with images, video, or frames |
+
+## Assets
+
+- Pass publicly reachable `https://` URLs directly.
+- Or upload via [File Upload](/en/api-reference/common/files-upload) and use the returned URL.
+- **No** Manxue asset audit required.
+
+## Constraints
+
+- `images` (reference mode) and `first_image` / `last_image` (frame mode) **cannot be used together**.
+- `reference_videos` is only supported on `seedance2.0-mini-video`.
+- `reference_audios` cannot be used alone; pair with images, reference video, or frames.
+
+## Examples
+
+### Mini — reference image
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini",
+    "prompt": "The subject slowly turns their head, hair moving in a gentle breeze",
+    "duration": 6,
+    "resolution": "720p",
+    "ratio": "9:16",
+    "images": ["https://example.com/ref-1.jpg"]
+  }'
+```
+
+### Mini — first/last frame
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini",
+    "prompt": "Rainy street at night, girl turns and smiles, cinematic dolly in",
+    "duration": 5,
+    "resolution": "1080p",
+    "ratio": "16:9",
+    "first_image": "https://example.com/start.png"
+  }'
+```
+
+### Mini video reference
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini-video",
+    "prompt": "Match the motion rhythm and camera language of the reference clip",
+    "duration": 8,
+    "resolution": "720p",
+    "ratio": "16:9",
+    "images": ["https://example.com/ref.jpg"],
+    "reference_videos": ["https://example.com/motion.mp4"]
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_abc123",
+    "status": "queued",
+    "model": "seedance2.0-mini",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Task status: `queued` → `processing` → `completed` / `failed`. Read the video URL from `data.result.video_url` when completed.
+
+<Note>
+Result URLs are kept for about **3 days**. Download promptly.
+</Note>

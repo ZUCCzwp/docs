@@ -92,11 +92,17 @@
                 ]
               },
               {
-                "group": "Seedance Video",
+                "group": "Seedance Full Video",
                 "pages": [
                   "en/api-reference/seedance/create",
                   "en/api-reference/seedance/assets-audit",
                   "en/api-reference/seedance/assets-status"
+                ]
+              },
+              {
+                "group": "Seedance 2.0 Video",
+                "pages": [
+                  "en/api-reference/seedance/mini/create"
                 ]
               },
               {
@@ -208,11 +214,17 @@
                 ]
               },
               {
-                "group": "Seedance 视频",
+                "group": "Seedance 满血版视频",
                 "pages": [
                   "zh/api-reference/seedance/create",
                   "zh/api-reference/seedance/assets-audit",
                   "zh/api-reference/seedance/assets-status"
+                ]
+              },
+              {
+                "group": "Seedance 2.0 视频",
+                "pages": [
+                  "zh/api-reference/seedance/mini/create"
                 ]
               },
               {

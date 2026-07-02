@@ -1,0 +1,60 @@
+---
+title: 'Mini 特价版 创建视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **2.0 Mini 特价版**视频生成任务（上游 `aigc.cglol.com`）。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+<Note>
+本接口与 Seedance 其他线路共用 `POST /api/open-api/v1/seedance/videos`，通过 `model` 区分。
+</Note>
+
+## 模型
+
+| 线路 | 请求 `model` | 计费模型名 | 计费方式 | 分辨率 |
+|------|-------------|-----------|---------|-------|
+| Mini 特价版 | `seedance2.0-mini-sp` | `seedance2.0-mini-sp-{resolution}` | **按次** | `480p` / `720p` |
+
+`{resolution}` 仅支持 `480p`、`720p`（默认），由请求字段 `resolution` 指定。
+
+## 计费说明
+
+- **按次计费**：费用 = 控制台对应计费模型的单价（如 `seedance2.0-mini-sp-720p`）。
+- `duration` 仍为上游生成参数（4–15 秒，默认 5），但不参与计费。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定为 `seedance2.0-mini-sp` |
+| `prompt` | string | 是 | 视频生成提示词 |
+| `duration` | int | 是 | 时长（秒），4–15，默认 5 |
+| `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认） |
+| `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表 |
+| `first_image` | string | 否 | 首帧图片 |
+| `last_image` | string | 否 | 尾帧图片 |
+| `reference_videos` | string[] | 否 | 参考视频 |
+| `reference_audios` | string[] | 否 | 参考音频；须搭配参考图、参考视频或首尾帧 |
+
+## 约束
+
+- `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
+- `reference_audios` 不能单独使用，须搭配参考图、参考视频或首尾帧。
+
+## 示例
+
+```bash
+curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini-sp",
+    "prompt": "一名美国本土模特展示衣服细节，转圈。",
+    "duration": 10,
+    "resolution": "720p",
+    "ratio": "9:16",
+    "images": ["https://example.com/ref-1.jpg"]
+  }'
+```
+

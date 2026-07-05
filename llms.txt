@@ -28,6 +28,13 @@
 - [查询图片任务](https://docs.jimmyai.cn/zh/api-reference/images/query.md): 查询图片生成任务的状态和结果。
 - [查询声音克隆任务](https://docs.jimmyai.cn/zh/api-reference/common/sound-clone-query.md): 查询 SoundClone 任务状态与 audioUrl。
 
+### Account Management
+
+- [Query User Account Balance](https://docs.jimmyai.cn/en/api-reference/common/user-balance.md): GET /user/balance — JimiCoin account balance for the API key owner.
+- [Query API Key Quota Balance](https://docs.jimmyai.cn/en/api-reference/common/key-balance.md): GET /key/balance — per-key usage quota.
+- [查询用户账户余额](https://docs.jimmyai.cn/zh/api-reference/common/user-balance.md): GET /user/balance — 查询 API Key 所属用户的吉米币账户余额。
+- [查询 API Key 额度余额](https://docs.jimmyai.cn/zh/api-reference/common/key-balance.md): GET /key/balance — 查询当前 Key 的调用额度。
+
 ### Sora Video
 
 - [Create Video](https://docs.jimmyai.cn/en/api-reference/videos/create.md): Create a video generation task using Sora models (route1, route3, route6).

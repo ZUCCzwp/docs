@@ -739,6 +739,74 @@
         }
       }
     },
+    "/api/open-api/v1/user/balance": {
+      "get": {
+        "summary": "Query User Account Balance",
+        "description": "Returns the JimiCoin account balance for the user who owns the API key (total balance, net consumption, available balance). used_coin is account-wide consumption minus refunds across all keys. OpenAPI usage is billed against this account.",
+        "operationId": "getUserBalance",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Success",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "balance": 100.5,
+                        "used_coin": 20.3,
+                        "available": 80.2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/key/balance": {
+      "get": {
+        "summary": "Query API Key Quota Balance",
+        "description": "Returns quota usage for the current API key (total, used, remaining). total_quota of 0 means unlimited. used_quota is cumulative billed OpenAPI cost for this key only; unlike /user/balance used_coin (account-wide net consumption).",
+        "operationId": "getApiKeyBalance",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Success",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "name": "production-key",
+                        "total_quota": 1000,
+                        "used_quota": 120.5,
+                        "available_quota": 879.5,
+                        "unlimited": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/files/upload": {
       "post": {
         "summary": "Upload File",
@@ -2289,6 +2357,80 @@
           },
           "data": {
             "$ref": "#/components/schemas/FileUploadData"
+          }
+        }
+      },
+      "UserBalanceData": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "Total account balance (includes active subscription credits)"
+          },
+          "used_coin": {
+            "type": "number",
+            "description": "Account net consumption (sum of consumption minus refunds), across all API keys"
+          },
+          "available": {
+            "type": "number",
+            "description": "Available balance"
+          }
+        }
+      },
+      "UserBalanceApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserBalanceData"
+          }
+        }
+      },
+      "ApiKeyBalanceData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "API key display name"
+          },
+          "total_quota": {
+            "type": "number",
+            "description": "Total quota; 0 means unlimited"
+          },
+          "used_quota": {
+            "type": "number",
+            "description": "Quota consumed by this key: cumulative billed OpenAPI cost (JimiCoin), compared against total_quota for enforcement"
+          },
+          "available_quota": {
+            "type": "number",
+            "description": "Remaining quota"
+          },
+          "unlimited": {
+            "type": "boolean",
+            "description": "Whether quota is unlimited"
+          }
+        }
+      },
+      "ApiKeyBalanceApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ApiKeyBalanceData"
           }
         }
       }

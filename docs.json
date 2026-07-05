@@ -59,6 +59,13 @@
                 ]
               },
               {
+                "group": "Account Management",
+                "pages": [
+                  "en/api-reference/common/user-balance",
+                  "en/api-reference/common/key-balance"
+                ]
+              },
+              {
                 "group": "Sora Video",
                 "pages": [
                   "en/api-reference/videos/create"
@@ -179,6 +186,13 @@
                   "zh/api-reference/common/query",
                   "zh/api-reference/images/query",
                   "zh/api-reference/common/sound-clone-query"
+                ]
+              },
+              {
+                "group": "账户管理",
+                "pages": [
+                  "zh/api-reference/common/user-balance",
+                  "zh/api-reference/common/key-balance"
                 ]
               },
               {

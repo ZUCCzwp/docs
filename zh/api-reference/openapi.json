@@ -739,6 +739,74 @@
         }
       }
     },
+    "/api/open-api/v1/user/balance": {
+      "get": {
+        "summary": "查询用户账户余额",
+        "description": "查询当前 API Key 所属用户的吉米币账户余额（总余额、历史净消费、可用余额）。used_coin 为账户全量消费减退款，含所有 Key；OpenAPI 调用费用从该账户扣除。",
+        "operationId": "getUserBalance",
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "查询成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "balance": 100.5,
+                        "used_coin": 20.3,
+                        "available": 80.2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/key/balance": {
+      "get": {
+        "summary": "查询 API Key 额度余额",
+        "description": "查询当前 API Key 的调用额度（总额度、已用、剩余）。total_quota 为 0 时表示不限额。used_quota 为本 Key 已成功扣费的 OpenAPI 调用费用累计，用于额度上限校验；与 /user/balance 的 used_coin（账户全量净消费）统计维度不同。",
+        "operationId": "getApiKeyBalance",
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "查询成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "name": "production-key",
+                        "total_quota": 1000,
+                        "used_quota": 120.5,
+                        "available_quota": 879.5,
+                        "unlimited": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/files/upload": {
       "post": {
         "summary": "上传文件",
@@ -2300,6 +2368,80 @@
           },
           "data": {
             "$ref": "#/components/schemas/FileUploadData"
+          }
+        }
+      },
+      "UserBalanceData": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "账户总余额（含有效订阅赠送币）"
+          },
+          "used_coin": {
+            "type": "number",
+            "description": "账户历史净消费（全部消费记录之和减去退款记录之和），含该用户下所有 API Key"
+          },
+          "available": {
+            "type": "number",
+            "description": "可用余额"
+          }
+        }
+      },
+      "UserBalanceApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserBalanceData"
+          }
+        }
+      },
+      "ApiKeyBalanceData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "API Key 名称"
+          },
+          "total_quota": {
+            "type": "number",
+            "description": "总额度，0 表示不限额"
+          },
+          "used_quota": {
+            "type": "number",
+            "description": "本 Key 已用额度：经该 Key 发起且已成功扣费的 OpenAPI 费用累计（吉米币），用于与 total_quota 比较做额度限制"
+          },
+          "available_quota": {
+            "type": "number",
+            "description": "剩余额度"
+          },
+          "unlimited": {
+            "type": "boolean",
+            "description": "是否不限额"
+          }
+        }
+      },
+      "ApiKeyBalanceApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ApiKeyBalanceData"
           }
         }
       }

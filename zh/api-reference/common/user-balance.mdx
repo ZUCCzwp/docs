@@ -1,0 +1,41 @@
+---
+title: '查询用户账户余额'
+openapi: 'GET /api/open-api/v1/user/balance'
+---
+
+查询当前 API Key 所属用户的**吉米币账户余额**。OpenAPI 调用产生的费用从该账户扣除；创建任务前可先调用本接口确认可用余额是否充足。
+
+### 响应字段
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `balance` | number | 账户总余额（含有效订阅赠送币） |
+| `used_coin` | number | 历史净消费（见下方说明） |
+| `available` | number | 可用余额 = `balance` - `used_coin` |
+
+### `used_coin` 说明
+
+`used_coin` 表示**用户账户**维度的历史净消费，单位为吉米币。
+
+- **计算方式**：账户下全部 `consumption`（消费）记录之和，减去全部 `refund`（退款）记录之和。
+- **统计范围**：包含该用户下**所有 API Key** 及 OpenAPI 渠道的扣费，不限于当前请求所用的 Key。
+- **与 Key `used_quota` 的区别**：[`/key/balance`](/zh/api-reference/common/key-balance) 中的 `used_quota` 仅统计单 Key 的额度消耗，用于 Key 级上限；`used_coin` 反映整个账户已花出去多少吉米币。
+
+### 示例
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/user/balance' \
+  -H 'Authorization: Bearer YOUR_API_KEY'
+```
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "balance": 100.5,
+    "used_coin": 20.3,
+    "available": 80.2
+  }
+}
+```

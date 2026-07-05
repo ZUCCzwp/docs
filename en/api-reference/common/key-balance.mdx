@@ -1,0 +1,50 @@
+---
+title: 'Query API Key Quota Balance'
+openapi: 'GET /api/open-api/v1/key/balance'
+---
+
+Returns the **quota balance** for the current API key (separate from the user's JimiCoin account). If `total_quota` was set in the console, usage is capped by quota; otherwise the key is unlimited.
+
+### Response fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `name` | string | API key display name |
+| `total_quota` | number | Total quota; `0` means unlimited |
+| `used_quota` | number | Quota consumed (see below) |
+| `available_quota` | number | Remaining quota = `total_quota` - `used_quota`; `0` when unlimited |
+| `unlimited` | boolean | Whether quota is unlimited |
+
+### About `used_quota`
+
+`used_quota` is the **cumulative quota consumed by this API key**, in the same unit as `total_quota` (JimiCoin).
+
+- **Scope**: Only billed OpenAPI calls made with **this key**; excludes other keys on the same account.
+- **When it increases**: Each successfully billed task adds its `cost` to `used_quota` (video, image, SoundClone, and other metered endpoints).
+- **Quota enforcement**: When `total_quota > 0` and `used_quota >= total_quota`, new billed requests from this key are rejected.
+- **vs. account `used_coin`**: [`/user/balance`](/en/api-reference/common/user-balance) `used_coin` is **account-wide** net consumption (consumption minus refunds). `used_quota` is a **per-key** counter for quota limits. On multi-key accounts, the sum of each key's `used_quota` is typically less than or equal to the user's `used_coin`.
+
+<Note>
+Billing still debits the user's JimiCoin account. `total_quota` / `used_quota` only cap how much a single key may consume; they are not a separate balance to top up.
+</Note>
+
+### Example
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/key/balance' \
+  -H 'Authorization: Bearer YOUR_API_KEY'
+```
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "name": "production-key",
+    "total_quota": 1000,
+    "used_quota": 120.5,
+    "available_quota": 879.5,
+    "unlimited": false
+  }
+}
+```

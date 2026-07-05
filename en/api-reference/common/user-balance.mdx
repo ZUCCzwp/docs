@@ -1,0 +1,41 @@
+---
+title: 'Query User Account Balance'
+openapi: 'GET /api/open-api/v1/user/balance'
+---
+
+Returns the **JimiCoin account balance** for the user who owns the API key. OpenAPI usage is billed against this account. Call this endpoint before creating tasks to confirm sufficient `available` balance.
+
+### Response fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `balance` | number | Total account balance (includes active subscription credits) |
+| `used_coin` | number | Net historical consumption (see below) |
+| `available` | number | Available balance = `balance` - `used_coin` |
+
+### About `used_coin`
+
+`used_coin` is **account-wide** net consumption in JimiCoin.
+
+- **Calculation**: Sum of all `consumption` records minus sum of all `refund` records for the user.
+- **Scope**: Includes billed OpenAPI usage from **all API keys** on the account, not only the key used in the current request.
+- **vs. key `used_quota`**: [`/key/balance`](/en/api-reference/common/key-balance) `used_quota` counts consumption for **one key** only (for per-key quota limits). `used_coin` reflects total spend across the whole account.
+
+### Example
+
+```bash
+curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/user/balance' \
+  -H 'Authorization: Bearer YOUR_API_KEY'
+```
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "balance": 100.5,
+    "used_coin": 20.3,
+    "available": 80.2
+  }
+}
+```

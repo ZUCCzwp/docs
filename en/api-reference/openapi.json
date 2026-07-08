@@ -1056,6 +1056,11 @@
               "created_at": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "Billed amount for this task (JimiCoin). Uses per-user custom unit price when configured in the console."
               }
             }
           }
@@ -1136,6 +1141,11 @@
               "created_at": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "Billed amount for this task (JimiCoin). Uses per-user custom unit price when configured in the console."
               }
             }
           }
@@ -1190,6 +1200,11 @@
               },
               "error_message": {
                 "type": "string"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "Billed amount for this task (JimiCoin). Uses per-user custom unit price when configured in the console."
               }
             }
           }

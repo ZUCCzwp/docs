@@ -1056,6 +1056,11 @@
               "created_at": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "本次任务扣费金额（吉米币）。若控制台配置了用户定制单价，则按定制价计费。"
               }
             }
           }
@@ -1136,6 +1141,11 @@
               "created_at": {
                 "type": "integer",
                 "format": "int64"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "本次任务扣费金额（吉米币）。若控制台配置了用户定制单价，则按定制价计费。"
               }
             }
           }
@@ -1190,6 +1200,11 @@
               },
               "error_message": {
                 "type": "string"
+              },
+              "cost": {
+                "type": "number",
+                "format": "double",
+                "description": "本次任务扣费金额（吉米币）。若控制台配置了用户定制单价，则按定制价计费。"
               }
             }
           }

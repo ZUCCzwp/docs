@@ -23,14 +23,14 @@ icon: 'rocket'
 
 ## 第三步：发送请求
 获取接入信息
-API 地址（所谓的 Base_Url）：https://www.jimmyai.cn
+API 地址（所谓的 Base_Url）：https://api.viraltok.ai
 API 密钥：您刚创建的密钥
 
 ### 视频生成示例
 
 ```bash theme={null}
 curl --request POST \
-  --url https://www.jimmyai.cn/api/open-api/v1/videos \
+  --url https://api.viraltok.ai/api/open-api/v1/videos \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -52,7 +52,7 @@ curl --request POST \
 
 ```bash theme={null}
 curl --request GET \
-  --url https://www.jimmyai.cn/api/open-api/v1/videos/{taskId} \
+  --url https://api.viraltok.ai/api/open-api/v1/videos/{taskId} \
   --header 'Authorization: Bearer <token>'
 ```
 

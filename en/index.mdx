@@ -22,14 +22,14 @@ Welcome to our API service! This guide will help you quickly get started with im
 
 ## Step 3: Send a Request
 Get connection info
-API Base URL: https://www.jimmyai.cn
+API Base URL: https://api.viraltok.ai
 API Key: The key you just created
 
 ### Video Generation Example
 
 ```bash theme={null}
 curl --request POST \
-  --url https://www.jimmyai.cn/api/open-api/v1/videos \
+  --url https://api.viraltok.ai/api/open-api/v1/videos \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -51,7 +51,7 @@ Since we use an asynchronous processing mode, you need to query the task status 
 
 ```bash theme={null}
 curl --request GET \
-  --url https://www.jimmyai.cn/api/open-api/v1/videos/{taskId} \
+  --url https://api.viraltok.ai/api/open-api/v1/videos/{taskId} \
   --header 'Authorization: Bearer <token>'
 ```
 

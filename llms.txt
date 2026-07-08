@@ -1,6 +1,6 @@
 # JimmyAI API Documentation
 
-> JimmyAI is a unified OpenAI-compatible API gateway for image and video generation. Base URL: https://www.jimmyai.cn. Authenticate with `Authorization: Bearer <API_KEY>`. Most video and image tasks are async — create a task, then poll the query endpoint for status and results. Docs site: https://docs.jimmyai.cn
+> JimmyAI is a unified OpenAI-compatible API gateway for image and video generation. Base URL: https://api.viraltok.ai. Authenticate with `Authorization: Bearer <API_KEY>`. Most video and image tasks are async — create a task, then poll the query endpoint for status and results. Docs site: https://docs.jimmyai.cn
 
 ## Getting Started
 

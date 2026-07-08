@@ -61,7 +61,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 # 1. 提交审核（见 assets-audit 文档）
 # 2. 轮询审核状态直至 Active
 # 3. 创建视频
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -91,7 +91,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
 ## 查询任务
 
 ```bash
-curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

@@ -61,7 +61,7 @@ Full (Manxue) routes are billed **per second**. Each `model` has its own unit pr
 # 1. Submit assets for audit (see assets-audit doc)
 # 2. Poll audit status until Active
 # 3. Create video
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -91,7 +91,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
 ## Query task
 
 ```bash
-curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

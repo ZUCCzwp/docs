@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://www.jimmyai.cn",
+      "url": "https://api.viraltok.ai",
       "description": "Production server"
     }
   ],

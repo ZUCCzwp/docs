@@ -54,7 +54,7 @@ MD does **not** support `reference_audios`. The `resolution` field is ignored; o
 ### MD standard — reference images
 
 ```bash
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -76,7 +76,7 @@ In frame mode, `first_image` and `last_image` **must both be provided**. First f
 </Note>
 
 ```bash
-curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -107,7 +107,7 @@ curl -X POST 'https://www.jimmyai.cn/api/open-api/v1/seedance/videos' \
 ## Poll for result
 
 ```bash
-curl -X GET 'https://www.jimmyai.cn/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

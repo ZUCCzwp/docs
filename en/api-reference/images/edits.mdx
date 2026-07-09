@@ -7,6 +7,12 @@ openapi: 'POST /api/open-api/v1/images/edits'
 This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/edits`. Upload the source image via `multipart/form-data`. On success, billing is applied immediately and the edited image is returned in `data` (`b64_json` or `url`).
 </Note>
 
+<Note>
+For synchronous image editing, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/edits`).
+</Note>
+
 <Warning>
 Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Each file (`image` / `mask`) must be **≤ 20MB**.
+
+If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [Create Image Task](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
 </Warning>

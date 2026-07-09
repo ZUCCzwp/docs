@@ -79,7 +79,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "Create Image Task",
-        "description": "Create a new image generation task using GPT Image 2 model.",
+        "description": "Create a new image generation task using GPT Image 2 model. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare.",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -167,7 +167,7 @@
     "/api/open-api/v1/images/generations": {
       "post": {
         "summary": "Text-to-Image (Sync)",
-        "description": "Synchronous text-to-image, compatible with OpenAI POST /v1/images/generations. Billed on success; returns image results in data without polling.",
+        "description": "Synchronous text-to-image, compatible with OpenAI POST /v1/images/generations. Billed on success; returns image results in data without polling. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
         "operationId": "generateOpenAIImage",
         "requestBody": {
           "required": true,
@@ -196,7 +196,7 @@
     "/api/open-api/v1/images/edits": {
       "post": {
         "summary": "Edit Image (Sync)",
-        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source images via multipart/form-data (multiple files supported, all using field name `image`); billed on success.",
+        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source images via multipart/form-data (multiple files supported, all using field name `image`); billed on success. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
         "operationId": "editOpenAIImage",
         "requestBody": {
           "required": true,

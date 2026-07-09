@@ -9,6 +9,12 @@ This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/gener
 Unlike [Create Image Task](/en/api-reference/images/create) (async `POST /images`), which returns a `task_id` and requires [Query Image Task](/en/api-reference/images/query).
 </Note>
 
+<Note>
+For synchronous text-to-image, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/generations`).
+</Note>
+
 <Warning>
 Generation often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Responses may include multi‑MB `b64_json`; ensure your client and any proxy support large bodies.
+
+If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [Create Image Task](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
 </Warning>

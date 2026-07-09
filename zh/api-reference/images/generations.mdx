@@ -9,6 +9,12 @@ openapi: 'POST /api/open-api/v1/images/generations'
 与 [创建图片任务](/zh/api-reference/images/create)（异步，`POST /images`）不同：异步接口返回 `task_id`，需通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
 </Note>
 
+<Note>
+同步文生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/generations`）。
+</Note>
+
 <Warning>
 图片生成通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**，避免中途断开。`b64_json` 体积可能达数 MB，请确保调用方与网关支持大响应体。
+
+若同步调用返回 **504 Gateway Timeout**，多为服务端经 **Cloudflare** 代理时 CF 超时断开，任务可能仍在后台执行。生产环境**建议优先使用** [创建图片任务](/zh/api-reference/images/create)（异步）创建后通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
 </Warning>

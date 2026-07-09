@@ -1747,7 +1747,8 @@
           },
           "prompt": {
             "type": "string",
-            "description": "用于生成视频的文本提示词"
+            "maxLength": 4000,
+            "description": "用于生成视频的文本提示词，最多 4000 个字符。"
           },
           "duration": {
             "type": "integer",

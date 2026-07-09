@@ -292,7 +292,7 @@
     "links": [
       {
         "label": "Wechat",
-        "href": "https://www.jimmyai.cn/static/img/wechat-qrcode.60b26a89.png"
+        "href": "/images/wechat-qrcode.png"
       },
       {
         "type": "button",
@@ -308,7 +308,7 @@
     "primary": {
       "type": "button",
       "label": "控制台",
-      "href": "https://open.jimmyai.cn"
+      "href": "https://api.viraltok.ai"
     }
   },
   "contextual": {

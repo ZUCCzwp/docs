@@ -1,0 +1,35 @@
+navbar-link:has(a[href$="wechat-qrcode.png"]) {
+  position: relative;
+}
+
+navbar-link:has(a[href$="wechat-qrcode.png"])::after {
+  content: "";
+  display: none;
+  position: absolute;
+  top: calc(100% - 8px);
+  right: 0;
+  z-index: 1000;
+  width: 224px;
+  height: 232px;
+  box-sizing: border-box;
+  padding: 20px 12px 12px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background-color: #ffffff;
+  background-image: url("/images/wechat-qrcode.png");
+  background-repeat: no-repeat;
+  background-position: center bottom 12px;
+  background-size: 200px 200px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
+}
+
+html.dark navbar-link:has(a[href$="wechat-qrcode.png"])::after {
+  background-color: #111827;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+navbar-link:has(a[href$="wechat-qrcode.png"]):hover::after,
+navbar-link:has(a[href$="wechat-qrcode.png"]):focus-within::after {
+  display: block;
+}

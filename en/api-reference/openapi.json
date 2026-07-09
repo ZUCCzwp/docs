@@ -224,8 +224,8 @@
     },
     "/api/open-api/v1/veo/frames": {
       "post": {
-        "summary": "Create VEO Frames Video Task",
-        "description": "Create a new VEO video generation task using first and last frames.",
+        "summary": "Create VEO Video",
+        "description": "Create a new VEO video generation task.",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,

@@ -14,9 +14,24 @@ This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seed
 | Route | `model` values | Billing | Duration |
 |-------|----------------|---------|----------|
 | MD standard | `seedance2.0-md` | Per task | 4–15 s |
-| MD fast | `seedance2.0-fast-md` | Per task | 4–15 s |
+| MD fast | `seedance2.0-fast-md` | Per task | **10** or **15** s |
+| MD Pro | `seedance2.0-pro` | Per task | **10** or **15** s |
+| MD Pro fast | `seedance2.0-fast-pro` | Per task | **10** or **15** s |
 
 Output is fixed at **720p**. Billing is per task, independent of duration.
+
+## Model features
+
+| Model | Billing | Duration | Asset support | Aspect ratios |
+|-------|---------|----------|---------------|---------------|
+| `seedance2.0-md` | Per task | 4–15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
+| `seedance2.0-fast-md` | Per task | 10 or 15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
+| `seedance2.0-pro` | Per task | 10 or 15 s | Up to **9** reference images, **3** reference audios; **no** reference videos; audio requires images | `16:9`, `9:16`, `1:1` |
+| `seedance2.0-fast-pro` | Per task | 10 or 15 s | Up to **9** reference images, **3** reference audios; **no** reference videos; audio requires images | `16:9`, `9:16`, `1:1` |
+
+<Note>
+Pro models (`seedance2.0-pro` / `seedance2.0-fast-pro`) target higher output quality, support more reference images and audio references, but do not support reference videos. Standard/fast MD supports reference videos with up to 4 reference images.
+</Note>
 
 ## Request fields
 
@@ -24,15 +39,16 @@ Output is fixed at **720p**. Billing is per task, independent of duration.
 |-------|------|----------|-------------|
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt, max **5000** characters |
-| `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
+| `duration` | int | Yes | Length in seconds. `seedance2.0-md` supports 4–15; `seedance2.0-fast-md` / `seedance2.0-pro` / `seedance2.0-fast-pro` support **10** or **15** only. Default 5 |
 | `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
-| `images` | string[] | No | Reference images, max **4** |
+| `images` | string[] | No | Reference images. Standard/fast MD: max **4**; Pro: max **9** |
 | `first_image` | string | No | First frame; must be paired with `last_image` in frame mode |
 | `last_image` | string | No | Last frame; must be paired with `first_image` in frame mode |
-| `reference_videos` | string[] | No | Reference videos, max **3** |
+| `reference_videos` | string[] | No | Reference videos. Only `seedance2.0-md` / `seedance2.0-fast-md`; max **3** |
+| `reference_audios` | string[] | No | Reference audio. Standard/fast MD: max **1** clip; Pro: max **3** clips and must be paired with `images` |
 
 <Warning>
-MD does **not** support `reference_audios`. The `resolution` field is ignored; output is always 720p.
+`seedance2.0-pro` / `seedance2.0-fast-pro` do **not** support `reference_videos`. Pro `reference_audios` cannot be used alone — `images` is required. The `resolution` field is ignored; output is always 720p.
 </Warning>
 
 ## Assets
@@ -45,9 +61,12 @@ MD does **not** support `reference_audios`. The `resolution` field is ignored; o
 - Do not combine `images` (reference mode) with `first_image` / `last_image` (frame mode).
 - **First frame only is not supported**; in frame mode, `first_image` and `last_image` **must both be provided**.
 - `ratio` must be one of `16:9`, `9:16`, `1:1`.
-- At most 4 items in `images`; prompt at most 5000 characters.
-- `reference_audios` is not supported.
-- At most **3** items in `reference_videos`; combined reference video **duration** must be between **4-15 seconds**, combined **size** must not exceed **200MB**; each reference video resolution must be between **720px and 2160px**, and video frame rate must be between **24-60 FPS**.
+- Prompt at most 5000 characters.
+- `seedance2.0-md`: `duration` 4–15 s; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
+- `seedance2.0-fast-md`: `duration` **10** or **15** s only; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
+- `seedance2.0-pro` / `seedance2.0-fast-pro`: `duration` **10** or **15** s only; `images` max 9; **no** `reference_videos`; `reference_audios` max 3 clips and must be paired with `images`.
+- `reference_videos` (standard/fast MD): combined duration ≤ **15** s, combined size ≤ **200MB**; each resolution between **720px and 2160px**, frame rate **24–60 FPS**.
+- `reference_audios`: combined duration ≤ **15** s; frame mode does not support audio references.
 
 ## Examples
 
@@ -69,6 +88,49 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   }'
 ```
 
+### MD Pro — multi-image reference
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-pro",
+    "prompt": "Cinematic street at night, neon reflections on wet pavement, slow dolly in",
+    "duration": 10,
+    "ratio": "16:9",
+    "images": [
+      "https://example.com/ref-1.jpg",
+      "https://example.com/ref-2.jpg",
+      "https://example.com/ref-3.jpg"
+    ]
+  }'
+```
+
+### MD Pro fast — image + audio reference
+
+<Note>
+Pro `reference_audios` must be paired with `images`; audio-only requests are not supported.
+</Note>
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-fast-pro",
+    "prompt": "A cute rabbit playing on the grass with upbeat background music",
+    "duration": 15,
+    "ratio": "9:16",
+    "images": [
+      "https://example.com/rabbit.png"
+    ],
+    "reference_audios": [
+      "https://example.com/bgm.mp3"
+    ]
+  }'
+```
+
 ### MD fast — first and last frame image-to-video
 
 <Note>
@@ -82,7 +144,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -d '{
     "model": "seedance2.0-fast-md",
     "prompt": "Rainy street at night, girl looks back and smiles, slow dolly in",
-    "duration": 5,
+    "duration": 10,
     "ratio": "9:16",
     "first_image": "https://example.com/start.png",
     "last_image": "https://example.com/end.png"

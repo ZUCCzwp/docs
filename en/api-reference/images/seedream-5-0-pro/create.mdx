@@ -14,10 +14,26 @@ This model uses the same endpoint as [Create Image (Async)](/en/api-reference/im
 | Item | Details |
 |------|---------|
 | Model | `doubao-seedream-5-0-pro` (alias `seedream-5-0-pro`) |
-| Billing | **Per task** (1 image per request) |
+| Billing | **Resolution base + reference surcharge** (first reference free) |
 | Modes | Text-to-image, single reference, multi-reference (max 10) |
 | Resolution | `1k`, `2k` (default `2k`) |
 | Output | PNG / JPEG (upstream default JPEG) |
+
+## Billing
+
+| Item | Billing model | Notes |
+|------|---------------|-------|
+| 1K base | `doubao-seedream-5-0-pro-1k` | Per task |
+| 2K base | `doubao-seedream-5-0-pro-2k` | Per task |
+| Reference surcharge | `doubao-seedream-5-0-pro-ref` | **First reference free**; each additional image billed |
+
+Formula:
+
+```text
+total = resolution_base + max(0, reference_count - 1) × ref_unit_price
+```
+
+Example (console prices may change): 2K + 3 references → `0.72 + (3 - 1) × 0.024 = 0.768` credits.
 
 <Info>
 **Single-image model**: each request generates **one** image only. `n > 1` is rejected. Typical latency: ~90s (1K), ~160s (2K). Poll every 5–10s; client timeout ≥ 5 minutes recommended.

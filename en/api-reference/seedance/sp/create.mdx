@@ -3,7 +3,7 @@ title: 'SP Create Video'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
-Create a Seedance **SP** video generation task (economy or official). On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+Create a Seedance **SP** video generation task (economy). On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
 This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for MD, see [MD Create Video](/en/api-reference/seedance/md/create).
@@ -11,14 +11,27 @@ This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/se
 
 ## Models
 
-| Route | `model` value | Billing | Duration |
-|-------|---------------|---------|----------|
-| Economy standard | `seedance2.0-sp` | Per second × resolution | 4–15 s |
-| Economy fast | `seedance2.0-fast-sp` | Per second × resolution | 4–15 s |
-| Official standard | `seedance2.0-of-sp` | Per second × resolution | 4–15 s |
-| Official fast | `seedance2.0-of-fast-sp` | Per second × resolution | 4–15 s |
+## Models and Routes
 
-Supported output resolutions: `480p`, `720p` (default), `1080p`. Billing is **unit price × duration (seconds)**; resolution is set via `resolution`.
+Choose the SP economy sub-route via the `model` field:
+
+| Route | `model` value | Billing | Duration | Requirements |
+|-------|---------------|---------|----------|--------------|
+| **Economy Standard** | `sd2_sp_480p`, `sd2_sp_720p`, `sd2_sp_1080p`, `sd2_sp_2k`, `sd2_sp_4k` | Per second | 4–15 s | Public URL or asset library |
+| **Economy Fast** | `sd2_sp_fast_780p` | Per second | 4–15 s | Same as above; `reference_videos` not supported |
+| **Video Reference** | `sd2_sp_video_480p`, `sd2_sp_video_720p`, `sd2_sp_video_1080p`, `sd2_sp_video_2k`, `sd2_sp_video_4k` | Per second | 4–15 s | Same as above; supports `reference_videos` |
+| **Video Reference Fast** | `sd2_sp_video_fast_780p` | Per second | 4–15 s | Same as above; supports `reference_videos` |
+
+## Billing
+
+Deduct corresponding computing credits directly based on the selected `model`:
+
+| Item | Description |
+|------|-------------|
+| Calculation | **Unit price (credit/s) × `duration`** |
+| Unit Price | Based on the price for the corresponding model name in the console |
+| Duration | `duration` field, ranging from 4 to 15 seconds |
+
 
 ## Request fields
 
@@ -39,7 +52,6 @@ Supported output resolutions: `480p`, `720p` (default), `1080p`. Billing is **un
 
 - Pass public `https://` URLs directly.
 - Or [upload assets](/en/api-reference/seedance/sp/assets-upload) first, then use `asset://{asset_id}`.
-- Real-person portraits require [whitelist submit](/en/api-reference/seedance/sp/realperson-submit) until status is `Active`.
 
 ## Constraints
 
@@ -48,21 +60,6 @@ Supported output resolutions: `480p`, `720p` (default), `1080p`. Billing is **un
 
 ## Examples
 
-### Official — first-frame to video
-
-```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "seedance2.0-of-sp",
-    "prompt": "Rainy street at night, girl turns and smiles, cinematic dolly-in",
-    "duration": 5,
-    "resolution": "720p",
-    "ratio": "16:9",
-    "first_image": "https://example.com/start.png"
-  }'
-```
 
 ### Economy — first-frame to video
 
@@ -71,10 +68,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-sp",
+    "model": "sd2_sp_720p",
     "prompt": "Rainy street at night, girl turns and smiles, cinematic dolly-in",
     "duration": 5,
-    "resolution": "720p",
     "ratio": "16:9",
     "first_image": "https://example.com/start.png"
   }'
@@ -87,7 +83,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-sp",
+    "model": "sd2_sp_720p",
     "prompt": "Subject slowly turns head, gentle breeze in hair",
     "duration": 6,
     "ratio": "9:16",
@@ -105,10 +101,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-fast-sp",
+    "model": "sd2_sp_fast_780p",
     "prompt": "Slow dolly in, subtle lighting change",
     "duration": 8,
-    "resolution": "1080p",
     "ratio": "16:9",
     "images": ["asset://your-asset-id-here"]
   }'
@@ -123,7 +118,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   "data": {
     "task_id": "vid_abc123",
     "status": "queued",
-    "model": "seedance2.0-of-sp",
+    "model": "sd2_sp_720p",
     "created_at": 1710000000
   }
 }

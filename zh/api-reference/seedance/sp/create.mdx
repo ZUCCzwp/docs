@@ -3,22 +3,33 @@ title: 'SP 创建视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
-创建 Seedance **SP** 视频生成任务（经济版 / 官方版）。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+创建 Seedance **SP** 视频生成任务（经济版）。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Note>
 本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版见满血版文档，Mini 见 [Mini 创建视频](/zh/api-reference/seedance/mini/create)，MD 见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
 </Note>
 
-## 模型
+## 模型与线路
 
-| 线路 | `model` 取值 | 计费 | 时长 |
-|------|-------------|------|------|
-| 经济版标准 | `seedance2.0-sp` | 按秒 × 分辨率 | 4–15 秒 |
-| 经济版快速 | `seedance2.0-fast-sp` | 按秒 × 分辨率 | 4–15 秒 |
-| 官方版标准 | `seedance2.0-of-sp` | 按秒 × 分辨率 | 4–15 秒 |
-| 官方版快速 | `seedance2.0-of-fast-sp` | 按秒 × 分辨率 | 4–15 秒 |
+通过 `model` 字段选择经济版子线路：
 
-支持输出分辨率：`480p`、`720p`（默认）、`1080p`。计费按「单价 × 时长（秒）」结算，分辨率通过 `resolution` 字段指定。
+| 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
+|------|-------------|------|------|----------|
+| **经济版** | `sd2_sp_480p`、`sd2_sp_720p`、`sd2_sp_1080p`、`sd2_sp_2k`、`sd2_sp_4k` | 按秒 | 4–15 秒 | 支持公网 URL 或素材库 |
+| **经济版 Fast** | `sd2_sp_fast_780p` | 按秒 | 4–15 秒 | 同上；不支持 `reference_videos` |
+| **视频参考** | `sd2_sp_video_480p`、`sd2_sp_video_720p`、`sd2_sp_video_1080p`、`sd2_sp_video_2k`、`sd2_sp_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
+| **视频参考 Fast** | `sd2_sp_video_fast_780p` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
+
+## 计费说明
+
+根据选择的 `model` 直接扣除对应算力额度：
+
+| 项目 | 说明 |
+|------|------|
+| 计费方式 | **单价（元/秒）× `duration`** |
+| 单价来源 | 以控制台定价中对应模型名为准 |
+| 时长 | `duration` 字段，范围 4–15 秒 |
+
 
 ## 请求参数
 
@@ -39,7 +50,6 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 - 可直接传入公网 `https://` URL。
 - 也可先 [上传素材](/zh/api-reference/seedance/sp/assets-upload)，再使用 `asset://{asset_id}`。
-- 涉及真人肖像时，须先 [提交真人加白](/zh/api-reference/seedance/sp/realperson-submit)，待 `Active` 后再引用。
 
 ## 约束
 
@@ -48,21 +58,6 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ## 示例
 
-### 官方版 — 首帧图生视频
-
-```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "seedance2.0-of-sp",
-    "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
-    "duration": 5,
-    "resolution": "720p",
-    "ratio": "16:9",
-    "first_image": "https://example.com/start.png"
-  }'
-```
 
 ### 经济版 — 首帧图生视频
 
@@ -71,10 +66,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-sp",
+    "model": "sd2_sp_720p",
     "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
     "duration": 5,
-    "resolution": "720p",
     "ratio": "16:9",
     "first_image": "https://example.com/start.png"
   }'
@@ -87,7 +81,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-sp",
+    "model": "sd2_sp_720p",
     "prompt": "人物缓缓转头，微风拂动发丝",
     "duration": 6,
     "ratio": "9:16",
@@ -105,10 +99,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-fast-sp",
+    "model": "sd2_sp_fast_780p",
     "prompt": "镜头缓慢推进，光影变化细腻",
     "duration": 8,
-    "resolution": "1080p",
     "ratio": "16:9",
     "images": ["asset://your-asset-id-here"]
   }'
@@ -123,7 +116,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   "data": {
     "task_id": "vid_abc123",
     "status": "queued",
-    "model": "seedance2.0-of-sp",
+    "model": "sd2_sp_720p",
     "created_at": 1710000000
   }
 }

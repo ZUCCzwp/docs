@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
 Upload image, video, audio, or text assets to the Seedance SP economy asset library. Use the returned `asset_id` as `asset://{asset_id}` in [SP Create Video](/en/api-reference/seedance/sp/create).
 
 <Note>
-This endpoint is for **SP route** models (economy `seedance2.0-sp` / `seedance2.0-fast-sp` and official `seedance2.0-of-sp` / `seedance2.0-of-fast-sp`). For the full Manxue route, use [Submit Asset Audit](/en/api-reference/seedance/assets-audit).
+This endpoint is for **SP economy route** models (`sd2_sp_*` series). For the full Manxue route, use [Submit Asset Audit](/en/api-reference/seedance/assets-audit).
 </Note>
 
 ## Request body
@@ -45,5 +45,5 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/upload'
 ## Next steps
 
 1. Poll [Query Asset Detail](/en/api-reference/seedance/sp/assets-detail) or [Batch Query Asset Status](/en/api-reference/seedance/sp/assets-status)
-2. Wait until `status` is `Active`
+2. Wait until `status` is `READY`
 3. Reference `asset://{asset_id}` in video create requests

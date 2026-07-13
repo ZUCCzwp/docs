@@ -28,7 +28,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 |-------|-------------|
 | `asset_id` | Asset ID |
 | `official_id` | Upstream official ID |
-| `status` | `Active` when ready to use |
+| `status` | `READY` when ready to use |
 | `name` | Asset name |
 | `image_url` | Image URL when applicable |
 | `created_at` | Creation time |
@@ -37,6 +37,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 
 | Status | Meaning |
 |--------|---------|
-| `Processing` | Still processing |
-| `Active` | Ready; use `asset://{asset_id}` |
-| `Failed` | Processing failed |
+| `PROCESSING` | Still processing |
+| `READY` | Ready; use `asset://{asset_id}` |
+| `FAILED` | Processing failed |
+| `DISABLED` | Disabled |

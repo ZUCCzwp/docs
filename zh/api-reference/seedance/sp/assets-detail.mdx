@@ -28,7 +28,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 |------|------|
 | `asset_id` | 素材 ID |
 | `official_id` | 上游官方 ID |
-| `status` | 处理状态，`Active` 表示可用 |
+| `status` | 处理状态，`READY` 表示可用 |
 | `name` | 素材名称 |
 | `image_url` | 图片素材 URL（如适用） |
 | `created_at` | 创建时间 |
@@ -37,6 +37,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 
 | 状态 | 说明 |
 |------|------|
-| `Processing` | 处理中 |
-| `Active` | 可用，可引用 `asset://{asset_id}` |
-| `Failed` | 处理失败 |
+| `PROCESSING` | 处理中 |
+| `READY` | 可用，可引用 `asset://{asset_id}` |
+| `FAILED` | 处理失败 |
+| `DISABLED` | 已禁用 |

@@ -1,0 +1,107 @@
+---
+title: 'Seedream 5.0 Pro 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **Seedream 5.0 Pro** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址。
+
+<Note>
+本接口与 [创建图片（异步）](/zh/api-reference/images/create) 共用 `POST /api/open-api/v1/images`。将 `model` 设为 `doubao-seedream-5-0-pro` 即可使用本模型。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `doubao-seedream-5-0-pro`（别名 `seedream-5-0-pro`） |
+| 计费 | **按次**（每次请求生成 1 张） |
+| 模式 | 文生图、单图参考、多参考图（最多 10 张） |
+| 分辨率 | `1k`、`2k`（默认 `2k`） |
+| 输出 | PNG / JPEG（上游默认 JPEG） |
+
+<Info>
+**单图模型**：每次请求仅生成 **1 张**图片。`n > 1` 会被拒绝。1K 约 90 秒、2K 约 160 秒，建议每 5–10 秒轮询一次，客户端超时建议 ≥ 5 分钟。
+</Info>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定为 `doubao-seedream-5-0-pro` |
+| `prompt` | string | 是 | 图像生成提示词 |
+| `ratio` | string | 否 | 画面比例，默认 `1:1`；支持 `1:1`、`4:3`、`3:4`、`16:9`、`9:16`、`3:2`、`2:3`、`21:9`、`auto` |
+| `resolution` | string | 否 | `1k` 或 `2k`（默认 `2k`）；**不支持 `4k`** |
+| `images` | string[] | 否 | 参考图 URL 或 base64（Data URI），最多 10 张；须满足下方单张限制 |
+| `n` | int | 否 | 须为 `1` 或不传；`n > 1` 不支持 |
+
+## 参考图限制（单张）
+
+| 项目 | 限制 |
+|------|------|
+| 格式 | `jpeg`、`png`、`webp`、`bmp`、`tiff`、`gif`、`heic`、`heif` |
+| 宽高比（宽/高） | \[1/16, 16\] |
+| 宽高（px） | 均 **> 14** |
+| 文件大小 | ≤ **30MB** |
+| 总像素 | ≤ **6000×6000** |
+
+- 公网 URL 须使用完整 `https://` 地址。
+- Base64 须为完整 Data URI：`data:image/{格式};base64,{数据}`。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-0-pro",
+    "prompt": "赛博朋克风格的城市夜景，霓虹灯反射在湿润街道上",
+    "ratio": "16:9",
+    "resolution": "2k"
+  }'
+```
+
+### 参考图生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-0-pro",
+    "prompt": "保持人物神态，背景换成日落海滩",
+    "ratio": "3:4",
+    "resolution": "1k",
+    "images": ["https://example.com/ref.jpg"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "doubao-seedream-5-0-pro",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.image_url` 获取图片地址。
+
+<Note>
+图片结果 URL 保存约 **3 天**，请及时转存。
+</Note>

@@ -1,0 +1,107 @@
+---
+title: 'Seedream 5.0 Pro Image Generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **Seedream 5.0 Pro** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
+
+<Note>
+This model uses the same endpoint as [Create Image (Async)](/en/api-reference/images/create): `POST /api/open-api/v1/images` with `"model": "doubao-seedream-5-0-pro"`.
+</Note>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `doubao-seedream-5-0-pro` (alias `seedream-5-0-pro`) |
+| Billing | **Per task** (1 image per request) |
+| Modes | Text-to-image, single reference, multi-reference (max 10) |
+| Resolution | `1k`, `2k` (default `2k`) |
+| Output | PNG / JPEG (upstream default JPEG) |
+
+<Info>
+**Single-image model**: each request generates **one** image only. `n > 1` is rejected. Typical latency: ~90s (1K), ~160s (2K). Poll every 5–10s; client timeout ≥ 5 minutes recommended.
+</Info>
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `doubao-seedream-5-0-pro` |
+| `prompt` | string | Yes | Image prompt |
+| `ratio` | string | No | Aspect ratio, default `1:1`; supports `1:1`, `4:3`, `3:4`, `16:9`, `9:16`, `3:2`, `2:3`, `21:9`, `auto` |
+| `resolution` | string | No | `1k` or `2k` (default `2k`); **`4k` not supported** |
+| `images` | string[] | No | Reference image URLs or base64 Data URIs, max 10; see per-image limits below |
+| `n` | int | No | Must be `1` or omitted; `n > 1` not supported |
+
+## Reference image limits (per image)
+
+| Item | Limit |
+|------|-------|
+| Formats | `jpeg`, `png`, `webp`, `bmp`, `tiff`, `gif`, `heic`, `heif` |
+| Aspect ratio (width/height) | \[1/16, 16\] |
+| Width & height (px) | each **> 14** |
+| File size | ≤ **30MB** |
+| Total pixels | ≤ **6000×6000** |
+
+- Public URLs must be full `https://` addresses.
+- Base64 must be a full Data URI: `data:image/{format};base64,{data}`.
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-0-pro",
+    "prompt": "Cyberpunk city at night, neon reflections on wet streets",
+    "ratio": "16:9",
+    "resolution": "2k"
+  }'
+```
+
+### Image reference
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-0-pro",
+    "prompt": "Keep the subject expression, replace background with sunset beach",
+    "ratio": "3:4",
+    "resolution": "1k",
+    "images": ["https://example.com/ref.jpg"]
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "doubao-seedream-5-0-pro",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Status flow: `queued` → `processing` → `completed` / `failed`. Read `data.result.image_url` when done.
+
+<Note>
+Result URLs are kept for about **3 days** — download promptly.
+</Note>

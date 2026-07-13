@@ -48,10 +48,12 @@
 ### Image Services
 
 - [Create Image (Async)](https://docs.jimmyai.cn/en/api-reference/images/create.md): Create an async image generation task.
+- [Seedream 5.0 Pro](https://docs.jimmyai.cn/en/api-reference/images/seedream-5-0-pro/create.md): Async Seedream 5.0 Pro image generation (1K/2K, single image per request).
 - [Text-to-Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/generations.md): Sync text-to-image, OpenAI-compatible POST /v1/images/generations.
 - [Edit Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/edits.md): Sync image editing, OpenAI-compatible POST /v1/images/edits with multipart/form-data.
 - [Understand Image](https://docs.jimmyai.cn/en/api-reference/images/understand.md): Image understanding and analysis powered by Gemini.
 - [创建图片（异步）](https://docs.jimmyai.cn/zh/api-reference/images/create.md): 创建异步图片生成任务。
+- [Seedream 5.0 Pro 图像生成](https://docs.jimmyai.cn/zh/api-reference/images/seedream-5-0-pro/create.md): Seedream 5.0 Pro 异步生图（1K/2K，每次 1 张）。
 - [文生图（同步）](https://docs.jimmyai.cn/zh/api-reference/images/generations.md): 同步文生图，兼容 OpenAI POST /v1/images/generations。
 - [编辑图片（同步）](https://docs.jimmyai.cn/zh/api-reference/images/edits.md): 同步图片编辑，兼容 OpenAI POST /v1/images/edits。
 - [图片理解](https://docs.jimmyai.cn/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。

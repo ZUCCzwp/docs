@@ -15,9 +15,9 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 | 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
 |------|-------------|------|------|----------|
-| **经济版** | `sd2_sp_480p`、`sd2_sp_720p`、`sd2_sp_1080p`、`sd2_sp_2k`、`sd2_sp_4k` | 按秒 | 4–15 秒 | 支持公网 URL 或素材库 |
+| **经济版** | `sd2_sp_720p`、`sd2_sp_1080p`、`sd2_sp_2k`、`sd2_sp_4k` | 按秒 | 4–15 秒 | 支持公网 URL 或素材库 |
 | **经济版 Fast** | `sd2_sp_fast_780p` | 按秒 | 4–15 秒 | 同上；不支持 `reference_videos` |
-| **视频参考** | `sd2_sp_video_480p`、`sd2_sp_video_720p`、`sd2_sp_video_1080p`、`sd2_sp_video_2k`、`sd2_sp_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
+| **视频参考** | `sd2_sp_video_720p`、`sd2_sp_video_1080p`、`sd2_sp_video_2k`、`sd2_sp_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
 | **视频参考 Fast** | `sd2_sp_video_fast_780p` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
 
 ## 计费说明
@@ -38,7 +38,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | `model` | string | 是 | 见上表 |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），4–15，默认 5 |
-| `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
+| `resolution` | string | 否 | 输出分辨率：`720p`（默认）、`1080p`；**不支持 `480p`** |
 | `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1` |
 | `images` | string[] | 否 | 参考图列表 |
 | `first_image` | string | 否 | 首帧图片 |

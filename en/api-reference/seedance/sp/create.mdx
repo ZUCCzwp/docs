@@ -17,9 +17,9 @@ Choose the SP economy sub-route via the `model` field:
 
 | Route | `model` value | Billing | Duration | Requirements |
 |-------|---------------|---------|----------|--------------|
-| **Economy Standard** | `sd2_sp_480p`, `sd2_sp_720p`, `sd2_sp_1080p`, `sd2_sp_2k`, `sd2_sp_4k` | Per second | 4–15 s | Public URL or asset library |
+| **Economy Standard** | `sd2_sp_720p`, `sd2_sp_1080p`, `sd2_sp_2k`, `sd2_sp_4k` | Per second | 4–15 s | Public URL or asset library |
 | **Economy Fast** | `sd2_sp_fast_780p` | Per second | 4–15 s | Same as above; `reference_videos` not supported |
-| **Video Reference** | `sd2_sp_video_480p`, `sd2_sp_video_720p`, `sd2_sp_video_1080p`, `sd2_sp_video_2k`, `sd2_sp_video_4k` | Per second | 4–15 s | Same as above; supports `reference_videos` |
+| **Video Reference** | `sd2_sp_video_720p`, `sd2_sp_video_1080p`, `sd2_sp_video_2k`, `sd2_sp_video_4k` | Per second | 4–15 s | Same as above; supports `reference_videos` |
 | **Video Reference Fast** | `sd2_sp_video_fast_780p` | Per second | 4–15 s | Same as above; supports `reference_videos` |
 
 ## Billing
@@ -40,7 +40,7 @@ Deduct corresponding computing credits directly based on the selected `model`:
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
-| `resolution` | string | No | Output resolution: `480p`, `720p` (default), `1080p` |
+| `resolution` | string | No | Output resolution: `720p` (default), `1080p`; **`480p` is not supported** |
 | `ratio` | string | No | Aspect ratio, e.g. `16:9`, `9:16`, `1:1` |
 | `images` | string[] | No | Reference images |
 | `first_image` | string | No | First frame |

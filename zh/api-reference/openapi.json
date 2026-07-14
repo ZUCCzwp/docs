@@ -483,6 +483,60 @@
         }
       }
     },
+    "/api/open-api/v1/super-resolution/videos": {
+      "post": {
+        "summary": "创建视频超分任务",
+        "description": "创建视频超分任务，将公网视频增强为更高清结果。分辨率与帧率由 model 档位决定。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。计费按时长向上取整按秒扣除。",
+        "operationId": "createSuperResolutionVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuperResolutionRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建超分任务",
+                  "value": {
+                    "model": "superResolution-1080p-lowfps",
+                    "video_url": "https://example.com/input-low-resolution.mp4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_task_1234567890",
+                        "status": "queued",
+                        "model": "superResolution-1080p-lowfps",
+                        "created_at": 1782529105,
+                        "cost": 0.4
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - 提交试听任务",
@@ -1580,6 +1634,37 @@
           "image_urls": [
             "https://example.com/butterfly.jpg"
           ]
+        }
+      },
+      "SuperResolutionRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "superResolution-720p-lowfps",
+              "superResolution-720p-highfps",
+              "superResolution-1080p-lowfps",
+              "superResolution-1080p-highfps",
+              "superResolution-2k-lowfps",
+              "superResolution-2k-highfps",
+              "superResolution-4k-lowfps",
+              "superResolution-4k-highfps"
+            ],
+            "description": "视频超分模型。清晰度档位为 720p/1080p/2k/4k；lowfps=30FPS，highfps=120FPS。"
+          },
+          "video_url": {
+            "type": "string",
+            "description": "待超分视频的公网 URL，任务处理期间须保持可访问。"
+          }
+        },
+        "example": {
+          "model": "superResolution-1080p-lowfps",
+          "video_url": "https://example.com/input-low-resolution.mp4"
         }
       },
       "GeminiOmniGenerationRequest": {

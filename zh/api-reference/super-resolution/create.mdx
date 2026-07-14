@@ -1,0 +1,77 @@
+---
+title: '创建视频超分任务'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/super-resolution/videos'
+---
+
+创建视频超分任务，将公网可访问的低分辨率视频增强为更高清视频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取结果。
+
+## 支持的模型
+
+模型名由目标清晰度 + 帧率档位组成：`lowfps` 为 30 FPS，`highfps` 为 120 FPS。
+
+| model | 目标清晰度 | 帧率档位 |
+|-------|-----------|---------|
+| `superResolution-720p-lowfps` | 720p | 普通帧率 |
+| `superResolution-720p-highfps` | 720p | 高帧率 |
+| `superResolution-1080p-lowfps` | 1080p | 普通帧率 |
+| `superResolution-1080p-highfps` | 1080p | 高帧率 |
+| `superResolution-2k-lowfps` | 2K | 普通帧率 |
+| `superResolution-2k-highfps` | 2K | 高帧率 |
+| `superResolution-4k-lowfps` | 4K | 普通帧率 |
+| `superResolution-4k-highfps` | 4K | 高帧率 |
+
+分辨率与帧率由 `model` 决定，无需额外传参。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 见上表 |
+| `video_url` | string | 是 | 待超分视频的公网 URL，任务处理期间须保持可访问 |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费时长：根据 `video_url` 解析实际时长，**向上取整**（不足 1 秒按 1 秒）
+- 单价：以控制台中对应 `model` 配置为准
+
+```text
+费用 = 模型单价 × ceil(视频时长秒数)
+```
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/super-resolution/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "superResolution-1080p-lowfps",
+    "video_url": "https://example.com/input-low-resolution.mp4"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_task_1234567890",
+    "status": "queued",
+    "model": "superResolution-1080p-lowfps",
+    "created_at": 1782529105,
+    "cost": 0.4
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+建议每 5–10 秒轮询一次，状态变为 `completed` / `failed` 后停止。结果 URL 保存约 **3 天**，请及时转存。

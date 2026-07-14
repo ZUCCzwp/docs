@@ -106,6 +106,11 @@
 - [提交试听任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/clone-create.md): 提交声音克隆试听任务。
 - [提交音频生成任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/audio-create.md): 使用 modelId 生成正式音频，每次按字符 + 音色（按次）计费。
 
+### Tools
+
+- [Create Video Super-Resolution](https://docs.jimmyai.cn/en/api-reference/super-resolution/create.md): Enhance a public video to higher resolution/FPS; poll common video query.
+- [创建视频超分任务](https://docs.jimmyai.cn/zh/api-reference/super-resolution/create.md): 将公网视频增强为更高清结果，通过通用视频查询接口轮询。
+
 ## OpenAPI Specs
 
 - [OpenAPI (English)](https://docs.jimmyai.cn/en/api-reference/openapi.json): Machine-readable API specification.

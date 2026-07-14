@@ -483,6 +483,60 @@
         }
       }
     },
+    "/api/open-api/v1/super-resolution/videos": {
+      "post": {
+        "summary": "Create video super-resolution task",
+        "description": "Enhance a publicly accessible video to higher resolution. Clarity and FPS are selected via model. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second with duration ceiled up.",
+        "operationId": "createSuperResolutionVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuperResolutionRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create super-resolution task",
+                  "value": {
+                    "model": "superResolution-1080p-lowfps",
+                    "video_url": "https://example.com/input-low-resolution.mp4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "Created",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_task_1234567890",
+                        "status": "queued",
+                        "model": "superResolution-1080p-lowfps",
+                        "created_at": 1782529105,
+                        "cost": 0.4
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - Create Preview Task",
@@ -1580,6 +1634,37 @@
           "image_urls": [
             "https://example.com/butterfly.jpg"
           ]
+        }
+      },
+      "SuperResolutionRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "superResolution-720p-lowfps",
+              "superResolution-720p-highfps",
+              "superResolution-1080p-lowfps",
+              "superResolution-1080p-highfps",
+              "superResolution-2k-lowfps",
+              "superResolution-2k-highfps",
+              "superResolution-4k-lowfps",
+              "superResolution-4k-highfps"
+            ],
+            "description": "Super-resolution model. Clarity tier: 720p/1080p/2k/4k; lowfps=30FPS, highfps=120FPS."
+          },
+          "video_url": {
+            "type": "string",
+            "description": "Public URL of the source video; must remain accessible while the task runs."
+          }
+        },
+        "example": {
+          "model": "superResolution-1080p-lowfps",
+          "video_url": "https://example.com/input-low-resolution.mp4"
         }
       },
       "GeminiOmniGenerationRequest": {

@@ -84,6 +84,12 @@
                 ]
               },
               {
+                "group": "Tools",
+                "pages": [
+                  "en/api-reference/super-resolution/create"
+                ]
+              },
+              {
                 "group": "Image Services",
                 "pages": [
                   "en/api-reference/images/create",
@@ -210,6 +216,12 @@
                 "group": "Grok 视频",
                 "pages": [
                   "zh/api-reference/grok/create"
+                ]
+              },
+              {
+                "group": "工具",
+                "pages": [
+                  "zh/api-reference/super-resolution/create"
                 ]
               },
               {

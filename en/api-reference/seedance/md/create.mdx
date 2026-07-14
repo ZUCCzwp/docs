@@ -15,10 +15,11 @@ This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seed
 |-------|----------------|---------|----------|
 | MD standard | `seedance2.0-md` | Per task | 4–15 s |
 | MD fast | `seedance2.0-fast-md` | Per task | **10** or **15** s |
+| MD Fast SR | `seedance2.0-fast-sr` | Per task | 4–15 s |
 | MD Pro | `seedance2.0-pro` | Per task | **10** or **15** s |
 | MD Pro fast | `seedance2.0-fast-pro` | Per task | **10** or **15** s |
 
-Output is fixed at **720p**. Billing is per task, independent of duration.
+Except `seedance2.0-fast-sr` (**1080p**), MD output is fixed at **720p**. Billing is per task, independent of duration.
 
 ## Model features
 
@@ -26,6 +27,7 @@ Output is fixed at **720p**. Billing is per task, independent of duration.
 |-------|---------|----------|---------------|---------------|
 | `seedance2.0-md` | Per task | 4–15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
 | `seedance2.0-fast-md` | Per task | 10 or 15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
+| `seedance2.0-fast-sr` | Per task | 4–15 s | Up to **4** reference images, **3** reference videos; **no** reference audio; output **1080p** | `16:9`, `9:16`, `1:1` |
 | `seedance2.0-pro` | Per task | 10 or 15 s | Up to **9** reference images, **3** reference audios; **no** reference videos; audio requires images | `16:9`, `9:16`, `1:1` |
 | `seedance2.0-fast-pro` | Per task | 10 or 15 s | Up to **9** reference images, **3** reference audios; **no** reference videos; audio requires images | `16:9`, `9:16`, `1:1` |
 
@@ -39,13 +41,13 @@ Pro models (`seedance2.0-pro` / `seedance2.0-fast-pro`) target higher output qua
 |-------|------|----------|-------------|
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt, max **5000** characters |
-| `duration` | int | Yes | Length in seconds. `seedance2.0-md` supports 4–15; `seedance2.0-fast-md` / `seedance2.0-pro` / `seedance2.0-fast-pro` support **10** or **15** only. Default 5 |
+| `duration` | int | Yes | Length in seconds. `seedance2.0-md` / `seedance2.0-fast-sr` support 4–15; `seedance2.0-fast-md` / `seedance2.0-pro` / `seedance2.0-fast-pro` support **10** or **15** only. Default 5 |
 | `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
-| `images` | string[] | No | Reference images. Standard/fast MD: max **4**; Pro: max **9** |
+| `images` | string[] | No | Reference images. Standard/fast MD / Fast SR: max **4**; Pro: max **9** |
 | `first_image` | string | No | First frame; must be paired with `last_image` in frame mode |
 | `last_image` | string | No | Last frame; must be paired with `first_image` in frame mode |
-| `reference_videos` | string[] | No | Reference videos. Only `seedance2.0-md` / `seedance2.0-fast-md`; max **3** |
-| `reference_audios` | string[] | No | Reference audio. Standard/fast MD: max **1** clip; Pro: max **3** clips and must be paired with `images` |
+| `reference_videos` | string[] | No | Reference videos. `seedance2.0-md` / `seedance2.0-fast-md` / `seedance2.0-fast-sr`; max **3** |
+| `reference_audios` | string[] | No | Reference audio. Standard/fast MD: max **1** clip; Pro: max **3** clips with `images`; `seedance2.0-fast-sr` **not supported** |
 
 <Warning>
 `seedance2.0-pro` / `seedance2.0-fast-pro` do **not** support `reference_videos`. Pro `reference_audios` cannot be used alone — `images` is required. The `resolution` field is ignored; output is always 720p.
@@ -64,6 +66,7 @@ Pro models (`seedance2.0-pro` / `seedance2.0-fast-pro`) target higher output qua
 - Prompt at most 5000 characters.
 - `seedance2.0-md`: `duration` 4–15 s; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
 - `seedance2.0-fast-md`: `duration` **10** or **15** s only; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
+- `seedance2.0-fast-sr`: `duration` 4–15 s; output **1080p**; `images` max 4; `reference_videos` max 3; **no** `reference_audios`.
 - `seedance2.0-pro` / `seedance2.0-fast-pro`: `duration` **10** or **15** s only; `images` max 9; **no** `reference_videos`; `reference_audios` max 3 clips and must be paired with `images`.
 - `reference_videos` (standard/fast MD): combined duration ≤ **15** s, combined size ≤ **200MB**; each resolution between **720px and 2160px**, frame rate **24–60 FPS**.
 - `reference_audios`: combined duration ≤ **15** s; frame mode does not support audio references.

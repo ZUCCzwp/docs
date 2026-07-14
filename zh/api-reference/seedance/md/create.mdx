@@ -15,10 +15,11 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 |------|-------------|------|------|
 | MD 标准 | `seedance2.0-md` | 按次 | 4–15 秒 |
 | MD 快速 | `seedance2.0-fast-md` | 按次 | **10** 或 **15** 秒 |
+| MD Fast SR | `seedance2.0-fast-sr` | 按次 | 4–15 秒 |
 | MD Pro | `seedance2.0-pro` | 按次 | **10** 或 **15** 秒 |
 | MD Pro 快速 | `seedance2.0-fast-pro` | 按次 | **10** 或 **15** 秒 |
 
-输出固定 **720p**，计费按次结算，与时长无关。
+除 `seedance2.0-fast-sr`（输出 **1080p**）外，MD 输出固定 **720p**。计费按次结算，与时长无关。
 
 ## 模型特性
 
@@ -26,6 +27,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 |------|------|------|----------|----------|
 | `seedance2.0-md` | 按次 | 4–15 秒 | 最多 **4** 张参考图、**3** 个参考视频、**1** 段参考音频 | `16:9`、`9:16`、`1:1` |
 | `seedance2.0-fast-md` | 按次 | 10 或 15 秒 | 最多 **4** 张参考图、**3** 个参考视频、**1** 段参考音频 | `16:9`、`9:16`、`1:1` |
+| `seedance2.0-fast-sr` | 按次 | 4–15 秒 | 最多 **4** 张参考图、**3** 个参考视频；**不支持**参考音频；输出 **1080p** | `16:9`、`9:16`、`1:1` |
 | `seedance2.0-pro` | 按次 | 10 或 15 秒 | 最多 **9** 张参考图、**3** 段参考音频；**不支持**参考视频；音频须搭配参考图 | `16:9`、`9:16`、`1:1` |
 | `seedance2.0-fast-pro` | 按次 | 10 或 15 秒 | 最多 **9** 张参考图、**3** 段参考音频；**不支持**参考视频；音频须搭配参考图 | `16:9`、`9:16`、`1:1` |
 
@@ -39,13 +41,13 @@ Pro 系列（`seedance2.0-pro` / `seedance2.0-fast-pro`）侧重更高画质，�
 |------|------|------|------|
 | `model` | string | 是 | 见上表 |
 | `prompt` | string | 是 | 视频生成提示词，最多 **5000** 字符 |
-| `duration` | int | 是 | 时长（秒）。`seedance2.0-md` 支持 4–15；`seedance2.0-fast-md` / `seedance2.0-pro` / `seedance2.0-fast-pro` 仅支持 **10** 或 **15**。默认 5 |
+| `duration` | int | 是 | 时长（秒）。`seedance2.0-md` / `seedance2.0-fast-sr` 支持 4–15；`seedance2.0-fast-md` / `seedance2.0-pro` / `seedance2.0-fast-pro` 仅支持 **10** 或 **15**。默认 5 |
 | `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
-| `images` | string[] | 否 | 参考图列表。标准/快速 MD 最多 **4** 张；Pro 系列最多 **9** 张 |
+| `images` | string[] | 否 | 参考图列表。标准/快速 MD / Fast SR 最多 **4** 张；Pro 系列最多 **9** 张 |
 | `first_image` | string | 否 | 首帧图片；首尾帧模式须与 `last_image` 同时传入 |
 | `last_image` | string | 否 | 尾帧图片；首尾帧模式须与 `first_image` 同时传入 |
-| `reference_videos` | string[] | 否 | 参考视频列表。仅 `seedance2.0-md` / `seedance2.0-fast-md` 支持，最多 **3** 个 |
-| `reference_audios` | string[] | 否 | 参考音频列表。标准/快速 MD 最多 **1** 段；Pro 系列最多 **3** 段，且须搭配 `images` |
+| `reference_videos` | string[] | 否 | 参考视频列表。`seedance2.0-md` / `seedance2.0-fast-md` / `seedance2.0-fast-sr` 支持，最多 **3** 个 |
+| `reference_audios` | string[] | 否 | 参考音频列表。标准/快速 MD 最多 **1** 段；Pro 系列最多 **3** 段且须搭配 `images`；`seedance2.0-fast-sr` **不支持** |
 
 <Warning>
 `seedance2.0-pro` / `seedance2.0-fast-pro` **不支持** `reference_videos`。Pro 系列的 `reference_audios` 不能单独使用，必须同时传入 `images`。`resolution` 字段无效，输出固定 720p。
@@ -64,6 +66,7 @@ Pro 系列（`seedance2.0-pro` / `seedance2.0-fast-pro`）侧重更高画质，�
 - `prompt` 最多 5000 字符。
 - `seedance2.0-md`：`duration` 4–15 秒；`images` 最多 4 张；`reference_videos` 最多 3 个；`reference_audios` 最多 1 段。
 - `seedance2.0-fast-md`：`duration` 仅 **10** 或 **15** 秒；`images` 最多 4 张；`reference_videos` 最多 3 个；`reference_audios` 最多 1 段。
+- `seedance2.0-fast-sr`：`duration` 4–15 秒；输出 **1080p**；`images` 最多 4 张；`reference_videos` 最多 3 个；**不支持** `reference_audios`。
 - `seedance2.0-pro` / `seedance2.0-fast-pro`：`duration` 仅 **10** 或 **15** 秒；`images` 最多 9 张；**不支持** `reference_videos`；`reference_audios` 最多 3 段且须搭配 `images`。
 - `reference_videos`（标准/快速 MD）总时长不超过 **15** 秒，总大小不超过 **200MB**；单个参考视频分辨率须在 **720px–2160px** 之间，视频帧率在 **24–60 帧**以内。
 - `reference_audios` 总时长不超过 **15** 秒；首尾帧模式不支持音频参考。

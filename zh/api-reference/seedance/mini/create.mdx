@@ -18,6 +18,8 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 `{resolution}` 为 `480p`、`720p`（默认）或 `1080p`，由请求字段 `resolution` 指定。
 
+也可直接将 **计费模型名** 作为 `model` 传入（如 `seedance2.0-mini-720p`、`seedance2.0-mini-720p-video`），此时可省略 `resolution` 字段，系统会自动解析分辨率。
+
 ## 计费说明
 
 Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
@@ -51,7 +53,7 @@ Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance2.0-mini` 或 `seedance2.0-mini-video` |
+| `model` | string | 是 | `seedance2.0-mini` 或 `seedance2.0-mini-video`；也可传计费模型名如 `seedance2.0-mini-720p` |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），4–15，默认 5 |
 | `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
@@ -87,6 +89,21 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
     "prompt": "人物缓缓转头，微风拂动发丝",
     "duration": 6,
     "resolution": "720p",
+    "ratio": "9:16",
+    "images": ["https://example.com/ref-1.jpg"]
+  }'
+```
+
+### Mini — 使用计费模型名（省略 resolution）
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini-720p",
+    "prompt": "人物缓缓转头，微风拂动发丝",
+    "duration": 6,
     "ratio": "9:16",
     "images": ["https://example.com/ref-1.jpg"]
   }'

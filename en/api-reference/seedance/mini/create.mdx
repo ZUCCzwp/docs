@@ -18,6 +18,8 @@ This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/se
 
 `{resolution}` is `480p`, `720p` (default), or `1080p`, set via the `resolution` field.
 
+You may also pass the **billing model name** directly as `model` (e.g. `seedance2.0-mini-720p`, `seedance2.0-mini-720p-video`). In that case `resolution` is optional; the API parses it from `model`.
+
 ## Billing
 
 Mini routes are billed **per second**; each resolution has its own unit price.
@@ -51,7 +53,7 @@ Actual unit prices vary by resolution and per-user pricing. Check the console be
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `seedance2.0-mini` or `seedance2.0-mini-video` |
+| `model` | string | Yes | `seedance2.0-mini` or `seedance2.0-mini-video`; billing names like `seedance2.0-mini-720p` are also accepted |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
 | `resolution` | string | No | Output resolution: `480p`, `720p` (default), `1080p` |
@@ -87,6 +89,21 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
     "prompt": "The subject slowly turns their head, hair moving in a gentle breeze",
     "duration": 6,
     "resolution": "720p",
+    "ratio": "9:16",
+    "images": ["https://example.com/ref-1.jpg"]
+  }'
+```
+
+### Mini — billing model name (omit resolution)
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-mini-720p",
+    "prompt": "The subject slowly turns their head, breeze in the hair",
+    "duration": 6,
     "ratio": "9:16",
     "images": ["https://example.com/ref-1.jpg"]
   }'

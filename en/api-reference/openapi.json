@@ -537,6 +537,62 @@
         }
       }
     },
+    "/api/open-api/v1/digital-human/videos": {
+      "post": {
+        "summary": "Create digital human task",
+        "description": "Submit a digital-human lip-sync video task from a face video and driving audio. Optional model_version, side_face, and tilted_face. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second based on ceiled video_url duration.",
+        "operationId": "createDigitalHumanVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DigitalHumanRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create digital human task",
+                  "value": {
+                    "model": "digitalHuman",
+                    "audio_url": "https://example.com/drive-audio.mp3",
+                    "video_url": "https://example.com/face-video.mp4",
+                    "model_version": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "Created",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "digitalHuman",
+                        "created_at": 1781777280,
+                        "cost": 0.32
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - Create Preview Task",
@@ -1665,6 +1721,61 @@
         "example": {
           "model": "superResolution-1080p-lowfps",
           "video_url": "https://example.com/input-low-resolution.mp4"
+        }
+      },
+      "DigitalHumanRequest": {
+        "type": "object",
+        "required": [
+          "audio_url",
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "digitalHuman"
+            ],
+            "default": "digitalHuman",
+            "description": "Digital human model name. Default: digitalHuman."
+          },
+          "audio_url": {
+            "type": "string",
+            "description": "Public URL of the driving audio. Supported: mp4, mp3, wav, m4a, etc. Avoid non-ASCII characters in the URL; must remain accessible while processing."
+          },
+          "video_url": {
+            "type": "string",
+            "description": "Public URL of the face video. Avoid non-ASCII characters in the URL; must remain accessible while processing."
+          },
+          "model_version": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "Model version. 1: clearer teeth for large-face shots; 2: better lip sync and faster articulation (recommended)."
+          },
+          "side_face": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Side-face optimization. Set 1 for strong side profiles; omit or 0 otherwise."
+          },
+          "tilted_face": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Tilted-face optimization. Set 1 when the face is frontal but tilted / mouth skewed; omit or 0 otherwise."
+          }
+        },
+        "example": {
+          "model": "digitalHuman",
+          "audio_url": "https://example.com/drive-audio.mp3",
+          "video_url": "https://example.com/face-video.mp4",
+          "model_version": 2
         }
       },
       "GeminiOmniGenerationRequest": {

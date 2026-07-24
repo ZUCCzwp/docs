@@ -537,6 +537,62 @@
         }
       }
     },
+    "/api/open-api/v1/digital-human/videos": {
+      "post": {
+        "summary": "创建数字人任务",
+        "description": "提交数字人口型驱动视频生成任务。传入人脸视频与驱动音频，可选模型版本与侧脸/歪头优化。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。计费按 video_url 时长向上取整按秒扣除。",
+        "operationId": "createDigitalHumanVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DigitalHumanRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建数字人任务",
+                  "value": {
+                    "model": "digitalHuman",
+                    "audio_url": "https://example.com/drive-audio.mp3",
+                    "video_url": "https://example.com/face-video.mp4",
+                    "model_version": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "digitalHuman",
+                        "created_at": 1781777280,
+                        "cost": 0.32
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - 提交试听任务",
@@ -1665,6 +1721,61 @@
         "example": {
           "model": "superResolution-1080p-lowfps",
           "video_url": "https://example.com/input-low-resolution.mp4"
+        }
+      },
+      "DigitalHumanRequest": {
+        "type": "object",
+        "required": [
+          "audio_url",
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "digitalHuman"
+            ],
+            "default": "digitalHuman",
+            "description": "数字人模型名称，默认 digitalHuman。"
+          },
+          "audio_url": {
+            "type": "string",
+            "description": "驱动音频公网 URL。支持 mp4、mp3、wav、m4a 等；链接不要带中文，任务处理期间须保持可访问。"
+          },
+          "video_url": {
+            "type": "string",
+            "description": "人脸视频公网 URL；链接不要带中文，任务处理期间须保持可访问。"
+          },
+          "model_version": {
+            "type": "integer",
+            "enum": [
+              1,
+              2
+            ],
+            "description": "模型版本。1：牙齿更清晰，适合大脸；2：口型匹配更好、咬字更快（建议默认）。"
+          },
+          "side_face": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "侧脸优化。严重侧脸传 1；非特殊情况不传或传 0。"
+          },
+          "tilted_face": {
+            "type": "integer",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "歪头优化。正脸但歪头、嘴巴歪斜时传 1；非特殊情况不传或传 0。"
+          }
+        },
+        "example": {
+          "model": "digitalHuman",
+          "audio_url": "https://example.com/drive-audio.mp3",
+          "video_url": "https://example.com/face-video.mp4",
+          "model_version": 2
         }
       },
       "GeminiOmniGenerationRequest": {

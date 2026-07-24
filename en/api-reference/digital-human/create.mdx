@@ -1,0 +1,72 @@
+---
+title: 'Create digital human task'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/digital-human/videos'
+---
+
+Create a digital-human lip-sync video from a face video and a driving audio track. After submission you receive a `task_id`. Poll via [Query Video Task](/en/api-reference/common/query) and read `result.video_url` when completed.
+
+## Supported models
+
+| model | Description |
+|-------|-------------|
+| `digitalHuman` | Digital human lip-sync (default) |
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | No | Model name, default `digitalHuman` |
+| `audio_url` | string | Yes | Public URL of the driving audio. Supported: `mp4`, `mp3`, `wav`, `m4a`, etc. Avoid non-ASCII characters in the URL; must remain accessible while processing |
+| `video_url` | string | Yes | Public URL of the face video. Avoid non-ASCII characters in the URL; must remain accessible while processing |
+| `model_version` | integer | No | Model version: `1` clearer teeth (better for large-face shots); `2` better lip sync and faster articulation (recommended default) |
+| `side_face` | integer | No | Side-face optimization: set `1` for strong side profiles; omit or `0` otherwise |
+| `tilted_face` | integer | No | Tilted-face optimization: set `1` when the face is frontal but tilted / mouth skewed; omit or `0` otherwise |
+
+## Billing
+
+- Mode: `per_second`
+- Duration: probed from `video_url`, **ceiled** to whole seconds (minimum 1)
+- Unit price: from console pricing for `digitalHuman`
+
+```text
+cost = unit_price × ceil(video_duration_seconds)
+```
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "digitalHuman",
+    "audio_url": "https://example.com/drive-audio.mp3",
+    "video_url": "https://example.com/face-video.mp4",
+    "model_version": 2
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "digitalHuman",
+    "created_at": 1781777280,
+    "cost": 0.32
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Poll every 5–10 seconds until `completed` or `failed`. Result URLs are kept about **3 days** — download promptly.

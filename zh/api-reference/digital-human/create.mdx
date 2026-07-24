@@ -1,0 +1,72 @@
+---
+title: '创建数字人任务'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/digital-human/videos'
+---
+
+提交数字人口型驱动视频生成任务：传入人脸视频与驱动音频，生成口型匹配的数字人视频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取结果。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `digitalHuman` | 数字人口型驱动（默认） |
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 否 | 模型名称，默认 `digitalHuman` |
+| `audio_url` | string | 是 | 驱动音频的公网 URL。支持 `mp4`、`mp3`、`wav`、`m4a` 等；链接不要带中文，任务处理期间须保持可访问 |
+| `video_url` | string | 是 | 人脸视频的公网 URL；链接不要带中文，任务处理期间须保持可访问 |
+| `model_version` | integer | 否 | 模型版本：`1` 牙齿更清晰（适合大脸）；`2` 口型匹配更好、咬字更快（建议默认） |
+| `side_face` | integer | 否 | 侧脸优化：严重侧脸时传 `1`；非特殊情况不传或传 `0` |
+| `tilted_face` | integer | 否 | 歪头优化：正脸但歪头、嘴巴歪斜时传 `1`；非特殊情况不传或传 `0` |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费时长：根据 `video_url` 解析实际时长，**向上取整**（不足 1 秒按 1 秒）
+- 单价：以控制台中 `digitalHuman` 配置为准
+
+```text
+费用 = 模型单价 × ceil(视频时长秒数)
+```
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "digitalHuman",
+    "audio_url": "https://example.com/drive-audio.mp3",
+    "video_url": "https://example.com/face-video.mp4",
+    "model_version": 2
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "digitalHuman",
+    "created_at": 1781777280,
+    "cost": 0.32
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+建议每 5–10 秒轮询一次，状态变为 `completed` / `failed` 后停止。结果 URL 保存约 **3 天**，请及时转存。

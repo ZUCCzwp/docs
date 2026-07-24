@@ -90,6 +90,12 @@
                 ]
               },
               {
+                "group": "Digital Human",
+                "pages": [
+                  "en/api-reference/digital-human/create"
+                ]
+              },
+              {
                 "group": "Image Services",
                 "pages": [
                   "en/api-reference/images/create",
@@ -222,6 +228,12 @@
                 "group": "工具",
                 "pages": [
                   "zh/api-reference/super-resolution/create"
+                ]
+              },
+              {
+                "group": "数字人",
+                "pages": [
+                  "zh/api-reference/digital-human/create"
                 ]
               },
               {

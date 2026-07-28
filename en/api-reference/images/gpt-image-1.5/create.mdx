@@ -1,0 +1,157 @@
+---
+title: 'GPT Image 1.5 Image Generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **GPT Image 1.5** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
+
+<Note>
+This model uses the same endpoint as [Create Image (Async)](/en/api-reference/images/create): `POST /api/open-api/v1/images` with `"model": "gpt-image-1.5"`.
+</Note>
+
+<Warning>
+GPT Image 1.5 is **async only**. Sync endpoints [Text-to-Image (Sync)](/en/api-reference/images/generations) and [Edit Image (Sync)](/en/api-reference/images/edits) do not support this model.
+</Warning>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `gpt-image-1.5` |
+| Billing | **Quality-tier unit price × `n`** |
+| Modes | Text-to-image, single-reference edit, multi-reference fusion (max 15), inpainting |
+| Ratios | `1:1`, `2:3`, `3:2` (other common ratios map to these) |
+| Output | `png` / `jpeg`; transparent background supported |
+
+## Billing
+
+| `quality` | Billing model | Notes |
+|-----------|---------------|-------|
+| empty / `auto` | `gpt-image-1.5` | Default tier |
+| `low` | `gpt-image-1.5-low` | Faster / cheaper |
+| `medium` | `gpt-image-1.5-medium` | Balanced |
+| `high` | `gpt-image-1.5-high` | Higher quality |
+
+You may also pass a billing model as `model` (e.g. `gpt-image-1.5-high`), equivalent to `model=gpt-image-1.5` + `quality=high`.
+
+Formula:
+
+```text
+total = quality_unit_price × n
+```
+
+Unit prices follow the console / pricing page. If a quality variant is missing, billing falls back to base `gpt-image-1.5`.
+
+<Info>
+Up to **4** images per request (`n` is 1–4, clamped). Up to **15** reference images. Poll every 5–10s.
+</Info>
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-1.5` (or `gpt-image-1.5-low` / `-medium` / `-high`) |
+| `prompt` | string | Yes* | Image prompt; recommended even with references |
+| `ratio` | string | No | Aspect ratio, default `1:1`; prefer `1:1`, `2:3`, `3:2` |
+| `quality` | string | No | `auto` (default) / `low` / `medium` / `high` |
+| `n` | int | No | Image count, 1–4, default `1` |
+| `images` | string[] | No | Reference image URLs, max 15; enables image-to-image / fusion |
+| `mask_url` | string | No | Inpainting mask URL; requires `images`. Mask must include alpha and match the first reference size |
+| `background` | string | No | `auto` (default) / `opaque` / `transparent` |
+| `output_format` | string | No | `png` (default) / `jpeg`; do not combine `transparent` with `jpeg` |
+| `moderation` | string | No | `auto` (default) / `low` |
+
+\* `prompt` is required when there are no reference images.
+
+## Ratio mapping
+
+Public API uses ratio values; upstream maps them to fixed pixel sizes:
+
+| Ratio | Size |
+|-------|------|
+| `1:1` | 1024×1024 |
+| `2:3` | 1024×1536 |
+| `3:2` | 1536×1024 |
+
+Portrait ratios such as `9:16` / `3:4` map to `2:3`; landscape ratios such as `16:9` / `4:3` map to `3:2`.
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "An ancient castle under a starry sky",
+    "ratio": "1:1",
+    "quality": "auto",
+    "n": 1
+  }'
+```
+
+### Transparent background
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "A flat icon of a glass bottle with no background",
+    "ratio": "2:3",
+    "quality": "high",
+    "background": "transparent",
+    "output_format": "png",
+    "n": 1
+  }'
+```
+
+### Multi-reference edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "Merge the two references into one illustration poster, keep subject outlines",
+    "ratio": "1:1",
+    "quality": "auto",
+    "images": [
+      "https://example.com/input-a.png",
+      "https://example.com/input-b.png"
+    ],
+    "n": 1
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "mt_task_01KXXXXXXXXXXXXXXX",
+    "status": "queued",
+    "model": "gpt-image-1.5",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Status flow: `queued` → `processing` → `completed` / `failed`. Read `data.result.image_url` when done.
+
+<Note>
+Result URLs are kept for about **3 days** — download promptly.
+</Note>

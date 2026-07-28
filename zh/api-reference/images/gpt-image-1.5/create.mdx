@@ -1,0 +1,157 @@
+---
+title: 'GPT Image 1.5 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **GPT Image 1.5** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址。
+
+<Note>
+本接口与 [创建图片（异步）](/zh/api-reference/images/create) 共用 `POST /api/open-api/v1/images`。将 `model` 设为 `gpt-image-1.5` 即可使用本模型。
+</Note>
+
+<Warning>
+GPT Image 1.5 **仅支持异步**。同步接口 [文生图（同步）](/zh/api-reference/images/generations)、[编辑图片（同步）](/zh/api-reference/images/edits) 不支持本模型。
+</Warning>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `gpt-image-1.5` |
+| 计费 | **画质档位单价 × 张数 `n`** |
+| 模式 | 文生图、单参考图编辑、多参考图融合（最多 15 张）、局部重绘 |
+| 比例 | `1:1`、`2:3`、`3:2`（其他常见比例会映射到以上三者） |
+| 输出 | `png` / `jpeg`；支持透明背景 |
+
+## 计费说明
+
+| 画质 `quality` | 计费模型名 | 说明 |
+|----------------|-----------|------|
+| 空 / `auto` | `gpt-image-1.5` | 默认档 |
+| `low` | `gpt-image-1.5-low` | 更快、更省 |
+| `medium` | `gpt-image-1.5-medium` | 折中 |
+| `high` | `gpt-image-1.5-high` | 更高质量 |
+
+也可直接传计费型号作为 `model`（如 `gpt-image-1.5-high`），效果与 `model=gpt-image-1.5` + `quality=high` 相同。
+
+费用公式：
+
+```text
+总费用 = 画质档位单价 × n
+```
+
+单价以控制台 / 定价页当前报价为准。若带后缀的计费型号未配置，会回退到基础价 `gpt-image-1.5`。
+
+<Info>
+单次最多生成 **4** 张（`n` 取值 1–4，超出按边界裁剪）。参考图最多 **15** 张。建议每 5–10 秒轮询一次。
+</Info>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `gpt-image-1.5`（或 `gpt-image-1.5-low` / `-medium` / `-high`） |
+| `prompt` | string | 是* | 图像生成提示词；有参考图时可省略，建议仍填写编辑意图 |
+| `ratio` | string | 否 | 画面比例，默认 `1:1`；推荐 `1:1`、`2:3`、`3:2` |
+| `quality` | string | 否 | `auto`（默认）/ `low` / `medium` / `high` |
+| `n` | int | 否 | 生成张数，1–4，默认 `1` |
+| `images` | string[] | 否 | 参考图 URL，最多 15 张；传入后按图生图 / 融合处理 |
+| `mask_url` | string | 否 | 局部重绘遮罩图 URL，需同时传 `images`；遮罩需含 Alpha，且尺寸与首张参考图一致 |
+| `background` | string | 否 | `auto`（默认）/ `opaque` / `transparent` |
+| `output_format` | string | 否 | `png`（默认）/ `jpeg`；`transparent` 不可与 `jpeg` 同用 |
+| `moderation` | string | 否 | 审核强度：`auto`（默认）/ `low` |
+
+\* 无参考图时 `prompt` 必填。
+
+## 比例与尺寸
+
+对外使用比例值，上游映射为固定像素尺寸：
+
+| 比例 | 实际尺寸 |
+|------|---------|
+| `1:1` | 1024×1024 |
+| `2:3` | 1024×1536 |
+| `3:2` | 1536×1024 |
+
+常见竖图比例（如 `9:16`、`3:4`）会映射为 `2:3`；横图（如 `16:9`、`4:3`）映射为 `3:2`。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "星空下的古老城堡",
+    "ratio": "1:1",
+    "quality": "auto",
+    "n": 1
+  }'
+```
+
+### 透明背景
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "A flat icon of a glass bottle with no background",
+    "ratio": "2:3",
+    "quality": "high",
+    "background": "transparent",
+    "output_format": "png",
+    "n": 1
+  }'
+```
+
+### 图生图（多参考图）
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-1.5",
+    "prompt": "将两张参考图融合成一张插画海报，保留主体轮廓",
+    "ratio": "1:1",
+    "quality": "auto",
+    "images": [
+      "https://example.com/input-a.png",
+      "https://example.com/input-b.png"
+    ],
+    "n": 1
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "mt_task_01KXXXXXXXXXXXXXXX",
+    "status": "queued",
+    "model": "gpt-image-1.5",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.image_url` 获取图片地址。
+
+<Note>
+图片结果 URL 保存约 **3 天**，请及时转存。
+</Note>

@@ -79,7 +79,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "创建图片任务",
-        "description": "创建新的图片生成任务。支持 gpt-image-2、nano-banana 系列、doubao-seedream-5-0-pro 等。推荐用于生产环境，可避免同步接口经 Cloudflare 代理时的 504 超时。Seedream 5.0 Pro 详见 seedream-5-0-pro/create 文档。",
+        "description": "创建新的图片生成任务。支持 gpt-image-2、gpt-image-1.5（异步 aishuch）、nano-banana 系列、doubao-seedream-5-0-pro 等。推荐用于生产环境，可避免同步接口经 Cloudflare 代理时的 504 超时。Seedream 5.0 Pro 详见 seedream-5-0-pro/create 文档。",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-            "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费，仅 720p/1080p，不支持 480p）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、Mini 特价版（seedance2.0-mini-sp，按次计费，仅 480p/720p）、MD（seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro，按次计费，720p；Pro 最多 9 张参考图与 3 段音频、不支持参考视频）、Fast I2V（seedance2.0-fast-i2v，按次计费，720p，仅图片参考最多 9 张，不支持参考视频/音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create、seedance/md/fast-i2v、seedance/md/std、seedance/mini/create 与 seedance/mini-sp/create 文档。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费，仅 720p/1080p，不支持 480p）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、Mini 特价版（seedance2.0-mini-sp，按次计费，仅 480p/720p）、MD（seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro，按次计费，720p；Pro 最多 9 张参考图与 3 段音频、不支持参考视频）、Fast I2V（seedance2.0-fast-i2v，按次计费，720p，仅图片参考最多 9 张，不支持参考视频/音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create、seedance/md/fast-i2v、seedance/md/std、seedance/mini/create 与 seedance/mini-sp/create 文档。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -995,7 +995,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: gpt-image-2, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
+            "description": "模型名称 (如: gpt-image-2, gpt-image-1.5, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
           },
           "prompt": {
             "type": "string",
@@ -1043,13 +1043,53 @@
           },
           "quality": {
             "type": "string",
-            "description": "画质档位（由 gpt-image-2 支持）。支持的值：low (低画质), medium (中画质), high (高画质)。",
+            "description": "画质档位（gpt-image-2 / gpt-image-1.5）。支持的值：low / medium / high / auto。",
             "enum": [
               "low",
               "medium",
-              "high"
+              "high",
+              "auto"
             ],
             "default": "low"
+          },
+          "n": {
+            "type": "integer",
+            "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。",
+            "minimum": 1,
+            "maximum": 4,
+            "default": 1
+          },
+          "background": {
+            "type": "string",
+            "description": "背景模式（gpt-image-1.5）。auto / opaque / transparent；transparent 需搭配 output_format=png。",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ],
+            "default": "auto"
+          },
+          "moderation": {
+            "type": "string",
+            "description": "审核强度（gpt-image-1.5）。auto / low。",
+            "enum": [
+              "auto",
+              "low"
+            ],
+            "default": "auto"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "输出格式（gpt-image-1.5）。png / jpeg。",
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "default": "png"
+          },
+          "mask_url": {
+            "type": "string",
+            "description": "局部重绘遮罩图 URL（gpt-image-1.5），需同时传 images。"
           }
         }
       },
@@ -1876,7 +1916,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称，默认 gpt-image-2",
+            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-1.5（异步，aishuch）。同步 generations/edits 不支持该模型。",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },

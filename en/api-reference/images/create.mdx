@@ -13,4 +13,6 @@ For **synchronous** text-to-image or image edit (OpenAI-compatible, returns `b64
 Async image tasks use `ratio` for **aspect ratio** (e.g. `1:1`, `16:9`); default is `auto`. Sync OpenAI-compatible endpoints (`/images/generations`, `/images/edits`) still use `size` for **pixel dimensions** (e.g. `1024x1024`).
 
 [Seedream 5.0 Pro](/en/api-reference/images/seedream-5-0-pro/create) uses the same async endpoint with `"model": "doubao-seedream-5-0-pro"`.
+
+[GPT Image 1.5](/en/api-reference/images/gpt-image-1.5/create) uses the same async endpoint with `"model": "gpt-image-1.5"` (async only; sync generations/edits are not supported).
 </Note>

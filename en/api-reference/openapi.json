@@ -79,7 +79,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "Create Image Task",
-        "description": "Create a new async image task. Supports gpt-image-2, nano-banana family, doubao-seedream-5-0-pro, etc. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare. See seedream-5-0-pro/create for Seedream 5.0 Pro.",
+        "description": "Create a new async image task. Supports gpt-image-2, gpt-image-1.5 (async aishuch), nano-banana family, doubao-seedream-5-0-pro, etc. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare. See seedream-5-0-pro/create for Seedream 5.0 Pro.",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-            "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution, 720p/1080p only, 480p not supported), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), Mini Special (seedance2.0-mini-sp, per-task, 480p/720p only), MD (seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro, per-task, 720p; Pro supports up to 9 images and 3 audios, no reference videos), Fast I2V (seedance2.0-fast-i2v, per-task, 720p, image refs only, max 9, no reference video/audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create, seedance/md/fast-i2v, seedance/md/std, seedance/mini/create and seedance/mini-sp/create for details.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution, 720p/1080p only, 480p not supported), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), Mini Special (seedance2.0-mini-sp, per-task, 480p/720p only), MD (seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro, per-task, 720p; Pro supports up to 9 images and 3 audios, no reference videos), Fast I2V (seedance2.0-fast-i2v, per-task, 720p, image refs only, max 9, no reference video/audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create, seedance/md/fast-i2v, seedance/md/std, seedance/mini/create and seedance/mini-sp/create for details.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -995,7 +995,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (supported: gpt-image-2, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
+            "description": "Model name (supported: gpt-image-2, gpt-image-1.5, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
           },
           "prompt": {
             "type": "string",
@@ -1043,13 +1043,53 @@
           },
           "quality": {
             "type": "string",
-            "description": "Image quality (supported by gpt-image-2). Supported values: low, medium, high.",
+            "description": "Image quality (gpt-image-2 / gpt-image-1.5). Supported values: low, medium, high, auto.",
             "enum": [
               "low",
               "medium",
-              "high"
+              "high",
+              "auto"
             ],
             "default": "low"
+          },
+          "n": {
+            "type": "integer",
+            "description": "Number of images. gpt-image-1.5: 1–4 (clamped).",
+            "minimum": 1,
+            "maximum": 4,
+            "default": 1
+          },
+          "background": {
+            "type": "string",
+            "description": "Background mode (gpt-image-1.5): auto / opaque / transparent. Use png with transparent.",
+            "enum": [
+              "auto",
+              "opaque",
+              "transparent"
+            ],
+            "default": "auto"
+          },
+          "moderation": {
+            "type": "string",
+            "description": "Moderation strength (gpt-image-1.5): auto / low.",
+            "enum": [
+              "auto",
+              "low"
+            ],
+            "default": "auto"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format (gpt-image-1.5): png / jpeg.",
+            "enum": [
+              "png",
+              "jpeg"
+            ],
+            "default": "png"
+          },
+          "mask_url": {
+            "type": "string",
+            "description": "Inpainting mask URL (gpt-image-1.5); requires images."
           }
         }
       },
@@ -1876,7 +1916,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Default: gpt-image-2",
+            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-1.5 (async aishuch). Sync generations/edits do not support these models.",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },

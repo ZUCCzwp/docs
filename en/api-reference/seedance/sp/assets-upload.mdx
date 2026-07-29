@@ -42,8 +42,22 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/upload'
 }
 ```
 
+After upload, the asset enters processing automatically. Poll [Query Asset Detail](/en/api-reference/seedance/sp/assets-detail) and check `status`. **Only assets with `ACTIVE` status can be used for video generation.**
+
+## Status values
+
+| Status | Meaning |
+|--------|---------|
+| `NONE` | Record created but upload/processing has not started. Poll again; not ready for video tasks |
+| `UPLOADING` | Asset is uploading. Wait for status updates; not ready for video tasks |
+| `PROCESSING` | Asset submitted and processing. Keep polling; not ready for video tasks |
+| `ACTIVE` | Ready to use. Only this status can be used for video generation |
+| `FAILED` | Processing failed. Fix the issue and re-upload |
+| `EXPIRED` | Expired and unavailable. Re-poll until `ACTIVE`, or re-upload if needed |
+| `DELETED` | Deleted or invalidated. Re-upload and wait until `ACTIVE` |
+
 ## Next steps
 
 1. Poll [Query Asset Detail](/en/api-reference/seedance/sp/assets-detail) or [Batch Query Asset Status](/en/api-reference/seedance/sp/assets-status)
-2. Wait until `status` is `READY`
+2. Wait until `status` is `ACTIVE`
 3. Reference `asset://{asset_id}` in video create requests

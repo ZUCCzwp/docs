@@ -28,8 +28,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 |-------|-------------|
 | `asset_id` | Asset ID |
 | `official_id` | Upstream official ID |
-| `status` | `READY` when ready to use |
+| `status` | Composite status. Confirm value is `ACTIVE` before submitting video tasks |
 | `name` | Asset name |
+| `url` | Original asset URL when applicable |
 | `image_url` | Image URL when applicable |
 | `created_at` | Creation time |
 
@@ -37,7 +38,10 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/detail'
 
 | Status | Meaning |
 |--------|---------|
-| `PROCESSING` | Still processing |
-| `READY` | Ready; use `asset://{asset_id}` |
-| `FAILED` | Processing failed |
-| `DISABLED` | Disabled |
+| `NONE` | Provider status not initialized yet; poll again |
+| `UPLOADING` | Uploading to the provider asset library |
+| `PROCESSING` | Provider asset is still processing |
+| `ACTIVE` | Ready; can submit video tasks and use `asset://{asset_id}` |
+| `FAILED` | Provider processing failed |
+| `EXPIRED` | Expired and currently unavailable |
+| `DELETED` | Deleted or invalidated and currently unavailable |

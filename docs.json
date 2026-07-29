@@ -86,12 +86,8 @@
               {
                 "group": "Tools",
                 "pages": [
-                  "en/api-reference/super-resolution/create"
-                ]
-              },
-              {
-                "group": "Digital Human",
-                "pages": [
+                  "en/api-reference/super-resolution/create",
+                  "en/api-reference/videos/understand",
                   "en/api-reference/digital-human/create"
                 ]
               },
@@ -123,8 +119,7 @@
               {
                 "group": "Seedance 2.0 Video",
                 "pages": [
-                  "en/api-reference/seedance/mini/create",
-                  "en/api-reference/seedance/mini-sp/create"
+                  "en/api-reference/seedance/mini/create"
                 ]
               },
               {
@@ -228,12 +223,8 @@
               {
                 "group": "工具",
                 "pages": [
-                  "zh/api-reference/super-resolution/create"
-                ]
-              },
-              {
-                "group": "数字人",
-                "pages": [
+                  "zh/api-reference/super-resolution/create",
+                  "zh/api-reference/videos/understand",
                   "zh/api-reference/digital-human/create"
                 ]
               },
@@ -265,8 +256,7 @@
               {
                 "group": "Seedance 2.0 视频",
                 "pages": [
-                  "zh/api-reference/seedance/mini/create",
-                  "zh/api-reference/seedance/mini-sp/create"
+                  "zh/api-reference/seedance/mini/create"
                 ]
               },
               {
@@ -287,7 +277,7 @@
                 ]
               },
               {
-                "group": "声音克隆 SoundClone",
+                "group": "SoundClone 声音克隆 ",
                 "pages": [
                   "zh/api-reference/sound-clone/clone-create",
                   "zh/api-reference/sound-clone/audio-create"

@@ -1,0 +1,72 @@
+---
+title: '视频理解'
+openapi: 'POST /api/open-api/v1/videos/understand'
+---
+
+同步调用 Gemini 对视频进行理解分析。可直接传 base64 视频（`contents[].parts[].inline_data`），或传公网 `video_url` 由服务端下载后注入（单文件 ≤ 80MB）。
+
+<Note>
+本接口为**同步**调用，成功后按 token 扣费（`pay_as_you_go`）。默认模型 `gemini-3.1-flash-lite`，也可指定 `gemini-3.5-flash`。
+</Note>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 否 | 默认 `gemini-3.1-flash-lite` |
+| `video_url` | string | 否* | 公网可访问的视频 URL；无 inline 视频时必填 |
+| `contents` | array | 否* | Gemini contents；需包含文本提示，和/或 inline 视频 |
+| `generationConfig` | object | 否 | 可选：`temperature`、`mediaResolution` 等 |
+
+\* 至少提供一种视频来源：`video_url` 或 `contents` 内的 `inline_data`。
+
+## 请求示例
+
+### 使用 video_url
+
+```json
+{
+  "model": "gemini-3.1-flash-lite",
+  "video_url": "https://example.com/sample.mp4",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        { "text": "请总结这段视频的画面内容、旁白与卖点。" }
+      ]
+    }
+  ]
+}
+```
+
+### 使用 inline base64
+
+```json
+{
+  "model": "gemini-3.5-flash",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "inline_data": {
+            "mime_type": "video/mp4",
+            "data": "<base64>"
+          }
+        },
+        {
+          "text": "请提取视频字幕文案。"
+        }
+      ]
+    }
+  ],
+  "generationConfig": {
+    "temperature": 0.1,
+    "mediaResolution": "MEDIA_RESOLUTION_HIGH"
+  }
+}
+```
+
+## 响应
+
+返回 Gemini `generateContent` 结构：`candidates`、`usageMetadata`、`modelVersion`、`responseId`。

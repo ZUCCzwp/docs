@@ -1,0 +1,72 @@
+---
+title: 'Understand Video'
+openapi: 'POST /api/open-api/v1/videos/understand'
+---
+
+Synchronous Gemini video understanding. Pass a base64 video in `contents[].parts[].inline_data`, or a public `video_url` for the server to download and inject (max 80MB).
+
+<Note>
+This endpoint is **synchronous** and bills by tokens (`pay_as_you_go`). Default model: `gemini-3.1-flash-lite`. You may also use `gemini-3.5-flash`.
+</Note>
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | No | Default `gemini-3.1-flash-lite` |
+| `video_url` | string | No* | Public video URL; required when no inline video is provided |
+| `contents` | array | No* | Gemini contents with text prompt and/or inline video |
+| `generationConfig` | object | No | Optional: `temperature`, `mediaResolution`, etc. |
+
+\* Provide at least one video source: `video_url` or `inline_data` inside `contents`.
+
+## Examples
+
+### With video_url
+
+```json
+{
+  "model": "gemini-3.1-flash-lite",
+  "video_url": "https://example.com/sample.mp4",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        { "text": "Summarize the visuals, narration, and selling points." }
+      ]
+    }
+  ]
+}
+```
+
+### With inline base64
+
+```json
+{
+  "model": "gemini-3.5-flash",
+  "contents": [
+    {
+      "role": "user",
+      "parts": [
+        {
+          "inline_data": {
+            "mime_type": "video/mp4",
+            "data": "<base64>"
+          }
+        },
+        {
+          "text": "Extract the spoken transcript."
+        }
+      ]
+    }
+  ],
+  "generationConfig": {
+    "temperature": 0.1,
+    "mediaResolution": "MEDIA_RESOLUTION_HIGH"
+  }
+}
+```
+
+## Response
+
+Gemini `generateContent` payload: `candidates`, `usageMetadata`, `modelVersion`, `responseId`.

@@ -119,5 +119,6 @@
 ## Optional
 
 - [Blog](https://zucczwp.github.io/): JimmyAI blog and updates.
-- [Console](https://www.jimmyai.cn): Dashboard for API keys, billing, and usage.
-- [Canvas](https://canvas.jimmyai.cn): Infinite canvas creative workspace.
+- [Console](https://api.viraltok.ai): Dashboard for API keys, billing, and usage.
+- [Canvas](https://canvas.viraltok.ai): Infinite canvas creative workspace.
+- [TK Viral Clone](https://www.viraltok.ai): TK viral content replication workspace.

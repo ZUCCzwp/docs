@@ -1,120 +1,120 @@
 # JimmyAI API Documentation
 
-> JimmyAI is a unified OpenAI-compatible API gateway for image and video generation. Base URL: https://api.viraltok.ai. Authenticate with `Authorization: Bearer <API_KEY>`. Most video and image tasks are async — create a task, then poll the query endpoint for status and results. Docs site: https://docs.jimmyai.cn
+> JimmyAI is a unified OpenAI-compatible API gateway for image and video generation. Base URL: https://api.viraltok.ai. Authenticate with `Authorization: Bearer <API_KEY>`. Most video and image tasks are async — create a task, then poll the query endpoint for status and results. Docs site: https://docs.viraltok.ai
 
 ## Getting Started
 
-- [Quickstart](https://docs.jimmyai.cn/en/index.md): Get your API key, recharge your account, and send your first video generation request.
-- [Development Guide](https://docs.jimmyai.cn/en/development.md): Integration patterns and best practices for building with the JimmyAI API.
-- [快速入门](https://docs.jimmyai.cn/zh/index.md): 获取 API 密钥、充值账户并发送首个视频生成请求。
-- [开发指南](https://docs.jimmyai.cn/zh/development.md): 在应用程序中集成 JimmyAI API 的指南。
+- [Quickstart](https://docs.viraltok.ai/en/index.md): Get your API key, recharge your account, and send your first video generation request.
+- [Development Guide](https://docs.viraltok.ai/en/development.md): Integration patterns and best practices for building with the JimmyAI API.
+- [快速入门](https://docs.viraltok.ai/zh/index.md): 获取 API 密钥、充值账户并发送首个视频生成请求。
+- [开发指南](https://docs.viraltok.ai/zh/development.md): 在应用程序中集成 JimmyAI API 的指南。
 
 ## FAQ
 
-- [FAQ](https://docs.jimmyai.cn/en/faq.md): Frequently asked questions about billing, authentication, and API usage.
-- [常见问题](https://docs.jimmyai.cn/zh/faq.md): 有关计费、认证和 API 使用的常见问题解答。
+- [FAQ](https://docs.viraltok.ai/en/faq.md): Frequently asked questions about billing, authentication, and API usage.
+- [常见问题](https://docs.viraltok.ai/zh/faq.md): 有关计费、认证和 API 使用的常见问题解答。
 
 ## API Reference
 
-- [Introduction](https://docs.jimmyai.cn/en/api-reference/introduction.md): Overview of JimmyAI API capabilities — Sora, VEO, Gemini Omni, Seedance, and GPT Image models.
-- [介绍](https://docs.jimmyai.cn/zh/api-reference/introduction.md): JimmyAI API 能力概览 — Sora、VEO、Gemini Omni、Seedance 及 GPT Image 模型。
+- [Introduction](https://docs.viraltok.ai/en/api-reference/introduction.md): Overview of JimmyAI API capabilities — Sora, VEO, Gemini Omni, Seedance, and GPT Image models.
+- [介绍](https://docs.viraltok.ai/zh/api-reference/introduction.md): JimmyAI API 能力概览 — Sora、VEO、Gemini Omni、Seedance 及 GPT Image 模型。
 
 ### Common
 
-- [Query Video Task](https://docs.jimmyai.cn/en/api-reference/common/query.md): Query the status and result of a video generation task.
-- [Query Image Task](https://docs.jimmyai.cn/en/api-reference/images/query.md): Query the status and result of an image generation task.
-- [Query SoundClone Task](https://docs.jimmyai.cn/en/api-reference/common/sound-clone-query.md): Poll SoundClone task status via GET /audios/{id}.
-- [查询视频任务](https://docs.jimmyai.cn/zh/api-reference/common/query.md): 查询视频生成任务的状态和结果。
-- [查询图片任务](https://docs.jimmyai.cn/zh/api-reference/images/query.md): 查询图片生成任务的状态和结果。
-- [查询声音克隆任务](https://docs.jimmyai.cn/zh/api-reference/common/sound-clone-query.md): 查询 SoundClone 任务状态与 audioUrl。
+- [Query Video Task](https://docs.viraltok.ai/en/api-reference/common/query.md): Query the status and result of a video generation task.
+- [Query Image Task](https://docs.viraltok.ai/en/api-reference/images/query.md): Query the status and result of an image generation task.
+- [Query SoundClone Task](https://docs.viraltok.ai/en/api-reference/common/sound-clone-query.md): Poll SoundClone task status via GET /audios/{id}.
+- [查询视频任务](https://docs.viraltok.ai/zh/api-reference/common/query.md): 查询视频生成任务的状态和结果。
+- [查询图片任务](https://docs.viraltok.ai/zh/api-reference/images/query.md): 查询图片生成任务的状态和结果。
+- [查询声音克隆任务](https://docs.viraltok.ai/zh/api-reference/common/sound-clone-query.md): 查询 SoundClone 任务状态与 audioUrl。
 
 ### Account Management
 
-- [Query User Account Balance](https://docs.jimmyai.cn/en/api-reference/common/user-balance.md): GET /user/balance — JimiCoin account balance for the API key owner.
-- [Query API Key Quota Balance](https://docs.jimmyai.cn/en/api-reference/common/key-balance.md): GET /key/balance — per-key usage quota.
-- [查询用户账户余额](https://docs.jimmyai.cn/zh/api-reference/common/user-balance.md): GET /user/balance — 查询 API Key 所属用户的吉米币账户余额。
-- [查询 API Key 额度余额](https://docs.jimmyai.cn/zh/api-reference/common/key-balance.md): GET /key/balance — 查询当前 Key 的调用额度。
+- [Query User Account Balance](https://docs.viraltok.ai/en/api-reference/common/user-balance.md): GET /user/balance — JimiCoin account balance for the API key owner.
+- [Query API Key Quota Balance](https://docs.viraltok.ai/en/api-reference/common/key-balance.md): GET /key/balance — per-key usage quota.
+- [查询用户账户余额](https://docs.viraltok.ai/zh/api-reference/common/user-balance.md): GET /user/balance — 查询 API Key 所属用户的吉米币账户余额。
+- [查询 API Key 额度余额](https://docs.viraltok.ai/zh/api-reference/common/key-balance.md): GET /key/balance — 查询当前 Key 的调用额度。
 
 ### Sora Video
 
-- [Create Video](https://docs.jimmyai.cn/en/api-reference/videos/create.md): Create a video generation task using Sora models (route1, route3, route6).
-- [创建视频](https://docs.jimmyai.cn/zh/api-reference/videos/create.md): 使用 Sora 模型创建视频生成任务。
+- [Create Video](https://docs.viraltok.ai/en/api-reference/videos/create.md): Create a video generation task using Sora models (route1, route3, route6).
+- [创建视频](https://docs.viraltok.ai/zh/api-reference/videos/create.md): 使用 Sora 模型创建视频生成任务。
 
 ### Gemini Omni Video
 
-- [Create Gemini Omni Video](https://docs.jimmyai.cn/en/api-reference/gemini-omni/create.md): Create a Gemini Omni video generation task; poll the common query endpoint for results.
-- [创建 Gemini Omni 视频](https://docs.jimmyai.cn/zh/api-reference/gemini-omni/create.md): 创建 Gemini Omni 视频生成任务，通过通用查询接口获取结果。
+- [Create Gemini Omni Video](https://docs.viraltok.ai/en/api-reference/gemini-omni/create.md): Create a Gemini Omni video generation task; poll the common query endpoint for results.
+- [创建 Gemini Omni 视频](https://docs.viraltok.ai/zh/api-reference/gemini-omni/create.md): 创建 Gemini Omni 视频生成任务，通过通用查询接口获取结果。
 
 ### Image Services
 
-- [Create Image (Async)](https://docs.jimmyai.cn/en/api-reference/images/create.md): Create an async image generation task.
-- [Seedream 5.0 Pro](https://docs.jimmyai.cn/en/api-reference/images/seedream-5-0-pro/create.md): Async Seedream 5.0 Pro image generation (1K/2K, single image per request).
-- [Text-to-Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/generations.md): Sync text-to-image, OpenAI-compatible POST /v1/images/generations.
-- [Edit Image (Sync)](https://docs.jimmyai.cn/en/api-reference/images/edits.md): Sync image editing, OpenAI-compatible POST /v1/images/edits with multipart/form-data.
-- [Understand Image](https://docs.jimmyai.cn/en/api-reference/images/understand.md): Image understanding and analysis powered by Gemini.
-- [创建图片（异步）](https://docs.jimmyai.cn/zh/api-reference/images/create.md): 创建异步图片生成任务。
-- [Seedream 5.0 Pro 图像生成](https://docs.jimmyai.cn/zh/api-reference/images/seedream-5-0-pro/create.md): Seedream 5.0 Pro 异步生图（1K/2K，每次 1 张）。
-- [文生图（同步）](https://docs.jimmyai.cn/zh/api-reference/images/generations.md): 同步文生图，兼容 OpenAI POST /v1/images/generations。
-- [编辑图片（同步）](https://docs.jimmyai.cn/zh/api-reference/images/edits.md): 同步图片编辑，兼容 OpenAI POST /v1/images/edits。
-- [图片理解](https://docs.jimmyai.cn/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。
+- [Create Image (Async)](https://docs.viraltok.ai/en/api-reference/images/create.md): Create an async image generation task.
+- [Seedream 5.0 Pro](https://docs.viraltok.ai/en/api-reference/images/seedream-5-0-pro/create.md): Async Seedream 5.0 Pro image generation (1K/2K, single image per request).
+- [Text-to-Image (Sync)](https://docs.viraltok.ai/en/api-reference/images/generations.md): Sync text-to-image, OpenAI-compatible POST /v1/images/generations.
+- [Edit Image (Sync)](https://docs.viraltok.ai/en/api-reference/images/edits.md): Sync image editing, OpenAI-compatible POST /v1/images/edits with multipart/form-data.
+- [Understand Image](https://docs.viraltok.ai/en/api-reference/images/understand.md): Image understanding and analysis powered by Gemini.
+- [创建图片（异步）](https://docs.viraltok.ai/zh/api-reference/images/create.md): 创建异步图片生成任务。
+- [Seedream 5.0 Pro 图像生成](https://docs.viraltok.ai/zh/api-reference/images/seedream-5-0-pro/create.md): Seedream 5.0 Pro 异步生图（1K/2K，每次 1 张）。
+- [文生图（同步）](https://docs.viraltok.ai/zh/api-reference/images/generations.md): 同步文生图，兼容 OpenAI POST /v1/images/generations。
+- [编辑图片（同步）](https://docs.viraltok.ai/zh/api-reference/images/edits.md): 同步图片编辑，兼容 OpenAI POST /v1/images/edits。
+- [图片理解](https://docs.viraltok.ai/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。
 
 ### VEO Video
 
-- [Create VEO Video](https://docs.jimmyai.cn/en/api-reference/veo/create-frames.md): Create a VEO video task.
-- [创建 VEO 视频](https://docs.jimmyai.cn/zh/api-reference/veo/create-frames.md): 创建 VEO 视频任务。
+- [Create VEO Video](https://docs.viraltok.ai/en/api-reference/veo/create-frames.md): Create a VEO video task.
+- [创建 VEO 视频](https://docs.viraltok.ai/zh/api-reference/veo/create-frames.md): 创建 VEO 视频任务。
 
 ### Seedance Full Video
 
-- [Create Seedance Full Video](https://docs.jimmyai.cn/en/api-reference/seedance/create.md): Create a Full (Manxue) Seedance video task.
-- [Submit Assets for Audit](https://docs.jimmyai.cn/en/api-reference/seedance/assets-audit.md): Submit asset URLs for Seedance platform audit before use in video generation.
-- [Query Assets Audit Status](https://docs.jimmyai.cn/en/api-reference/seedance/assets-status.md): Query the audit status of submitted assets.
-- [创建 Seedance 满血版视频](https://docs.jimmyai.cn/zh/api-reference/seedance/create.md): 创建 Seedance 满血版视频生成任务。
-- [提交素材审核](https://docs.jimmyai.cn/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
-- [查询素材审核状态](https://docs.jimmyai.cn/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
+- [Create Seedance Full Video](https://docs.viraltok.ai/en/api-reference/seedance/create.md): Create a Full (Manxue) Seedance video task.
+- [Submit Assets for Audit](https://docs.viraltok.ai/en/api-reference/seedance/assets-audit.md): Submit asset URLs for Seedance platform audit before use in video generation.
+- [Query Assets Audit Status](https://docs.viraltok.ai/en/api-reference/seedance/assets-status.md): Query the audit status of submitted assets.
+- [创建 Seedance 满血版视频](https://docs.viraltok.ai/zh/api-reference/seedance/create.md): 创建 Seedance 满血版视频生成任务。
+- [提交素材审核](https://docs.viraltok.ai/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
+- [查询素材审核状态](https://docs.viraltok.ai/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
 
 ### Seedance 2.0 Video (Mini)
 
-- [Mini Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
-- [Mini 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
+- [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
+- [Mini 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
 
 ### Seedance SP Economy
 
-- [SP Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/sp/create.md): Create a Seedance SP video task (economy or official).
-- [SP Upload Asset](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the SP economy library.
-- [SP Query Asset Detail](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-detail.md): Query a single SP asset status.
-- [SP Batch Query Asset Status](https://docs.jimmyai.cn/en/api-reference/seedance/sp/assets-status.md): Batch query SP asset status.
-- [SP Submit Real-Person Whitelist](https://docs.jimmyai.cn/en/api-reference/seedance/sp/realperson-submit.md): Submit real-person portrait for whitelist processing.
-- [SP Query Real-Person Status](https://docs.jimmyai.cn/en/api-reference/seedance/sp/realperson-status.md): Query real-person whitelist status.
-- [SP 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 视频任务（经济版 / 官方版）。
-- [SP 上传素材](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到 SP 经济版素材库。
-- [SP 查询素材详情](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-detail.md): 查询单个 SP 素材状态。
-- [SP 批量查询素材状态](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/assets-status.md): 批量查询 SP 素材状态。
-- [SP 提交真人加白](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。
-- [SP 查询真人加白状态](https://docs.jimmyai.cn/zh/api-reference/seedance/sp/realperson-status.md): 查询真人加白处理状态。
+- [SP Create Video](https://docs.viraltok.ai/en/api-reference/seedance/sp/create.md): Create a Seedance SP video task (economy or official).
+- [SP Upload Asset](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the SP economy library.
+- [SP Query Asset Detail](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-detail.md): Query a single SP asset status.
+- [SP Batch Query Asset Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-status.md): Batch query SP asset status.
+- [SP Submit Real-Person Whitelist](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-submit.md): Submit real-person portrait for whitelist processing.
+- [SP Query Real-Person Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-status.md): Query real-person whitelist status.
+- [SP 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 视频任务（经济版 / 官方版）。
+- [SP 上传素材](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到 SP 经济版素材库。
+- [SP 查询素材详情](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-detail.md): 查询单个 SP 素材状态。
+- [SP 批量查询素材状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-status.md): 批量查询 SP 素材状态。
+- [SP 提交真人加白](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。
+- [SP 查询真人加白状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-status.md): 查询真人加白处理状态。
 
 ### Seedance MD
 
-- [MD Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
-- [MD 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
-- [Fast I2V Create Video](https://docs.jimmyai.cn/en/api-reference/seedance/md/fast-i2v.md): Create a Seedance Fast I2V (seedance2.0-fast-i2v) video task.
-- [Fast I2V 创建视频](https://docs.jimmyai.cn/zh/api-reference/seedance/md/fast-i2v.md): 创建 Seedance Fast I2V（seedance2.0-fast-i2v）视频任务。
+- [MD Create Video](https://docs.viraltok.ai/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
+- [MD 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
+- [Fast I2V Create Video](https://docs.viraltok.ai/en/api-reference/seedance/md/fast-i2v.md): Create a Seedance Fast I2V (seedance2.0-fast-i2v) video task.
+- [Fast I2V 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/md/fast-i2v.md): 创建 Seedance Fast I2V（seedance2.0-fast-i2v）视频任务。
 
 ### SoundClone
 
-- [Create Preview Task](https://docs.jimmyai.cn/en/api-reference/sound-clone/clone-create.md): Submit voice-cloning preview from source audio/video URL.
-- [Create Audio Task](https://docs.jimmyai.cn/en/api-reference/sound-clone/audio-create.md): Generate production audio with modelId; billed per 10k characters plus voice fee on every submission.
-- [提交试听任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/clone-create.md): 提交声音克隆试听任务。
-- [提交音频生成任务](https://docs.jimmyai.cn/zh/api-reference/sound-clone/audio-create.md): 使用 modelId 生成正式音频，每次按字符 + 音色（按次）计费。
+- [Create Preview Task](https://docs.viraltok.ai/en/api-reference/sound-clone/clone-create.md): Submit voice-cloning preview from source audio/video URL.
+- [Create Audio Task](https://docs.viraltok.ai/en/api-reference/sound-clone/audio-create.md): Generate production audio with modelId; billed per 10k characters plus voice fee on every submission.
+- [提交试听任务](https://docs.viraltok.ai/zh/api-reference/sound-clone/clone-create.md): 提交声音克隆试听任务。
+- [提交音频生成任务](https://docs.viraltok.ai/zh/api-reference/sound-clone/audio-create.md): 使用 modelId 生成正式音频，每次按字符 + 音色（按次）计费。
 
 ### Tools
 
-- [Create Video Super-Resolution](https://docs.jimmyai.cn/en/api-reference/super-resolution/create.md): Enhance a public video to higher resolution/FPS; poll common video query.
-- [创建视频超分任务](https://docs.jimmyai.cn/zh/api-reference/super-resolution/create.md): 将公网视频增强为更高清结果，通过通用视频查询接口轮询。
+- [Create Video Super-Resolution](https://docs.viraltok.ai/en/api-reference/super-resolution/create.md): Enhance a public video to higher resolution/FPS; poll common video query.
+- [创建视频超分任务](https://docs.viraltok.ai/zh/api-reference/super-resolution/create.md): 将公网视频增强为更高清结果，通过通用视频查询接口轮询。
 
 ## OpenAPI Specs
 
-- [OpenAPI (English)](https://docs.jimmyai.cn/en/api-reference/openapi.json): Machine-readable API specification.
-- [OpenAPI (中文)](https://docs.jimmyai.cn/zh/api-reference/openapi.json): 机器可读的 API 规范。
+- [OpenAPI (English)](https://docs.viraltok.ai/en/api-reference/openapi.json): Machine-readable API specification.
+- [OpenAPI (中文)](https://docs.viraltok.ai/zh/api-reference/openapi.json): 机器可读的 API 规范。
 
 ## Optional
 

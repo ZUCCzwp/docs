@@ -1,0 +1,71 @@
+---
+title: 'Create MiniMax H3 Video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `minimax-h3` | MiniMax H3 video generation. Supports text-to-video, up to 5 reference images, 1 reference audio, and optional first/last frames. |
+
+Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
+
+## Parameter constraints
+
+- **Prompt**: Required, 1–5000 characters.
+- **Duration**: 5–15 seconds (default `5`).
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
+- **Size**: `2560x1440`, `1440x2560`, `1440x1440`, `1920x1440`, `1440x1920`, `3360x1440`. When omitted, a default matching the aspect ratio is used (e.g. `16:9` → `2560x1440`).
+- **Reference images**: `reference_images` or `images`, max **5**, public HTTPS URLs.
+- **Reference audio**: `reference_audios`, max **1**.
+- **First / last frame**: optional `first_image` / `last_image` (one each).
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | Must be `minimax-h3` |
+| `prompt` | string | Yes | Text prompt |
+| `duration` | integer | No | Duration in seconds, default 5 |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `size` | string | No | Output pixel size |
+| `reference_images` | string[] | No | Reference image URLs (0–5) |
+| `images` | string[] | No | Alias for `reference_images` when the latter is empty |
+| `reference_audios` | string[] | No | Reference audio URLs (0–1) |
+| `first_image` | string | No | First-frame image URL |
+| `last_image` | string | No | Last-frame image URL |
+
+## Billing
+
+- Mode: `per_second`
+- Duration: request `duration` (seconds)
+- Billing model name: `minimax-h3` (unit price from console)
+
+```text
+cost = unit_price × duration
+```
+
+## Example request
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3",
+    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "size": "2560x1440",
+    "reference_images": ["https://example.com/reference.png"],
+    "reference_audios": ["https://example.com/reference.mp3"],
+    "first_image": "https://example.com/first.png",
+    "last_image": "https://example.com/last.png"
+  }'
+```

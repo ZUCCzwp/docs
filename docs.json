@@ -84,6 +84,12 @@
                 ]
               },
               {
+                "group": "MiniMax Video",
+                "pages": [
+                  "en/api-reference/minimax/create"
+                ]
+              },
+              {
                 "group": "Tools",
                 "pages": [
                   "en/api-reference/super-resolution/create",
@@ -218,6 +224,12 @@
                 "group": "Grok 视频",
                 "pages": [
                   "zh/api-reference/grok/create"
+                ]
+              },
+              {
+                "group": "MiniMax 视频",
+                "pages": [
+                  "zh/api-reference/minimax/create"
                 ]
               },
               {

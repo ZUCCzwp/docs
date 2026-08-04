@@ -483,6 +483,53 @@
         }
       }
     },
+    "/api/open-api/v1/minimax/videos": {
+      "post": {
+        "summary": "创建 MiniMax H3 视频任务",
+        "description": "创建 MiniMax H3 视频生成任务。支持文本提示词、最多 5 张参考图、最多 1 段参考音频、可选首尾帧，时长 5-15 秒，以及 aspect_ratio/size。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createMinimaxH3Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MinimaxH3GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建 MiniMax H3 任务",
+                  "value": {
+                    "model": "minimax-h3",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "size": "2560x1440",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "创建视频超分任务",
@@ -1758,6 +1805,118 @@
           "ratio": "16:9",
           "image_urls": [
             "https://example.com/butterfly.jpg"
+          ]
+        }
+      },
+      "MinimaxH3GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "minimax-h3"
+            ],
+            "description": "模型名称。minimax-h3、minimax_h3、minimaxh3 归一化为 minimax-h3。"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "description": "用于生成视频的文本提示词，长度 1–5000。"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "minimum": 5,
+            "maximum": 15,
+            "description": "视频时长，单位秒。支持 5–15。默认 5。"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "default": "16:9",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9"
+            ],
+            "description": "输出画幅比例。优先级高于 ratio。"
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9"
+            ],
+            "description": "aspect_ratio 为空时的别名。"
+          },
+          "size": {
+            "type": "string",
+            "default": "2560x1440",
+            "enum": [
+              "2560x1440",
+              "1440x2560",
+              "1440x1440",
+              "1920x1440",
+              "1440x1920",
+              "3360x1440"
+            ],
+            "description": "输出像素规格。未传时按 aspect_ratio 取默认值。"
+          },
+          "reference_images": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL 列表，最多 5 张，须为公网可访问地址。"
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_images 为空时的别名。"
+          },
+          "reference_audios": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考音频 URL 列表，最多 1 段。"
+          },
+          "first_image": {
+            "type": "string",
+            "description": "可选首帧图 URL。"
+          },
+          "last_image": {
+            "type": "string",
+            "description": "可选尾帧图 URL。"
+          }
+        },
+        "example": {
+          "model": "minimax-h3",
+          "prompt": "电影感产品展示，自然光",
+          "duration": 5,
+          "aspect_ratio": "16:9",
+          "size": "2560x1440",
+          "reference_images": [
+            "https://example.com/reference.png"
+          ],
+          "reference_audios": [
+            "https://example.com/reference.mp3"
           ]
         }
       },

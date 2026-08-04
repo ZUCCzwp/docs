@@ -483,6 +483,53 @@
         }
       }
     },
+    "/api/open-api/v1/minimax/videos": {
+      "post": {
+        "summary": "Create MiniMax H3 Video",
+        "description": "Create a MiniMax H3 video generation task. Supports text prompt, up to 5 reference images, 1 reference audio, optional first/last frames, duration 5-15s, and aspect_ratio/size. Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "operationId": "createMinimaxH3Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MinimaxH3GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create MiniMax H3 task",
+                  "value": {
+                    "model": "minimax-h3",
+                    "prompt": "A cinematic product shot with natural lighting",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "size": "2560x1440",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "Create video super-resolution task",
@@ -1758,6 +1805,118 @@
           "ratio": "16:9",
           "image_urls": [
             "https://example.com/butterfly.jpg"
+          ]
+        }
+      },
+      "MinimaxH3GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "minimax-h3"
+            ],
+            "description": "Model name. minimax-h3, minimax_h3, and minimaxh3 normalize to minimax-h3."
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "description": "Text prompt for video generation. 1–5000 characters."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 5,
+            "minimum": 5,
+            "maximum": 15,
+            "description": "Video duration in seconds. Supports 5–15. Defaults to 5."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "default": "16:9",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9"
+            ],
+            "description": "Output aspect ratio. Takes precedence over ratio."
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9"
+            ],
+            "description": "Alias for aspect_ratio when aspect_ratio is empty."
+          },
+          "size": {
+            "type": "string",
+            "default": "2560x1440",
+            "enum": [
+              "2560x1440",
+              "1440x2560",
+              "1440x1440",
+              "1920x1440",
+              "1440x1920",
+              "3360x1440"
+            ],
+            "description": "Output pixel size. Defaults based on aspect_ratio when omitted."
+          },
+          "reference_images": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URL list. Max 5 public URLs."
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_images when reference_images is empty."
+          },
+          "reference_audios": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference audio URL list. Max 1 public URL."
+          },
+          "first_image": {
+            "type": "string",
+            "description": "Optional first-frame image URL."
+          },
+          "last_image": {
+            "type": "string",
+            "description": "Optional last-frame image URL."
+          }
+        },
+        "example": {
+          "model": "minimax-h3",
+          "prompt": "A cinematic product shot with natural lighting",
+          "duration": 5,
+          "aspect_ratio": "16:9",
+          "size": "2560x1440",
+          "reference_images": [
+            "https://example.com/reference.png"
+          ],
+          "reference_audios": [
+            "https://example.com/reference.mp3"
           ]
         }
       },

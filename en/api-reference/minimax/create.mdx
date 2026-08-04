@@ -43,12 +43,12 @@ Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
 
 ## Billing
 
-- Mode: `per_second`
-- Duration: request `duration` (seconds)
+- Mode: `per_task`
 - Billing model name: `minimax-h3` (unit price from console)
+- `duration` controls generation length only and **does not affect billing**
 
 ```text
-cost = unit_price × duration
+cost = unit_price
 ```
 
 ## Example request

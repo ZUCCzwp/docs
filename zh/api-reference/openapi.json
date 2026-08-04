@@ -486,7 +486,7 @@
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "创建 MiniMax H3 视频任务",
-        "description": "创建 MiniMax H3 视频生成任务。支持文本提示词、最多 5 张参考图、最多 1 段参考音频、可选首尾帧，时长 5-15 秒，以及 aspect_ratio/size。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 MiniMax H3 视频生成任务。支持文本提示词、最多 5 张参考图、最多 1 段参考音频、可选首尾帧，时长 5-15 秒，以及 aspect_ratio/size。计费方式为 per_task（按次；duration 不参与计费）。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,

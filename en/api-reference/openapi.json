@@ -486,7 +486,7 @@
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "Create MiniMax H3 Video",
-        "description": "Create a MiniMax H3 video generation task. Supports text prompt, up to 5 reference images, 1 reference audio, optional first/last frames, duration 5-15s, and aspect_ratio/size. Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a MiniMax H3 video generation task. Supports text prompt, up to 5 reference images, 1 reference audio, optional first/last frames, duration 5-15s, and aspect_ratio/size. Billed per_task (flat per request; duration does not affect cost). Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,

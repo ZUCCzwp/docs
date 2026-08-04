@@ -43,12 +43,12 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 
 ## 计费说明
 
-- 计费方式：`per_second`（按秒）
-- 计费时长：请求中的 `duration`（秒）
+- 计费方式：`per_task`（按次）
 - 计费模型名：`minimax-h3`（单价以控制台配置为准）
+- `duration` 仅影响生成时长，**不参与计费**
 
 ```text
-费用 = 模型单价 × duration
+费用 = 模型单价
 ```
 
 ## 示例请求

@@ -47,6 +47,8 @@
 
 ### MiniMax Video
 
+- [Create Seedance 2.5 Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create.md): Create a Seedance 2.5 video task (reference images/videos/audios); billed per_second; poll the common query endpoint.
+- [创建 Seedance 2.5 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create.md): 创建 Seedance 2.5 视频任务（参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
 - [Create MiniMax H3 Video](https://docs.viraltok.ai/en/api-reference/minimax/create.md): Create a MiniMax H3 video task (reference images/audio, first/last frame); billed per_task; poll the common query endpoint.
 - [创建 MiniMax H3 视频](https://docs.viraltok.ai/zh/api-reference/minimax/create.md): 创建 MiniMax H3 视频任务（参考图/音频、首尾帧），按次计费，通过通用查询接口获取结果。
 

@@ -949,6 +949,56 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/seedance25/videos": {
+      "post": {
+        "summary": "创建 Seedance 2.5 视频任务",
+        "description": "创建 Seedance 2.5 视频生成任务。支持文本提示词、最多 30 张参考图、最多 10 个参考视频、最多 10 段参考音频，时长 4-30 秒，aspect_ratio 为 16:9/9:16/1:1，resolution 为 480p/720p。计费按分辨率分档 per_second（seedance-2.5-480p / seedance-2.5-720p）。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createSeedance25Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Seedance25GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建 Seedance 2.5 任务",
+                  "value": {
+                    "model": "seedance-2.5",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 4,
+                    "aspect_ratio": "16:9",
+                    "resolution": "720p",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2687,6 +2737,127 @@
             "type": "object",
             "description": "可选生成配置（temperature、mediaResolution 等）"
           }
+        }
+      },
+      "Seedance25GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "seedance-2.5"
+            ],
+            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5。"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "description": "用于生成视频的文本提示词，长度 1–5000。"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 4,
+            "minimum": 4,
+            "maximum": 30,
+            "description": "视频时长，单位秒。支持 4–30。默认 4。"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "default": "9:16",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1"
+            ],
+            "description": "输出画幅比例。优先级高于 ratio。默认 9:16。"
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1"
+            ],
+            "description": "aspect_ratio 为空时的别名。"
+          },
+          "resolution": {
+            "type": "string",
+            "default": "480p",
+            "enum": [
+              "480p",
+              "720p"
+            ],
+            "description": "输出分辨率档位。默认 480p。"
+          },
+          "reference_images": {
+            "type": "array",
+            "maxItems": 30,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL 列表，最多 30 张，须为公网可访问地址。"
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 30,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_images 为空时的别名。"
+          },
+          "reference_videos": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考视频 URL 列表，最多 10 个；总时长最大 30 秒。"
+          },
+          "videos": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_videos 为空时的别名。"
+          },
+          "reference_audios": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考音频 URL 列表，最多 10 段。"
+          },
+          "audios": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_audios 为空时的别名。"
+          }
+        },
+        "example": {
+          "model": "seedance-2.5",
+          "prompt": "电影感产品展示，自然光",
+          "duration": 4,
+          "aspect_ratio": "16:9",
+          "resolution": "720p",
+          "reference_images": [
+            "https://example.com/reference.png"
+          ],
+          "reference_videos": [
+            "https://example.com/reference.mp4"
+          ],
+          "reference_audios": [
+            "https://example.com/reference.mp3"
+          ]
         }
       }
     },

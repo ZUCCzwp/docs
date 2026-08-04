@@ -1,0 +1,75 @@
+---
+title: '创建 Seedance 2.5 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `seedance-2.5` | Seedance 2.5 视频生成，支持文生视频及参考图 / 参考视频 / 参考音频 |
+
+`seedance2.5`、`seedance_2.5`、`seedance25` 等别名会归一化为 `seedance-2.5`。
+
+计费模型名也可直接作为 `model` 传入：`seedance-2.5-480p`、`seedance-2.5-720p`（未传 `resolution` 时从模型名解析分辨率；若同时传了 `resolution`，以 `resolution` 为准）。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。
+- **时长（duration）**：4–30 秒，默认 `4`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`。
+- **分辨率（resolution）**：`480p`、`720p`，默认 `480p`。
+- **参考图**：`reference_images` 或 `images`，最多 **30** 张，须为公网可访问 URL。
+- **参考视频**：`reference_videos` 或 `videos`，最多 **10** 个；参考视频总时长最大 30 秒。
+- **参考音频**：`reference_audios` 或 `audios`，最多 **10** 段。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance-2.5`，或计费名 `seedance-2.5-480p` / `seedance-2.5-720p` |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 4 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | `480p` / `720p`，默认 `480p` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–30） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–10） |
+| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–10） |
+| `audios` | string[] | 否 | `reference_audios` 别名 |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 按 **分辨率** 分档计费（控制台配置单价）：
+  - `seedance-2.5-480p`
+  - `seedance-2.5-720p`
+- 请求体 `model` 仍传 `seedance-2.5`；系统按 `resolution` 选择对应计费模型
+
+```text
+费用 = 对应分辨率单价 × duration
+```
+
+## 示例请求
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 4,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"],
+    "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```

@@ -1,0 +1,87 @@
+---
+title: '创建 Seedance 2.0 933 视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model: "seedance2.0-933"` 选择本线路。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `seedance2.0-933` | Seedance 2.0 933 视频生成，支持文生视频及参考图 / 参考视频 / 参考音频 |
+
+`seedance-2.0-933`、`seedance20933`、`seedance2_0_933` 等别名会归一化为 `seedance2.0-933`。
+
+计费模型名也可直接作为 `model` 传入：`seedance2.0-933-480p`、`seedance2.0-933-720p`、`seedance2.0-933-1080p`（未传 `resolution` 时从模型名解析分辨率；若同时传了 `resolution`，以 `resolution` 为准）。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。
+- **时长（duration）**：4–15 秒，默认 `4`。
+- **画幅比例（aspect_ratio / ratio）**：`21:9`、`16:9`、`4:3`、`1:1`、`3:4`、`9:16`，默认 `16:9`。
+- **分辨率（resolution）**：`480p`、`720p`、`1080p`，默认 `480p`。
+- **参考图**：`reference_images` 或 `images`，最多 **9** 张，须为公网可访问 URL。
+- **参考视频**：`reference_videos` 或 `videos`，最多 **3** 个。
+- **参考音频**：`reference_audios` 或 `audios`，最多 **3** 段。
+- **人脸处理（face_processing）**：布尔，默认 `true`。
+- **生成音频（generate_audio）**：布尔，默认 `false`。
+- **参考模式（reference_mode）**：`image` 或 `frame`，默认 `image`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance2.0-933`，或计费名 `seedance2.0-933-480p` / `-720p` / `-1080p` |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 4 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | `480p` / `720p` / `1080p`，默认 `480p` |
+| `face_processing` | boolean | 否 | 是否启用人脸处理，默认 `true` |
+| `generate_audio` | boolean | 否 | 是否生成音频，默认 `false` |
+| `reference_mode` | string | 否 | `image` / `frame`，默认 `image` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–9） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–3） |
+| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–3） |
+| `audios` | string[] | 否 | `reference_audios` 别名 |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 按 **分辨率** 分档计费（控制台配置单价）：
+  - `seedance2.0-933-480p`
+  - `seedance2.0-933-720p`
+  - `seedance2.0-933-1080p`
+- 请求体 `model` 仍传 `seedance2.0-933`；系统按 `resolution` 选择对应计费模型
+
+```text
+费用 = 对应分辨率单价 × duration
+```
+
+## 示例请求
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-933",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 4,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "face_processing": true,
+    "generate_audio": false,
+    "reference_mode": "image",
+    "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"],
+    "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```

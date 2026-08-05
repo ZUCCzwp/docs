@@ -90,6 +90,12 @@
                 ]
               },
               {
+                "group": "Seedance 2.0 933 Video",
+                "pages": [
+                  "en/api-reference/seedance/20933/create"
+                ]
+              },
+              {
                 "group": "Tools",
                 "pages": [
                   "en/api-reference/super-resolution/create",
@@ -236,6 +242,12 @@
                 "group": "MiniMax 视频",
                 "pages": [
                   "zh/api-reference/minimax/create"
+                ]
+              },
+              {
+                "group": "Seedance 2.0 933 视频",
+                "pages": [
+                  "zh/api-reference/seedance/20933/create"
                 ]
               },
               {

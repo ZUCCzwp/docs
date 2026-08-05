@@ -254,7 +254,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution, 720p/1080p only, 480p not supported), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro, per-task, 720p; Pro supports up to 9 images and 3 audios, no reference videos), Fast I2V (seedance2.0-fast-i2v, per-task, 720p, image refs only, max 9, no reference video/audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create, seedance/md/fast-i2v, seedance/md/std, seedance/mini/create for details.",
+        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution, 720p/1080p only, 480p not supported), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro, per-task, 720p; Pro supports up to 9 images and 3 audios, no reference videos), Fast I2V (seedance2.0-fast-i2v, per-task, 720p, image refs only, max 9, no reference video/audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Seedance 2.0 933 (seedance2.0-933, per-second by resolution 480p/720p/1080p; optional reference_images/videos/audios, face_processing, generate_audio, reference_mode). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/md/create, seedance/md/fast-i2v, seedance/md/std, seedance/mini/create for details.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -1050,7 +1050,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution, 720p/1080p, 480p not supported). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution; billing names like seedance2.0-mini-720p / seedance2.0-mini-720p-video also accepted). MD: seedance2.0-md (4-15s, max 4 images / 3 videos / 1 audio) | seedance2.0-fast-md (10/15s, max 4 images / 3 videos / 1 audio) | seedance2.0-pro (10/15s, max 9 images / 3 audios, no videos) | seedance2.0-fast-pro (10/15s, max 9 images / 3 audios, no videos). Fast I2V: seedance2.0-fast-i2v (per-task, 720p, image refs only). STD standard: seedance2.0-std (per-task, 720p)"
+            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution, 720p/1080p, 480p not supported). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution; billing names like seedance2.0-mini-720p / seedance2.0-mini-720p-video also accepted). MD: seedance2.0-md (4-15s, max 4 images / 3 videos / 1 audio) | seedance2.0-fast-md (10/15s, max 4 images / 3 videos / 1 audio) | seedance2.0-pro (10/15s, max 9 images / 3 audios, no videos) | seedance2.0-fast-pro (10/15s, max 9 images / 3 audios, no videos). Fast I2V: seedance2.0-fast-i2v (per-task, 720p, image refs only). STD standard: seedance2.0-std (per-task, 720p). Seedance 2.0 933: seedance2.0-933 (per-second by resolution; billing names seedance2.0-933-480p/-720p/-1080p)"
           },
           "prompt": {
             "type": "string",
@@ -1109,6 +1109,47 @@
               "type": "string"
             },
             "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-pro / seedance2.0-fast-pro max 3 clips and must be paired with images; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "description": "Aspect ratio alias (used by seedance2.0-933; takes precedence over ratio). 933 supports 21:9/16:9/4:3/1:1/3:4/9:16"
+          },
+          "reference_images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for images. seedance2.0-933: max 9"
+          },
+          "videos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_videos. seedance2.0-933: max 3"
+          },
+          "audios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_audios. seedance2.0-933: max 3"
+          },
+          "face_processing": {
+            "type": "boolean",
+            "description": "seedance2.0-933 only. Enable face processing. Default true"
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "description": "seedance2.0-933 only. Generate audio. Default false"
+          },
+          "reference_mode": {
+            "type": "string",
+            "enum": [
+              "image",
+              "frame"
+            ],
+            "description": "seedance2.0-933 only. Reference mode. Default image"
           }
         }
       },

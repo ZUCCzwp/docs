@@ -17,7 +17,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 
 ## 参数限制
 
-- **提示词（prompt）**：必填，长度 1–5000。
+- **提示词（prompt）**：必填，长度 1–2000。
 - **时长（duration）**：5–15 秒，默认 `5`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`，默认 `16:9`。
 - **尺寸（size）**：`2560x1440`、`1440x2560`、`1440x1440`、`1920x1440`、`1440x1920`、`3360x1440`。未传时按比例默认（如 `16:9` → `2560x1440`）。
@@ -30,7 +30,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `model` | string | 是 | 固定传 `minimax-h3` |
-| `prompt` | string | 是 | 文本提示词 |
+| `prompt` | string | 是 | 文本提示词，长度 1–2000 |
 | `duration` | integer | 否 | 时长秒数，默认 5 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |

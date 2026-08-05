@@ -1875,8 +1875,8 @@
           "prompt": {
             "type": "string",
             "minLength": 1,
-            "maxLength": 5000,
-            "description": "Text prompt for video generation. 1–5000 characters."
+            "maxLength": 2000,
+            "description": "Text prompt for video generation. 1–2000 characters."
           },
           "duration": {
             "type": "integer",

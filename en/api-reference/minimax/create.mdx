@@ -17,7 +17,7 @@ Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
 
 ## Parameter constraints
 
-- **Prompt**: Required, 1–5000 characters.
+- **Prompt**: Required, 1–2000 characters.
 - **Duration**: 5–15 seconds (default `5`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
 - **Size**: `2560x1440`, `1440x2560`, `1440x1440`, `1920x1440`, `1440x1920`, `3360x1440`. When omitted, a default matching the aspect ratio is used (e.g. `16:9` → `2560x1440`).
@@ -30,7 +30,7 @@ Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `model` | string | Yes | Must be `minimax-h3` |
-| `prompt` | string | Yes | Text prompt |
+| `prompt` | string | Yes | Text prompt, 1–2000 characters |
 | `duration` | integer | No | Duration in seconds, default 5 |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |

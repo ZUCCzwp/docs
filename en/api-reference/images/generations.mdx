@@ -1,12 +1,12 @@
 ---
-title: 'Text-to-Image (Sync)'
+title: 'GPT Image 2 Text-to-Image'
 openapi: 'POST /api/open-api/v1/images/generations'
 ---
 
 <Note>
 This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/generations`. On success, billing is applied immediately and image results are returned in `data` (`b64_json` or `url`) — no task polling required.
 
-Unlike [Create Image Task](/en/api-reference/images/create) (async `POST /images`), which returns a `task_id` and requires [Query Image Task](/en/api-reference/images/query).
+Unlike [GPT Image 2 Image Generation](/en/api-reference/images/create) (async `POST /images`), which returns a `task_id` and requires [Query Image Task](/en/api-reference/images/query).
 </Note>
 
 <Note>
@@ -29,5 +29,5 @@ Cost = unit price × `n`. Falls back to async tier / base `gpt-image-2` if sync 
 <Warning>
 Generation often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Responses may include multi‑MB `b64_json`; ensure your client and any proxy support large bodies.
 
-If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [Create Image Task](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
+If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [GPT Image 2 Image Generation](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
 </Warning>

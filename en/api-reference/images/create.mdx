@@ -1,18 +1,124 @@
 ---
-title: 'Create Image (Async)'
+title: 'GPT Image 2 Image Generation'
 openapi: 'POST /api/open-api/v1/images'
 ---
 
-<Note>
-This endpoint is **asynchronous**: it returns a `task_id`. Poll [Query Image Task](/en/api-reference/images/query) for results. **Recommended for production** to avoid **504** timeouts on sync calls behind Cloudflare.
+Create an async **GPT Image 2** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
 
-For **synchronous** text-to-image or image edit (OpenAI-compatible, returns `b64_json` on success), use [Text-to-Image (Sync)](/en/api-reference/images/generations) or [Edit Image (Sync)](/en/api-reference/images/edits); sync calls may use the direct image endpoint `https://img.viraltok.ai`.
+<Note>
+Endpoint: `POST /api/open-api/v1/images` with `"model": "gpt-image-2"`.
+
+Other async image models: [GPT Image 1.5](/en/api-reference/images/gpt-image-1.5/create), [Seedream 5.0 Pro](/en/api-reference/images/seedream-5-0-pro/create), [NanoBanana](/en/api-reference/images/nano-banana/create).
+
+For **OpenAI-compatible sync** APIs, use [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) or [GPT Image 2 Edit Image](/en/api-reference/images/edits) (direct host: `https://img.viraltok.ai`).
 </Note>
 
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `gpt-image-2` |
+| Billing | **Quality-tier unit price × `n`** (async) |
+| Modes | Text-to-image, reference-image generation (`images`) |
+| Ratio | `ratio` (e.g. `1:1`, `16:9`), default `auto` |
+| Resolution | `resolution`: `1k` / `2k` / `4k` |
+| Quality | `quality`: `auto` / `low` / `medium` / `high` |
+
+## Billing (async)
+
+| `quality` | Billing model | Notes |
+|-----------|---------------|-------|
+| empty / `auto` | `gpt-image-2` | Default tier |
+| `low` | `gpt-image-2-low` | Faster / cheaper |
+| `medium` | `gpt-image-2-medium` | Balanced |
+| `high` | `gpt-image-2-high` | Higher quality |
+
+Formula:
+
+```text
+total = quality_unit_price × n
+```
+
+Unit prices follow the console / pricing page. If a quality variant is missing, billing falls back to base `gpt-image-2`.
+
+<Info>
+Sync generations/edits use separate billing models `gpt-image-2-sync` / `gpt-image-2-sync-{quality}`. See [GPT Image 2 Text-to-Image](/en/api-reference/images/generations).
+</Info>
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-2` |
+| `prompt` | string | Yes | Image prompt |
+| `ratio` | string | No | Aspect ratio, default `auto` |
+| `resolution` | string | No | `1k` / `2k` / `4k`, default `1k` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` |
+| `n` | int | No | Image count, default `1` |
+| `images` | string[] | No | Reference image URLs |
+
+<Warning>
+When `resolution=4k`, some ratios may be unsupported. Common supported ratios include `16:9` / `9:16` / `2:1` / `1:2` / `21:9` / `9:21`.
+</Warning>
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "Cyberpunk city at night in the rain, neon signs, cinematic framing",
+    "ratio": "16:9",
+    "resolution": "2k",
+    "quality": "auto",
+    "n": 1
+  }'
+```
+
+### Reference image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2",
+    "prompt": "Keep the subject outline, replace background with a sunset beach",
+    "ratio": "1:1",
+    "resolution": "1k",
+    "quality": "high",
+    "images": ["https://example.com/ref.png"]
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "gpt-image-2",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Status flow: `queued` → `processing` → `completed` / `failed`. Read `data.result.image_url` when done.
+
 <Note>
-Async image tasks use `ratio` for **aspect ratio** (e.g. `1:1`, `16:9`); default is `auto`. Sync OpenAI-compatible endpoints (`/images/generations`, `/images/edits`) still use `size` for **pixel dimensions** (e.g. `1024x1024`).
-
-[Seedream 5.0 Pro](/en/api-reference/images/seedream-5-0-pro/create) uses the same async endpoint with `"model": "doubao-seedream-5-0-pro"`.
-
-[GPT Image 1.5](/en/api-reference/images/gpt-image-1.5/create) uses the same async endpoint with `"model": "gpt-image-1.5"` (async only; sync generations/edits are not supported).
+Result URLs are kept for about **3 days** — download promptly.
 </Note>

@@ -6,11 +6,11 @@ openapi: 'POST /api/open-api/v1/images'
 创建 **GPT Image 1.5** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址。
 
 <Note>
-本接口与 [创建图片（异步）](/zh/api-reference/images/create) 共用 `POST /api/open-api/v1/images`。将 `model` 设为 `gpt-image-1.5` 即可使用本模型。
+本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `gpt-image-1.5` 即可使用本模型。
 </Note>
 
 <Warning>
-GPT Image 1.5 **仅支持异步**。同步接口 [文生图（同步）](/zh/api-reference/images/generations)、[编辑图片（同步）](/zh/api-reference/images/edits) 不支持本模型。
+GPT Image 1.5 **仅支持异步**。同步接口 [GPT Image 2 文生图](/zh/api-reference/images/generations)、[GPT Image 2 编辑图片](/zh/api-reference/images/edits) 不支持本模型。
 </Warning>
 
 ## 模型说明

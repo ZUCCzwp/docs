@@ -1,0 +1,99 @@
+---
+title: 'NanoBanana Image Generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **NanoBanana** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `data.result.image_url` when completed.
+
+<Note>
+This model uses the async endpoint `POST /api/open-api/v1/images`.
+Set `model` to one of:
+`nano-banana`, `nano-banana-2`, `nano-banana-pro`.
+</Note>
+
+<Warning>
+Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) and [GPT Image 2 Edit Image](/en/api-reference/images/edits) do not support NanoBanana.
+Also note: some upstream routes may not support `nano-banana` (only `nano-banana-2 / nano-banana-pro`).
+</Warning>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Models | `nano-banana` / `nano-banana-2` / `nano-banana-pro` |
+| Billing | Uses the configured unit price for the selected `model` (usually depends on resolution/model tier). |
+| Modes | Text-to-image, reference-image generation (use `images`) |
+| Resolution | `1k` / `2k` / `4k` (for supported variants) |
+| Ratios | `auto`, `1:1`, `3:2`, `2:3`, `4:3`, `3:4`, `5:4`, `4:5`, `16:9`, `9:16`, `2:1`, `1:2`, `3:1`, `1:3`, `21:9`, `9:21` |
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `nano-banana` / `nano-banana-2` / `nano-banana-pro` |
+| `prompt` | string | Yes | Text prompt |
+| `ratio` | string | No | Aspect ratio, default `auto` |
+| `resolution` | string | No | `1k` / `2k` / `4k` (default depends on your model config; commonly `1k`) |
+| `images` | string[] | No | Reference image URLs (or base64 Data URIs, depending on your client) |
+| `quality` | string | No | Ignored by NanoBanana routes (only relevant for gpt-image-2 / gpt-image-1.5) |
+| `n` | int | No | Recommended to use `n=1` (the query result returns a single `image_url`) |
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "nano-banana-2",
+    "prompt": "A studio product photo of a ceramic banana, clean background, soft lighting",
+    "ratio": "1:1",
+    "resolution": "2k"
+  }'
+```
+
+### Reference image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "nano-banana-pro",
+    "prompt": "Keep the same style, enhance details, and change background to sunset beach",
+    "ratio": "16:9",
+    "resolution": "4k",
+    "images": ["https://example.com/ref.png"]
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "nano-banana-2",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+When `status` becomes `completed`, read `data.result.image_url`.
+
+<Note>
+Image download URLs are kept for about **3 days** — download or transfer promptly.
+</Note>
+

@@ -6,11 +6,11 @@ openapi: 'POST /api/open-api/v1/images'
 Create an async **GPT Image 1.5** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
 
 <Note>
-This model uses the same endpoint as [Create Image (Async)](/en/api-reference/images/create): `POST /api/open-api/v1/images` with `"model": "gpt-image-1.5"`.
+This model uses `POST /api/open-api/v1/images` with `"model": "gpt-image-1.5"`.
 </Note>
 
 <Warning>
-GPT Image 1.5 is **async only**. Sync endpoints [Text-to-Image (Sync)](/en/api-reference/images/generations) and [Edit Image (Sync)](/en/api-reference/images/edits) do not support this model.
+GPT Image 1.5 is **async only**. Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) and [GPT Image 2 Edit Image](/en/api-reference/images/edits) do not support this model.
 </Warning>
 
 ## Model overview

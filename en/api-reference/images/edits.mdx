@@ -1,5 +1,5 @@
 ---
-title: 'Edit Image (Sync)'
+title: 'GPT Image 2 Edit Image'
 openapi: 'POST /api/open-api/v1/images/edits'
 ---
 
@@ -13,10 +13,10 @@ For synchronous image editing, use the **direct image endpoint** `https://img.vi
 
 ## Billing (gpt-image-2)
 
-Same as [Text-to-Image (Sync)](/en/api-reference/images/generations): bill by `quality` via `gpt-image-2-sync` / `sync-low` / `sync-medium` / `sync-high`, with prices separate from async tiers.
+Same as [GPT Image 2 Text-to-Image](/en/api-reference/images/generations): bill by `quality` via `gpt-image-2-sync` / `sync-low` / `sync-medium` / `sync-high`, with prices separate from async tiers.
 
 <Warning>
 Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Each file (`image` / `mask`) must be **≤ 20MB**.
 
-If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [Create Image Task](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
+If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [GPT Image 2 Image Generation](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
 </Warning>

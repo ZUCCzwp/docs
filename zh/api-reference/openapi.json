@@ -78,8 +78,8 @@
     },
     "/api/open-api/v1/images": {
       "post": {
-        "summary": "创建图片任务",
-        "description": "创建新的图片生成任务。支持 gpt-image-2、gpt-image-1.5（异步 aishuch）、nano-banana 系列、doubao-seedream-5-0-pro 等。推荐用于生产环境，可避免同步接口经 Cloudflare 代理时的 504 超时。Seedream 5.0 Pro 详见 seedream-5-0-pro/create 文档。",
+        "summary": "GPT Image 2 图像生成",
+        "description": "创建 GPT Image 2 异步图片任务（model=gpt-image-2）。同一路径亦支持 gpt-image-1.5、nano-banana 系列、doubao-seedream-5-0-pro 等，详见各模型专页。推荐用于生产环境，可避免同步接口经 Cloudflare 代理时的 504 超时。",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -166,7 +166,7 @@
     },
     "/api/open-api/v1/images/generations": {
       "post": {
-        "summary": "文生图（同步）",
+        "summary": "GPT Image 2 文生图",
         "description": "同步文生图，兼容 OpenAI POST /v1/images/generations。成功响应后立即扣费，在 data 中返回图片结果，无需轮询。生图直连地址：https://img.viraltok.ai。同步调用若遇 504（多为 Cloudflare 代理超时），建议使用异步创建图片任务。",
         "operationId": "generateOpenAIImage",
         "requestBody": {
@@ -195,7 +195,7 @@
     },
     "/api/open-api/v1/images/edits": {
       "post": {
-        "summary": "编辑图片（同步）",
+        "summary": "GPT Image 2 编辑图片",
         "description": "同步图片编辑，兼容 OpenAI POST /v1/images/edits。使用 multipart/form-data 上传源图（支持多张，字段名均为 image），成功响应后立即扣费。生图直连地址：https://img.viraltok.ai。同步调用若遇 504（多为 Cloudflare 代理超时），建议使用异步创建图片任务。",
         "operationId": "editOpenAIImage",
         "requestBody": {

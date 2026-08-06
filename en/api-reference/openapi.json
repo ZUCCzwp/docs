@@ -78,8 +78,8 @@
     },
     "/api/open-api/v1/images": {
       "post": {
-        "summary": "Create Image Task",
-        "description": "Create a new async image task. Supports gpt-image-2, gpt-image-1.5 (async aishuch), nano-banana family, doubao-seedream-5-0-pro, etc. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare. See seedream-5-0-pro/create for Seedream 5.0 Pro.",
+        "summary": "GPT Image 2 Image Generation",
+        "description": "Create an async GPT Image 2 image task (model=gpt-image-2). The same path also supports gpt-image-1.5, nano-banana family, doubao-seedream-5-0-pro, etc. See each model page. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare.",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -166,7 +166,7 @@
     },
     "/api/open-api/v1/images/generations": {
       "post": {
-        "summary": "Text-to-Image (Sync)",
+        "summary": "GPT Image 2 Text-to-Image",
         "description": "Synchronous text-to-image, compatible with OpenAI POST /v1/images/generations. Billed on success; returns image results in data without polling. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
         "operationId": "generateOpenAIImage",
         "requestBody": {
@@ -195,7 +195,7 @@
     },
     "/api/open-api/v1/images/edits": {
       "post": {
-        "summary": "Edit Image (Sync)",
+        "summary": "GPT Image 2 Edit Image",
         "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source images via multipart/form-data (multiple files supported, all using field name `image`); billed on success. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
         "operationId": "editOpenAIImage",
         "requestBody": {

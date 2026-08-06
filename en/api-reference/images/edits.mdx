@@ -11,6 +11,10 @@ This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/edits
 For synchronous image editing, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/edits`).
 </Note>
 
+## Billing (gpt-image-2)
+
+Same as [Text-to-Image (Sync)](/en/api-reference/images/generations): bill by `quality` via `gpt-image-2-sync` / `sync-low` / `sync-medium` / `sync-high`, with prices separate from async tiers.
+
 <Warning>
 Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Each file (`image` / `mask`) must be **≤ 20MB**.
 

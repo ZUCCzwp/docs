@@ -13,6 +13,19 @@ Unlike [Create Image Task](/en/api-reference/images/create) (async `POST /images
 For synchronous text-to-image, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/generations`).
 </Note>
 
+## Billing (gpt-image-2)
+
+For `gpt-image-2` **sync** calls, billing is based on `quality` (separate price rows from async `gpt-image-2-{quality}`):
+
+| quality | Billing model |
+| --- | --- |
+| `auto` (default) | `gpt-image-2-sync` |
+| `low` | `gpt-image-2-sync-low` |
+| `medium` | `gpt-image-2-sync-medium` |
+| `high` | `gpt-image-2-sync-high` |
+
+Cost = unit price × `n`. Falls back to async tier / base `gpt-image-2` if sync models are not configured.
+
 <Warning>
 Generation often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Responses may include multi‑MB `b64_json`; ensure your client and any proxy support large bodies.
 

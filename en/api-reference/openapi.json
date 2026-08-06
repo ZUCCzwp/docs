@@ -2216,7 +2216,7 @@
           },
           "quality": {
             "type": "string",
-            "description": "Quality tier (affects billing for gpt-image-2)",
+            "description": "Quality tier. gpt-image-2 sync billing: auto→gpt-image-2-sync, low/medium/high→gpt-image-2-sync-{quality}",
             "enum": [
               "low",
               "medium",

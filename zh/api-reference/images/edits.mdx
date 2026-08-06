@@ -11,6 +11,10 @@ openapi: 'POST /api/open-api/v1/images/edits'
 同步图片编辑可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/edits`）。
 </Note>
 
+## 计费（gpt-image-2）
+
+与 [文生图（同步）](/zh/api-reference/images/generations) 相同：按 `quality` 扣 `gpt-image-2-sync` / `sync-low` / `sync-medium` / `sync-high`，与异步同名档位价格配置解耦。
+
 <Warning>
 图片编辑通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**。单文件（`image` / `mask`）不超过 **20MB**。
 

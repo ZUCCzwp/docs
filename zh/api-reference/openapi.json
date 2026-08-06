@@ -2216,7 +2216,7 @@
           },
           "quality": {
             "type": "string",
-            "description": "画质档位，影响计费（gpt-image-2-low / medium / high）",
+            "description": "画质档位。gpt-image-2 同步计费：auto→gpt-image-2-sync，low/medium/high→gpt-image-2-sync-{quality}",
             "enum": [
               "low",
               "medium",

@@ -13,6 +13,19 @@ openapi: 'POST /api/open-api/v1/images/generations'
 同步文生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/generations`）。
 </Note>
 
+## 计费（gpt-image-2）
+
+`gpt-image-2` **同步**接口按 `quality` 单独计费（与异步 `gpt-image-2-{quality}` 价格配置解耦）：
+
+| quality | 计费型号 |
+| --- | --- |
+| `auto`（默认） | `gpt-image-2-sync` |
+| `low` | `gpt-image-2-sync-low` |
+| `medium` | `gpt-image-2-sync-medium` |
+| `high` | `gpt-image-2-sync-high` |
+
+费用 = 对应画质单价 × 张数 `n`。未配置 sync 型号时回退到异步同档 / `gpt-image-2` 基础价。
+
 <Warning>
 图片生成通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**，避免中途断开。`b64_json` 体积可能达数 MB，请确保调用方与网关支持大响应体。
 

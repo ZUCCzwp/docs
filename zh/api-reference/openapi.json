@@ -1058,7 +1058,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-12；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro 仅 10 或 15；STD 标准版 4-15。默认 5"
+            "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro 仅 10 或 15；STD 标准版 4-15。默认 5"
           },
           "resolution": {
             "type": "string",

@@ -1058,7 +1058,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-12; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro: 10 or 15 only; STD standard 4-15. Default 5"
+            "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro: 10 or 15 only; STD standard 4-15. Default 5"
           },
           "resolution": {
             "type": "string",

@@ -15,10 +15,10 @@ Choose a Full-route sub-model with the `model` field:
 
 | Route | `model` values | Billing | Duration | Assets |
 |-------|----------------|---------|----------|--------|
-| **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–12 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
-| **Fast** | `sd2_mx_fast_720p`, `sd2_mx_fast_1080p` | Per second | 4–12 s | Same as Manxue; `reference_videos` not supported |
-| **Video reference** | `sd2_mx_video_720p`, `sd2_mx_video_1080p`, `sd2_mx_video_2k`, `sd2_mx_video_4k` | Per second | 4–12 s | Same as Manxue; supports `reference_videos` |
-| **Video reference Fast** | `sd2_mx_video_fast_720p`, `sd2_mx_video_fast_1080p` | Per second | 4–12 s | Same as Manxue; supports `reference_videos` |
+| **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–15 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
+| **Fast** | `sd2_mx_fast_720p`, `sd2_mx_fast_1080p` | Per second | 4–15 s | Same as Manxue; `reference_videos` not supported |
+| **Video reference** | `sd2_mx_video_720p`, `sd2_mx_video_1080p`, `sd2_mx_video_2k`, `sd2_mx_video_4k` | Per second | 4–15 s | Same as Manxue; supports `reference_videos` |
+| **Video reference Fast** | `sd2_mx_video_fast_720p`, `sd2_mx_video_fast_1080p` | Per second | 4–15 s | Same as Manxue; supports `reference_videos` |
 
 ## Billing
 
@@ -27,8 +27,8 @@ Full (Manxue) routes are billed **per second**. Each `model` has its own unit pr
 | Item | Description |
 |------|-------------|
 | Formula | **unit price (per second) × `duration`** |
-| Unit price | See the [console pricing](https://open.jimmyai.cn) for the model name |
-| Duration | `duration` field, 4–12 seconds |
+| Unit price | See the [console pricing](https://api.viraltok.ai) for the model name |
+| Duration | `duration` field, 4–15 seconds |
 
 ## Request fields
 
@@ -36,7 +36,7 @@ Full (Manxue) routes are billed **per second**. Each `model` has its own unit pr
 |-------|------|----------|-------------|
 | `model` | string | Yes | See table above |
 | `prompt` | string | Yes | Text prompt |
-| `duration` | int | Yes | Length in seconds, 4–12 (default 5) |
+| `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
 | `ratio` | string | No | Aspect ratio, e.g. `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, `Adaptive` |
 | `images` | string[] | No | Reference images |
 | `first_image` | string | No | First frame image |

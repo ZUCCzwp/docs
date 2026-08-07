@@ -11,7 +11,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 | model | 说明 |
 |-------|------|
-| `seedance-2.5` | Seedance 2.5 视频生成，支持文生视频及参考图 / 参考视频 / 参考音频 |
+| `seedance-2.5` | Seedance 2.5 视频生成，支持文生视频及参考图 / 参考音频（暂不支持参考视频） |
 
 `seedance2.5`、`seedance_2.5`、`seedance25` 等别名会归一化为 `seedance-2.5`。
 
@@ -24,7 +24,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`。
 - **分辨率（resolution）**：`480p`、`720p`，默认 `480p`。
 - **参考图**：`reference_images` 或 `images`，最多 **30** 张，须为公网可访问 URL。
-- **参考视频**：`reference_videos` 或 `videos`，最多 **10** 个；参考视频总时长最大 30 秒。
+- **参考视频**：暂不支持（传入 `reference_videos` / `videos` 会报错）。
 - **参考音频**：`reference_audios` 或 `audios`，最多 **10** 段。
 
 ## 请求参数
@@ -39,8 +39,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `resolution` | string | 否 | `480p` / `720p`，默认 `480p` |
 | `reference_images` | string[] | 否 | 参考图 URL 列表（0–30） |
 | `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
-| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–10） |
-| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_videos` | string[] | 否 | **暂不支持**；传入会返回错误 |
+| `videos` | string[] | 否 | `reference_videos` 别名（同样暂不支持） |
 | `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–10） |
 | `audios` | string[] | 否 | `reference_audios` 别名 |
 
@@ -69,7 +69,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "aspect_ratio": "16:9",
     "resolution": "720p",
     "reference_images": ["https://example.com/reference.png"],
-    "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
   }'
 ```

@@ -11,7 +11,7 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 
 | model | Notes |
 |-------|-------|
-| `seedance-2.5` | Seedance 2.5 video generation with text-to-video plus optional reference images / videos / audios |
+| `seedance-2.5` | Seedance 2.5 video generation with text-to-video plus optional reference images / audios (reference videos are not supported yet) |
 
 Aliases such as `seedance2.5`, `seedance_2.5`, and `seedance25` normalize to `seedance-2.5`.
 
@@ -24,7 +24,7 @@ Billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`).
 - **Resolution**: `480p`, `720p` (default `480p`).
 - **Reference images**: `reference_images` or `images`, max **30**, public HTTPS URLs.
-- **Reference videos**: `reference_videos` or `videos`, max **10**; total reference video duration ≤ 30s.
+- **Reference videos**: Not supported yet (passing `reference_videos` / `videos` returns an error).
 - **Reference audios**: `reference_audios` or `audios`, max **10**.
 
 ## Request parameters
@@ -39,8 +39,8 @@ Billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance
 | `resolution` | string | No | `480p` / `720p`, default `480p` |
 | `reference_images` | string[] | No | Reference image URLs (0–30) |
 | `images` | string[] | No | Alias for `reference_images` when the latter is empty |
-| `reference_videos` | string[] | No | Reference video URLs (0–10) |
-| `videos` | string[] | No | Alias for `reference_videos` |
+| `reference_videos` | string[] | No | **Not supported yet**; returns an error if provided |
+| `videos` | string[] | No | Alias for `reference_videos` (also not supported) |
 | `reference_audios` | string[] | No | Reference audio URLs (0–10) |
 | `audios` | string[] | No | Alias for `reference_audios` |
 
@@ -69,7 +69,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "aspect_ratio": "16:9",
     "resolution": "720p",
     "reference_images": ["https://example.com/reference.png"],
-    "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
   }'
 ```

@@ -982,7 +982,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。支持文本提示词、最多 30 张参考图、最多 10 个参考视频、最多 10 段参考音频，时长 4-30 秒，aspect_ratio 为 16:9/9:16/1:1，resolution 为 480p/720p。计费按分辨率分档 per_second（seedance-2.5-480p / seedance-2.5-720p）。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 段参考音频，暂不支持参考视频，时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-29 秒，支持参考视频最多 10。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -2819,9 +2819,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "seedance-2.5"
+              "seedance-2.5",
+              "seedance-2.5-sp"
             ],
-            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5。"
+            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5；seedance-2.5-sp 为 SP 经济版。"
           },
           "prompt": {
             "type": "string",

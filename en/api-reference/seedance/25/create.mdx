@@ -11,52 +11,66 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 
 | model | Notes |
 |-------|-------|
-| `seedance-2.5` | Seedance 2.5 video generation with text-to-video plus optional reference images / audios (reference videos are not supported yet) |
+| `seedance-2.5` | Standard Seedance 2.5: text-to-video plus optional reference images / audios (reference videos not supported) |
+| `seedance-2.5-sp` | Seedance 2.5 SP: flat per-second price, 720p only, supports reference images / videos / audios |
 
 Aliases such as `seedance2.5`, `seedance_2.5`, and `seedance25` normalize to `seedance-2.5`.
 
-Billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance-2.5-720p` (resolution is parsed from the model when `resolution` is omitted; an explicit `resolution` field takes precedence).
+Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance-2.5-720p` (resolution is parsed from the model when `resolution` is omitted; an explicit `resolution` field takes precedence).
 
 ## Parameter constraints
+
+### Standard `seedance-2.5`
 
 - **Prompt**: Required, 1–5000 characters.
 - **Duration**: 4–30 seconds (default `4`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`).
 - **Resolution**: `480p`, `720p` (default `480p`).
-- **Reference images**: `reference_images` or `images`, max **30**, public HTTPS URLs.
-- **Reference videos**: Not supported yet (passing `reference_videos` / `videos` returns an error).
-- **Reference audios**: `reference_audios` or `audios`, max **10**.
+- **Reference images**: max **30**.
+- **Reference videos**: Not supported.
+- **Reference audios**: max **10**.
+
+### SP `seedance-2.5-sp`
+
+- **Duration**: 4–29 seconds (default `4`).
+- **Aspect ratio**: `16:9`, `9:16`, `1:1`.
+- **Resolution**: `720p` only.
+- **Reference images**: max **30**.
+- **Reference videos**: max **10**.
+- **Reference audios**: max **10**.
 
 ## Request parameters
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `seedance-2.5`, or billing names `seedance-2.5-480p` / `seedance-2.5-720p` |
+| `model` | string | Yes | `seedance-2.5` / `seedance-2.5-sp`, or standard billing names `seedance-2.5-480p` / `seedance-2.5-720p` |
 | `prompt` | string | Yes | Text prompt |
-| `duration` | integer | No | Duration in seconds, default 4 |
+| `duration` | integer | No | Duration in seconds |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
-| `resolution` | string | No | `480p` / `720p`, default `480p` |
+| `resolution` | string | No | Standard `480p`/`720p`; SP `720p` only |
 | `reference_images` | string[] | No | Reference image URLs (0–30) |
-| `images` | string[] | No | Alias for `reference_images` when the latter is empty |
-| `reference_videos` | string[] | No | **Not supported yet**; returns an error if provided |
-| `videos` | string[] | No | Alias for `reference_videos` (also not supported) |
+| `images` | string[] | No | Alias for `reference_images` |
+| `reference_videos` | string[] | No | SP only (0–10); standard returns an error |
+| `videos` | string[] | No | Alias for `reference_videos` |
 | `reference_audios` | string[] | No | Reference audio URLs (0–10) |
 | `audios` | string[] | No | Alias for `reference_audios` |
 
 ## Billing
 
 - Mode: `per_second`
-- Billed by **resolution** (unit price from console):
+- Standard billed by resolution:
   - `seedance-2.5-480p`
   - `seedance-2.5-720p`
-- Request `model` remains `seedance-2.5`; the system selects the billing model from `resolution`
+- SP fixed billing model: `seedance-2.5-sp` (**0.5** per second)
 
 ```text
-cost = resolution_unit_price × duration
+cost = unit_price × duration
 ```
 
 ## Example request
+
+Standard:
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
@@ -70,5 +84,22 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "resolution": "720p",
     "reference_images": ["https://example.com/reference.png"],
     "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```
+
+SP:
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5-sp",
+    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"]
   }'
 ```

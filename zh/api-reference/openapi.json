@@ -164,6 +164,35 @@
         }
       }
     },
+    "/api/open-api/v1/images/remove-bg": {
+      "post": {
+        "summary": "AI 智能去背景",
+        "description": "同步去背景接口。成功后立即扣费（计费模型 viraltok-remove-bg），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "operationId": "removeBackground",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveBackgroundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "去背景成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveBackgroundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/images/generations": {
       "post": {
         "summary": "GPT Image 2 文生图",
@@ -2899,6 +2928,99 @@
           "reference_audios": [
             "https://example.com/reference.mp3"
           ]
+        }
+      },
+      "RemoveBackgroundRequest": {
+        "type": "object",
+        "required": [
+          "image_url"
+        ],
+        "properties": {
+          "image_url": {
+            "type": "string",
+            "description": "待去背景的图片 URL（需公网可访问）"
+          },
+          "model": {
+            "type": "string",
+            "description": "模型别名或官方名。支持 general_light / general_light_2k（默认）/ general_heavy / matting / portrait / general_dynamic",
+            "default": "general_light_2k"
+          },
+          "operating_resolution": {
+            "type": "string",
+            "description": "处理分辨率：1024x1024 / 2048x2048（默认）/ 2304x2304（仅 general_dynamic）",
+            "default": "2048x2048"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "输出格式：png（默认）/ webp / gif",
+            "default": "png"
+          },
+          "refine_foreground": {
+            "type": "boolean",
+            "description": "是否精修前景边缘，默认 true",
+            "default": true
+          },
+          "response_format": {
+            "type": "string",
+            "description": "b64_json（默认）返回 b64_json；url 时返回 image_url",
+            "enum": [
+              "url",
+              "b64_json"
+            ],
+            "default": "b64_json"
+          }
+        }
+      },
+      "RemoveBackgroundResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "去背景成功"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RemoveBackgroundData"
+          }
+        }
+      },
+      "RemoveBackgroundData": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "结果图 URL。当 response_format=url 时返回"
+          },
+          "b64_json": {
+            "type": "string",
+            "description": "结果图 base64。默认返回（response_format=b64_json）"
+          },
+          "model": {
+            "type": "string"
+          },
+          "operating_resolution": {
+            "type": "string"
+          },
+          "output_format": {
+            "type": "string"
+          },
+          "refine_foreground": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "cost": {
+            "type": "number",
+            "description": "本次扣费金额"
+          }
         }
       }
     },

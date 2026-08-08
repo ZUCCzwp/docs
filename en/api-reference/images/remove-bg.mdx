@@ -1,0 +1,62 @@
+---
+title: 'Remove background'
+openapi: 'POST /api/open-api/v1/images/remove-bg'
+---
+
+<Note>
+This is a **synchronous** endpoint. On success it **charges immediately** (billing model `viraltok-remove-bg`) and returns the result as `b64_json` by default — no polling required. Pass `response_format=url` to get `image_url` instead.
+</Note>
+
+## Billing
+
+Per-request billing under model name `viraltok-remove-bg`. Unit price follows console model config (default about `0.01`).
+
+## Request example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/remove-bg' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.png",
+    "model": "general_light_2k",
+    "operating_resolution": "2048x2048",
+    "output_format": "png",
+    "refine_foreground": true,
+    "response_format": "b64_json"
+  }'
+```
+
+## Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `image_url` | string | yes | Publicly accessible source image URL |
+| `model` | string | no | Model. Supports `general_light` / `general_light_2k` (default) / `general_heavy` / `matting` / `portrait` / `general_dynamic` |
+| `operating_resolution` | string | no | `1024x1024` / `2048x2048` (default) / `2304x2304` (`general_dynamic` only) |
+| `output_format` | string | no | `png` (default) / `webp` / `gif` |
+| `refine_foreground` | boolean | no | Refine foreground edges. Default `true` |
+| `response_format` | string | no | `b64_json` (default) returns `b64_json`; `url` returns `image_url` |
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "rmbg_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "b64_json": "<base64>",
+    "model": "General Use (Light 2K)",
+    "operating_resolution": "2048x2048",
+    "output_format": "png",
+    "refine_foreground": true,
+    "status": "completed",
+    "cost": 0.01
+  }
+}
+```
+
+<Warning>
+Background removal can take several to tens of seconds. Set client timeout to **≥ 180 seconds**.
+</Warning>

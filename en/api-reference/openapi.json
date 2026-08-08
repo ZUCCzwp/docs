@@ -164,6 +164,35 @@
         }
       }
     },
+    "/api/open-api/v1/images/remove-bg": {
+      "post": {
+        "summary": "Remove background",
+        "description": "Synchronous background removal. Charges immediately on success (billing model viraltok-remove-bg) and returns b64_json by default; pass response_format=url for image_url.",
+        "operationId": "removeBackground",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveBackgroundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Background removed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveBackgroundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/images/generations": {
       "post": {
         "summary": "GPT Image 2 Text-to-Image",
@@ -2888,6 +2917,99 @@
           "reference_audios": [
             "https://example.com/reference.mp3"
           ]
+        }
+      },
+      "RemoveBackgroundRequest": {
+        "type": "object",
+        "required": [
+          "image_url"
+        ],
+        "properties": {
+          "image_url": {
+            "type": "string",
+            "description": "Publicly accessible image URL to remove background from"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model alias or official name. Supports general_light / general_light_2k (default) / general_heavy / matting / portrait / general_dynamic",
+            "default": "general_light_2k"
+          },
+          "operating_resolution": {
+            "type": "string",
+            "description": "Operating resolution: 1024x1024 / 2048x2048 (default) / 2304x2304 (general_dynamic only)",
+            "default": "2048x2048"
+          },
+          "output_format": {
+            "type": "string",
+            "description": "Output format: png (default) / webp / gif",
+            "default": "png"
+          },
+          "refine_foreground": {
+            "type": "boolean",
+            "description": "Whether to refine foreground edges. Default true",
+            "default": true
+          },
+          "response_format": {
+            "type": "string",
+            "description": "b64_json (default) returns b64_json; url returns image_url",
+            "enum": [
+              "url",
+              "b64_json"
+            ],
+            "default": "b64_json"
+          }
+        }
+      },
+      "RemoveBackgroundResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RemoveBackgroundData"
+          }
+        }
+      },
+      "RemoveBackgroundData": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Result image URL. Present when response_format=url"
+          },
+          "b64_json": {
+            "type": "string",
+            "description": "Base64-encoded result image. Present by default (response_format=b64_json)"
+          },
+          "model": {
+            "type": "string"
+          },
+          "operating_resolution": {
+            "type": "string"
+          },
+          "output_format": {
+            "type": "string"
+          },
+          "refine_foreground": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "cost": {
+            "type": "number",
+            "description": "Amount charged for this request"
+          }
         }
       }
     },

@@ -94,6 +94,7 @@
                 "pages": [
                   "en/api-reference/super-resolution/create",
                   "en/api-reference/images/understand",
+                  "en/api-reference/images/remove-bg",
                   "en/api-reference/videos/understand",
                   "en/api-reference/digital-human/create"
                 ]
@@ -266,6 +267,7 @@
                 "pages": [
                   "zh/api-reference/super-resolution/create",
                   "zh/api-reference/images/understand",
+                  "zh/api-reference/images/remove-bg",
                   "zh/api-reference/videos/understand",
                   "zh/api-reference/digital-human/create"
                 ]

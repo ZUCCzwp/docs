@@ -1,0 +1,62 @@
+---
+title: 'AI 智能去背景'
+openapi: 'POST /api/open-api/v1/images/remove-bg'
+---
+
+<Note>
+本接口为**同步**调用。请求成功后**立即扣费**（计费模型 `viraltok-remove-bg`），默认在响应 `data` 中返回 `b64_json`，无需轮询。需要 URL 时传 `response_format=url`。
+</Note>
+
+## 计费
+
+按次扣费，模型名：`viraltok-remove-bg`。具体单价以控制台模型配置为准（默认约 `0.01`）。
+
+## 请求示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/remove-bg' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.png",
+    "model": "general_light_2k",
+    "operating_resolution": "2048x2048",
+    "output_format": "png",
+    "refine_foreground": true,
+    "response_format": "b64_json"
+  }'
+```
+
+## 参数说明
+
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `image_url` | string | 是 | 待去背景图片 URL（需公网可访问） |
+| `model` | string | 否 | 模型。支持 `general_light` / `general_light_2k`（默认）/ `general_heavy` / `matting` / `portrait` / `general_dynamic` |
+| `operating_resolution` | string | 否 | `1024x1024` / `2048x2048`（默认）/ `2304x2304`（仅 `general_dynamic`） |
+| `output_format` | string | 否 | `png`（默认）/ `webp` / `gif` |
+| `refine_foreground` | boolean | 否 | 是否精修前景边缘，默认 `true` |
+| `response_format` | string | 否 | `b64_json`（默认）返回 `b64_json`；`url` 时返回 `image_url` |
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "去背景成功",
+  "data": {
+    "task_id": "rmbg_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "b64_json": "<base64>",
+    "model": "General Use (Light 2K)",
+    "operating_resolution": "2048x2048",
+    "output_format": "png",
+    "refine_foreground": true,
+    "status": "completed",
+    "cost": 0.01
+  }
+}
+```
+
+<Warning>
+去背景通常需要数秒到数十秒。请将客户端超时设置为 **≥ 180 秒**。
+</Warning>

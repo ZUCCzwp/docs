@@ -1,4 +1,19 @@
 ---
 title: '创建 VEO 视频'
-openapi: 'POST /api/open-api/v1/veo/frames'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/veo/frames'
 ---
+
+<Note>
+  成功后返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 取视频。
+</Note>
+
+## 计费说明
+
+请求 `model` 固定为 `veo_3_1_fast`。计费模型由 `resolution` 决定：
+
+| resolution | 计费模型 | 说明 |
+|------------|----------|------|
+| `720p` / `1080p`（默认 `720p`） | `veo_3_1_fast` | 标准分辨率，按次 |
+| `4k` | `veo_3_1_fast-4k` | 4K 独立计费档，按次 |
+
+也可直接传 `model: "veo_3_1_fast-4k"`（等价于 4K 计费）；上游仍按 `veo_3_1_fast` 提交。

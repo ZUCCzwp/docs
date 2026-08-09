@@ -254,7 +254,7 @@
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "创建 VEO 视频",
-        "description": "创建新的 VEO 视频生成任务。",
+        "description": "创建 VEO 视频任务。请求 model 为 veo_3_1_fast；resolution 为 720p/1080p 时计费 veo_3_1_fast，4k 时计费 veo_3_1_fast-4k（按次）。GET /api/open-api/v1/videos/{taskId} 查询。",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,
@@ -1382,7 +1382,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称 (如: veo_3_1_fast)"
+            "description": "请求模型，通常为 veo_3_1_fast；也可传 veo_3_1_fast-4k。"
           },
           "prompt": {
             "type": "string",
@@ -1395,7 +1395,7 @@
               "1080p",
               "4k"
             ],
-            "description": "视频分辨率"
+            "description": "视频分辨率。720p/1080p 计费 veo_3_1_fast；4k 计费 veo_3_1_fast-4k。"
           },
           "orientation": {
             "type": "string",

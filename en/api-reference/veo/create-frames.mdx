@@ -1,4 +1,19 @@
 ---
-title: 'Create VEO Video'
-openapi: 'POST /api/open-api/v1/veo/frames'
+title: 'Create VEO video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/veo/frames'
 ---
+
+<Note>
+  On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`.
+</Note>
+
+## Billing
+
+Request `model` stays `veo_3_1_fast`. The billing model follows `resolution`:
+
+| resolution | Billing model | Notes |
+|------------|---------------|-------|
+| `720p` / `1080p` (default `720p`) | `veo_3_1_fast` | Standard tiers, per task |
+| `4k` | `veo_3_1_fast-4k` | Separate 4K catalog price, per task |
+
+You may also pass `model: "veo_3_1_fast-4k"` directly; upstream still uses `veo_3_1_fast`.

@@ -254,7 +254,7 @@
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "Create VEO Video",
-        "description": "Create a new VEO video generation task.",
+        "description": "Create a VEO video task. Request model is veo_3_1_fast; resolution 720p/1080p bills veo_3_1_fast, 4k bills veo_3_1_fast-4k (per task). Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,
@@ -1382,7 +1382,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (e.g., veo_3_1_fast)"
+            "description": "Request model, usually veo_3_1_fast; veo_3_1_fast-4k also accepted."
           },
           "prompt": {
             "type": "string",
@@ -1395,7 +1395,7 @@
               "1080p",
               "4k"
             ],
-            "description": "Video resolution"
+            "description": "Output resolution. 720p/1080p bill veo_3_1_fast; 4k bills veo_3_1_fast-4k."
           },
           "orientation": {
             "type": "string",

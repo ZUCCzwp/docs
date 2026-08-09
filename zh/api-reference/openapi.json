@@ -1028,6 +1028,54 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/flux3/videos": {
+      "post": {
+        "summary": "创建 Flux 3 视频任务",
+        "description": "创建 Flux 3 视频任务。仅支持 6 个模型：flux-3-draft / flux-3-i2v-draft / flux-3-flf-draft / flux-3-keyframes-draft / flux-3-extend-draft（固定 720p）与 flux-3-enhance（固定 1080p）。不要传 resolution。计费模型=请求 model，按秒 × duration（5–20）。草稿返回 result.draft_cache_url。GET /api/open-api/v1/videos/{taskId} 查询。",
+        "operationId": "createFlux3Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Flux3GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Flux 3 文生草稿",
+                  "value": {
+                    "model": "flux-3-draft",
+                    "prompt": "一只小熊猫在苔藓圆木上行走",
+                    "duration": 5,
+                    "aspect_ratio": "16:9"
+                  }
+                },
+                "enhance": {
+                  "summary": "Flux 3 草稿增强",
+                  "value": {
+                    "model": "flux-3-enhance",
+                    "duration": 5,
+                    "draft_cache_url": "https://example.com/draft-cache.bin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3021,6 +3069,107 @@
           "cost": {
             "type": "number",
             "description": "本次扣费金额"
+          }
+        }
+      },
+      "Flux3Keyframe": {
+        "type": "object",
+        "required": [
+          "image_url",
+          "frame_index"
+        ],
+        "properties": {
+          "image_url": {
+            "type": "string"
+          },
+          "frame_index": {
+            "type": "integer"
+          }
+        }
+      },
+      "Flux3GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "flux-3-draft",
+              "flux-3-i2v-draft",
+              "flux-3-flf-draft",
+              "flux-3-keyframes-draft",
+              "flux-3-extend-draft",
+              "flux-3-enhance"
+            ],
+            "description": "请求 model（计费模型相同）。草稿固定 720p；flux-3-enhance 固定 1080p。不要传 resolution。"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "description": "Required except for flux-3-enhance"
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 20,
+            "default": 5
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "21:9",
+              "2:1",
+              "16:9",
+              "4:3",
+              "1:1",
+              "3:4",
+              "9:16"
+            ],
+            "default": "16:9"
+          },
+          "ratio": {
+            "type": "string"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "忽略。输出分辨率由 model 固定（草稿 720p，增强 1080p）。"
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": true
+          },
+          "safety_tolerance": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 2
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "start_image_url": {
+            "type": "string"
+          },
+          "end_image_url": {
+            "type": "string"
+          },
+          "video_url": {
+            "type": "string"
+          },
+          "keyframes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Flux3Keyframe"
+            },
+            "maxItems": 10
+          },
+          "draft_cache_url": {
+            "type": "string",
+            "description": "Required for flux-3-enhance"
           }
         }
       }

@@ -1,0 +1,68 @@
+---
+title: 'Create Flux 3 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/flux3/videos'
+---
+
+<Note>
+  成功后返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 取视频。草稿任务额外返回 `result.draft_cache_url`，用于草稿增强。
+</Note>
+
+## 支持的模型与计费
+
+仅支持以下 6 个请求 `model`。计费方式均为 `per_second`：`费用 = 请求 model 单价 × duration`（计费模型 = 请求 `model`）。
+
+| 请求 `model` / 计费模型 | 固定输出 | 说明 |
+|-------------------------|----------|------|
+| `flux-3-draft` | **720p** | 文生草稿（返回 `draft_cache_url`） |
+| `flux-3-i2v-draft` | **720p** | 图生草稿（需 `image_url`） |
+| `flux-3-flf-draft` | **720p** | 首尾帧草稿（需 `start_image_url`、`end_image_url`） |
+| `flux-3-keyframes-draft` | **720p** | 关键帧草稿（需 `keyframes`） |
+| `flux-3-extend-draft` | **720p** | 延长草稿（需 `video_url`） |
+| `flux-3-enhance` | **1080p** | 草稿增强（需 `draft_cache_url`；无需 prompt） |
+
+草稿一律 720p 预览，增强一律 1080p；**不要传 `resolution`**。
+
+## 参数限制
+
+- **prompt**：草稿必填，1–5000 字符；`flux-3-enhance` 不需要
+- **duration**：5–20 秒（默认 5）；增强时请填与草稿相同的时长用于计费
+- **aspect_ratio**：`auto` / `21:9` / `2:1` / `16:9` / `4:3` / `1:1` / `3:4` / `9:16`（默认 `16:9`；增强忽略）
+- **generate_audio**：可选，默认 `true`（增强忽略）
+- **safety_tolerance**：0–4，默认 `2`
+- **draft_cache_url**：`flux-3-enhance` 必填
+- **keyframes**：最多 10；`frame_index` 唯一且 ≤ `duration * 24`
+
+## 草稿 → 增强流程
+
+1. 用任一草稿模型生成（固定 720p），轮询拿到 `result.video_url` 与 `result.draft_cache_url`
+2. 再提交 `model: "flux-3-enhance"`（固定 1080p），传入 `draft_cache_url` 与相同 `duration`
+3. 轮询增强任务，从 `result.video_url` 取成片
+
+## 示例
+
+文生草稿（固定 720p，计费 `flux-3-draft`）：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "flux-3-draft",
+    "prompt": "一只小熊猫在苔藓圆木上行走",
+    "duration": 5,
+    "aspect_ratio": "16:9"
+  }'
+```
+
+草稿增强（固定 1080p，计费 `flux-3-enhance`）：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "flux-3-enhance",
+    "duration": 5,
+    "draft_cache_url": "https://example.com/draft-cache.bin"
+  }'
+```

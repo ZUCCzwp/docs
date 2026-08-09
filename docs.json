@@ -90,6 +90,12 @@
                 ]
               },
               {
+                "group": "Flux 3 Video",
+                "pages": [
+                  "en/api-reference/flux3/create"
+                ]
+              },
+              {
                 "group": "Tools",
                 "pages": [
                   "en/api-reference/super-resolution/create",
@@ -260,6 +266,12 @@
                 "group": "MiniMax 视频",
                 "pages": [
                   "zh/api-reference/minimax/create"
+                ]
+              },
+              {
+                "group": "Flux 3 视频",
+                "pages": [
+                  "zh/api-reference/flux3/create"
                 ]
               },
               {

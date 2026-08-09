@@ -1,0 +1,68 @@
+---
+title: 'Create Flux 3 video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/flux3/videos'
+---
+
+<Note>
+  On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`. Draft tasks also return `result.draft_cache_url` for enhance.
+</Note>
+
+## Supported models and billing
+
+Only these 6 request `model` values are supported. Billing is always `per_second`: `cost = unit_price(model) × duration` (billing model = request `model`).
+
+| Request `model` / billing model | Fixed output | Notes |
+|---------------------------------|--------------|-------|
+| `flux-3-draft` | **720p** | Text-to-video draft (returns `draft_cache_url`) |
+| `flux-3-i2v-draft` | **720p** | Image-to-video draft (`image_url` required) |
+| `flux-3-flf-draft` | **720p** | First/last draft (`start_image_url`, `end_image_url`) |
+| `flux-3-keyframes-draft` | **720p** | Keyframes draft (`keyframes` required) |
+| `flux-3-extend-draft` | **720p** | Extend draft (`video_url` required) |
+| `flux-3-enhance` | **1080p** | Draft enhance (`draft_cache_url` required; no prompt) |
+
+Drafts are always 720p previews; enhance is always 1080p. **Do not send `resolution`.**
+
+## Parameter limits
+
+- **prompt**: required for drafts, 1–5000 chars; not used by `flux-3-enhance`
+- **duration**: 5–20 seconds (default 5); when enhancing, pass the same duration as the draft for billing
+- **aspect_ratio**: `auto` / `21:9` / `2:1` / `16:9` / `4:3` / `1:1` / `3:4` / `9:16` (default `16:9`; ignored for enhance)
+- **generate_audio**: optional, default `true` (ignored for enhance)
+- **safety_tolerance**: 0–4, default `2`
+- **draft_cache_url**: required for `flux-3-enhance`
+- **keyframes**: max 10; `frame_index` must be unique and ≤ `duration * 24`
+
+## Draft → enhance flow
+
+1. Create with a draft model (always 720p); poll for `result.video_url` and `result.draft_cache_url`
+2. Submit `model: "flux-3-enhance"` (always 1080p) with `draft_cache_url` and the same `duration`
+3. Poll the enhance task and read `result.video_url`
+
+## Examples
+
+Text-to-video draft (fixed 720p, bills `flux-3-draft`):
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "flux-3-draft",
+    "prompt": "A red panda walks along a mossy log",
+    "duration": 5,
+    "aspect_ratio": "16:9"
+  }'
+```
+
+Draft enhance (fixed 1080p, bills `flux-3-enhance`):
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "flux-3-enhance",
+    "duration": 5,
+    "draft_cache_url": "https://example.com/draft-cache.bin"
+  }'
+```

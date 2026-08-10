@@ -14,12 +14,10 @@
 
 ## Terminology
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
+- Prefer public product names and OpenAPI model IDs (e.g. `veo_3_1_lite`, ViraltokAI)
+- Prefer "API" / "endpoint" / "billing model" over internal routing jargon when writing for customers
 
 ## Style preferences
-
-{/* Add any project-specific style rules below */}
 
 - Use active voice and second person ("you")
 - Keep sentences concise — one idea per sentence
@@ -29,5 +27,7 @@
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- **Do not reveal upstream channel vendors.** Never name, link, or imply internal providers or reseller gateways in customer-facing docs (e.g. DYU, KYY, MT, ZZ, JMLT, VIRALTOKAI as routing codes, Apifox vendor portals, private upstream hostnames). Describe only ViraltokAI OpenAPI models, request fields, billing, and behavior.
+- Do not document internal admin features, channel weights, provider mounts, or YAML vendor credentials.
+- Do not paste upstream vendor API path shapes or slug aliases unless they are identical to our public OpenAPI contract.
+- When models differ by quality/speed tier (e.g. Fast vs Lite), document them as product variants — not as different upstream suppliers.

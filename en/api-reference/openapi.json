@@ -254,7 +254,7 @@
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "Create VEO Video",
-        "description": "Create a VEO video task. Request model is veo_3_1_fast; resolution 720p/1080p bills veo_3_1_fast, 4k bills veo_3_1_fast-4k (per task). Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a VEO video task. model supports veo_3_1_fast (Fast) or veo_3_1_lite (Lite). Fast: 720p/1080p bill veo_3_1_fast, 4k bills veo_3_1_fast-4k. Lite: 720p→veo_3_1_lite, 1080p→veo_3_1_lite-hd, 4k→veo_3_1_lite-4k (per task). Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,
@@ -1382,7 +1382,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Request model, usually veo_3_1_fast; veo_3_1_fast-4k also accepted."
+            "description": "Request model: veo_3_1_fast / veo_3_1_fast-4k, or veo_3_1_lite / veo_3_1_lite-hd / veo_3_1_lite-4k."
           },
           "prompt": {
             "type": "string",
@@ -1395,7 +1395,7 @@
               "1080p",
               "4k"
             ],
-            "description": "Output resolution. 720p/1080p bill veo_3_1_fast; 4k bills veo_3_1_fast-4k."
+            "description": "Output resolution. Fast: 720p/1080p→veo_3_1_fast, 4k→veo_3_1_fast-4k. Lite: 720p→veo_3_1_lite, 1080p→veo_3_1_lite-hd, 4k→veo_3_1_lite-4k."
           },
           "orientation": {
             "type": "string",

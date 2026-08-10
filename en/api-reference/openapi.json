@@ -669,6 +669,60 @@
         }
       }
     },
+    "/api/open-api/v1/remove-subtitle/videos": {
+      "post": {
+        "summary": "Create remove-subtitle task",
+        "description": "Submit a video subtitle-removal task with a public video URL. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second based on ceiled video_url duration.",
+        "operationId": "createRemoveSubtitleVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveSubtitleRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create remove-subtitle task",
+                  "value": {
+                    "model": "video_remove_subtitle",
+                    "video_url": "https://example.com/input.mp4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "Created",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "video_remove_subtitle",
+                        "created_at": 1781777280,
+                        "cost": 0.60
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - Create Preview Task",
@@ -2172,6 +2226,30 @@
           "audio_url": "https://example.com/drive-audio.mp3",
           "video_url": "https://example.com/face-video.mp4",
           "model_version": 2
+        }
+      },
+      "RemoveSubtitleRequest": {
+        "type": "object",
+        "required": [
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "video_remove_subtitle"
+            ],
+            "default": "video_remove_subtitle",
+            "description": "Remove-subtitle model name. Default: video_remove_subtitle."
+          },
+          "video_url": {
+            "type": "string",
+            "description": "Public URL of the source video. Avoid non-ASCII characters in the URL; must remain accessible while processing."
+          }
+        },
+        "example": {
+          "model": "video_remove_subtitle",
+          "video_url": "https://example.com/input.mp4"
         }
       },
       "GeminiOmniGenerationRequest": {

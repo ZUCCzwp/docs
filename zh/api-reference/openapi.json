@@ -669,6 +669,60 @@
         }
       }
     },
+    "/api/open-api/v1/remove-subtitle/videos": {
+      "post": {
+        "summary": "创建去字幕任务",
+        "description": "提交视频去字幕任务。传入待处理视频公网 URL。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。计费按 video_url 时长向上取整按秒扣除。",
+        "operationId": "createRemoveSubtitleVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveSubtitleRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建去字幕任务",
+                  "value": {
+                    "model": "video_remove_subtitle",
+                    "video_url": "https://example.com/input.mp4"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "video_remove_subtitle",
+                        "created_at": 1781777280,
+                        "cost": 0.60
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - 提交试听任务",
@@ -2172,6 +2226,30 @@
           "audio_url": "https://example.com/drive-audio.mp3",
           "video_url": "https://example.com/face-video.mp4",
           "model_version": 2
+        }
+      },
+      "RemoveSubtitleRequest": {
+        "type": "object",
+        "required": [
+          "video_url"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "video_remove_subtitle"
+            ],
+            "default": "video_remove_subtitle",
+            "description": "去字幕模型名称，默认 video_remove_subtitle。"
+          },
+          "video_url": {
+            "type": "string",
+            "description": "待处理视频公网 URL；链接不要带中文，任务处理期间须保持可访问。"
+          }
+        },
+        "example": {
+          "model": "video_remove_subtitle",
+          "video_url": "https://example.com/input.mp4"
         }
       },
       "GeminiOmniGenerationRequest": {

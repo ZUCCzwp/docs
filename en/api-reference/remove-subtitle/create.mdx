@@ -1,0 +1,66 @@
+---
+title: 'Create remove-subtitle task'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/remove-subtitle/videos'
+---
+
+Submit a video subtitle-removal task with a public video URL. On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `video_remove_subtitle` | Video subtitle removal (default) |
+
+## Request fields
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `model` | string | no | Defaults to `video_remove_subtitle` |
+| `video_url` | string | yes | Public URL of the source video; keep it reachable while the task runs |
+
+## Billing
+
+- Mode: `per_second`
+- Duration: probed from `video_url`, **rounded up** (minimum 1 second)
+- Unit price: configured for `video_remove_subtitle` in the console
+
+```text
+cost = unit_price × ceil(video_duration_seconds)
+```
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/remove-subtitle/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video_remove_subtitle",
+    "video_url": "https://example.com/input.mp4"
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "video_remove_subtitle",
+    "created_at": 1781777280,
+    "cost": 0.60
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Poll every 5–10 seconds until `completed` / `failed`. Result URLs are kept about **3 days** — download promptly.

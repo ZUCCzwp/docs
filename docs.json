@@ -102,7 +102,8 @@
                   "en/api-reference/images/understand",
                   "en/api-reference/images/remove-bg",
                   "en/api-reference/videos/understand",
-                  "en/api-reference/digital-human/create"
+                  "en/api-reference/digital-human/create",
+                  "en/api-reference/remove-subtitle/create"
                 ]
               },
               {
@@ -281,7 +282,8 @@
                   "zh/api-reference/images/understand",
                   "zh/api-reference/images/remove-bg",
                   "zh/api-reference/videos/understand",
-                  "zh/api-reference/digital-human/create"
+                  "zh/api-reference/digital-human/create",
+                  "zh/api-reference/remove-subtitle/create"
                 ]
               },
               {

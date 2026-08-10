@@ -1,0 +1,66 @@
+---
+title: '创建去字幕任务'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/remove-subtitle/videos'
+---
+
+提交视频去字幕任务：传入需处理的视频公网 URL，异步去除画面字幕。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取结果。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `video_remove_subtitle` | 视频去字幕（默认） |
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 否 | 模型名称，默认 `video_remove_subtitle` |
+| `video_url` | string | 是 | 待处理视频的公网 URL；链接不要带中文，任务处理期间须保持可访问 |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费时长：根据 `video_url` 解析实际时长，**向上取整**（不足 1 秒按 1 秒）
+- 单价：以控制台中 `video_remove_subtitle` 配置为准
+
+```text
+费用 = 模型单价 × ceil(视频时长秒数)
+```
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/remove-subtitle/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video_remove_subtitle",
+    "video_url": "https://example.com/input.mp4"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "video_remove_subtitle",
+    "created_at": 1781777280,
+    "cost": 0.60
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+建议每 5–10 秒轮询一次，状态变为 `completed` / `failed` 后停止。结果 URL 保存约 **3 天**，请及时转存。

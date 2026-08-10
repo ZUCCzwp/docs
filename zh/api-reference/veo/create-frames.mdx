@@ -22,14 +22,10 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/veo/frames'
 
 ### Veo 3.1 Lite（`veo_3_1_lite`）
 
-请求 `model` 为 `veo_3_1_lite`。计费模型由 `resolution` 决定：
+请求 `model` 为 `veo_3_1_lite`。**仅支持 `720p`**（默认）；不支持 `1080p` / `4k`。
 
 | resolution | 计费模型 | 说明 |
 |------------|----------|------|
 | `720p`（默认） | `veo_3_1_lite` | 标准档，按次 |
-| `1080p` | `veo_3_1_lite-hd` | HD 档，按次 |
-| `4k` | `veo_3_1_lite-4k` | 4K 档，按次 |
-
-也可直接传 `veo_3_1_lite-hd` / `veo_3_1_lite-4k`。
 
 参考图与首尾帧互斥：`images[]` 与 `first_frame_url` / `last_frame_url` 不可同时使用。

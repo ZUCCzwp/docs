@@ -155,6 +155,13 @@
                     ]
                   },
                   {
+                    "group": "GZ 720p",
+                    "icon": "film",
+                    "pages": [
+                      "en/api-reference/seedance/gz720/create"
+                    ]
+                  },
+                  {
                     "group": "Mini",
                     "icon": "video",
                     "pages": [
@@ -332,6 +339,13 @@
                     "icon": "clapperboard-play",
                     "pages": [
                       "zh/api-reference/seedance/20933/create"
+                    ]
+                  },
+                  {
+                    "group": "GZ 720p",
+                    "icon": "film",
+                    "pages": [
+                      "zh/api-reference/seedance/gz720/create"
                     ]
                   },
                   {

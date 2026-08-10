@@ -151,7 +151,8 @@
                     "group": "933",
                     "icon": "clapperboard-play",
                     "pages": [
-                      "en/api-reference/seedance/20933/create"
+                      "en/api-reference/seedance/20933/create",
+                      "en/api-reference/seedance/933720/create"
                     ]
                   },
                   {
@@ -338,7 +339,8 @@
                     "group": "933",
                     "icon": "clapperboard-play",
                     "pages": [
-                      "zh/api-reference/seedance/20933/create"
+                      "zh/api-reference/seedance/20933/create",
+                      "zh/api-reference/seedance/933720/create"
                     ]
                   },
                   {

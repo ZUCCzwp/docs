@@ -55,6 +55,8 @@
 - [创建 Seedance 2.0 933 视频](https://docs.viraltok.ai/zh/api-reference/seedance/20933/create.md): 创建 Seedance 2.0 933 视频任务（参考图/视频/音频），按分辨率按秒计费，通过通用查询接口获取结果。
 - [Create Seedance 2.0 GZ 720p Video](https://docs.viraltok.ai/en/api-reference/seedance/gz720/create.md): Create a Seedance 2.0 GZ 720p video task (fixed 720p; reference images/videos/audios); billed per_second; poll the common query endpoint.
 - [创建 Seedance 2.0 GZ 720p 视频](https://docs.viraltok.ai/zh/api-reference/seedance/gz720/create.md): 创建 Seedance 2.0 GZ 720p 视频任务（固定 720p；参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
+- [Create Seedance 933 720p Video](https://docs.viraltok.ai/en/api-reference/seedance/933720/create.md): Create a Seedance 933 720p video task (fixed 720p; reference images/videos/audios); billed per_second at 0.0479/s; poll the common query endpoint.
+- [创建 Seedance 933 720p 视频](https://docs.viraltok.ai/zh/api-reference/seedance/933720/create.md): 创建 Seedance 933 720p 视频任务（固定 720p；参考图/视频/音频），按秒计费（0.0479/秒），通过通用查询接口获取结果。
 
 ### Image Services
 

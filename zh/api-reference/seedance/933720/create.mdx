@@ -1,0 +1,73 @@
+---
+title: '创建 Seedance 933 720p 视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model: "sd2-933-720p"` 选择本线路。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `sd2-933-720p` | Seedance 933 720p：固定 720p 输出；支持文生视频及参考图 / 参考视频 / 参考音频 |
+
+`sd2_933_720p`、`sd2-933720p` 等别名会归一化为 `sd2-933-720p`。兼容别名 `sd2-adb-720p` 同样可用。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。
+- **时长（duration）**：4–15 秒，默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`，默认 `16:9`。
+- **分辨率（resolution）**：固定 `720p`（无需也不应传其他值）。
+- **参考图**：`images` / `reference_images`，最多 **9** 张，公网 HTTPS URL 或 `asset://{assetId}`。
+- **参考视频**：`videos` / `reference_videos`，最多 **3** 个。
+- **参考音频**：`audios` / `reference_audios`，最多 **3** 段；须搭配至少一张参考图或一个参考视频。
+- **参考模式（reference_mode）**：`frame`（首帧 / 首尾帧）或 `media`（多图主体参考），默认 `frame`；别名 `image` → `media`。
+- **生成音频（generate_audio）**：布尔，默认 `true`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `sd2-933-720p` |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 `5` |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `reference_mode` | string | 否 | `frame` / `media` |
+| `generate_audio` | boolean | 否 | 是否生成声音，默认 `true` |
+| `images` / `reference_images` | string[] | 否 | 参考图 URL（0–9） |
+| `videos` / `reference_videos` | string[] | 否 | 参考视频 URL（0–3） |
+| `audios` / `reference_audios` | string[] | 否 | 参考音频 URL（0–3）；须搭配图或视频 |
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费模型：`sd2-933-720p`
+- 单价：**0.0479** / 秒（若控制台有调整，以 [控制台定价](https://api.viraltok.ai) 为准）
+
+```text
+费用 = 0.0479 × duration
+```
+
+## 示例请求
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "sd2-933-720p",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "reference_mode": "media",
+    "generate_audio": true,
+    "images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"]
+  }'
+```

@@ -11,7 +11,7 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 
 | model | Notes |
 |-------|-------|
-| `seedance-2.5` | Standard Seedance 2.5: text-to-video plus optional reference images / audios (reference videos not supported) |
+| `seedance-2.5` | Standard Seedance 2.5: text-to-video plus optional reference images / videos / audios |
 | `seedance-2.5-sp` | Seedance 2.5 SP: flat per-second price, 720p only, supports reference images / videos / audios / first-last frames |
 
 Aliases such as `seedance2.5`, `seedance_2.5`, and `seedance25` normalize to `seedance-2.5`.
@@ -26,9 +26,9 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 - **Duration**: 4–30 seconds (default `4`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`).
 - **Resolution**: `480p`, `720p` (default `480p`).
-- **Reference images**: max **30**.
-- **Reference videos**: Not supported.
-- **Reference audios**: max **10**.
+- **Reference images** (`reference_images`): max **30**.
+- **Reference videos** (`reference_videos`): max **10**; each clip and the combined duration must be ≤ **30.2** seconds.
+- **Reference audios** (`reference_audios`): max **10**; each clip must be ≤ **30** seconds.
 
 ### SP `seedance-2.5-sp`
 
@@ -36,8 +36,8 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 - **Aspect ratio**: `16:9`, `9:16`, `1:1`.
 - **Resolution**: `720p` only.
 - **Reference images**: max **30**.
-- **Reference videos**: max **10**.
-- **Reference audios**: max **10**.
+- **Reference videos**: max **10**; each clip and the combined duration must be ≤ **30.2** seconds.
+- **Reference audios**: max **10**; each clip must be ≤ **30** seconds.
 - **First / last frame**: optional `first_image` / `last_image` (one each); **cannot** be combined with `reference_images` / `images`.
 
 ## Request parameters
@@ -54,9 +54,9 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 | `last_image` | string | No | Last-frame image URL; SP only |
 | `reference_images` | string[] | No | Reference image URLs (0–30) |
 | `images` | string[] | No | Alias for `reference_images` |
-| `reference_videos` | string[] | No | SP only (0–10); standard returns an error |
+| `reference_videos` | string[] | No | Reference video URLs (0–10); each and total ≤ 30.2s |
 | `videos` | string[] | No | Alias for `reference_videos` |
-| `reference_audios` | string[] | No | Reference audio URLs (0–10) |
+| `reference_audios` | string[] | No | Reference audio URLs (0–10); each ≤ 30s |
 | `audios` | string[] | No | Alias for `reference_audios` |
 
 ## Billing
@@ -86,6 +86,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "aspect_ratio": "16:9",
     "resolution": "720p",
     "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
   }'
 ```

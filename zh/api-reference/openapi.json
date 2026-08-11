@@ -1036,7 +1036,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 段参考音频，暂不支持参考视频，时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，支持参考视频最多 10，支持 first_image / last_image 首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -3021,7 +3021,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表，最多 10 个；总时长最大 30 秒。"
+            "description": "参考视频 URL 列表，最多 10 个；单条与合计时长均不超过 30.2 秒。"
           },
           "videos": {
             "type": "array",
@@ -3037,7 +3037,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表，最多 10 段。"
+            "description": "参考音频 URL 列表，最多 10 段；单条时长不超过 30 秒。"
           },
           "audios": {
             "type": "array",

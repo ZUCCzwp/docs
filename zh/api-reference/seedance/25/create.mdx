@@ -11,7 +11,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 | model | 说明 |
 |-------|------|
-| `seedance-2.5` | Seedance 2.5 标准版：文生视频及参考图 / 参考音频（暂不支持参考视频） |
+| `seedance-2.5` | Seedance 2.5 标准版：文生视频及参考图 / 视频 / 音频 |
 | `seedance-2.5-sp` | Seedance 2.5 SP：按秒固定单价，仅 720p，支持参考图 / 视频 / 音频 / 首尾帧 |
 
 `seedance2.5`、`seedance_2.5`、`seedance25` 等别名会归一化为 `seedance-2.5`。
@@ -26,9 +26,9 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - **时长（duration）**：4–30 秒，默认 `4`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`。
 - **分辨率（resolution）**：`480p`、`720p`，默认 `480p`。
-- **参考图**：最多 **30** 张。
-- **参考视频**：暂不支持。
-- **参考音频**：最多 **10** 段。
+- **参考图（reference_images）**：最多 **30** 张。
+- **参考视频（reference_videos）**：最多 **10** 条；单条与合计时长均不超过 **30.2** 秒。
+- **参考音频（reference_audios）**：最多 **10** 条；单条时长不超过 **30** 秒。
 
 ### SP `seedance-2.5-sp`
 
@@ -36,8 +36,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - **画幅比例**：`16:9`、`9:16`、`1:1`。
 - **分辨率**：仅 `720p`。
 - **参考图**：最多 **30** 张。
-- **参考视频**：最多 **10** 个。
-- **参考音频**：最多 **10** 段。
+- **参考视频**：最多 **10** 条；单条与合计时长均不超过 **30.2** 秒。
+- **参考音频**：最多 **10** 条；单条时长不超过 **30** 秒。
 - **首尾帧**：可选 `first_image` / `last_image`（各最多 1 张）；与 `reference_images` / `images` **不可同时使用**。
 
 ## 请求参数
@@ -54,9 +54,9 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `last_image` | string | 否 | 尾帧图 URL；仅 SP 支持 |
 | `reference_images` | string[] | 否 | 参考图 URL（0–30） |
 | `images` | string[] | 否 | `reference_images` 别名 |
-| `reference_videos` | string[] | 否 | 仅 SP 支持（0–10）；标准版传入会报错 |
+| `reference_videos` | string[] | 否 | 参考视频 URL（0–10）；单条与合计 ≤ 30.2 秒 |
 | `videos` | string[] | 否 | `reference_videos` 别名 |
-| `reference_audios` | string[] | 否 | 参考音频 URL（0–10） |
+| `reference_audios` | string[] | 否 | 参考音频 URL（0–10）；单条 ≤ 30 秒 |
 | `audios` | string[] | 否 | `reference_audios` 别名 |
 
 ## 计费说明
@@ -86,6 +86,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "aspect_ratio": "16:9",
     "resolution": "720p",
     "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
   }'
 ```

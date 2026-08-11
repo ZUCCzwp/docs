@@ -12,7 +12,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | model | 说明 |
 |-------|------|
 | `seedance-2.5` | Seedance 2.5 标准版：文生视频及参考图 / 参考音频（暂不支持参考视频） |
-| `seedance-2.5-sp` | Seedance 2.5 SP：按秒固定单价，仅 720p，支持参考图 / 视频 / 音频 |
+| `seedance-2.5-sp` | Seedance 2.5 SP：按秒固定单价，仅 720p，支持参考图 / 视频 / 音频 / 首尾帧 |
 
 `seedance2.5`、`seedance_2.5`、`seedance25` 等别名会归一化为 `seedance-2.5`。
 
@@ -32,12 +32,13 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 ### SP `seedance-2.5-sp`
 
-- **时长（duration）**：4–29 秒，默认 `4`。
+- **时长（duration）**：4–30 秒，默认 `4`。
 - **画幅比例**：`16:9`、`9:16`、`1:1`。
 - **分辨率**：仅 `720p`。
 - **参考图**：最多 **30** 张。
 - **参考视频**：最多 **10** 个。
 - **参考音频**：最多 **10** 段。
+- **首尾帧**：可选 `first_image` / `last_image`（各最多 1 张）；与 `reference_images` / `images` **不可同时使用**。
 
 ## 请求参数
 
@@ -49,6 +50,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
 | `resolution` | string | 否 | 标准版 `480p`/`720p`；SP 仅 `720p` |
+| `first_image` | string | 否 | 首帧图 URL；仅 SP 支持 |
+| `last_image` | string | 否 | 尾帧图 URL；仅 SP 支持 |
 | `reference_images` | string[] | 否 | 参考图 URL（0–30） |
 | `images` | string[] | 否 | `reference_images` 别名 |
 | `reference_videos` | string[] | 否 | 仅 SP 支持（0–10）；标准版传入会报错 |
@@ -99,7 +102,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "duration": 5,
     "aspect_ratio": "16:9",
     "resolution": "720p",
-    "reference_images": ["https://example.com/reference.png"],
-    "reference_videos": ["https://example.com/reference.mp4"]
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png"
   }'
 ```

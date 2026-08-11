@@ -1036,7 +1036,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images and 10 audios, no reference videos, duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–29s, up to 10 reference videos. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images and 10 audios, no reference videos, duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, up to 10 reference videos, optional first_image / last_image. Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -2979,6 +2979,14 @@
               "720p"
             ],
             "description": "Output resolution tier. Default 480p."
+          },
+          "first_image": {
+            "type": "string",
+            "description": "First-frame image URL. seedance-2.5-sp only; mutually exclusive with reference_images / images."
+          },
+          "last_image": {
+            "type": "string",
+            "description": "Last-frame image URL. seedance-2.5-sp only; mutually exclusive with reference_images / images."
           },
           "reference_images": {
             "type": "array",

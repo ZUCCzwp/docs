@@ -1036,7 +1036,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 段参考音频，暂不支持参考视频，时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-29 秒，支持参考视频最多 10。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 段参考音频，暂不支持参考视频，时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，支持参考视频最多 10，支持 first_image / last_image 首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -2990,6 +2990,14 @@
               "720p"
             ],
             "description": "输出分辨率档位。默认 480p。"
+          },
+          "first_image": {
+            "type": "string",
+            "description": "首帧图片 URL。仅 seedance-2.5-sp 支持；与 reference_images / images 不可同时使用。"
+          },
+          "last_image": {
+            "type": "string",
+            "description": "尾帧图片 URL。仅 seedance-2.5-sp 支持；与 reference_images / images 不可同时使用。"
           },
           "reference_images": {
             "type": "array",

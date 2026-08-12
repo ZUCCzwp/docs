@@ -27,6 +27,7 @@ Aliases:
 - **Duration**: 5–15 seconds (default `5`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
 - **Size**: `2560x1440`, `1440x2560`, `1440x1440`, `1920x1440`, `1440x1920`, `3360x1440`. When omitted, a default matching the aspect ratio is used (e.g. `16:9` → `2560x1440`).
+- **Resolution**: `minimax-h3-gz` supports `2K` and `768P`; default `2K`.
 - **Reference images**: `reference_images` or `images`, max **5**, public HTTPS URLs.
 - **Reference audio**: `reference_audios`, max **1**.
 - **First / last frame**: optional `first_image` / `last_image` (one each).
@@ -41,6 +42,7 @@ Aliases:
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
 | `size` | string | No | Output pixel size |
+| `resolution` | string | No | Resolution for `minimax-h3-gz`: `2K` (default) or `768P` |
 | `reference_images` | string[] | No | Reference image URLs (0–5) |
 | `images` | string[] | No | Alias for `reference_images` when the latter is empty |
 | `reference_audios` | string[] | No | Reference audio URLs (0–1) |
@@ -50,11 +52,11 @@ Aliases:
 ## Billing
 
 - Mode: `per_task`
-- **Billing model name matches `model`**: `minimax-h3` and `minimax-h3-gz` have separate unit prices (console)
+- `minimax-h3` has its own price; `minimax-h3-gz` also has separate prices for `2K` and `768P` (console)
 - `duration` controls generation length only and **does not affect billing**
 
 ```text
-cost = unit_price for the requested model
+cost = unit_price for the requested model and resolution
 ```
 
 ## Example requests
@@ -84,6 +86,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "model": "minimax-h3-gz",
     "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
     "duration": 6,
-    "aspect_ratio": "16:9"
+    "aspect_ratio": "16:9",
+    "resolution": "768P"
   }'
 ```

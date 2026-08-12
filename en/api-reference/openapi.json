@@ -2157,6 +2157,15 @@
             ],
             "description": "Output pixel size. Defaults based on aspect_ratio when omitted."
           },
+          "resolution": {
+            "type": "string",
+            "default": "2K",
+            "enum": [
+              "2K",
+              "768P"
+            ],
+            "description": "Used by minimax-h3-gz only. Defaults to 2K; 2K and 768P are billed separately."
+          },
           "reference_images": {
             "type": "array",
             "maxItems": 5,

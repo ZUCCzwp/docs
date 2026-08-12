@@ -2157,6 +2157,15 @@
             ],
             "description": "输出像素规格。未传时按 aspect_ratio 取默认值。"
           },
+          "resolution": {
+            "type": "string",
+            "default": "2K",
+            "enum": [
+              "2K",
+              "768P"
+            ],
+            "description": "仅 minimax-h3-gz 使用。默认 2K；2K 与 768P 分别计费。"
+          },
           "reference_images": {
             "type": "array",
             "maxItems": 5,

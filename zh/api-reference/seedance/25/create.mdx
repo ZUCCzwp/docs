@@ -7,6 +7,10 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
+<Warning>
+本页型号必须使用 `POST /api/open-api/v1/seedance25/videos`。**不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）；误用会落到满血渠道。
+</Warning>
+
 ## 支持的模型
 
 | model | 说明 |

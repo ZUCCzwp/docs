@@ -7,6 +7,10 @@ openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
+<Warning>
+These models require `POST /api/open-api/v1/seedance25/videos`. Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes); that would land on the Full (Manxue) channel.
+</Warning>
+
 ## Supported models
 
 | model | Notes |

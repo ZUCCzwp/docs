@@ -16,21 +16,32 @@ This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-imag
 | Item | Details |
 |------|---------|
 | Model | `grok-imagine-image-2` (aliases `grok-imagine-image-2.0`, `grok-imagine-image-quality`) |
-| Billing | **Resolution unit price × `n`** |
+| Billing | **Resolution base × `n`**; image-to-image adds **reference surcharge** (from the first image) |
 | Modes | Text-to-image; with `images` → edit (max 3 reference images) |
 | Resolution | `1k`, `2k` (default `1k`) |
 | Output format | `jpeg`, `png`, `webp` (default `jpeg`) |
 
 ## Billing
 
-| Resolution | Billing model | Notes |
-|------------|---------------|-------|
-| `1k` | `grok-imagine-image-2-1k` | Per image |
-| `2k` | `grok-imagine-image-2-2k` | Per image |
+| Resolution / item | Billing model | Notes |
+|-------------------|---------------|-------|
+| `1k` | `grok-imagine-image-2-1k` | Output base (per image) |
+| `2k` | `grok-imagine-image-2-2k` | Output base (per image) |
+| Reference surcharge (edit only) | `grok-imagine-image-2` | When `images` is set, **every reference from the first** is billed |
+
+Text-to-image (no references):
 
 ```text
 total = resolution_unit_price × n
 ```
+
+Image-to-image / edit (with references):
+
+```text
+total = resolution_unit_price × n + reference_count × ref_unit_price
+```
+
+Example (console prices apply): `2k`, `n=1` with 2 references → `2k unit + 2 × ref_unit`.
 
 Unit prices follow the console / pricing page. If resolution-specific prices are missing, billing falls back to `grok-imagine-image-2`.
 

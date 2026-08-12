@@ -5,8 +5,12 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 创建 Seedance **满血版**（Manxue）视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
+<Warning>
+**请勿**把 `seedance-2.5` / `seedance-2.5-sp` / `seedance-2.5-720p` 等 Seedance 2.5 型号发到本接口。它们必须使用 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create)：`POST /api/open-api/v1/seedance25/videos`。误用 `/seedance/videos` 会落到 Seedance 2.0 满血线路。
+</Warning>
+
 <Note>
-其他线路文档：**Mini** 见 [Mini 创建视频](/zh/api-reference/seedance/mini/create)；**SP 经济版** 见 [SP 创建视频](/zh/api-reference/seedance/sp/create)；**MD** 见 [MD 创建视频](/zh/api-reference/seedance/md/create)。
+其他线路文档：**Mini** 见 [Mini 创建视频](/zh/api-reference/seedance/mini/create)；**SP 经济版** 见 [SP 创建视频](/zh/api-reference/seedance/sp/create)；**MD** 见 [MD 创建视频](/zh/api-reference/seedance/md/create)；**Seedance 2.5** 见 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create)。
 </Note>
 
 ## 模型与线路

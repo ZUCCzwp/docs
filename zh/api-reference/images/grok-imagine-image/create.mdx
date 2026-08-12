@@ -16,7 +16,7 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 说明 |
 |------|------|
 | 模型名 | `grok-imagine-image` |
-| 计费 | **单价 × 张数 `n`**（按次） |
+| 计费 | **单价 × 张数 `n`**（按次；带参考图编辑不加收） |
 | 模式 | 文生图；传入 `images` 时为图编辑（最多 3 张参考图） |
 | 分辨率 | `1k`、`2k`（默认 `1k`） |
 | 输出格式 | `jpeg`、`png`、`webp`（默认 `jpeg`） |
@@ -26,6 +26,8 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 计费模型名 | 说明 |
 |------|-----------|------|
 | 按张 | `grok-imagine-image` | `总费用 = 单价 × n` |
+
+文生图与图编辑（传入 `images`）均按输出张数计费，**不按参考图张数加收**。2.0 图生图参考图加收见 [Grok Imagine Image 2.0](/zh/api-reference/images/grok-imagine-image-2/create)。
 
 单价以控制台 / 定价页为准。
 

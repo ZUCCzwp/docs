@@ -16,7 +16,7 @@ This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-imag
 | Item | Details |
 |------|---------|
 | Model | `grok-imagine-image` |
-| Billing | **Unit price × `n`** (per task) |
+| Billing | **Unit price × `n`** (edit has no per-reference surcharge) |
 | Modes | Text-to-image; with `images` → edit (max 3 reference images) |
 | Resolution | `1k`, `2k` (default `1k`) |
 | Output format | `jpeg`, `png`, `webp` (default `jpeg`) |
@@ -26,6 +26,8 @@ This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-imag
 | Item | Billing model | Notes |
 |------|---------------|-------|
 | Per image | `grok-imagine-image` | `total = unit_price × n` |
+
+Text-to-image and edit (with `images`) bill by output count only — **no per-reference surcharge**. For 2.0 image-to-image reference billing, see [Grok Imagine Image 2.0](/en/api-reference/images/grok-imagine-image-2/create).
 
 Unit prices follow the console / pricing page.
 

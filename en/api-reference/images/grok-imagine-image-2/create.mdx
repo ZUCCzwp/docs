@@ -1,0 +1,94 @@
+---
+title: 'Grok Imagine Image 2.0 generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **Grok Imagine Image 2.0** (Quality) task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed. When `n > 1`, also read `result.image_urls` for all images.
+
+Standard tier: [Grok Imagine Image](/en/api-reference/images/grok-imagine-image/create).
+
+<Note>
+This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-image-2"`.
+</Note>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `grok-imagine-image-2` (aliases `grok-imagine-image-2.0`, `grok-imagine-image-quality`) |
+| Billing | **Resolution unit price × `n`** |
+| Modes | Text-to-image; with `images` → edit (max 3 reference images) |
+| Resolution | `1k`, `2k` (default `1k`) |
+| Output format | `jpeg`, `png`, `webp` (default `jpeg`) |
+
+## Billing
+
+| Resolution | Billing model | Notes |
+|------------|---------------|-------|
+| `1k` | `grok-imagine-image-2-1k` | Per image |
+| `2k` | `grok-imagine-image-2-2k` | Per image |
+
+```text
+total = resolution_unit_price × n
+```
+
+Unit prices follow the console / pricing page. If resolution-specific prices are missing, billing falls back to `grok-imagine-image-2`.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | yes | Must be `grok-imagine-image-2` |
+| `prompt` | string | yes | Generation / edit prompt (1–5000 chars) |
+| `ratio` | string | no | Aspect ratio. T2I default `1:1`; edit default `auto` |
+| `resolution` | string | no | `1k` or `2k` (default `1k`) |
+| `n` | int | no | Number of images, `1`–`4`, default `1` |
+| `output_format` | string | no | `jpeg` / `png` / `webp`, default `jpeg` |
+| `images` | string[] | no | Reference image URLs (max 3); enables edit mode |
+
+### Supported ratios
+
+Text-to-image: `2:1`, `20:9`, `19.5:9`, `16:9`, `4:3`, `3:2`, `1:1`, `2:3`, `3:4`, `9:16`, `9:19.5`, `9:20`, `1:2`.
+
+Edit mode also supports `auto`.
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "Infographic: rainforest layers, crisp typography and labels",
+    "ratio": "3:4",
+    "resolution": "2k",
+    "n": 1
+  }'
+```
+
+### Image edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "Replace the sky with aurora while keeping the subject",
+    "images": ["https://example.com/ref.png"],
+    "ratio": "auto",
+    "resolution": "1k"
+  }'
+```
+
+## Query result
+
+When completed:
+
+- `result.image_url`: first image URL
+- `result.image_urls`: all image URLs (`n ≥ 1`)
+
+Poll every 3–5 seconds.

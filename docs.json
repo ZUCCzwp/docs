@@ -120,6 +120,8 @@
                   },
                   "en/api-reference/images/gpt-image-1.5/create",
                   "en/api-reference/images/seedream-5-0-pro/create",
+                  "en/api-reference/images/grok-imagine-image/create",
+                  "en/api-reference/images/grok-imagine-image-2/create",
                   "en/api-reference/images/nano-banana/create"
                 ]
               },
@@ -308,6 +310,8 @@
                   },
                   "zh/api-reference/images/gpt-image-1.5/create",
                   "zh/api-reference/images/seedream-5-0-pro/create",
+                  "zh/api-reference/images/grok-imagine-image/create",
+                  "zh/api-reference/images/grok-imagine-image-2/create",
                   "zh/api-reference/images/nano-banana/create"
                 ]
               },

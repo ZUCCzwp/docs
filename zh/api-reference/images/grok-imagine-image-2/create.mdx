@@ -1,0 +1,94 @@
+---
+title: 'Grok Imagine Image 2.0 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **Grok Imagine Image 2.0**（Quality）异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
+
+标准版见 [Grok Imagine Image](/zh/api-reference/images/grok-imagine-image/create)。
+
+<Note>
+本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `grok-imagine-image-2` 即可使用本模型。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `grok-imagine-image-2`（别名 `grok-imagine-image-2.0`、`grok-imagine-image-quality`） |
+| 计费 | **分辨率单价 × 张数 `n`** |
+| 模式 | 文生图；传入 `images` 时为图编辑（最多 3 张参考图） |
+| 分辨率 | `1k`、`2k`（默认 `1k`） |
+| 输出格式 | `jpeg`、`png`、`webp`（默认 `jpeg`） |
+
+## 计费说明
+
+| 分辨率 | 计费模型名 | 说明 |
+|--------|-----------|------|
+| `1k` | `grok-imagine-image-2-1k` | 按张 |
+| `2k` | `grok-imagine-image-2-2k` | 按张 |
+
+```text
+总费用 = 分辨率单价 × n
+```
+
+单价以控制台 / 定价页为准。若分分辨率价未配置，会回退到 `grok-imagine-image-2`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定为 `grok-imagine-image-2` |
+| `prompt` | string | 是 | 图像生成 / 编辑提示词（1–5000 字符） |
+| `ratio` | string | 否 | 画面比例。文生图默认 `1:1`；编辑模式默认 `auto` |
+| `resolution` | string | 否 | `1k` 或 `2k`（默认 `1k`） |
+| `n` | int | 否 | 生成张数，`1`–`4`，默认 `1` |
+| `output_format` | string | 否 | `jpeg` / `png` / `webp`，默认 `jpeg` |
+| `images` | string[] | 否 | 参考图 URL（最多 3 张）；传入后走编辑模式 |
+
+### 支持的比例
+
+文生图：`2:1`、`20:9`、`19.5:9`、`16:9`、`4:3`、`3:2`、`1:1`、`2:3`、`3:4`、`9:16`、`9:19.5`、`9:20`、`1:2`。
+
+编辑模式额外支持 `auto`。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "信息图：热带雨林分层剖面，清晰排版与标注",
+    "ratio": "3:4",
+    "resolution": "2k",
+    "n": 1
+  }'
+```
+
+### 图编辑
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "把天空改成极光，保持主体不变",
+    "images": ["https://example.com/ref.png"],
+    "ratio": "auto",
+    "resolution": "1k"
+  }'
+```
+
+## 查询结果
+
+完成后：
+
+- `result.image_url`：第一张图的访问地址
+- `result.image_urls`：全部图片地址数组（`n ≥ 1`）
+
+建议每 3–5 秒轮询一次。

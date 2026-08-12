@@ -1,0 +1,89 @@
+---
+title: 'Grok Imagine Image generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **Grok Imagine Image** task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed. When `n > 1`, also read `result.image_urls` for all images.
+
+Higher quality: [Grok Imagine Image 2.0](/en/api-reference/images/grok-imagine-image-2/create).
+
+<Note>
+This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-image"`.
+</Note>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `grok-imagine-image` |
+| Billing | **Unit price × `n`** (per task) |
+| Modes | Text-to-image; with `images` → edit (max 3 reference images) |
+| Resolution | `1k`, `2k` (default `1k`) |
+| Output format | `jpeg`, `png`, `webp` (default `jpeg`) |
+
+## Billing
+
+| Item | Billing model | Notes |
+|------|---------------|-------|
+| Per image | `grok-imagine-image` | `total = unit_price × n` |
+
+Unit prices follow the console / pricing page.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | yes | Must be `grok-imagine-image` |
+| `prompt` | string | yes | Generation / edit prompt (1–5000 chars) |
+| `ratio` | string | no | Aspect ratio. T2I default `1:1`; edit default `auto` |
+| `resolution` | string | no | `1k` or `2k` (default `1k`) |
+| `n` | int | no | Number of images, `1`–`4`, default `1` |
+| `output_format` | string | no | `jpeg` / `png` / `webp`, default `jpeg` |
+| `images` | string[] | no | Reference image URLs (max 3); enables edit mode |
+
+### Supported ratios
+
+Text-to-image: `2:1`, `20:9`, `19.5:9`, `16:9`, `4:3`, `3:2`, `1:1`, `2:3`, `3:4`, `9:16`, `9:19.5`, `9:20`, `1:2`.
+
+Edit mode also supports `auto`.
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image",
+    "prompt": "A floating futuristic city above the clouds at golden hour",
+    "ratio": "16:9",
+    "resolution": "2k",
+    "n": 1
+  }'
+```
+
+### Image edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image",
+    "prompt": "Replace the sky with aurora while keeping the subject",
+    "images": ["https://example.com/ref.png"],
+    "ratio": "auto",
+    "resolution": "1k"
+  }'
+```
+
+## Query result
+
+When completed:
+
+- `result.image_url`: first image URL
+- `result.image_urls`: all image URLs (`n ≥ 1`)
+
+Poll every 3–5 seconds.

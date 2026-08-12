@@ -1,0 +1,89 @@
+---
+title: 'Grok Imagine Image 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **Grok Imagine Image** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
+
+更高画质请用 [Grok Imagine Image 2.0](/zh/api-reference/images/grok-imagine-image-2/create)。
+
+<Note>
+本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `grok-imagine-image` 即可使用本模型。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `grok-imagine-image` |
+| 计费 | **单价 × 张数 `n`**（按次） |
+| 模式 | 文生图；传入 `images` 时为图编辑（最多 3 张参考图） |
+| 分辨率 | `1k`、`2k`（默认 `1k`） |
+| 输出格式 | `jpeg`、`png`、`webp`（默认 `jpeg`） |
+
+## 计费说明
+
+| 项目 | 计费模型名 | 说明 |
+|------|-----------|------|
+| 按张 | `grok-imagine-image` | `总费用 = 单价 × n` |
+
+单价以控制台 / 定价页为准。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定为 `grok-imagine-image` |
+| `prompt` | string | 是 | 图像生成 / 编辑提示词（1–5000 字符） |
+| `ratio` | string | 否 | 画面比例。文生图默认 `1:1`；编辑模式默认 `auto` |
+| `resolution` | string | 否 | `1k` 或 `2k`（默认 `1k`） |
+| `n` | int | 否 | 生成张数，`1`–`4`，默认 `1` |
+| `output_format` | string | 否 | `jpeg` / `png` / `webp`，默认 `jpeg` |
+| `images` | string[] | 否 | 参考图 URL（最多 3 张）；传入后走编辑模式 |
+
+### 支持的比例
+
+文生图：`2:1`、`20:9`、`19.5:9`、`16:9`、`4:3`、`3:2`、`1:1`、`2:3`、`3:4`、`9:16`、`9:19.5`、`9:20`、`1:2`。
+
+编辑模式额外支持 `auto`。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image",
+    "prompt": "一座漂浮在云海之上的未来城市，黄金时刻光照",
+    "ratio": "16:9",
+    "resolution": "2k",
+    "n": 1
+  }'
+```
+
+### 图编辑
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image",
+    "prompt": "把天空改成极光，保持主体不变",
+    "images": ["https://example.com/ref.png"],
+    "ratio": "auto",
+    "resolution": "1k"
+  }'
+```
+
+## 查询结果
+
+完成后：
+
+- `result.image_url`：第一张图的访问地址
+- `result.image_urls`：全部图片地址数组（`n ≥ 1`）
+
+建议每 3–5 秒轮询一次。

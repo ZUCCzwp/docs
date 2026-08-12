@@ -90,6 +90,12 @@
                 ]
               },
               {
+                "group": "Kling Video",
+                "pages": [
+                  "en/api-reference/kling/create"
+                ]
+              },
+              {
                 "group": "Flux 3 Video",
                 "pages": [
                   "en/api-reference/flux3/create"
@@ -283,6 +289,12 @@
                 "group": "MiniMax 视频",
                 "pages": [
                   "zh/api-reference/minimax/create"
+                ]
+              },
+              {
+                "group": "Kling 视频",
+                "pages": [
+                  "zh/api-reference/kling/create"
                 ]
               },
               {

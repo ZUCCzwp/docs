@@ -559,6 +559,67 @@
         }
       }
     },
+    "/api/open-api/v1/kling/videos": {
+      "post": {
+        "summary": "创建 Kling O3 视频任务",
+        "description": "创建 Kling O3 视频生成任务。支持文本提示词、最多 3 张参考图、可选首尾帧，时长 3-15 秒，画幅 16:9/9:16/1:1，分辨率 720p/1080p，以及可选音频轨。计费方式为 per_task（按次；duration 不参与计费）。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createKlingO3Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KlingO3GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建 Kling O3 任务",
+                  "value": {
+                    "model": "kling-o3",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 6,
+                    "aspect_ratio": "16:9",
+                    "resolution": "720p",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "generate_audio": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": "20000",
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_kling_o3_123456",
+                        "status": "queued",
+                        "model": "kling-o3-720p",
+                        "created_at": 1782529105,
+                        "cost": 0.3
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "创建视频超分任务",
@@ -2140,6 +2201,107 @@
           "reference_audios": [
             "https://example.com/reference.mp3"
           ]
+        }
+      },
+      "KlingO3GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "kling-o3"
+            ],
+            "description": "模型名称。kling-o3、klingo3、kling_o3、KlingO3 归一化为 kling-o3。"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "用于生成视频的文本提示词，长度 1–2000。"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 6,
+            "minimum": 3,
+            "maximum": 15,
+            "description": "视频时长，单位秒。支持 3–15。默认 6。"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "default": "16:9",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1"
+            ],
+            "description": "输出画幅比例。优先级高于 ratio。"
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "16:9",
+              "9:16",
+              "1:1"
+            ],
+            "description": "aspect_ratio 为空时的别名。"
+          },
+          "resolution": {
+            "type": "string",
+            "default": "720p",
+            "enum": [
+              "720p",
+              "1080p"
+            ],
+            "description": "输出分辨率。默认 720p。"
+          },
+          "reference_images": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL 列表，最多 3 张公网 URL。"
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_images 为空时的别名。"
+          },
+          "first_image": {
+            "type": "string",
+            "description": "可选首帧图 URL。"
+          },
+          "last_image": {
+            "type": "string",
+            "description": "可选尾帧图 URL。"
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否生成视频音频轨。默认 false。"
+          },
+          "reference_mode": {
+            "type": "string",
+            "description": "可选参考模式。"
+          }
+        },
+        "example": {
+          "model": "kling-o3",
+          "prompt": "电影感产品展示，自然光",
+          "duration": 6,
+          "aspect_ratio": "16:9",
+          "resolution": "720p",
+          "reference_images": [
+            "https://example.com/reference.png"
+          ],
+          "generate_audio": false
         }
       },
       "SuperResolutionRequest": {

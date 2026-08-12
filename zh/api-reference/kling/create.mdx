@@ -1,0 +1,57 @@
+---
+title: '创建 Kling O3 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
+---
+
+
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `kling-o3` | Kling O3 视频生成，支持文生视频、参考图（最多 3 张）、可选首尾帧、720p/1080p，以及可选音频轨 |
+
+`klingo3`、`kling_o3`、`KlingO3` 等别名会归一化为 `kling-o3`。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–2000。
+- **时长（duration）**：3–15 秒，默认 `6`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `16:9`。
+- **分辨率（resolution）**：`720p`、`1080p`，默认 `720p`。
+- **参考图**：`reference_images` 或 `images`，最多 **3** 张，须为公网可访问 URL。
+- **首尾帧**：`first_image` / `last_image` 各最多 1 张（可选）。
+- **生成音频（generate_audio）**：默认 `false`。
+- **参考模式（reference_mode）**：可选字符串，原样透传。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定传 `kling-o3` |
+| `prompt` | string | 是 | 文本提示词，长度 1–2000 |
+| `duration` | integer | 否 | 时长秒数，默认 6 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | 输出分辨率，默认 `720p` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–3） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `first_image` | string | 否 | 首帧图 URL |
+| `last_image` | string | 否 | 尾帧图 URL |
+| `generate_audio` | boolean | 否 | 是否生成音频轨，默认 `false` |
+| `reference_mode` | string | 否 | 可选参考模式 |
+
+## 计费说明
+
+- 计费方式：`per_task`（按次）
+- 请求模型名：`kling-o3`
+- 计费模型名：`kling-o3-{resolution}`（`kling-o3-720p` / `kling-o3-1080p`）；若未配置分辨率行则回退到 `kling-o3`
+- `duration` 仅影响生成时长，**不参与计费**
+
+```text
+费用 = 模型单价
+```

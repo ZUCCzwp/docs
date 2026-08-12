@@ -9,11 +9,17 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 
 ## 支持的模型
 
+同一接口 `POST /api/open-api/v1/minimax/videos`，通过 **`model` 字段**选择型号（各自独立计费）：
+
 | model | 说明 |
 |-------|------|
-| `minimax-h3` | MiniMax H3 视频生成，支持文生视频、参考图（最多 5 张）、参考音频（最多 1 段）、以及可选首尾帧 |
+| `minimax-h3` | MiniMax H3 标准版 |
+| `minimax-h3-gz` | MiniMax H3 GZ 版（独立计费型号） |
 
-`minimax_h3`、`minimaxh3` 等别名会归一化为 `minimax-h3`。
+别名：
+
+- `minimax-h3`：`minimax_h3`、`minimaxh3`
+- `minimax-h3-gz`：`minimax_h3_gz`、`minimaxh3gz`
 
 ## 参数限制
 
@@ -29,7 +35,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | 固定传 `minimax-h3` |
+| `model` | string | 是 | `minimax-h3` 或 `minimax-h3-gz` |
 | `prompt` | string | 是 | 文本提示词，长度 1–2000 |
 | `duration` | integer | 否 | 时长秒数，默认 5 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
@@ -44,14 +50,16 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 ## 计费说明
 
 - 计费方式：`per_task`（按次）
-- 计费模型名：`minimax-h3`（单价以控制台配置为准）
+- **计费模型名与 `model` 一致**：`minimax-h3` 与 `minimax-h3-gz` 各自独立单价（以控制台为准）
 - `duration` 仅影响生成时长，**不参与计费**
 
 ```text
-费用 = 模型单价
+费用 = 对应 model 的单价
 ```
 
 ## 示例请求
+
+### minimax-h3
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
@@ -62,10 +70,20 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "prompt": "电影感产品展示，自然光，缓慢推镜",
     "duration": 5,
     "aspect_ratio": "16:9",
-    "size": "2560x1440",
-    "reference_images": ["https://example.com/reference.png"],
-    "reference_audios": ["https://example.com/reference.mp3"],
-    "first_image": "https://example.com/first.png",
-    "last_image": "https://example.com/last.png"
+    "size": "2560x1440"
+  }'
+```
+
+### minimax-h3-gz
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
+    "duration": 6,
+    "aspect_ratio": "16:9"
   }'
 ```

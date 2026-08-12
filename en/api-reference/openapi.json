@@ -2101,9 +2101,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "minimax-h3"
+              "minimax-h3",
+              "minimax-h3-gz"
             ],
-            "description": "Model name. minimax-h3, minimax_h3, and minimaxh3 normalize to minimax-h3."
+            "description": "Model name. minimax-h3 and minimax-h3-gz are separate billing models. Aliases: minimax_h3 / minimaxh3, minimax_h3_gz / minimaxh3gz."
           },
           "prompt": {
             "type": "string",

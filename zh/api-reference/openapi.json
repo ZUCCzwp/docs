@@ -2101,9 +2101,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "minimax-h3"
+              "minimax-h3",
+              "minimax-h3-gz"
             ],
-            "description": "模型名称。minimax-h3、minimax_h3、minimaxh3 归一化为 minimax-h3。"
+            "description": "模型名称。minimax-h3 与 minimax-h3-gz 为独立计费型号；别名 minimax_h3 / minimaxh3、minimax_h3_gz / minimaxh3gz。"
           },
           "prompt": {
             "type": "string",

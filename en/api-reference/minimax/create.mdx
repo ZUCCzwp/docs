@@ -9,11 +9,17 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 
 ## Supported models
 
+Same endpoint `POST /api/open-api/v1/minimax/videos`. Choose the product via **`model`** (each model has its own billing rate):
+
 | model | Notes |
 |-------|-------|
-| `minimax-h3` | MiniMax H3 video generation. Supports text-to-video, up to 5 reference images, 1 reference audio, and optional first/last frames. |
+| `minimax-h3` | MiniMax H3 standard |
+| `minimax-h3-gz` | MiniMax H3 GZ (separate billing model) |
 
-Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
+Aliases:
+
+- `minimax-h3`: `minimax_h3`, `minimaxh3`
+- `minimax-h3-gz`: `minimax_h3_gz`, `minimaxh3gz`
 
 ## Parameter constraints
 
@@ -29,7 +35,7 @@ Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | Must be `minimax-h3` |
+| `model` | string | Yes | `minimax-h3` or `minimax-h3-gz` |
 | `prompt` | string | Yes | Text prompt, 1–2000 characters |
 | `duration` | integer | No | Duration in seconds, default 5 |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
@@ -44,14 +50,16 @@ Aliases such as `minimax_h3` and `minimaxh3` normalize to `minimax-h3`.
 ## Billing
 
 - Mode: `per_task`
-- Billing model name: `minimax-h3` (unit price from console)
+- **Billing model name matches `model`**: `minimax-h3` and `minimax-h3-gz` have separate unit prices (console)
 - `duration` controls generation length only and **does not affect billing**
 
 ```text
-cost = unit_price
+cost = unit_price for the requested model
 ```
 
-## Example request
+## Example requests
+
+### minimax-h3
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
@@ -62,10 +70,20 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "prompt": "A cinematic product shot with natural lighting and a slow push-in",
     "duration": 5,
     "aspect_ratio": "16:9",
-    "size": "2560x1440",
-    "reference_images": ["https://example.com/reference.png"],
-    "reference_audios": ["https://example.com/reference.mp3"],
-    "first_image": "https://example.com/first.png",
-    "last_image": "https://example.com/last.png"
+    "size": "2560x1440"
+  }'
+```
+
+### minimax-h3-gz
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
+    "duration": 6,
+    "aspect_ratio": "16:9"
   }'
 ```

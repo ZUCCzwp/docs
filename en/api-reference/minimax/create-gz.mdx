@@ -1,0 +1,140 @@
+---
+title: 'Create MiniMax H3 GZ Video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>
+
+This uses the same endpoint as [Create MiniMax H3 Video](/en/api-reference/minimax/create): `POST /api/open-api/v1/minimax/videos`. Select this product with `model: "minimax-h3-gz"`.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `minimax-h3-gz` | MiniMax H3 GZ: billed separately; text-to-video, first/last-frame image-to-video, and reference image / video / audio |
+
+Aliases: `minimax_h3_gz`, `minimaxh3gz`.
+
+## Generation modes
+
+You do not pass a `mode` field. The request is routed by the assets you send:
+
+| Mode | Trigger | Capability |
+|------|---------|------------|
+| Text-to-video | `prompt` and common fields only | Text-driven generation |
+| Image-to-video | `first_image` / `last_image` | First frame, last frame, or both |
+| Multimodal reference | `reference_images` / `reference_videos` / `reference_audios` | Reference image + video + audio |
+
+<Warning>
+Image-to-video fields (`first_image` / `last_image`) and multimodal reference fields (`reference_images`, `reference_videos`, `reference_audios`) are **mutually exclusive**. Mixing them returns a parameter error.
+</Warning>
+
+<Warning>
+Audio cannot be used alone. If you send `reference_audios`, include at least one reference image or reference video.
+</Warning>
+
+## Parameter constraints
+
+- **Prompt**: Required, 1–2000 characters.
+- **Duration**: 5–15 seconds (default `5`).
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
+- **Size**: `2560x1440`, `1440x2560`, `1440x1440`, `1920x1440`, `1440x1920`, `3360x1440`. When omitted, a default matching the aspect ratio is used.
+- **Resolution**: `2K` or `768P`; default **`768P`**. `2K` and `768P` are billed separately.
+- **Reference images**: `reference_images` or `images`, max **5**, public HTTPS URLs.
+- **Reference videos**: `reference_videos` or `videos`, max **3**. Prefer MP4 / MOV; each clip 2–15 seconds, total duration at most 15 seconds.
+- **Reference audio**: `reference_audios`, max **1**; must be paired with a reference image or video.
+- **First / last frame**: optional `first_image` / `last_image` (one each); mutually exclusive with reference assets.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | Must be `minimax-h3-gz` |
+| `prompt` | string | Yes | Text prompt, 1–2000 characters |
+| `duration` | integer | No | Duration in seconds, default 5 |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `size` | string | No | Output pixel size |
+| `resolution` | string | No | `768P` (default) or `2K` |
+| `reference_images` | string[] | No | Reference image URLs (0–5) |
+| `images` | string[] | No | Alias for `reference_images` when the latter is empty |
+| `reference_videos` | string[] | No | Reference video URLs (0–3) |
+| `videos` | string[] | No | Alias for `reference_videos` when the latter is empty |
+| `reference_audios` | string[] | No | Reference audio URLs (0–1); requires image or video refs |
+| `first_image` | string | No | First-frame image URL |
+| `last_image` | string | No | Last-frame image URL |
+
+## Billing
+
+Text-to-video / image-to-video (no reference videos):
+
+- Mode: `per_task`
+- Billing model: `minimax-h3-gz-{resolution}` (`minimax-h3-gz-768p` / `minimax-h3-gz-2k`)
+- `duration` controls generation length only and **does not affect billing**
+
+```text
+cost = per-task unit_price for the selected resolution
+```
+
+When you send `reference_videos` (or `videos`), billing switches to a **separate per-second rate**:
+
+- Mode: `per_second`
+- Billing model: `minimax-h3-gz-video-{resolution}` (`minimax-h3-gz-video-768p` / `minimax-h3-gz-video-2k`)
+- Billed seconds = **total reference-video duration (rounded to seconds) + `duration`**
+- Configure this unit price independently in the console; it is not the per-task price
+
+```text
+cost = video per-second unit_price × (reference video duration + duration)
+```
+
+## Example requests
+
+### Text-to-video
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
+    "duration": 6,
+    "aspect_ratio": "16:9",
+    "resolution": "768P"
+  }'
+```
+
+### First and last frame
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "The camera slowly transitions from morning to sunset",
+    "first_image": "https://example.com/morning.png",
+    "last_image": "https://example.com/sunset.png",
+    "duration": 8,
+    "resolution": "768P"
+  }'
+```
+
+### Multimodal reference (including video)
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "The character says: Follow the wind, live free. Motion from the reference video, voice from the reference audio",
+    "reference_images": ["https://example.com/char.png"],
+    "reference_videos": ["https://example.com/ref_motion.mp4"],
+    "reference_audios": ["https://example.com/ref_voice.mp3"],
+    "duration": 5,
+    "resolution": "2K"
+  }'
+```

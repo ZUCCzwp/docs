@@ -7,19 +7,15 @@ openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-## Supported models
+This page covers `minimax-h3` only. For `minimax-h3-gz` (including reference videos), see [Create MiniMax H3 GZ Video](/en/api-reference/minimax/create-gz).
 
-Same endpoint `POST /api/open-api/v1/minimax/videos`. Choose the product via **`model`** (each model has its own billing rate):
+## Supported models
 
 | model | Notes |
 |-------|-------|
 | `minimax-h3` | MiniMax H3 standard |
-| `minimax-h3-gz` | MiniMax H3 GZ (separate billing model) |
 
-Aliases:
-
-- `minimax-h3`: `minimax_h3`, `minimaxh3`
-- `minimax-h3-gz`: `minimax_h3_gz`, `minimaxh3gz`
+Aliases: `minimax_h3`, `minimaxh3`.
 
 ## Parameter constraints
 
@@ -27,22 +23,21 @@ Aliases:
 - **Duration**: 5–15 seconds (default `5`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
 - **Size**: `2560x1440`, `1440x2560`, `1440x1440`, `1920x1440`, `1440x1920`, `3360x1440`. When omitted, a default matching the aspect ratio is used (e.g. `16:9` → `2560x1440`).
-- **Resolution**: `minimax-h3-gz` supports `2K` and `768P`; default `2K`.
 - **Reference images**: `reference_images` or `images`, max **5**, public HTTPS URLs.
 - **Reference audio**: `reference_audios`, max **1**.
 - **First / last frame**: optional `first_image` / `last_image` (one each).
+- This model **does not** support `reference_videos`. Use [`minimax-h3-gz`](/en/api-reference/minimax/create-gz) when you need video references.
 
 ## Request parameters
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `minimax-h3` or `minimax-h3-gz` |
+| `model` | string | Yes | Must be `minimax-h3` |
 | `prompt` | string | Yes | Text prompt, 1–2000 characters |
 | `duration` | integer | No | Duration in seconds, default 5 |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
 | `size` | string | No | Output pixel size |
-| `resolution` | string | No | Resolution for `minimax-h3-gz`: `2K` (default) or `768P` |
 | `reference_images` | string[] | No | Reference image URLs (0–5) |
 | `images` | string[] | No | Alias for `reference_images` when the latter is empty |
 | `reference_audios` | string[] | No | Reference audio URLs (0–1) |
@@ -52,16 +47,14 @@ Aliases:
 ## Billing
 
 - Mode: `per_task`
-- `minimax-h3` has its own price; `minimax-h3-gz` also has separate prices for `2K` and `768P` (console)
+- Billing model: `minimax-h3` (console price)
 - `duration` controls generation length only and **does not affect billing**
 
 ```text
-cost = unit_price for the requested model and resolution
+cost = unit_price
 ```
 
-## Example requests
-
-### minimax-h3
+## Example request
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
@@ -73,20 +66,5 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "duration": 5,
     "aspect_ratio": "16:9",
     "size": "2560x1440"
-  }'
-```
-
-### minimax-h3-gz
-
-```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "minimax-h3-gz",
-    "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
-    "duration": 6,
-    "aspect_ratio": "16:9",
-    "resolution": "768P"
   }'
 ```

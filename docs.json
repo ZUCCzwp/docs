@@ -86,7 +86,8 @@
               {
                 "group": "MiniMax Video",
                 "pages": [
-                  "en/api-reference/minimax/create"
+                  "en/api-reference/minimax/create",
+                  "en/api-reference/minimax/create-gz"
                 ]
               },
               {
@@ -288,7 +289,8 @@
               {
                 "group": "MiniMax 视频",
                 "pages": [
-                  "zh/api-reference/minimax/create"
+                  "zh/api-reference/minimax/create",
+                  "zh/api-reference/minimax/create-gz"
                 ]
               },
               {

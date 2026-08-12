@@ -515,7 +515,7 @@
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "创建 MiniMax H3 视频任务",
-        "description": "创建 MiniMax H3 视频生成任务。支持文本提示词、最多 5 张参考图、最多 1 段参考音频、可选首尾帧，时长 5-15 秒，以及 aspect_ratio/size。计费方式为 per_task（按次；duration 不参与计费）。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 MiniMax H3 / MiniMax H3 GZ 视频生成任务。minimax-h3 支持参考图、参考音频与首尾帧；minimax-h3-gz 额外支持参考视频（最多 3 个）及 2K/768P 分辨率（默认 768P）。无参考视频时按次计费；传入 reference_videos 时按秒计费，秒数 = 参考视频时长 + duration，单价为独立的 minimax-h3-gz-video-{resolution}。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,
@@ -538,6 +538,22 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "gz": {
+                  "summary": "创建 MiniMax H3 GZ 任务（含参考视频）",
+                  "value": {
+                    "model": "minimax-h3-gz",
+                    "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "resolution": "768P",
+                    "reference_images": [
+                      "https://example.com/char.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/ref_motion.mp4"
                     ]
                   }
                 }
@@ -2159,12 +2175,12 @@
           },
           "resolution": {
             "type": "string",
-            "default": "2K",
+            "default": "768P",
             "enum": [
               "2K",
               "768P"
             ],
-            "description": "仅 minimax-h3-gz 使用。默认 2K；2K 与 768P 分别计费。"
+            "description": "仅 minimax-h3-gz 使用。默认 768P；2K 与 768P 分别计费。"
           },
           "reference_images": {
             "type": "array",
@@ -2182,13 +2198,29 @@
             },
             "description": "reference_images 为空时的别名。"
           },
+          "reference_videos": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "仅 minimax-h3-gz 使用。参考视频 URL 列表，最多 3 个；与 first_image / last_image 互斥。"
+          },
+          "videos": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "reference_videos 为空时的别名。仅 minimax-h3-gz 使用。"
+          },
           "reference_audios": {
             "type": "array",
             "maxItems": 1,
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表，最多 1 段。"
+            "description": "参考音频 URL 列表，最多 1 段。minimax-h3-gz 须搭配参考图或参考视频。"
           },
           "first_image": {
             "type": "string",

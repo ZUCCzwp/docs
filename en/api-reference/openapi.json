@@ -515,7 +515,7 @@
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "Create MiniMax H3 Video",
-        "description": "Create a MiniMax H3 video generation task. Supports text prompt, up to 5 reference images, 1 reference audio, optional first/last frames, duration 5-15s, and aspect_ratio/size. Billed per_task (flat per request; duration does not affect cost). Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a MiniMax H3 or MiniMax H3 GZ video task. minimax-h3 supports reference images, audio, and first/last frames. minimax-h3-gz also supports reference videos (max 3) and 2K/768P resolution (default 768P). Without reference videos, billed per_task. With reference_videos, billed per_second using billed seconds = reference video duration + duration, at a separate minimax-h3-gz-video-{resolution} rate. Poll GET /api/open-api/v1/videos/{taskId} for results.",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,
@@ -538,6 +538,22 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "gz": {
+                  "summary": "Create MiniMax H3 GZ task with reference video",
+                  "value": {
+                    "model": "minimax-h3-gz",
+                    "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "resolution": "768P",
+                    "reference_images": [
+                      "https://example.com/char.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/ref_motion.mp4"
                     ]
                   }
                 }
@@ -2159,12 +2175,12 @@
           },
           "resolution": {
             "type": "string",
-            "default": "2K",
+            "default": "768P",
             "enum": [
               "2K",
               "768P"
             ],
-            "description": "Used by minimax-h3-gz only. Defaults to 2K; 2K and 768P are billed separately."
+            "description": "Used by minimax-h3-gz only. Defaults to 768P; 2K and 768P are billed separately."
           },
           "reference_images": {
             "type": "array",
@@ -2182,13 +2198,29 @@
             },
             "description": "Alias for reference_images when reference_images is empty."
           },
+          "reference_videos": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "Used by minimax-h3-gz only. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
+          },
+          "videos": {
+            "type": "array",
+            "maxItems": 3,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz only."
+          },
           "reference_audios": {
             "type": "array",
             "maxItems": 1,
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URL list. Max 1 public URL."
+            "description": "Reference audio URL list. Max 1 public URL. For minimax-h3-gz, must be paired with a reference image or video."
           },
           "first_image": {
             "type": "string",

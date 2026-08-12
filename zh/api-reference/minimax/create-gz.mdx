@@ -1,0 +1,140 @@
+---
+title: '创建 MiniMax H3 GZ 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 MiniMax H3 视频](/zh/api-reference/minimax/create) 共用 `POST /api/open-api/v1/minimax/videos`。通过 `model: "minimax-h3-gz"` 选择本型号。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `minimax-h3-gz` | MiniMax H3 GZ：独立计费；支持文生视频、首尾帧图生视频，以及参考图 / 参考视频 / 参考音频 |
+
+别名：`minimax_h3_gz`、`minimaxh3gz`。
+
+## 生成模式
+
+无需额外 `mode` 字段，按传入素材自动区分：
+
+| 模式 | 触发条件 | 能力 |
+|------|----------|------|
+| 文生视频 | 只传 `prompt` 及通用字段 | 纯文本驱动生成 |
+| 图生视频 | 传入 `first_image` / `last_image` | 首帧、尾帧、首尾帧控制 |
+| 多模态参考 | 传入 `reference_images` / `reference_videos` / `reference_audios` | 参考图 + 参考视频 + 参考音频 |
+
+<Warning>
+图生视频字段（`first_image` / `last_image`）与多模态参考字段（`reference_images`、`reference_videos`、`reference_audios`）**不能同时使用**，混用会返回参数错误。
+</Warning>
+
+<Warning>
+不能只给音频。传了 `reference_audios` 时，必须至少再配一张参考图或一个参考视频。
+</Warning>
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–2000。
+- **时长（duration）**：5–15 秒，默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`，默认 `16:9`。
+- **尺寸（size）**：`2560x1440`、`1440x2560`、`1440x1440`、`1920x1440`、`1440x1920`、`3360x1440`。未传时按比例默认。
+- **分辨率（resolution）**：`2K` 或 `768P`，默认 **`768P`**。`2K` 与 `768P` 分别计费。
+- **参考图**：`reference_images` 或 `images`，最多 **5** 张，须为公网可访问 URL。
+- **参考视频**：`reference_videos` 或 `videos`，最多 **3** 个。建议 MP4 / MOV；单段 2–15 秒，总时长不超过 15 秒。
+- **参考音频**：`reference_audios`，最多 **1** 段；须搭配参考图或参考视频。
+- **首尾帧**：`first_image` / `last_image` 各最多 1 张；与参考素材互斥。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定传 `minimax-h3-gz` |
+| `prompt` | string | 是 | 文本提示词，长度 1–2000 |
+| `duration` | integer | 否 | 时长秒数，默认 5 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `size` | string | 否 | 输出像素规格 |
+| `resolution` | string | 否 | `768P`（默认）或 `2K` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–5） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–3） |
+| `videos` | string[] | 否 | `reference_videos` 别名（当后者为空时生效） |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–1）；须搭配图或视频 |
+| `first_image` | string | 否 | 首帧图 URL |
+| `last_image` | string | 否 | 尾帧图 URL |
+
+## 计费说明
+
+文生视频 / 图生视频（无参考视频）：
+
+- 计费方式：`per_task`（按次）
+- 计费模型名：`minimax-h3-gz-{resolution}`（`minimax-h3-gz-768p` / `minimax-h3-gz-2k`）
+- `duration` 仅影响生成时长，**不参与计费**
+
+```text
+费用 = 对应 resolution 的按次单价
+```
+
+传入 `reference_videos`（或 `videos`）时，改用**独立按秒单价**：
+
+- 计费方式：`per_second`
+- 计费模型名：`minimax-h3-gz-video-{resolution}`（`minimax-h3-gz-video-768p` / `minimax-h3-gz-video-2k`）
+- 计费秒数 = **参考视频总时长（四舍五入到秒）+ `duration`**
+- 单价在控制台单独配置，与按次价无关
+
+```text
+费用 = 参考视频按秒单价 × (参考视频时长 + duration)
+```
+
+## 示例请求
+
+### 文生视频
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
+    "duration": 6,
+    "aspect_ratio": "16:9",
+    "resolution": "768P"
+  }'
+```
+
+### 首尾帧图生视频
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "镜头从清晨缓慢过渡到日落",
+    "first_image": "https://example.com/morning.png",
+    "last_image": "https://example.com/sunset.png",
+    "duration": 8,
+    "resolution": "768P"
+  }'
+```
+
+### 多模态参考（含参考视频）
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-gz",
+    "prompt": "角色说话：Follow the wind, live free. 动作参考视频，音色参考音频",
+    "reference_images": ["https://example.com/char.png"],
+    "reference_videos": ["https://example.com/ref_motion.mp4"],
+    "reference_audios": ["https://example.com/ref_voice.mp3"],
+    "duration": 5,
+    "resolution": "2K"
+  }'
+```

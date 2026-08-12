@@ -7,19 +7,15 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-## 支持的模型
+本页仅覆盖 `minimax-h3`。`minimax-h3-gz`（含参考视频）见 [创建 MiniMax H3 GZ 视频](/zh/api-reference/minimax/create-gz)。
 
-同一接口 `POST /api/open-api/v1/minimax/videos`，通过 **`model` 字段**选择型号（各自独立计费）：
+## 支持的模型
 
 | model | 说明 |
 |-------|------|
 | `minimax-h3` | MiniMax H3 标准版 |
-| `minimax-h3-gz` | MiniMax H3 GZ 版（独立计费型号） |
 
-别名：
-
-- `minimax-h3`：`minimax_h3`、`minimaxh3`
-- `minimax-h3-gz`：`minimax_h3_gz`、`minimaxh3gz`
+别名：`minimax_h3`、`minimaxh3`。
 
 ## 参数限制
 
@@ -27,22 +23,21 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 - **时长（duration）**：5–15 秒，默认 `5`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`，默认 `16:9`。
 - **尺寸（size）**：`2560x1440`、`1440x2560`、`1440x1440`、`1920x1440`、`1440x1920`、`3360x1440`。未传时按比例默认（如 `16:9` → `2560x1440`）。
-- **分辨率（resolution）**：仅 `minimax-h3-gz` 支持 `2K`、`768P`，默认 `2K`。
 - **参考图**：`reference_images` 或 `images`，最多 **5** 张，须为公网可访问 URL。
 - **参考音频**：`reference_audios`，最多 **1** 段。
 - **首尾帧**：`first_image` / `last_image` 各最多 1 张（可选）。
+- 本型号**不支持** `reference_videos`。需要参考视频时请使用 [`minimax-h3-gz`](/zh/api-reference/minimax/create-gz)。
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `minimax-h3` 或 `minimax-h3-gz` |
+| `model` | string | 是 | 固定传 `minimax-h3` |
 | `prompt` | string | 是 | 文本提示词，长度 1–2000 |
 | `duration` | integer | 否 | 时长秒数，默认 5 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
 | `size` | string | 否 | 输出像素规格 |
-| `resolution` | string | 否 | `minimax-h3-gz` 的分辨率：`2K`（默认）或 `768P` |
 | `reference_images` | string[] | 否 | 参考图 URL 列表（0–5） |
 | `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
 | `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–1） |
@@ -52,16 +47,14 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 ## 计费说明
 
 - 计费方式：`per_task`（按次）
-- `minimax-h3` 独立计费；`minimax-h3-gz` 的 `2K` 与 `768P` 也分别采用独立单价（以控制台为准）
+- 计费模型名：`minimax-h3`（单价以控制台为准）
 - `duration` 仅影响生成时长，**不参与计费**
 
 ```text
-费用 = 对应 model 与 resolution 的单价
+费用 = 模型单价
 ```
 
 ## 示例请求
-
-### minimax-h3
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
@@ -73,20 +66,5 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "duration": 5,
     "aspect_ratio": "16:9",
     "size": "2560x1440"
-  }'
-```
-
-### minimax-h3-gz
-
-```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "minimax-h3-gz",
-    "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
-    "duration": 6,
-    "aspect_ratio": "16:9",
-    "resolution": "768P"
   }'
 ```

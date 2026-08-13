@@ -11,6 +11,8 @@ After creation, the response returns a `task_id`. Use the [Query Video Task](/en
 These models require `POST /api/open-api/v1/seedance25/videos`. Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes); that would land on the Full (Manxue) channel.
 </Warning>
 
+This page covers `seedance-2.5` and `seedance-2.5-sp` only. For `seedance2.5-gz`, see [Create Seedance 2.5 GZ Video](/en/api-reference/seedance/25/create-gz).
+
 ## Supported models
 
 | model | Notes |
@@ -48,12 +50,12 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `seedance-2.5` / `seedance-2.5-sp`, or standard billing names `seedance-2.5-480p` / `seedance-2.5-720p` |
+| `model` | string | Yes | `seedance-2.5` / `seedance-2.5-sp`, or matching billing names |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | integer | No | Duration in seconds |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
-| `resolution` | string | No | Standard `480p`/`720p`; SP `720p` only |
+| `resolution` | string | No | Standard: `480p`/`720p`; SP `720p` only |
 | `first_image` | string | No | First-frame image URL; SP only |
 | `last_image` | string | No | Last-frame image URL; SP only |
 | `reference_images` | string[] | No | Reference image URLs (0–30) |

@@ -8,6 +8,19 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 
 响应 `data.cost` 为本次任务扣费金额（吉米币），创建与查询接口均返回；若配置了用户定制单价，则按定制价计费。
 
+`seedance2.5-gz` 任务完成后，查询会返回 `data.usage`：
+
+```json
+{
+  "usage": {
+    "completion_tokens": 246840,
+    "total_tokens": 246840
+  }
+}
+```
+
+未完成或无 token 数据时不返回 `usage`。
+
 ### 任务状态说明
 
 | 状态值 (status) | 说明 | 对应进度 (progress) | 备注 |

@@ -1113,7 +1113,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。GZ seedance2.5-gz：创建时按分辨率预扣（seedance2.5-gz-480p / seedance2.5-gz-720p；含参考视频时走 seedance2.5-gz-video-*），成功后按实际消耗多退少补，时长 4-30 或 -1，比例含 adaptive，支持参考图/视频/音频/首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -1643,6 +1643,20 @@
                 "type": "number",
                 "format": "double",
                 "description": "本次任务扣费金额（吉米币）。若控制台配置了用户定制单价，则按定制价计费。"
+              },
+              "usage": {
+                "type": "object",
+                "description": "Token 用量。seedance2.5-gz 等按 token 结算的任务完成后返回。",
+                "properties": {
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 246840
+                  },
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 246840
+                  }
+                }
               }
             }
           }
@@ -3150,9 +3164,10 @@
             "type": "string",
             "enum": [
               "seedance-2.5",
-              "seedance-2.5-sp"
+              "seedance-2.5-sp",
+              "seedance2.5-gz"
             ],
-            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5；seedance-2.5-sp 为 SP 经济版。"
+            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5；seedance-2.5-sp 为 SP 经济版；seedance2.5-gz / seedance-2.5-gz 为 GZ 独立计费线路。"
           },
           "prompt": {
             "type": "string",
@@ -3197,11 +3212,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL。仅 seedance-2.5-sp 支持；与 reference_images / images 不可同时使用。"
+            "description": "首帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 URL。仅 seedance-2.5-sp 支持；与 reference_images / images 不可同时使用。"
+            "description": "尾帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "reference_images": {
             "type": "array",
@@ -3250,6 +3265,19 @@
               "type": "string"
             },
             "description": "reference_audios 为空时的别名。"
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "description": "是否生成配音。仅 seedance2.5-gz，默认 true。"
+          },
+          "watermark": {
+            "type": "boolean",
+            "description": "是否添加水印。仅 seedance2.5-gz，默认 false。"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["mp4", "mov"],
+            "description": "输出封装格式。仅 seedance2.5-gz，默认 mp4。"
           }
         },
         "example": {

@@ -1113,7 +1113,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -1643,6 +1643,20 @@
                 "type": "number",
                 "format": "double",
                 "description": "Billed amount for this task (JimiCoin). Uses per-user custom unit price when configured in the console."
+              },
+              "usage": {
+                "type": "object",
+                "description": "Token usage. Returned after token-billed tasks such as seedance2.5-gz complete.",
+                "properties": {
+                  "completion_tokens": {
+                    "type": "integer",
+                    "example": 246840
+                  },
+                  "total_tokens": {
+                    "type": "integer",
+                    "example": 246840
+                  }
+                }
               }
             }
           }
@@ -3139,9 +3153,10 @@
             "type": "string",
             "enum": [
               "seedance-2.5",
-              "seedance-2.5-sp"
+              "seedance-2.5-sp",
+              "seedance2.5-gz"
             ],
-            "description": "Model id. Aliases seedance2.5 / seedance_2.5 / seedance25 normalize to seedance-2.5; seedance-2.5-sp is the SP economy variant."
+            "description": "Model id. Aliases seedance2.5 / seedance_2.5 / seedance25 normalize to seedance-2.5; seedance-2.5-sp is the SP economy variant; seedance2.5-gz / seedance-2.5-gz is the GZ independent billing route."
           },
           "prompt": {
             "type": "string",
@@ -3186,11 +3201,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First-frame image URL. seedance-2.5-sp only; mutually exclusive with reference_images / images."
+            "description": "First-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
           },
           "last_image": {
             "type": "string",
-            "description": "Last-frame image URL. seedance-2.5-sp only; mutually exclusive with reference_images / images."
+            "description": "Last-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
           },
           "reference_images": {
             "type": "array",
@@ -3239,6 +3254,19 @@
               "type": "string"
             },
             "description": "Alias for reference_audios when the latter is empty."
+          },
+          "generate_audio": {
+            "type": "boolean",
+            "description": "Whether to generate audio. seedance2.5-gz only; default true."
+          },
+          "watermark": {
+            "type": "boolean",
+            "description": "Whether to add a watermark. seedance2.5-gz only; default false."
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["mp4", "mov"],
+            "description": "Output container. seedance2.5-gz only; default mp4."
           }
         },
         "example": {

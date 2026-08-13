@@ -1,0 +1,126 @@
+---
+title: '创建 Seedance 2.5 GZ 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
+</Note>
+
+本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-gz"` 选择本型号。
+
+<Warning>
+**不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
+</Warning>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `seedance2.5-gz` | Seedance 2.5 GZ：独立计费；支持文生视频、首尾帧、参考图 / 视频 / 音频 |
+
+`seedance-2.5-gz`、`seedance25-gz` 等别名会归一化为 `seedance2.5-gz`。也可直接传计费名：`seedance2.5-gz-480p`、`seedance2.5-gz-720p`。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。
+- **时长（duration）**：4–30 秒，或 `-1` 自动时长（提交时按 30 秒预扣）。未传默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`。未传默认 `adaptive`。首尾帧任务会自动改为 `adaptive`。
+- **分辨率（resolution）**：`480p`、`720p`，默认 `720p`。
+- **参考图**：最多 **30** 张。
+- **参考视频**：最多 **10** 条；单条 2–30 秒，合计不超过 **30** 秒。
+- **参考音频**：最多 **10** 条；可纯音频参考（不必配图/视频）。
+- **首尾帧**：可选 `first_image` / `last_image`；与 `reference_images` **不可同时使用**。
+- **generate_audio**：默认 `true`。
+- **watermark**：默认 `false`。
+- **output_format**：`mp4`（默认）或 `mov`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定传 `seedance2.5-gz`，或对应计费名 |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 `5`；`-1` 为自动时长 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | `480p` / `720p`，默认 `720p` |
+| `first_image` | string | 否 | 首帧图 URL |
+| `last_image` | string | 否 | 尾帧图 URL |
+| `reference_images` | string[] | 否 | 参考图 URL（0–30） |
+| `images` | string[] | 否 | `reference_images` 别名 |
+| `reference_videos` | string[] | 否 | 参考视频 URL（0–10） |
+| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_audios` | string[] | 否 | 参考音频 URL（0–10） |
+| `audios` | string[] | 否 | `reference_audios` 别名 |
+| `generate_audio` | boolean | 否 | 是否生成配音，默认 `true` |
+| `watermark` | boolean | 否 | 是否加水印，默认 `false` |
+| `output_format` | string | 否 | `mp4` / `mov`，默认 `mp4` |
+
+## 计费说明
+
+创建时按分辨率预扣。任务成功后按实际 token 用量结算，多退少补，差额记一笔。含参考视频与不含参考视频使用不同的百万 token 单价（吉米币，控制台可配）。
+
+- 预扣方式：`per_second`
+- 预扣模型：`seedance2.5-gz-480p` / `seedance2.5-gz-720p`
+- 带参考视频时改为 `seedance2.5-gz-video-480p` / `seedance2.5-gz-video-720p`
+- 结算模型：`seedance2.5-gz-token`；含参考视频为 `seedance2.5-gz-video-token`
+- 含参考视频时，预扣秒数 = **输出时长 + 参考视频时长**
+- `duration = -1` 时按 **30 秒**预扣
+
+```text
+预扣 = 对应单价 × 预扣秒数
+应付吉米币 = completion_tokens / 1,000,000 × 百万 token 单价
+成功后按应付与预扣差额多退少补
+```
+
+## 示例请求
+
+### 文生视频
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-gz",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p"
+  }'
+```
+
+### 首尾帧
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-gz",
+    "prompt": "镜头从清晨缓慢过渡到日落",
+    "first_image": "https://example.com/start.png",
+    "last_image": "https://example.com/end.png",
+    "duration": 8,
+    "resolution": "720p"
+  }'
+```
+
+### 多模态参考
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-gz",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "reference_images": ["https://example.com/reference.png"],
+    "reference_videos": ["https://example.com/reference.mp4"],
+    "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```

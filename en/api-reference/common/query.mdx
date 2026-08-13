@@ -8,6 +8,19 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 
 The response field `data.cost` is the billed amount for this task (JimiCoin). It is returned on both create and query endpoints; per-user custom unit prices apply when configured in the console.
 
+After a `seedance2.5-gz` task completes, the query response includes `data.usage`:
+
+```json
+{
+  "usage": {
+    "completion_tokens": 246840,
+    "total_tokens": 246840
+  }
+}
+```
+
+`usage` is omitted while the task is in progress or when no token data is available.
+
 ### Task Status Descriptions
 
 | Status Value (status) | Description | Progress (progress) | Remarks |

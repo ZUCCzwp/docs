@@ -147,7 +147,8 @@
               {
                 "group": "Seedance 2.5 Video",
                 "pages": [
-                  "en/api-reference/seedance/25/create"
+                  "en/api-reference/seedance/25/create",
+                  "en/api-reference/seedance/25/create-gz"
                 ]
               },
               {
@@ -350,7 +351,8 @@
               {
                 "group": "Seedance 2.5 视频",
                 "pages": [
-                  "zh/api-reference/seedance/25/create"
+                  "zh/api-reference/seedance/25/create",
+                  "zh/api-reference/seedance/25/create-gz"
                 ]
               },
               {

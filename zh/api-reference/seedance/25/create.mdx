@@ -11,6 +11,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 本页型号必须使用 `POST /api/open-api/v1/seedance25/videos`。**不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）；误用会落到满血渠道。
 </Warning>
 
+本页仅覆盖 `seedance-2.5` 与 `seedance-2.5-sp`。`seedance2.5-gz` 见 [创建 Seedance 2.5 GZ 视频](/zh/api-reference/seedance/25/create-gz)。
+
 ## 支持的模型
 
 | model | 说明 |
@@ -48,14 +50,14 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance-2.5` / `seedance-2.5-sp`，或标准版计费名 `seedance-2.5-480p` / `seedance-2.5-720p` |
+| `model` | string | 是 | `seedance-2.5` / `seedance-2.5-sp`，或对应计费名 |
 | `prompt` | string | 是 | 文本提示词 |
 | `duration` | integer | 否 | 时长秒数 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
-| `resolution` | string | 否 | 标准版 `480p`/`720p`；SP 仅 `720p` |
-| `first_image` | string | 否 | 首帧图 URL；仅 SP 支持 |
-| `last_image` | string | 否 | 尾帧图 URL；仅 SP 支持 |
+| `resolution` | string | 否 | 标准版：`480p`/`720p`；SP 仅 `720p` |
+| `first_image` | string | 否 | 首帧图 URL；仅 SP |
+| `last_image` | string | 否 | 尾帧图 URL；仅 SP |
 | `reference_images` | string[] | 否 | 参考图 URL（0–30） |
 | `images` | string[] | 否 | `reference_images` 别名 |
 | `reference_videos` | string[] | 否 | 参考视频 URL（0–10）；单条与合计 ≤ 30.2 秒 |

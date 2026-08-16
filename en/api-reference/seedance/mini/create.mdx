@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 Create a Seedance **2.0 Mini** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for SP economy, see [SP Create Video](/en/api-reference/seedance/sp/create).
+This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for SP economy, see [SP Create Video](/en/api-reference/seedance/sp/create). For Official Mini, see [Create Official Mini Video](/en/api-reference/seedance/mini/create-gz).
 </Note>
 
 ## Models

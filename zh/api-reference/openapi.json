@@ -283,7 +283,7 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费，仅 720p/1080p，不支持 480p）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro，按次计费，720p；Pro 最多 9 张参考图与 3 段音频、不支持参考视频）、Fast I2V（seedance2.0-fast-i2v，按次计费，720p，仅图片参考最多 9 张，不支持参考视频/音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。Seedance 2.0 GZ 720p（seedance2.0-gz-720p，按秒计费，固定 720p；可选参考图/视频/音频；结果为直链）。Seedance 933 720p（sd2-933-720p，按秒 0.0479，固定 720p；可选参考图/视频/音频、reference_mode、generate_audio）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/md/create、seedance/md/fast-i2v、seedance/md/std、seedance/mini/create 文档。",
+        "description": "创建 Seedance 2.0 视频生成任务。支持满血版（sd2_mx_*，按秒计费，素材须审核）、SP 经济版（seedance2.0-sp / seedance2.0-fast-sp，按分辨率按秒计费，仅 720p/1080p，不支持 480p）、SP 官方版（seedance2.0-of-sp / seedance2.0-of-fast-sp，按分辨率按秒计费）、Mini 版（seedance2.0-mini，按分辨率按秒计费）、MD（seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro，按次计费，720p；Pro 最多 9 张参考图与 3 段音频、不支持参考视频）、Fast I2V（seedance2.0-fast-i2v，按次计费，720p，仅图片参考最多 9 张，不支持参考视频/音频）、STD 标准版（seedance2.0-std，按次计费，720p，支持音频参考）。Seedance 2.0 GZ（seedance2.0-gz*，按秒计费；素材须审核，公网 URL 可由平台代提审；结果为上游直链、不转存）。Seedance 933 720p（sd2-933-720p，按秒 0.0479，固定 720p；可选参考图/视频/音频、reference_mode、generate_audio）。创建后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。详见 seedance/gz720/create、seedance/md/create、seedance/md/fast-i2v、seedance/md/std、seedance/mini/create 文档。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -1258,7 +1258,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒，720p/1080p，不支持 480p）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒，亦可直接传计费名如 seedance2.0-mini-720p / seedance2.0-mini-720p-video）。MD: seedance2.0-md（4-15s，最多4图3视频1音频）| seedance2.0-fast-md（10/15s，最多4图3视频1音频）| seedance2.0-pro（10/15s，最多9图3音频，不支持视频）| seedance2.0-fast-pro（10/15s，最多9图3音频，不支持视频）。Fast I2V: seedance2.0-fast-i2v（按次，720p，仅图片参考）。STD 标准版: seedance2.0-std（按次，720p）. Seedance 2.0 933: seedance2.0-933 (per-second by resolution; billing names seedance2.0-933-480p/-720p/-1080p)。Seedance 2.0 GZ 720p: seedance2.0-gz-720p（按秒，固定 720p；最多 9 图 / 3 视频 / 3 音频；音频须搭配图或视频）。Seedance 933 720p: sd2-933-720p（按秒 0.0479，固定 720p；最多 9 图 / 3 视频 / 3 音频）"
+            "description": "模型名称。满血版: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k；Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p；视频参考: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k；视频参考 Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p（均按秒）。reference_videos 仅 video 系列支持。SP 经济版: seedance2.0-sp | seedance2.0-fast-sp（按分辨率按秒，720p/1080p，不支持 480p）。SP 官方版: seedance2.0-of-sp | seedance2.0-of-fast-sp（按分辨率按秒）。Mini版: seedance2.0-mini（按分辨率按秒，亦可直接传计费名如 seedance2.0-mini-720p / seedance2.0-mini-720p-video）。MD: seedance2.0-md（4-15s，最多4图3视频1音频）| seedance2.0-fast-md（10/15s，最多4图3视频1音频）| seedance2.0-pro（10/15s，最多9图3音频，不支持视频）| seedance2.0-fast-pro（10/15s，最多9图3音频，不支持视频）。Fast I2V: seedance2.0-fast-i2v（按次，720p，仅图片参考）。STD 标准版: seedance2.0-std（按次，720p）. Seedance 2.0 933: seedance2.0-933 (per-second by resolution; billing names seedance2.0-933-480p/-720p/-1080p)。Seedance 2.0 GZ: seedance2.0-gz*（按秒；标准档 480p/720p/1080p，fast/mini 仅 480p/720p；素材须审核；结果为上游直链）。Seedance 933 720p: sd2-933-720p（按秒 0.0479，固定 720p；最多 9 图 / 3 视频 / 3 音频）"
           },
           "prompt": {
             "type": "string",
@@ -1290,7 +1290,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz-720p: https:// 或 asset://，最多 9 张"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
           },
           "ratio": {
             "type": "string",
@@ -1309,14 +1309,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v 不支持。seedance2.0-gz-720p 最多 3 个"
+            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-pro / seedance2.0-fast-pro 最多 3 段且须搭配 images；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz-720p 最多 3 段且须搭配图或视频"
+            "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-pro / seedance2.0-fast-pro 最多 3 段且须搭配 images；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
           },
           "aspect_ratio": {
             "type": "string",

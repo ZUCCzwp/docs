@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
 将图片、视频、音频或文本素材上传至 Seedance SP 经济版素材库。返回的 `asset_id` 可在 [SP 创建视频](/zh/api-reference/seedance/sp/create) 中通过 `asset://{asset_id}` 引用。
 
 <Note>
-本接口适用于 **SP 经济版线路**（`sd2_sp_*` 系列模型）。满血版请使用 [提交素材审核](/zh/api-reference/seedance/assets-audit)。
+本接口适用于 **SP 经济版**（`sd2_sp_*`）以及 **Seedance 2.0 GZ**（`seedance2.0-gz*`，公网 URL 也可在创建任务时由平台代为提交审核）。满血版请使用 [提交素材审核](/zh/api-reference/seedance/assets-audit)。
 </Note>
 
 ## 请求参数

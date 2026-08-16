@@ -172,7 +172,7 @@
                     ]
                   },
                   {
-                    "group": "GZ 720p",
+                    "group": "官链",
                     "icon": "film",
                     "pages": [
                       "en/api-reference/seedance/gz720/create"
@@ -182,7 +182,8 @@
                     "group": "Mini",
                     "icon": "video",
                     "pages": [
-                      "en/api-reference/seedance/mini/create"
+                      "en/api-reference/seedance/mini/create",
+                      "en/api-reference/seedance/mini/create-gz"
                     ]
                   },
                   {
@@ -376,7 +377,7 @@
                     ]
                   },
                   {
-                    "group": "GZ 720p",
+                    "group": "官链",
                     "icon": "film",
                     "pages": [
                       "zh/api-reference/seedance/gz720/create"
@@ -386,7 +387,8 @@
                     "group": "Mini",
                     "icon": "video",
                     "pages": [
-                      "zh/api-reference/seedance/mini/create"
+                      "zh/api-reference/seedance/mini/create",
+                      "zh/api-reference/seedance/mini/create-gz"
                     ]
                   },
                   {

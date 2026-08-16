@@ -1,5 +1,5 @@
 ---
-title: 'Create Seedance 2.0 GZ Video'
+title: 'Create Official Mini Video'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
@@ -7,26 +7,23 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Select this series with a `model` that starts with `seedance2.0-gz`.
+This uses the same endpoint as [Mini Create Video](/en/api-reference/seedance/mini/create) and [Create Seedance 2.0 GZ Video](/en/api-reference/seedance/gz720/create): `POST /api/open-api/v1/seedance/videos`. Select this route with a `model` that starts with `seedance2.0-gz-mini`.
 
 ## Supported models
 
 | model | Notes | Resolution |
 |-------|-------|------------|
-| `seedance2.0-gz` / `seedance2.0-gz-720p` | Standard GZ; default 720p | `480p` / `720p` / `1080p` |
-| `seedance2.0-gz-480p` / `seedance2.0-gz-1080p` | Standard GZ billing names | matching tier |
-| `seedance2.0-gz-fast` / `seedance2.0-gz-fast-720p` / `seedance2.0-gz-fast-480p` | Fast | `480p` / `720p` |
+| `seedance2.0-gz-mini` | Official Mini; default 720p | `480p` / `720p` |
+| `seedance2.0-gz-mini-720p` / `seedance2.0-gz-mini-480p` | Billing names include resolution | matching tier |
 
-For `seedance2.0-gz-mini*`, see [Create Official Mini Video](/en/api-reference/seedance/mini/create-gz).
-
-Aliases such as `seedance2.0-gz720p` and `seedance20-gz-720p` normalize to `seedance2.0-gz-720p`.
+`1080p` is not supported.
 
 ## Parameter constraints
 
 - **Prompt**: Required.
 - **Duration**: 4–15 seconds (default `5`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive` (default `16:9`).
-- **Resolution**: Standard `480p` / `720p` / `1080p` (default `720p`); Fast `480p` / `720p` only. You may also encode resolution in `model`.
+- **Resolution**: `480p` / `720p` (default `720p`). You may also encode resolution in `model`.
 - **Reference images**: `images` or `reference_images`, max **9**.
 - **Reference videos**: `videos` or `reference_videos`, max **3**.
 - **Reference audios**: `audios` or `reference_audios`, max **3**; must be paired with at least one image or video reference.
@@ -45,10 +42,10 @@ First-frame / first-last-frame mode is mutually exclusive with multimodal refere
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | `seedance2.0-gz*` series; see table |
+| `model` | string | Yes | `seedance2.0-gz-mini*`; see table |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | integer | No | Duration in seconds, default `5` |
-| `resolution` | string | No | See table; optional if `model` already includes it |
+| `resolution` | string | No | `480p` / `720p`; optional if `model` already includes it |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
 | `images` | string[] | No | Reference image URLs (0–9) |
@@ -75,15 +72,14 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-gz-720p",
+    "model": "seedance2.0-gz-mini-720p",
     "prompt": "A cinematic product shot with natural lighting and a slow push-in",
     "duration": 5,
     "aspect_ratio": "16:9",
-    "images": ["https://example.com/reference.png"],
-    "reference_videos": ["https://example.com/reference.mp4"]
+    "images": ["https://example.com/reference.png"]
   }'
 ```
 
 ## Result URL
 
-When the task completes, read `data.result.video_url`. The `seedance2.0-gz` series returns a **direct upstream media link** (not copied to our object storage) — download promptly.
+When the task completes, read `data.result.video_url`. Official Mini returns a **direct upstream media link** (not copied to our object storage) — download promptly.

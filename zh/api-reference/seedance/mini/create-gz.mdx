@@ -1,5 +1,5 @@
 ---
-title: '创建 Seedance 2.0 GZ 视频'
+title: '创建官链 Mini 视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
@@ -7,26 +7,23 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。
+本接口与 [Mini 创建视频](/zh/api-reference/seedance/mini/create)、[创建 Seedance 2.0 GZ 视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-mini` 开头选择本线路。
 
 ## 支持的模型
 
 | model | 说明 | 分辨率 |
 |-------|------|--------|
-| `seedance2.0-gz` / `seedance2.0-gz-720p` | 标准 GZ；默认 720p | `480p` / `720p` / `1080p` |
-| `seedance2.0-gz-480p` / `seedance2.0-gz-1080p` | 标准 GZ，计费名已含分辨率 | 对应档位 |
-| `seedance2.0-gz-fast` / `seedance2.0-gz-fast-720p` / `seedance2.0-gz-fast-480p` | Fast | `480p` / `720p` |
+| `seedance2.0-gz-mini` | 官链 Mini；默认 720p | `480p` / `720p` |
+| `seedance2.0-gz-mini-720p` / `seedance2.0-gz-mini-480p` | 计费名已含分辨率 | 对应档位 |
 
-`seedance2.0-gz-mini*` 见 [创建官链 Mini 视频](/zh/api-reference/seedance/mini/create-gz)。
-
-`seedance2.0-gz720p`、`seedance20-gz-720p` 等别名会归一化为 `seedance2.0-gz-720p`。
+不支持 `1080p`。
 
 ## 参数限制
 
 - **提示词（prompt）**：必填。
 - **时长（duration）**：4–15 秒，默认 `5`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`，默认 `16:9`。
-- **分辨率（resolution）**：标准档 `480p` / `720p` / `1080p`（默认 `720p`）；Fast 仅 `480p` / `720p`。也可把分辨率写进 `model`。
+- **分辨率（resolution）**：`480p` / `720p`（默认 `720p`）。也可把分辨率写进 `model`。
 - **参考图**：`images` 或 `reference_images`，最多 **9** 张。
 - **参考视频**：`videos` 或 `reference_videos`，最多 **3** 个。
 - **参考音频**：`audios` 或 `reference_audios`，最多 **3** 段；须搭配至少一张参考图或一个参考视频。
@@ -45,10 +42,10 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance2.0-gz*` 系列，见上表 |
+| `model` | string | 是 | `seedance2.0-gz-mini*`，见上表 |
 | `prompt` | string | 是 | 文本提示词 |
 | `duration` | integer | 否 | 时长秒数，默认 `5` |
-| `resolution` | string | 否 | 见上表；可省略若 `model` 已含分辨率 |
+| `resolution` | string | 否 | `480p` / `720p`；可省略若 `model` 已含分辨率 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
 | `images` | string[] | 否 | 参考图 URL（0–9） |
@@ -75,15 +72,14 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-gz-720p",
+    "model": "seedance2.0-gz-mini-720p",
     "prompt": "电影感产品展示，自然光，缓慢推镜",
     "duration": 5,
     "aspect_ratio": "16:9",
-    "images": ["https://example.com/reference.png"],
-    "reference_videos": ["https://example.com/reference.mp4"]
+    "images": ["https://example.com/reference.png"]
   }'
 ```
 
 ## 结果地址
 
-任务完成后从 `data.result.video_url` 读取地址。`seedance2.0-gz` 系列返回的是**上游直链**，平台**不转存 OSS**，请及时下载。
+任务完成后从 `data.result.video_url` 读取地址。官链 Mini 返回的是**上游直链**，平台**不转存 OSS**，请及时下载。

@@ -61,6 +61,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 - 计费方式：`per_million_tokens`（百万 token 单价）
 - 无参考视频：按请求 `model` 计费
 - 有参考视频：按独立计费名（插入 `-video`，如 `seedance2.0-gz-mini-720p` → `seedance2.0-gz-mini-video-720p`）
+- 若请求 `model` 已是 `seedance2.0-gz-mini-video*`，必须传参考视频；未传请改用不带 `-video` 的型号重试
 - 任务成功后按上游 `completion_tokens` 结算
 
 ```text

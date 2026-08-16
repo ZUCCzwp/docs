@@ -63,7 +63,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 `seedance2.0-gz*` 按 **百万 token 单价** 计费；任务成功后按上游 `completion_tokens` 结算（多退少补）。
 
-**带参考视频**（`reference_videos` / `videos`）使用独立计费名（在型号中插入 `-video`），单价与无参考视频不同。请求里的 `model` 不必改：
+**带参考视频**（`reference_videos` / `videos`）使用独立计费名（在型号中插入 `-video`），单价与无参考视频不同。请求里的 `model` 不必改；若直接传 `seedance2.0-gz-video*`，则 **必须** 传参考视频，否则请改用不带 `-video` 的型号重试。
 
 | 请求 model | 无参考视频 | 有参考视频 |
 |------------|------------|------------|

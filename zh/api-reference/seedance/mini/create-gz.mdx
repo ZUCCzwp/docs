@@ -58,11 +58,13 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ## 计费说明
 
-- 计费方式：`per_second`（按秒）
-- 计费模型：请求使用的 `model` 名（单价见 [控制台定价](https://api.viraltok.ai)）
+- 计费方式：`per_million_tokens`（百万 token 单价）
+- 无参考视频：按请求 `model` 计费
+- 有参考视频：按独立计费名（插入 `-video`，如 `seedance2.0-gz-mini-720p` → `seedance2.0-gz-mini-video-720p`）
+- 任务成功后按上游 `completion_tokens` 结算
 
 ```text
-费用 = 单价 × duration
+费用 = completion_tokens / 1,000,000 × 对应计费名的百万 token 单价
 ```
 
 ## 示例请求

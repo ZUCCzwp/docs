@@ -58,11 +58,13 @@ First-frame / first-last-frame mode is mutually exclusive with multimodal refere
 
 ## Billing
 
-- Mode: `per_second`
-- Billing model: the request `model` (unit price from [console pricing](https://api.viraltok.ai))
+- Mode: `per_million_tokens`
+- No reference videos: bill the request `model`
+- With reference videos: bill a separate name with `-video` inserted (e.g. `seedance2.0-gz-mini-720p` → `seedance2.0-gz-mini-video-720p`)
+- After success, settle from upstream `completion_tokens`
 
 ```text
-cost = unit_price × duration
+cost = completion_tokens / 1,000,000 × unit_price of the billing name
 ```
 
 ## Example request

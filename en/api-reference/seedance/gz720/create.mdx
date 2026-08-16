@@ -4,7 +4,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
 <Note>
-After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`. Read `completion_tokens` / `total_tokens` from `data.usage`.
 </Note>
 
 This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Select this series with a `model` that starts with `seedance2.0-gz`.
@@ -61,12 +61,27 @@ First-frame / first-last-frame mode is mutually exclusive with multimodal refere
 
 ## Billing
 
-- Mode: `per_second`
-- Billing model: the request `model` (unit price from [console pricing](https://api.viraltok.ai))
+`seedance2.0-gz*` is billed by **price per million tokens**, settled from upstream `completion_tokens` after success.
+
+Requests **with reference videos** (`reference_videos` / `videos`) use a separate billing name (insert `-video` into the model). You do not change the request `model`:
+
+| Request model | No video refs | With video refs |
+|---------------|---------------|-----------------|
+| `seedance2.0-gz-720p` | `seedance2.0-gz-720p` | `seedance2.0-gz-video-720p` |
+| `seedance2.0-gz-fast` | `seedance2.0-gz-fast` | `seedance2.0-gz-fast-video` |
+| `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-video-720p` |
+
+```text
+cost = completion_tokens / 1,000,000 × unit_price of the billing name
+```
+
+On some routes, `seedance2.0-gz-720p` **does not return tokens**, so it is billed **per second at create time** (no token settlement):
 
 ```text
 cost = unit_price × duration
 ```
+
+In that case console `unit_price` is the **per-second** price. Other `seedance2.0-gz*` models still use per-million-token pricing.
 
 ## Example request
 

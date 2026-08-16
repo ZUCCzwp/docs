@@ -4,7 +4,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
 <Note>
-创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
 本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。
@@ -61,12 +61,27 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ## 计费说明
 
-- 计费方式：`per_second`（按秒）
-- 计费模型：请求使用的 `model` 名（单价见 [控制台定价](https://api.viraltok.ai)）
+`seedance2.0-gz*` 按 **百万 token 单价** 计费；任务成功后按上游 `completion_tokens` 结算（多退少补）。
+
+**带参考视频**（`reference_videos` / `videos`）使用独立计费名（在型号中插入 `-video`），单价与无参考视频不同。请求里的 `model` 不必改：
+
+| 请求 model | 无参考视频 | 有参考视频 |
+|------------|------------|------------|
+| `seedance2.0-gz-720p` | `seedance2.0-gz-720p` | `seedance2.0-gz-video-720p` |
+| `seedance2.0-gz-fast` | `seedance2.0-gz-fast` | `seedance2.0-gz-fast-video` |
+| `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-video-720p` |
+
+```text
+费用 = completion_tokens / 1,000,000 × 对应计费名的百万 token 单价
+```
+
+`seedance2.0-gz-720p` 在部分线路查询**不返回 token**，改为创建时 **按秒计费**，不再按 token 结算：
 
 ```text
 费用 = 单价 × duration
 ```
+
+该情况下控制台 `unit_price` 表示**每秒**单价。其它 `seedance2.0-gz*` 仍按百万 token 单价。
 
 ## 示例请求
 

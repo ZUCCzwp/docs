@@ -164,6 +164,42 @@
         }
       }
     },
+    "/api/open-api/v1/images/upscale": {
+      "post": {
+        "summary": "Image upscale",
+        "description": "Synchronous image upscale. Charges immediately on success (billing model viraltok-image-upscale; cost = unit price × pass_count) and returns b64_json by default; pass response_format=url for image_url.",
+        "operationId": "upscaleImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpscaleImageRequest"
+              },
+              "example": {
+                "image_url": "https://example.com/photo.jpg",
+                "upscale_mode": "factor",
+                "upscale_factor": 2,
+                "output_format": "jpg",
+                "response_format": "b64_json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upscale successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpscaleImageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/images/remove-bg": {
       "post": {
         "summary": "Remove background",
@@ -1084,7 +1120,7 @@
     "/api/open-api/v1/videos/understand": {
       "post": {
         "summary": "Understand Video",
-        "description": "Gemini video understanding. Pass inline base64 video in contents, or video_url for server-side download (max 80MB). Default model: gemini-3.1-flash-lite.",
+        "description": "Gemini video understanding. Pass inline base64 video in contents, or video_url for server-side download (max 80MB). Default model: gemini-3.7-flash.",
         "operationId": "understandVideo",
         "requestBody": {
           "required": true,
@@ -3121,9 +3157,9 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Default gemini-3.1-flash-lite; also supports gemini-3.5-flash",
-            "default": "gemini-3.1-flash-lite",
-            "example": "gemini-3.1-flash-lite"
+            "description": "Model name. Default gemini-3.7-flash; also supports gemini-3.5-flash",
+            "default": "gemini-3.7-flash",
+            "example": "gemini-3.7-flash"
           },
           "video_url": {
             "type": "string",
@@ -3368,6 +3404,142 @@
           },
           "refine_foreground": {
             "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "cost": {
+            "type": "number",
+            "description": "Amount charged for this request"
+          }
+        }
+      },
+      "UpscaleImageRequest": {
+        "type": "object",
+        "required": [
+          "image_url"
+        ],
+        "properties": {
+          "image_url": {
+            "type": "string",
+            "description": "Publicly accessible source image URL",
+            "example": "https://example.com/photo.jpg"
+          },
+          "upscale_mode": {
+            "type": "string",
+            "description": "factor (default) scales by multiplier; target scales to a resolution",
+            "enum": [
+              "factor",
+              "target"
+            ],
+            "default": "factor"
+          },
+          "upscale_factor": {
+            "type": "number",
+            "description": "Scale factor 1–20. Used only in factor mode. Defaults to 2 if omitted or less than 1",
+            "default": 2,
+            "minimum": 1,
+            "maximum": 20
+          },
+          "target_resolution": {
+            "type": "string",
+            "description": "Used only in target mode: 720p / 1080p (default) / 1440p (2k) / 2160p (4k)",
+            "enum": [
+              "720p",
+              "1080p",
+              "1440p",
+              "2160p"
+            ],
+            "default": "1080p"
+          },
+          "noise_scale": {
+            "type": "number",
+            "description": "Denoise strength 0–1. Default 0.1",
+            "default": 0.1,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "output_format": {
+            "type": "string",
+            "description": "jpg (default) / png / webp",
+            "enum": [
+              "jpg",
+              "png",
+              "webp"
+            ],
+            "default": "jpg"
+          },
+          "seed": {
+            "type": "integer",
+            "description": "Random seed"
+          },
+          "response_format": {
+            "type": "string",
+            "description": "b64_json (default) returns b64_json; url returns image_url",
+            "enum": [
+              "url",
+              "b64_json"
+            ],
+            "default": "b64_json"
+          }
+        },
+        "example": {
+          "image_url": "https://example.com/photo.jpg",
+          "upscale_mode": "factor",
+          "upscale_factor": 2,
+          "output_format": "jpg",
+          "response_format": "b64_json"
+        }
+      },
+      "UpscaleImageResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpscaleImageData"
+          }
+        }
+      },
+      "UpscaleImageData": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Result image URL. Present when response_format=url"
+          },
+          "b64_json": {
+            "type": "string",
+            "description": "Base64-encoded result image. Present by default (response_format=b64_json)"
+          },
+          "upscale_mode": {
+            "type": "string"
+          },
+          "upscale_factor": {
+            "type": "number"
+          },
+          "target_resolution": {
+            "type": "string"
+          },
+          "output_format": {
+            "type": "string"
+          },
+          "pass_count": {
+            "type": "integer",
+            "description": "Actual processing pass count. cost = unit price × pass_count"
+          },
+          "seed": {
+            "type": "integer"
           },
           "status": {
             "type": "string",

@@ -1,0 +1,95 @@
+---
+title: '图片高清放大'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/images/upscale'
+---
+
+<Note>
+本接口为**同步**调用。请求成功后**立即扣费**（计费模型 `viraltok-image-upscale`），默认在响应 `data` 中返回 `b64_json`，无需轮询。需要 URL 时传 `response_format=url`。
+</Note>
+
+将公网可访问的图片按倍率或目标分辨率做高清放大。支持 `factor`（默认，1–20 倍）与 `target`（720p / 1080p / 1440p / 2160p）两种模式。
+
+## 计费
+
+按处理次数扣费，模型名：`viraltok-image-upscale`。具体单价以控制台模型配置为准（默认约 `0.02`）。
+
+```text
+费用 = 模型单价 × pass_count
+```
+
+`pass_count` 为实际处理次数，响应中会返回。倍率越大、原图越大，可能需要多次处理：
+
+| `upscale_mode` | 说明 | 预估次数 |
+| --- | --- | --- |
+| `target` | 放大到指定分辨率 | 通常 1 次 |
+| `factor`，倍率 ≤ 4 | 按倍率放大 | 通常 1 次 |
+| `factor`，倍率 ≤ 10 | 按倍率放大 | 最多约 2 次 |
+| `factor`，倍率 > 10（最高 20） | 按倍率放大 | 最多约 3 次 |
+
+提交前会按预估次数校验余额；成功后按实际 `pass_count` 扣费。输出图长边上限约 **10000** 像素，过大倍率会被自动拆分或下调。
+
+## 参数说明
+
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `image_url` | string | 是 | 待放大图片 URL（需公网可访问） |
+| `upscale_mode` | string | 否 | `factor`（默认）按倍率放大；`target` 放大到目标分辨率 |
+| `upscale_factor` | number | 否 | 倍率，范围 1–20，仅 `factor` 模式生效。未传或小于 1 时默认 `2`，大于 20 按 20 处理，精确到 0.1 |
+| `target_resolution` | string | 否 | 仅 `target` 模式生效。`720p` / `1080p`（默认）/ `1440p`（可用 `2k`）/ `2160p`（可用 `4k`） |
+| `noise_scale` | number | 否 | 降噪强度，0–1，默认 `0.1` |
+| `output_format` | string | 否 | `jpg`（默认）/ `png` / `webp` |
+| `seed` | integer | 否 | 随机种子，便于复现结果 |
+| `response_format` | string | 否 | `b64_json`（默认）返回 `b64_json`；`url` 时返回 `image_url` |
+
+`response_format=url` 时 `data` 中返回 `image_url`，不返回 `b64_json`。
+
+<Warning>
+高清放大通常需要数秒到数十秒。请将客户端超时设置为 **≥ 180 秒**。
+</Warning>
+
+<RequestExample>
+```bash 2x 放大
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.jpg",
+    "upscale_mode": "factor",
+    "upscale_factor": 2,
+    "output_format": "jpg",
+    "response_format": "b64_json"
+  }'
+```
+
+```bash 放大到 1080p
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.jpg",
+    "upscale_mode": "target",
+    "target_resolution": "1080p",
+    "response_format": "url"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": 0,
+  "msg": "高清放大成功",
+  "data": {
+    "task_id": "upsc_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "b64_json": "<base64>",
+    "upscale_mode": "factor",
+    "upscale_factor": 2,
+    "output_format": "jpg",
+    "pass_count": 1,
+    "seed": 123456,
+    "status": "completed",
+    "cost": 0.02
+  }
+}
+```
+</ResponseExample>

@@ -164,6 +164,42 @@
         }
       }
     },
+    "/api/open-api/v1/images/upscale": {
+      "post": {
+        "summary": "图片高清放大",
+        "description": "同步图片高清放大。成功后立即扣费（计费模型 viraltok-image-upscale，费用 = 单价 × pass_count），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "operationId": "upscaleImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpscaleImageRequest"
+              },
+              "example": {
+                "image_url": "https://example.com/photo.jpg",
+                "upscale_mode": "factor",
+                "upscale_factor": 2,
+                "output_format": "jpg",
+                "response_format": "b64_json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "高清放大成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpscaleImageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/images/remove-bg": {
       "post": {
         "summary": "AI 智能去背景",
@@ -1084,7 +1120,7 @@
     "/api/open-api/v1/videos/understand": {
       "post": {
         "summary": "视频理解",
-        "description": "基于 Gemini 对视频进行理解分析。支持 contents 内联 base64 视频，或传 video_url 由服务端下载注入（≤80MB）。默认同步模型 gemini-3.1-flash-lite。",
+        "description": "基于 Gemini 对视频进行理解分析。支持 contents 内联 base64 视频，或传 video_url 由服务端下载注入（≤80MB）。默认同步模型 gemini-3.7-flash。",
         "operationId": "understandVideo",
         "requestBody": {
           "required": true,
@@ -3132,9 +3168,9 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称，默认 gemini-3.1-flash-lite；亦可 gemini-3.5-flash",
-            "default": "gemini-3.1-flash-lite",
-            "example": "gemini-3.1-flash-lite"
+            "description": "模型名称，默认 gemini-3.7-flash；亦可 gemini-3.5-flash",
+            "default": "gemini-3.7-flash",
+            "example": "gemini-3.7-flash"
           },
           "video_url": {
             "type": "string",
@@ -3379,6 +3415,142 @@
           },
           "refine_foreground": {
             "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "cost": {
+            "type": "number",
+            "description": "本次扣费金额"
+          }
+        }
+      },
+      "UpscaleImageRequest": {
+        "type": "object",
+        "required": [
+          "image_url"
+        ],
+        "properties": {
+          "image_url": {
+            "type": "string",
+            "description": "待放大的图片 URL（需公网可访问）",
+            "example": "https://example.com/photo.jpg"
+          },
+          "upscale_mode": {
+            "type": "string",
+            "description": "factor（默认）按倍率放大；target 放大到目标分辨率",
+            "enum": [
+              "factor",
+              "target"
+            ],
+            "default": "factor"
+          },
+          "upscale_factor": {
+            "type": "number",
+            "description": "倍率 1–20，仅 factor 模式生效。未传或小于 1 时默认 2",
+            "default": 2,
+            "minimum": 1,
+            "maximum": 20
+          },
+          "target_resolution": {
+            "type": "string",
+            "description": "仅 target 模式生效：720p / 1080p（默认）/ 1440p（2k）/ 2160p（4k）",
+            "enum": [
+              "720p",
+              "1080p",
+              "1440p",
+              "2160p"
+            ],
+            "default": "1080p"
+          },
+          "noise_scale": {
+            "type": "number",
+            "description": "降噪强度 0–1，默认 0.1",
+            "default": 0.1,
+            "minimum": 0,
+            "maximum": 1
+          },
+          "output_format": {
+            "type": "string",
+            "description": "jpg（默认）/ png / webp",
+            "enum": [
+              "jpg",
+              "png",
+              "webp"
+            ],
+            "default": "jpg"
+          },
+          "seed": {
+            "type": "integer",
+            "description": "随机种子"
+          },
+          "response_format": {
+            "type": "string",
+            "description": "b64_json（默认）返回 b64_json；url 时返回 image_url",
+            "enum": [
+              "url",
+              "b64_json"
+            ],
+            "default": "b64_json"
+          }
+        },
+        "example": {
+          "image_url": "https://example.com/photo.jpg",
+          "upscale_mode": "factor",
+          "upscale_factor": 2,
+          "output_format": "jpg",
+          "response_format": "b64_json"
+        }
+      },
+      "UpscaleImageResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 0
+          },
+          "msg": {
+            "type": "string",
+            "example": "高清放大成功"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UpscaleImageData"
+          }
+        }
+      },
+      "UpscaleImageData": {
+        "type": "object",
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "结果图 URL。当 response_format=url 时返回"
+          },
+          "b64_json": {
+            "type": "string",
+            "description": "结果图 base64。默认返回（response_format=b64_json）"
+          },
+          "upscale_mode": {
+            "type": "string"
+          },
+          "upscale_factor": {
+            "type": "number"
+          },
+          "target_resolution": {
+            "type": "string"
+          },
+          "output_format": {
+            "type": "string"
+          },
+          "pass_count": {
+            "type": "integer",
+            "description": "实际处理次数，费用 = 单价 × pass_count"
+          },
+          "seed": {
+            "type": "integer"
           },
           "status": {
             "type": "string",

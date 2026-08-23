@@ -1,0 +1,95 @@
+---
+title: 'Image upscale'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/images/upscale'
+---
+
+<Note>
+This is a **synchronous** endpoint. On success it **charges immediately** (billing model `viraltok-image-upscale`) and returns the result as `b64_json` by default — no polling required. Pass `response_format=url` to get `image_url` instead.
+</Note>
+
+Upscale a publicly accessible image by a scale factor or to a target resolution. Use `factor` (default, 1–20×) or `target` (`720p` / `1080p` / `1440p` / `2160p`).
+
+## Billing
+
+Charged by processing pass count under model name `viraltok-image-upscale`. Unit price follows console model config (default about `0.02`).
+
+```text
+cost = unit price × pass_count
+```
+
+`pass_count` is the actual number of processing passes and is returned in the response. Larger factors and larger inputs may need more passes:
+
+| `upscale_mode` | Description | Estimated passes |
+| --- | --- | --- |
+| `target` | Scale to a target resolution | Usually 1 |
+| `factor`, factor ≤ 4 | Scale by factor | Usually 1 |
+| `factor`, factor ≤ 10 | Scale by factor | Up to about 2 |
+| `factor`, factor > 10 (max 20) | Scale by factor | Up to about 3 |
+
+Balance is checked against the estimate before the call; successful requests are billed by actual `pass_count`. Output long side is capped around **10000** pixels; oversized factors are split or reduced automatically.
+
+## Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `image_url` | string | yes | Publicly accessible source image URL |
+| `upscale_mode` | string | no | `factor` (default) scales by multiplier; `target` scales to a resolution |
+| `upscale_factor` | number | no | Scale factor 1–20. Used only in `factor` mode. Defaults to `2` if omitted or &lt; 1; values above 20 are capped at 20; precision 0.1 |
+| `target_resolution` | string | no | Used only in `target` mode. `720p` / `1080p` (default) / `1440p` (`2k`) / `2160p` (`4k`) |
+| `noise_scale` | number | no | Denoise strength, 0–1. Default `0.1` |
+| `output_format` | string | no | `jpg` (default) / `png` / `webp` |
+| `seed` | integer | no | Random seed for reproducibility |
+| `response_format` | string | no | `b64_json` (default) returns `b64_json`; `url` returns `image_url` |
+
+When `response_format=url`, `data` includes `image_url` and omits `b64_json`.
+
+<Warning>
+Upscaling can take several to tens of seconds. Set client timeout to **≥ 180 seconds**.
+</Warning>
+
+<RequestExample>
+```bash 2x upscale
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.jpg",
+    "upscale_mode": "factor",
+    "upscale_factor": 2,
+    "output_format": "jpg",
+    "response_format": "b64_json"
+  }'
+```
+
+```bash Upscale to 1080p
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "image_url": "https://example.com/photo.jpg",
+    "upscale_mode": "target",
+    "target_resolution": "1080p",
+    "response_format": "url"
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "upsc_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "b64_json": "<base64>",
+    "upscale_mode": "factor",
+    "upscale_factor": 2,
+    "output_format": "jpg",
+    "pass_count": 1,
+    "seed": 123456,
+    "status": "completed",
+    "cost": 0.02
+  }
+}
+```
+</ResponseExample>

@@ -1,0 +1,159 @@
+---
+title: 'Balance alert webhook'
+description: 'Receive a POST when available JimiCoin is low, and verify the signature'
+---
+
+When **available JimiCoin** falls below the threshold you set, or a task cannot start because the balance is too low, ViraltokAI sends one `POST` to the URL you configured. You do not use an API key to receive this request.
+
+<Note>
+Configure the webhook on the [recharge page](https://api.viraltok.ai/recharge). Open **Balance alerts**, choose **Webhook**, enter the URL and an optional secret, enable alerts, then save.
+</Note>
+
+## What you need
+
+1. A publicly reachable `http` or `https` URL (not `localhost`).
+2. A secret (recommended) so you can verify `X-Viraltok-Signature`.
+3. A **2xx** response within about **10 seconds**. We send once and do not retry.
+
+For the same user, each alert type is sent **at most once every 24 hours** until the balance recovers.
+
+## Request
+
+| Item | Value |
+| :--- | :--- |
+| Method | `POST` |
+| `Content-Type` | `application/json` |
+| Timeout | 10 seconds |
+
+### Headers
+
+| Header | Purpose |
+| :--- | :--- |
+| `X-Viraltok-Event` | Event name so you can branch before parsing the body |
+| `X-Viraltok-Timestamp` | Unix seconds. Required for signature verification. Also use it to reject stale requests (replay protection) |
+| `X-Viraltok-Signature` | Present only if you saved a secret. Format `sha256=<hex>` |
+
+### Body fields
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `event` | string | Same value as `X-Viraltok-Event` |
+| `user_id` | number | Account user ID |
+| `available` | number | Current available JimiCoin |
+| `threshold` | number | `balance.below_threshold` only: your alert threshold |
+| `required` | number | `balance.insufficient` only: estimated cost of the task |
+| `occurred_at` | string | Send time, UTC RFC3339 |
+
+### Events
+
+| `event` | When it fires |
+| :--- | :--- |
+| `balance.below_threshold` | After a charge, available balance is below your threshold |
+| `balance.insufficient` | A create-task call failed because available balance is too low |
+
+### Example: below threshold
+
+```http
+POST /webhook HTTP/1.1
+Content-Type: application/json
+X-Viraltok-Event: balance.below_threshold
+X-Viraltok-Timestamp: 1756100000
+X-Viraltok-Signature: sha256=d7c4f8...
+```
+
+```json
+{
+  "event": "balance.below_threshold",
+  "user_id": 123,
+  "available": 80.2,
+  "threshold": 100,
+  "occurred_at": "2026-08-25T07:00:00Z"
+}
+```
+
+### Example: insufficient to start a task
+
+```json
+{
+  "event": "balance.insufficient",
+  "user_id": 123,
+  "available": 1.5,
+  "required": 8,
+  "occurred_at": "2026-08-25T07:01:00Z"
+}
+```
+
+## Verify the signature (recommended)
+
+The signed payload is the **raw request body bytes**, not a re-serialized JSON object.
+
+```
+HMAC_SHA256(secret, "{X-Viraltok-Timestamp}.{raw_body}")
+```
+
+Hex-encode the digest in lowercase and compare it to the value after `sha256=` using a constant-time comparison.
+
+<Warning>
+Use the raw HTTP body. Signing `JSON.stringify` of a parsed object will fail.
+</Warning>
+
+Also reject timestamps more than about 5 minutes off from your clock.
+
+### Node.js
+
+```javascript
+import crypto from 'node:crypto';
+
+function verifyViraltokWebhook({ rawBody, timestamp, signatureHeader, secret }) {
+  const expected =
+    'sha256=' +
+    crypto
+      .createHmac('sha256', secret)
+      .update(`${timestamp}.${rawBody}`)
+      .digest('hex');
+  const a = Buffer.from(signatureHeader || '', 'utf8');
+  const b = Buffer.from(expected, 'utf8');
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
+// Express: app.use(express.raw({ type: 'application/json' }))
+app.post('/webhook', (req, res) => {
+  const rawBody = req.body.toString('utf8');
+  const ok = verifyViraltokWebhook({
+    rawBody,
+    timestamp: req.get('X-Viraltok-Timestamp'),
+    signatureHeader: req.get('X-Viraltok-Signature'),
+    secret: process.env.VIRALTOK_WEBHOOK_SECRET,
+  });
+  if (!ok) return res.status(401).end();
+  const payload = JSON.parse(rawBody);
+  // handle payload.event
+  res.status(204).end();
+});
+```
+
+### Python
+
+```python
+import hashlib
+import hmac
+
+def verify_viraltok_webhook(raw_body: bytes, timestamp: str, signature_header: str, secret: str) -> bool:
+    digest = hmac.new(
+        secret.encode("utf-8"),
+        f"{timestamp}.".encode("utf-8") + raw_body,
+        hashlib.sha256,
+    ).hexdigest()
+    expected = f"sha256={digest}"
+    return hmac.compare_digest(signature_header, expected)
+```
+
+If you did not save a secret, `X-Viraltok-Signature` is omitted. Protect the endpoint with a firewall or a private URL.
+
+## Integration tips
+
+- Return 2xx first, then process the event asynchronously (chat alerts, pause jobs, and so on).
+- Branch on `event`. Do not assume every payload includes `threshold` or `required`.
+- You can also poll [`/user/balance`](/en/api-reference/common/user-balance).
+- The channel is **email or webhook**, not both. Choosing webhook stops email for the same alerts.

@@ -17,6 +17,9 @@ icon: 'circle-question'
   <Accordion title="API 的计费方式是什么？" icon="credit-card">
     我们采用预付费的计费方式。您需要在您的账户中[充值](https://api.viraltok.ai/recharge)（支持微信和支付宝，最低 1 美金起充）。不同的模型和参数调用会扣除对应的余额，当余额不足时将无法发起请求。
   </Accordion>
+  <Accordion title="如何接收余额过低通知？" icon="bell">
+    打开 [充值页](https://api.viraltok.ai/recharge) 的 **余额通知**，可选择邮箱或 Webhook。Webhook 的事件、请求头和验签方式见 [余额告警 Webhook](/zh/api-reference/common/balance-webhook)。
+  </Accordion>
 </AccordionGroup>
 
 ## 任务调用与状态查询

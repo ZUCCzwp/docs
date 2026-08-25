@@ -5,6 +5,8 @@ openapi: 'GET /api/open-api/v1/user/balance'
 
 查询当前 API Key 所属用户的**吉米币账户余额**。OpenAPI 调用产生的费用从该账户扣除；创建任务前可先调用本接口确认可用余额是否充足。
 
+余额过低时也可改为接收推送，见 [余额告警 Webhook](/zh/api-reference/common/balance-webhook)。
+
 ### 响应字段
 
 | 字段 | 类型 | 说明 |

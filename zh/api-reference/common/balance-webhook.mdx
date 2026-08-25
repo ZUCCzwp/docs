@@ -1,0 +1,159 @@
+---
+title: '余额告警 Webhook'
+description: '在可用余额过低时接收 POST 通知，并校验签名'
+---
+
+当账户**可用吉米币**低于你设定的阈值，或创建任务时余额不足，ViraltokAI 会向你配置的 HTTPS 地址发送一次 `POST`。你不需要用 API Key 来接收这条请求。
+
+<Note>
+Webhook 在控制台 [充值页](https://api.viraltok.ai/recharge) 的 **余额通知** 中配置：选择 **Webhook**，填写地址和可选密钥，打开启用开关后保存。
+</Note>
+
+## 你需要准备什么
+
+1. 一个公网可访问的 `http` 或 `https` URL（不能指向本机 `localhost`）。
+2. （推荐）一段密钥，用于校验 `X-Viraltok-Signature`。
+3. 接收端在约 **10 秒**内返回 **2xx**。当前实现发送一次，不自动重试。
+
+同一用户在余额回升前，同类通知 **24 小时内最多一次**。
+
+## 请求
+
+| 项 | 值 |
+| :--- | :--- |
+| 方法 | `POST` |
+| `Content-Type` | `application/json` |
+| 超时 | 10 秒 |
+
+### 请求头
+
+| 头 | 作用 |
+| :--- | :--- |
+| `X-Viraltok-Event` | 事件类型，便于在解析 body 前分流 |
+| `X-Viraltok-Timestamp` | Unix 秒。验签时必须用这个值；也可用来拒绝过期请求（防重放） |
+| `X-Viraltok-Signature` | 仅在你保存了密钥时出现。格式 `sha256=<hex>` |
+
+### Body 字段
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `event` | string | 与 `X-Viraltok-Event` 相同 |
+| `user_id` | number | 账户用户 ID |
+| `available` | number | 当前可用吉米币 |
+| `threshold` | number | 仅 `balance.below_threshold`：你设置的告警阈值 |
+| `required` | number | 仅 `balance.insufficient`：本次任务预估费用 |
+| `occurred_at` | string | 发送时刻，UTC RFC3339 |
+
+### 事件类型
+
+| `event` | 何时发送 |
+| :--- | :--- |
+| `balance.below_threshold` | 扣费后可用余额低于告警阈值 |
+| `balance.insufficient` | 创建任务时可用余额不足以支付本次费用 |
+
+### 示例：余额低于阈值
+
+```http
+POST /webhook HTTP/1.1
+Content-Type: application/json
+X-Viraltok-Event: balance.below_threshold
+X-Viraltok-Timestamp: 1756100000
+X-Viraltok-Signature: sha256=d7c4f8...
+```
+
+```json
+{
+  "event": "balance.below_threshold",
+  "user_id": 123,
+  "available": 80.2,
+  "threshold": 100,
+  "occurred_at": "2026-08-25T07:00:00Z"
+}
+```
+
+### 示例：余额不足无法下单
+
+```json
+{
+  "event": "balance.insufficient",
+  "user_id": 123,
+  "available": 1.5,
+  "required": 8,
+  "occurred_at": "2026-08-25T07:01:00Z"
+}
+```
+
+## 校验签名（推荐）
+
+签名对象是 **原始请求体字节**，不是格式化后的 JSON。
+
+```
+HMAC_SHA256(secret, "{X-Viraltok-Timestamp}.{raw_body}")
+```
+
+把结果编成小写 hex，与头里 `sha256=` 后面的值做恒定时间比较。
+
+<Warning>
+必须使用 HTTP 层读到的原始 body。重新 `JSON.stringify` 后再签会失败。
+</Warning>
+
+建议同时检查时间戳：若与当前时间相差超过 5 分钟，直接拒绝。
+
+### Node.js
+
+```javascript
+import crypto from 'node:crypto';
+
+function verifyViraltokWebhook({ rawBody, timestamp, signatureHeader, secret }) {
+  const expected =
+    'sha256=' +
+    crypto
+      .createHmac('sha256', secret)
+      .update(`${timestamp}.${rawBody}`)
+      .digest('hex');
+  const a = Buffer.from(signatureHeader || '', 'utf8');
+  const b = Buffer.from(expected, 'utf8');
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
+
+// Express: app.use(express.raw({ type: 'application/json' }))
+app.post('/webhook', (req, res) => {
+  const rawBody = req.body.toString('utf8');
+  const ok = verifyViraltokWebhook({
+    rawBody,
+    timestamp: req.get('X-Viraltok-Timestamp'),
+    signatureHeader: req.get('X-Viraltok-Signature'),
+    secret: process.env.VIRALTOK_WEBHOOK_SECRET,
+  });
+  if (!ok) return res.status(401).end();
+  const payload = JSON.parse(rawBody);
+  // handle payload.event
+  res.status(204).end();
+});
+```
+
+### Python
+
+```python
+import hashlib
+import hmac
+
+def verify_viraltok_webhook(raw_body: bytes, timestamp: str, signature_header: str, secret: str) -> bool:
+    digest = hmac.new(
+        secret.encode("utf-8"),
+        f"{timestamp}.".encode("utf-8") + raw_body,
+        hashlib.sha256,
+    ).hexdigest()
+    expected = f"sha256={digest}"
+    return hmac.compare_digest(signature_header, expected)
+```
+
+未配置密钥时没有 `X-Viraltok-Signature`。此时请用防火墙或仅内网 URL 保护端点。
+
+## 对接建议
+
+- 先返回 2xx，再异步处理业务（发钉钉、补余额、暂停任务等）。
+- 用 `event` 分流，不要假设每次都有 `threshold` 或 `required`。
+- 可用余额也可主动查询 [`/user/balance`](/zh/api-reference/common/user-balance)。
+- 告警通道是 **邮箱或 Webhook 二选一**，选 Webhook 后同类提醒不再发邮件。

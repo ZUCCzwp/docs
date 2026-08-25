@@ -62,7 +62,8 @@
                 "group": "Account Management",
                 "pages": [
                   "en/api-reference/common/user-balance",
-                  "en/api-reference/common/key-balance"
+                  "en/api-reference/common/key-balance",
+                  "en/api-reference/common/balance-webhook"
                 ]
               },
               {
@@ -268,7 +269,8 @@
                 "group": "账户管理",
                 "pages": [
                   "zh/api-reference/common/user-balance",
-                  "zh/api-reference/common/key-balance"
+                  "zh/api-reference/common/key-balance",
+                  "zh/api-reference/common/balance-webhook"
                 ]
               },
               {

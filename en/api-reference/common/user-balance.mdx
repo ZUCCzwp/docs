@@ -5,6 +5,8 @@ openapi: 'GET /api/open-api/v1/user/balance'
 
 Returns the **JimiCoin account balance** for the user who owns the API key. OpenAPI usage is billed against this account. Call this endpoint before creating tasks to confirm sufficient `available` balance.
 
+You can also receive a push when the balance is low. See [Balance alert webhook](/en/api-reference/common/balance-webhook).
+
 ### Response fields
 
 | Field | Type | Description |

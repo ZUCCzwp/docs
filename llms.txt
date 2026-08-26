@@ -127,6 +127,10 @@
 
 - [Create Video Super-Resolution](https://docs.viraltok.ai/en/api-reference/super-resolution/create.md): Enhance a public video to higher resolution/FPS; poll common video query.
 - [创建视频超分任务](https://docs.viraltok.ai/zh/api-reference/super-resolution/create.md): 将公网视频增强为更高清结果，通过通用视频查询接口轮询。
+- [Create Remove-Subtitle Task](https://docs.viraltok.ai/en/api-reference/remove-subtitle/create.md): Remove burned-in subtitles from a public video; poll common video query.
+- [创建去字幕任务](https://docs.viraltok.ai/zh/api-reference/remove-subtitle/create.md): 去除公网视频画面字幕，通过通用视频查询接口轮询。
+- [Create Video-Translate Task](https://docs.viraltok.ai/en/api-reference/video-translate/create.md): Translate spoken video into a target language; poll common video query; optional caption_url.
+- [创建视频翻译任务](https://docs.viraltok.ai/zh/api-reference/video-translate/create.md): 将源视频口播翻译到目标语言，通过通用视频查询接口轮询；可选 caption_url。
 
 ## OpenAPI Specs
 

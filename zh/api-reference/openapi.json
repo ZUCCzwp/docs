@@ -836,6 +836,62 @@
         }
       }
     },
+    "/api/open-api/v1/video-translate/videos": {
+      "post": {
+        "summary": "创建视频翻译任务",
+        "description": "提交视频翻译任务。传入待翻译视频公网 URL 与目标语言。源视频最长 8 分钟。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果（result.video_url；可选 result.caption_url）。计费按 video_url 时长向上取整按秒扣除。",
+        "operationId": "createVideoTranslate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoTranslateRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建视频翻译任务",
+                  "value": {
+                    "model": "video-translate-precision",
+                    "video_url": "https://example.com/input.mp4",
+                    "output_language": "zh",
+                    "enable_caption": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "video-translate-precision",
+                        "created_at": 1781777280,
+                        "cost": 1.2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - 提交试听任务",
@@ -2506,6 +2562,252 @@
           "video_url": "https://example.com/input.mp4"
         }
       },
+      "VideoTranslateRequest": {
+        "type": "object",
+        "required": [
+          "video_url",
+          "output_language"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "video-translate-precision",
+              "video-translate-speed"
+            ],
+            "default": "video-translate-precision",
+            "description": "视频翻译模型，默认 video-translate-precision。"
+          },
+          "video_url": {
+            "type": "string",
+            "description": "待翻译视频公网 URL（最长 8 分钟）；任务处理期间须保持可访问。"
+          },
+          "output_language": {
+            "type": "string",
+            "description": "目标语言。优先使用下方枚举原值。常用简写（zh/en/ja/ko/es/...）也会被服务端映射到对应枚举。",
+            "enum": [
+              "English",
+              "Spanish",
+              "French",
+              "Hindi",
+              "Italian",
+              "German",
+              "Polish",
+              "Portuguese",
+              "Chinese",
+              "Japanese",
+              "Dutch",
+              "Turkish",
+              "Korean",
+              "Danish",
+              "Arabic",
+              "Romanian",
+              "Mandarin",
+              "Filipino",
+              "Swedish",
+              "Indonesian",
+              "Ukrainian",
+              "Greek",
+              "Czech",
+              "Bulgarian",
+              "Malay",
+              "Slovak",
+              "Croatian",
+              "Tamil",
+              "Finnish",
+              "Russian",
+              "Afrikaans (South Africa)",
+              "Albanian (Albania)",
+              "Amharic (Ethiopia)",
+              "Arabic (Algeria)",
+              "Arabic (Bahrain)",
+              "Arabic (Egypt)",
+              "Arabic (Iraq)",
+              "Arabic (Jordan)",
+              "Arabic (Kuwait)",
+              "Arabic (Lebanon)",
+              "Arabic (Libya)",
+              "Arabic (Morocco)",
+              "Arabic (Oman)",
+              "Arabic (Qatar)",
+              "Arabic (Saudi Arabia)",
+              "Arabic (Syria)",
+              "Arabic (Tunisia)",
+              "Arabic (United Arab Emirates)",
+              "Arabic (Yemen)",
+              "Armenian (Armenia)",
+              "Azerbaijani (Latin, Azerbaijan)",
+              "Bangla (Bangladesh)",
+              "Basque",
+              "Bengali (India)",
+              "Bosnian (Bosnia and Herzegovina)",
+              "Bulgarian (Bulgaria)",
+              "Burmese (Myanmar)",
+              "Catalan",
+              "Chinese (Cantonese, Traditional)",
+              "Chinese (Jilu Mandarin, Simplified)",
+              "Chinese (Mandarin, Simplified)",
+              "Chinese (Northeastern Mandarin, Simplified)",
+              "Chinese (Southwestern Mandarin, Simplified)",
+              "Chinese (Taiwanese Mandarin, Traditional)",
+              "Chinese (Wu, Simplified)",
+              "Chinese (Zhongyuan Mandarin Henan, Simplified)",
+              "Chinese (Zhongyuan Mandarin Shaanxi, Simplified)",
+              "Croatian (Croatia)",
+              "Czech (Czechia)",
+              "Danish (Denmark)",
+              "Dutch (Belgium)",
+              "Dutch (Netherlands)",
+              "English (Australia)",
+              "English (Canada)",
+              "English (Hong Kong SAR)",
+              "English (India)",
+              "English (Ireland)",
+              "English (Kenya)",
+              "English (New Zealand)",
+              "English (Nigeria)",
+              "English (Philippines)",
+              "English (Singapore)",
+              "English (South Africa)",
+              "English (Tanzania)",
+              "English (UK)",
+              "English (United States)",
+              "Estonian (Estonia)",
+              "Filipino (Philippines)",
+              "Finnish (Finland)",
+              "French (Belgium)",
+              "French (Canada)",
+              "French (France)",
+              "French (Switzerland)",
+              "Galician",
+              "Georgian (Georgia)",
+              "German (Austria)",
+              "German (Germany)",
+              "German (Switzerland)",
+              "Greek (Greece)",
+              "Gujarati (India)",
+              "Hebrew (Israel)",
+              "Hindi (India)",
+              "Hungarian (Hungary)",
+              "Icelandic (Iceland)",
+              "Indonesian (Indonesia)",
+              "Irish (Ireland)",
+              "Italian (Italy)",
+              "Japanese (Japan)",
+              "Javanese (Latin, Indonesia)",
+              "Kannada (India)",
+              "Kazakh (Kazakhstan)",
+              "Khmer (Cambodia)",
+              "Korean (Korea)",
+              "Lao (Laos)",
+              "Latvian (Latvia)",
+              "Lithuanian (Lithuania)",
+              "Macedonian (North Macedonia)",
+              "Malay (Malaysia)",
+              "Malayalam (India)",
+              "Maltese (Malta)",
+              "Marathi (India)",
+              "Mongolian (Mongolia)",
+              "Nepali (Nepal)",
+              "Norwegian Bokmål (Norway)",
+              "Pashto (Afghanistan)",
+              "Persian (Iran)",
+              "Polish (Poland)",
+              "Portuguese (Brazil)",
+              "Portuguese (Portugal)",
+              "Romanian (Romania)",
+              "Russian (Russia)",
+              "Serbian (Latin, Serbia)",
+              "Sinhala (Sri Lanka)",
+              "Slovak (Slovakia)",
+              "Slovenian (Slovenia)",
+              "Somali (Somalia)",
+              "Spanish (Argentina)",
+              "Spanish (Bolivia)",
+              "Spanish (Chile)",
+              "Spanish (Colombia)",
+              "Spanish (Costa Rica)",
+              "Spanish (Cuba)",
+              "Spanish (Dominican Republic)",
+              "Spanish (Ecuador)",
+              "Spanish (El Salvador)",
+              "Spanish (Equatorial Guinea)",
+              "Spanish (Guatemala)",
+              "Spanish (Honduras)",
+              "Spanish (Mexico)",
+              "Spanish (Nicaragua)",
+              "Spanish (Panama)",
+              "Spanish (Paraguay)",
+              "Spanish (Peru)",
+              "Spanish (Puerto Rico)",
+              "Spanish (Spain)",
+              "Spanish (United States)",
+              "Spanish (Uruguay)",
+              "Spanish (Venezuela)",
+              "Sundanese (Indonesia)",
+              "Swahili (Kenya)",
+              "Swahili (Tanzania)",
+              "Swedish (Sweden)",
+              "Tamil (India)",
+              "Tamil (Malaysia)",
+              "Tamil (Singapore)",
+              "Tamil (Sri Lanka)",
+              "Telugu (India)",
+              "Thai (Thailand)",
+              "Turkish (Türkiye)",
+              "Ukrainian (Ukraine)",
+              "Urdu (India)",
+              "Urdu (Pakistan)",
+              "Uzbek (Latin, Uzbekistan)",
+              "Vietnamese (Vietnam)",
+              "Welsh (United Kingdom)",
+              "Zulu (South Africa)",
+              "English - Your Accent",
+              "English - American Accent"
+            ]
+          },
+          "translate_audio_only": {
+            "type": "boolean",
+            "description": "仅翻译音轨，不改口型。"
+          },
+          "speaker_num": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "说话人数量。"
+          },
+          "enable_dynamic_duration": {
+            "type": "boolean",
+            "default": true,
+            "description": "按目标语速调整时长，默认 true。"
+          },
+          "srt_url": {
+            "type": "string",
+            "description": "自定义 SRT 字幕文件公网 URL。"
+          },
+          "srt_role": {
+            "type": "string",
+            "enum": [
+              "input",
+              "output"
+            ],
+            "description": "srt_url 作用于源语言（input）或目标语言（output）字幕。"
+          },
+          "enable_caption": {
+            "type": "boolean",
+            "description": "生成配套 SRT；完成后见 result.caption_url。"
+          },
+          "brand_glossary_id": {
+            "type": "string",
+            "description": "品牌术语表 ID，用于专有名词翻译。"
+          }
+        },
+        "example": {
+          "model": "video-translate-precision",
+          "video_url": "https://example.com/input.mp4",
+          "output_language": "zh",
+          "enable_caption": true
+        }
+      },
       "GeminiOmniGenerationRequest": {
         "type": "object",
         "required": [
@@ -3312,7 +3614,10 @@
           },
           "output_format": {
             "type": "string",
-            "enum": ["mp4", "mov"],
+            "enum": [
+              "mp4",
+              "mov"
+            ],
             "description": "输出封装格式。仅 seedance2.5-gz，默认 mp4。"
           }
         },

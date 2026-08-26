@@ -27,7 +27,7 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 | :--- | :--- | :--- | :--- |
 | `queued` / `pending` / `submitted` | **排队中 / 已提交**。任务已成功提交，正在等待调度。 | `0` | 初始状态。 |
 | `processing` | **生成中**。任务已开始在模型侧运行。 | `1 - 99` | 进度会随着生成过程实时更新。 |
-| `completed` | **成功**。视频生成完成。 | `100` | 此时可在 `result.video_url` 获取生成的视频下载链接。 |
+| `completed` | **成功**。视频生成完成。 | `100` | 此时可在 `result.video_url` 获取生成的视频下载链接。视频翻译任务若开启字幕，另有 `result.caption_url`。 |
 | `failed` | **失败**。视频生成任务运行出错。 | `0` | 可以在 `error_message` 字段中查看具体的失败原因。 |
 
 ### 状态机展示

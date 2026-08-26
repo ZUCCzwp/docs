@@ -1,0 +1,279 @@
+---
+title: 'Create video-translate task'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/video-translate/videos'
+---
+
+Submit a video translation task: translate spoken audio into a target language and produce a dubbed video. On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`. If captions were requested, also read `result.caption_url`.
+
+Source video max length is **8 minutes**. `video_url` must be a public URL that stays reachable while the task runs.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `video-translate-precision` | Higher-quality translation (default) |
+| `video-translate-speed` | Faster translation |
+
+## Request fields
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `model` | string | no | `video-translate-precision` (default) or `video-translate-speed` |
+| `video_url` | string | yes | Public URL of the source video |
+| `output_language` | string | yes | Target language; see [Target languages](#target-languages-output_language) for the full enum |
+| `translate_audio_only` | boolean | no | Translate the voice track only (no lip sync) |
+| `speaker_num` | integer | no | Number of speakers (≥ 1) |
+| `enable_dynamic_duration` | boolean | no | Stretch/shrink duration for speaking rate; default `true` |
+| `srt_url` | string | no | Public URL of a custom SRT file |
+| `srt_role` | string | no | `input` (source captions) or `output` (target captions) |
+| `enable_caption` | boolean | no | Generate an SRT; returned as `result.caption_url` |
+| `brand_glossary_id` | string | no | Brand glossary ID for custom term translations |
+
+## Target languages (`output_language`)
+
+`output_language` **must** be one of the enum values below (case- and space-sensitive).
+
+The API also accepts a few short aliases that map to enum values, for example: `zh`→`Chinese`, `zh-cn`→`Chinese (Mandarin, Simplified)`, `zh-tw`→`Chinese (Taiwanese Mandarin, Traditional)`, `en`→`English`, `ja`/`jp`→`Japanese`, `ko`/`kr`→`Korean`, `es`→`Spanish`, `pt-br`→`Portuguese (Brazil)`. Prefer the exact enum string in production.
+
+**178** values:
+
+- `English`
+- `Spanish`
+- `French`
+- `Hindi`
+- `Italian`
+- `German`
+- `Polish`
+- `Portuguese`
+- `Chinese`
+- `Japanese`
+- `Dutch`
+- `Turkish`
+- `Korean`
+- `Danish`
+- `Arabic`
+- `Romanian`
+- `Mandarin`
+- `Filipino`
+- `Swedish`
+- `Indonesian`
+- `Ukrainian`
+- `Greek`
+- `Czech`
+- `Bulgarian`
+- `Malay`
+- `Slovak`
+- `Croatian`
+- `Tamil`
+- `Finnish`
+- `Russian`
+- `Afrikaans (South Africa)`
+- `Albanian (Albania)`
+- `Amharic (Ethiopia)`
+- `Arabic (Algeria)`
+- `Arabic (Bahrain)`
+- `Arabic (Egypt)`
+- `Arabic (Iraq)`
+- `Arabic (Jordan)`
+- `Arabic (Kuwait)`
+- `Arabic (Lebanon)`
+- `Arabic (Libya)`
+- `Arabic (Morocco)`
+- `Arabic (Oman)`
+- `Arabic (Qatar)`
+- `Arabic (Saudi Arabia)`
+- `Arabic (Syria)`
+- `Arabic (Tunisia)`
+- `Arabic (United Arab Emirates)`
+- `Arabic (Yemen)`
+- `Armenian (Armenia)`
+- `Azerbaijani (Latin, Azerbaijan)`
+- `Bangla (Bangladesh)`
+- `Basque`
+- `Bengali (India)`
+- `Bosnian (Bosnia and Herzegovina)`
+- `Bulgarian (Bulgaria)`
+- `Burmese (Myanmar)`
+- `Catalan`
+- `Chinese (Cantonese, Traditional)`
+- `Chinese (Jilu Mandarin, Simplified)`
+- `Chinese (Mandarin, Simplified)`
+- `Chinese (Northeastern Mandarin, Simplified)`
+- `Chinese (Southwestern Mandarin, Simplified)`
+- `Chinese (Taiwanese Mandarin, Traditional)`
+- `Chinese (Wu, Simplified)`
+- `Chinese (Zhongyuan Mandarin Henan, Simplified)`
+- `Chinese (Zhongyuan Mandarin Shaanxi, Simplified)`
+- `Croatian (Croatia)`
+- `Czech (Czechia)`
+- `Danish (Denmark)`
+- `Dutch (Belgium)`
+- `Dutch (Netherlands)`
+- `English (Australia)`
+- `English (Canada)`
+- `English (Hong Kong SAR)`
+- `English (India)`
+- `English (Ireland)`
+- `English (Kenya)`
+- `English (New Zealand)`
+- `English (Nigeria)`
+- `English (Philippines)`
+- `English (Singapore)`
+- `English (South Africa)`
+- `English (Tanzania)`
+- `English (UK)`
+- `English (United States)`
+- `Estonian (Estonia)`
+- `Filipino (Philippines)`
+- `Finnish (Finland)`
+- `French (Belgium)`
+- `French (Canada)`
+- `French (France)`
+- `French (Switzerland)`
+- `Galician`
+- `Georgian (Georgia)`
+- `German (Austria)`
+- `German (Germany)`
+- `German (Switzerland)`
+- `Greek (Greece)`
+- `Gujarati (India)`
+- `Hebrew (Israel)`
+- `Hindi (India)`
+- `Hungarian (Hungary)`
+- `Icelandic (Iceland)`
+- `Indonesian (Indonesia)`
+- `Irish (Ireland)`
+- `Italian (Italy)`
+- `Japanese (Japan)`
+- `Javanese (Latin, Indonesia)`
+- `Kannada (India)`
+- `Kazakh (Kazakhstan)`
+- `Khmer (Cambodia)`
+- `Korean (Korea)`
+- `Lao (Laos)`
+- `Latvian (Latvia)`
+- `Lithuanian (Lithuania)`
+- `Macedonian (North Macedonia)`
+- `Malay (Malaysia)`
+- `Malayalam (India)`
+- `Maltese (Malta)`
+- `Marathi (India)`
+- `Mongolian (Mongolia)`
+- `Nepali (Nepal)`
+- `Norwegian Bokmål (Norway)`
+- `Pashto (Afghanistan)`
+- `Persian (Iran)`
+- `Polish (Poland)`
+- `Portuguese (Brazil)`
+- `Portuguese (Portugal)`
+- `Romanian (Romania)`
+- `Russian (Russia)`
+- `Serbian (Latin, Serbia)`
+- `Sinhala (Sri Lanka)`
+- `Slovak (Slovakia)`
+- `Slovenian (Slovenia)`
+- `Somali (Somalia)`
+- `Spanish (Argentina)`
+- `Spanish (Bolivia)`
+- `Spanish (Chile)`
+- `Spanish (Colombia)`
+- `Spanish (Costa Rica)`
+- `Spanish (Cuba)`
+- `Spanish (Dominican Republic)`
+- `Spanish (Ecuador)`
+- `Spanish (El Salvador)`
+- `Spanish (Equatorial Guinea)`
+- `Spanish (Guatemala)`
+- `Spanish (Honduras)`
+- `Spanish (Mexico)`
+- `Spanish (Nicaragua)`
+- `Spanish (Panama)`
+- `Spanish (Paraguay)`
+- `Spanish (Peru)`
+- `Spanish (Puerto Rico)`
+- `Spanish (Spain)`
+- `Spanish (United States)`
+- `Spanish (Uruguay)`
+- `Spanish (Venezuela)`
+- `Sundanese (Indonesia)`
+- `Swahili (Kenya)`
+- `Swahili (Tanzania)`
+- `Swedish (Sweden)`
+- `Tamil (India)`
+- `Tamil (Malaysia)`
+- `Tamil (Singapore)`
+- `Tamil (Sri Lanka)`
+- `Telugu (India)`
+- `Thai (Thailand)`
+- `Turkish (Türkiye)`
+- `Ukrainian (Ukraine)`
+- `Urdu (India)`
+- `Urdu (Pakistan)`
+- `Uzbek (Latin, Uzbekistan)`
+- `Vietnamese (Vietnam)`
+- `Welsh (United Kingdom)`
+- `Zulu (South Africa)`
+- `English - Your Accent`
+- `English - American Accent`
+
+## Billing
+
+- Mode: `per_second`
+- Duration: probed from `video_url`, **rounded up** (minimum 1 second)
+- Videos longer than 480 seconds (8 minutes) are rejected
+- Unit price: configured per `model` in the console
+
+```text
+cost = unit_price × ceil(video_duration_seconds)
+```
+
+## Query task
+
+Poll every 5–10 seconds until `completed` / `failed`. Result URLs are kept about **3 days** — download promptly. Read `result.video_url` for the video; with captions enabled, also `result.caption_url`.
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+<RequestExample>
+```bash Precision
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video-translate-precision",
+    "video_url": "https://example.com/input.mp4",
+    "output_language": "Chinese",
+    "enable_caption": true
+  }'
+```
+
+```bash Speed
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video-translate-speed",
+    "video_url": "https://example.com/input.mp4",
+    "output_language": "English",
+    "enable_dynamic_duration": true
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "video-translate-precision",
+    "created_at": 1781777280,
+    "cost": 1.20
+  }
+}
+```
+</ResponseExample>

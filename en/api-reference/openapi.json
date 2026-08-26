@@ -836,6 +836,62 @@
         }
       }
     },
+    "/api/open-api/v1/video-translate/videos": {
+      "post": {
+        "summary": "Create video-translate task",
+        "description": "Submit a video translation task with a public video URL and target language. Max source length 8 minutes. Poll GET /api/open-api/v1/videos/{taskId} for results (result.video_url; optional result.caption_url). Billed per second based on ceiled video_url duration.",
+        "operationId": "createVideoTranslate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoTranslateRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create video-translate task",
+                  "value": {
+                    "model": "video-translate-precision",
+                    "video_url": "https://example.com/input.mp4",
+                    "output_language": "zh",
+                    "enable_caption": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "Created",
+                    "value": {
+                      "code": 0,
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "status": "queued",
+                        "model": "video-translate-precision",
+                        "created_at": 1781777280,
+                        "cost": 1.2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - Create Preview Task",
@@ -2506,6 +2562,252 @@
           "video_url": "https://example.com/input.mp4"
         }
       },
+      "VideoTranslateRequest": {
+        "type": "object",
+        "required": [
+          "video_url",
+          "output_language"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "video-translate-precision",
+              "video-translate-speed"
+            ],
+            "default": "video-translate-precision",
+            "description": "Video-translate model. Default: video-translate-precision."
+          },
+          "video_url": {
+            "type": "string",
+            "description": "Public URL of the source video (max 8 minutes). Must remain accessible while processing."
+          },
+          "output_language": {
+            "type": "string",
+            "description": "Target language. Prefer exact enum values below. Common short aliases (zh/en/ja/ko/es/...) are also accepted and mapped server-side.",
+            "enum": [
+              "English",
+              "Spanish",
+              "French",
+              "Hindi",
+              "Italian",
+              "German",
+              "Polish",
+              "Portuguese",
+              "Chinese",
+              "Japanese",
+              "Dutch",
+              "Turkish",
+              "Korean",
+              "Danish",
+              "Arabic",
+              "Romanian",
+              "Mandarin",
+              "Filipino",
+              "Swedish",
+              "Indonesian",
+              "Ukrainian",
+              "Greek",
+              "Czech",
+              "Bulgarian",
+              "Malay",
+              "Slovak",
+              "Croatian",
+              "Tamil",
+              "Finnish",
+              "Russian",
+              "Afrikaans (South Africa)",
+              "Albanian (Albania)",
+              "Amharic (Ethiopia)",
+              "Arabic (Algeria)",
+              "Arabic (Bahrain)",
+              "Arabic (Egypt)",
+              "Arabic (Iraq)",
+              "Arabic (Jordan)",
+              "Arabic (Kuwait)",
+              "Arabic (Lebanon)",
+              "Arabic (Libya)",
+              "Arabic (Morocco)",
+              "Arabic (Oman)",
+              "Arabic (Qatar)",
+              "Arabic (Saudi Arabia)",
+              "Arabic (Syria)",
+              "Arabic (Tunisia)",
+              "Arabic (United Arab Emirates)",
+              "Arabic (Yemen)",
+              "Armenian (Armenia)",
+              "Azerbaijani (Latin, Azerbaijan)",
+              "Bangla (Bangladesh)",
+              "Basque",
+              "Bengali (India)",
+              "Bosnian (Bosnia and Herzegovina)",
+              "Bulgarian (Bulgaria)",
+              "Burmese (Myanmar)",
+              "Catalan",
+              "Chinese (Cantonese, Traditional)",
+              "Chinese (Jilu Mandarin, Simplified)",
+              "Chinese (Mandarin, Simplified)",
+              "Chinese (Northeastern Mandarin, Simplified)",
+              "Chinese (Southwestern Mandarin, Simplified)",
+              "Chinese (Taiwanese Mandarin, Traditional)",
+              "Chinese (Wu, Simplified)",
+              "Chinese (Zhongyuan Mandarin Henan, Simplified)",
+              "Chinese (Zhongyuan Mandarin Shaanxi, Simplified)",
+              "Croatian (Croatia)",
+              "Czech (Czechia)",
+              "Danish (Denmark)",
+              "Dutch (Belgium)",
+              "Dutch (Netherlands)",
+              "English (Australia)",
+              "English (Canada)",
+              "English (Hong Kong SAR)",
+              "English (India)",
+              "English (Ireland)",
+              "English (Kenya)",
+              "English (New Zealand)",
+              "English (Nigeria)",
+              "English (Philippines)",
+              "English (Singapore)",
+              "English (South Africa)",
+              "English (Tanzania)",
+              "English (UK)",
+              "English (United States)",
+              "Estonian (Estonia)",
+              "Filipino (Philippines)",
+              "Finnish (Finland)",
+              "French (Belgium)",
+              "French (Canada)",
+              "French (France)",
+              "French (Switzerland)",
+              "Galician",
+              "Georgian (Georgia)",
+              "German (Austria)",
+              "German (Germany)",
+              "German (Switzerland)",
+              "Greek (Greece)",
+              "Gujarati (India)",
+              "Hebrew (Israel)",
+              "Hindi (India)",
+              "Hungarian (Hungary)",
+              "Icelandic (Iceland)",
+              "Indonesian (Indonesia)",
+              "Irish (Ireland)",
+              "Italian (Italy)",
+              "Japanese (Japan)",
+              "Javanese (Latin, Indonesia)",
+              "Kannada (India)",
+              "Kazakh (Kazakhstan)",
+              "Khmer (Cambodia)",
+              "Korean (Korea)",
+              "Lao (Laos)",
+              "Latvian (Latvia)",
+              "Lithuanian (Lithuania)",
+              "Macedonian (North Macedonia)",
+              "Malay (Malaysia)",
+              "Malayalam (India)",
+              "Maltese (Malta)",
+              "Marathi (India)",
+              "Mongolian (Mongolia)",
+              "Nepali (Nepal)",
+              "Norwegian Bokmål (Norway)",
+              "Pashto (Afghanistan)",
+              "Persian (Iran)",
+              "Polish (Poland)",
+              "Portuguese (Brazil)",
+              "Portuguese (Portugal)",
+              "Romanian (Romania)",
+              "Russian (Russia)",
+              "Serbian (Latin, Serbia)",
+              "Sinhala (Sri Lanka)",
+              "Slovak (Slovakia)",
+              "Slovenian (Slovenia)",
+              "Somali (Somalia)",
+              "Spanish (Argentina)",
+              "Spanish (Bolivia)",
+              "Spanish (Chile)",
+              "Spanish (Colombia)",
+              "Spanish (Costa Rica)",
+              "Spanish (Cuba)",
+              "Spanish (Dominican Republic)",
+              "Spanish (Ecuador)",
+              "Spanish (El Salvador)",
+              "Spanish (Equatorial Guinea)",
+              "Spanish (Guatemala)",
+              "Spanish (Honduras)",
+              "Spanish (Mexico)",
+              "Spanish (Nicaragua)",
+              "Spanish (Panama)",
+              "Spanish (Paraguay)",
+              "Spanish (Peru)",
+              "Spanish (Puerto Rico)",
+              "Spanish (Spain)",
+              "Spanish (United States)",
+              "Spanish (Uruguay)",
+              "Spanish (Venezuela)",
+              "Sundanese (Indonesia)",
+              "Swahili (Kenya)",
+              "Swahili (Tanzania)",
+              "Swedish (Sweden)",
+              "Tamil (India)",
+              "Tamil (Malaysia)",
+              "Tamil (Singapore)",
+              "Tamil (Sri Lanka)",
+              "Telugu (India)",
+              "Thai (Thailand)",
+              "Turkish (Türkiye)",
+              "Ukrainian (Ukraine)",
+              "Urdu (India)",
+              "Urdu (Pakistan)",
+              "Uzbek (Latin, Uzbekistan)",
+              "Vietnamese (Vietnam)",
+              "Welsh (United Kingdom)",
+              "Zulu (South Africa)",
+              "English - Your Accent",
+              "English - American Accent"
+            ]
+          },
+          "translate_audio_only": {
+            "type": "boolean",
+            "description": "Translate the voice track only (no lip sync)."
+          },
+          "speaker_num": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of speakers in the video."
+          },
+          "enable_dynamic_duration": {
+            "type": "boolean",
+            "default": true,
+            "description": "Adjust duration for speaking rate differences. Default true."
+          },
+          "srt_url": {
+            "type": "string",
+            "description": "Public URL of a custom SRT subtitle file."
+          },
+          "srt_role": {
+            "type": "string",
+            "enum": [
+              "input",
+              "output"
+            ],
+            "description": "Whether srt_url applies to the source (input) or translated (output) video."
+          },
+          "enable_caption": {
+            "type": "boolean",
+            "description": "Generate an SRT caption file; returned as result.caption_url when completed."
+          },
+          "brand_glossary_id": {
+            "type": "string",
+            "description": "Brand glossary ID for custom term translations."
+          }
+        },
+        "example": {
+          "model": "video-translate-precision",
+          "video_url": "https://example.com/input.mp4",
+          "output_language": "zh",
+          "enable_caption": true
+        }
+      },
       "GeminiOmniGenerationRequest": {
         "type": "object",
         "required": [
@@ -3301,7 +3603,10 @@
           },
           "output_format": {
             "type": "string",
-            "enum": ["mp4", "mov"],
+            "enum": [
+              "mp4",
+              "mov"
+            ],
             "description": "Output container. seedance2.5-gz only; default mp4."
           }
         },

@@ -1,0 +1,279 @@
+---
+title: '创建视频翻译任务'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/video-translate/videos'
+---
+
+提交视频翻译任务：将源视频口播翻译并合成到目标语言。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态。完成后从 `result.video_url` 获取成片；若开启字幕，另有 `result.caption_url`。
+
+源视频最长 **8 分钟**。`video_url` 须为公网可访问地址，任务处理期间保持可达。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `video-translate-precision` | 高精度翻译（默认） |
+| `video-translate-speed` | 快速翻译 |
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 否 | `video-translate-precision`（默认）或 `video-translate-speed` |
+| `video_url` | string | 是 | 待翻译视频的公网 URL |
+| `output_language` | string | 是 | 目标语言，见下方 [目标语言](#目标语言output_language) 完整枚举 |
+| `translate_audio_only` | boolean | 否 | 仅翻译音轨，不改口型 |
+| `speaker_num` | integer | 否 | 说话人数量（≥ 1） |
+| `enable_dynamic_duration` | boolean | 否 | 按目标语速调整时长，默认 `true` |
+| `srt_url` | string | 否 | 自定义 SRT 字幕文件公网 URL |
+| `srt_role` | string | 否 | `input`（源语言字幕）或 `output`（目标语言字幕） |
+| `enable_caption` | boolean | 否 | 生成配套 SRT；完成后见 `result.caption_url` |
+| `brand_glossary_id` | string | 否 | 品牌术语表 ID（专有名词翻译） |
+
+## 目标语言（`output_language`）
+
+`output_language` **必须**使用下列枚举值之一（区分大小写与空格）。
+
+另外，服务端接受部分简写并映射到枚举，例如：`zh`→`Chinese`，`zh-cn`→`Chinese (Mandarin, Simplified)`，`zh-tw`→`Chinese (Taiwanese Mandarin, Traditional)`，`en`→`English`，`ja`/`jp`→`Japanese`，`ko`/`kr`→`Korean`，`es`→`Spanish`，`pt-br`→`Portuguese (Brazil)` 等。生产环境建议直接传枚举原值。
+
+共 **178** 项：
+
+- `English`
+- `Spanish`
+- `French`
+- `Hindi`
+- `Italian`
+- `German`
+- `Polish`
+- `Portuguese`
+- `Chinese`
+- `Japanese`
+- `Dutch`
+- `Turkish`
+- `Korean`
+- `Danish`
+- `Arabic`
+- `Romanian`
+- `Mandarin`
+- `Filipino`
+- `Swedish`
+- `Indonesian`
+- `Ukrainian`
+- `Greek`
+- `Czech`
+- `Bulgarian`
+- `Malay`
+- `Slovak`
+- `Croatian`
+- `Tamil`
+- `Finnish`
+- `Russian`
+- `Afrikaans (South Africa)`
+- `Albanian (Albania)`
+- `Amharic (Ethiopia)`
+- `Arabic (Algeria)`
+- `Arabic (Bahrain)`
+- `Arabic (Egypt)`
+- `Arabic (Iraq)`
+- `Arabic (Jordan)`
+- `Arabic (Kuwait)`
+- `Arabic (Lebanon)`
+- `Arabic (Libya)`
+- `Arabic (Morocco)`
+- `Arabic (Oman)`
+- `Arabic (Qatar)`
+- `Arabic (Saudi Arabia)`
+- `Arabic (Syria)`
+- `Arabic (Tunisia)`
+- `Arabic (United Arab Emirates)`
+- `Arabic (Yemen)`
+- `Armenian (Armenia)`
+- `Azerbaijani (Latin, Azerbaijan)`
+- `Bangla (Bangladesh)`
+- `Basque`
+- `Bengali (India)`
+- `Bosnian (Bosnia and Herzegovina)`
+- `Bulgarian (Bulgaria)`
+- `Burmese (Myanmar)`
+- `Catalan`
+- `Chinese (Cantonese, Traditional)`
+- `Chinese (Jilu Mandarin, Simplified)`
+- `Chinese (Mandarin, Simplified)`
+- `Chinese (Northeastern Mandarin, Simplified)`
+- `Chinese (Southwestern Mandarin, Simplified)`
+- `Chinese (Taiwanese Mandarin, Traditional)`
+- `Chinese (Wu, Simplified)`
+- `Chinese (Zhongyuan Mandarin Henan, Simplified)`
+- `Chinese (Zhongyuan Mandarin Shaanxi, Simplified)`
+- `Croatian (Croatia)`
+- `Czech (Czechia)`
+- `Danish (Denmark)`
+- `Dutch (Belgium)`
+- `Dutch (Netherlands)`
+- `English (Australia)`
+- `English (Canada)`
+- `English (Hong Kong SAR)`
+- `English (India)`
+- `English (Ireland)`
+- `English (Kenya)`
+- `English (New Zealand)`
+- `English (Nigeria)`
+- `English (Philippines)`
+- `English (Singapore)`
+- `English (South Africa)`
+- `English (Tanzania)`
+- `English (UK)`
+- `English (United States)`
+- `Estonian (Estonia)`
+- `Filipino (Philippines)`
+- `Finnish (Finland)`
+- `French (Belgium)`
+- `French (Canada)`
+- `French (France)`
+- `French (Switzerland)`
+- `Galician`
+- `Georgian (Georgia)`
+- `German (Austria)`
+- `German (Germany)`
+- `German (Switzerland)`
+- `Greek (Greece)`
+- `Gujarati (India)`
+- `Hebrew (Israel)`
+- `Hindi (India)`
+- `Hungarian (Hungary)`
+- `Icelandic (Iceland)`
+- `Indonesian (Indonesia)`
+- `Irish (Ireland)`
+- `Italian (Italy)`
+- `Japanese (Japan)`
+- `Javanese (Latin, Indonesia)`
+- `Kannada (India)`
+- `Kazakh (Kazakhstan)`
+- `Khmer (Cambodia)`
+- `Korean (Korea)`
+- `Lao (Laos)`
+- `Latvian (Latvia)`
+- `Lithuanian (Lithuania)`
+- `Macedonian (North Macedonia)`
+- `Malay (Malaysia)`
+- `Malayalam (India)`
+- `Maltese (Malta)`
+- `Marathi (India)`
+- `Mongolian (Mongolia)`
+- `Nepali (Nepal)`
+- `Norwegian Bokmål (Norway)`
+- `Pashto (Afghanistan)`
+- `Persian (Iran)`
+- `Polish (Poland)`
+- `Portuguese (Brazil)`
+- `Portuguese (Portugal)`
+- `Romanian (Romania)`
+- `Russian (Russia)`
+- `Serbian (Latin, Serbia)`
+- `Sinhala (Sri Lanka)`
+- `Slovak (Slovakia)`
+- `Slovenian (Slovenia)`
+- `Somali (Somalia)`
+- `Spanish (Argentina)`
+- `Spanish (Bolivia)`
+- `Spanish (Chile)`
+- `Spanish (Colombia)`
+- `Spanish (Costa Rica)`
+- `Spanish (Cuba)`
+- `Spanish (Dominican Republic)`
+- `Spanish (Ecuador)`
+- `Spanish (El Salvador)`
+- `Spanish (Equatorial Guinea)`
+- `Spanish (Guatemala)`
+- `Spanish (Honduras)`
+- `Spanish (Mexico)`
+- `Spanish (Nicaragua)`
+- `Spanish (Panama)`
+- `Spanish (Paraguay)`
+- `Spanish (Peru)`
+- `Spanish (Puerto Rico)`
+- `Spanish (Spain)`
+- `Spanish (United States)`
+- `Spanish (Uruguay)`
+- `Spanish (Venezuela)`
+- `Sundanese (Indonesia)`
+- `Swahili (Kenya)`
+- `Swahili (Tanzania)`
+- `Swedish (Sweden)`
+- `Tamil (India)`
+- `Tamil (Malaysia)`
+- `Tamil (Singapore)`
+- `Tamil (Sri Lanka)`
+- `Telugu (India)`
+- `Thai (Thailand)`
+- `Turkish (Türkiye)`
+- `Ukrainian (Ukraine)`
+- `Urdu (India)`
+- `Urdu (Pakistan)`
+- `Uzbek (Latin, Uzbekistan)`
+- `Vietnamese (Vietnam)`
+- `Welsh (United Kingdom)`
+- `Zulu (South Africa)`
+- `English - Your Accent`
+- `English - American Accent`
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费时长：根据 `video_url` 解析实际时长，**向上取整**（不足 1 秒按 1 秒）
+- 超过 480 秒（8 分钟）的视频会被拒绝
+- 单价：以控制台中对应 `model` 配置为准
+
+```text
+费用 = 模型单价 × ceil(视频时长秒数)
+```
+
+## 查询任务
+
+建议每 5–10 秒轮询一次，状态变为 `completed` / `failed` 后停止。结果 URL 保存约 **3 天**，请及时转存。完成后从 `result.video_url` 取成片；开启字幕时另有 `result.caption_url`。
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+<RequestExample>
+```bash 高精度
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video-translate-precision",
+    "video_url": "https://example.com/input.mp4",
+    "output_language": "Chinese",
+    "enable_caption": true
+  }'
+```
+
+```bash 快速
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "video-translate-speed",
+    "video_url": "https://example.com/input.mp4",
+    "output_language": "English",
+    "enable_dynamic_duration": true
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "video_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+    "status": "queued",
+    "model": "video-translate-precision",
+    "created_at": 1781777280,
+    "cost": 1.20
+  }
+}
+```
+</ResponseExample>

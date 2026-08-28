@@ -1205,7 +1205,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -1231,6 +1231,17 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "md15": {
+                  "summary": "Seedance 2.5 MD 15 seconds",
+                  "value": {
+                    "model": "seedance2.5-md",
+                    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
+                    "aspect_ratio": "16:9",
+                    "reference_images": [
+                      "https://example.com/reference.png"
                     ]
                   }
                 }
@@ -3492,9 +3503,11 @@
             "enum": [
               "seedance-2.5",
               "seedance-2.5-sp",
-              "seedance2.5-gz"
+              "seedance2.5-gz",
+              "seedance2.5-md",
+              "seedance2.5-30s"
             ],
-            "description": "Model id. Aliases seedance2.5 / seedance_2.5 / seedance25 normalize to seedance-2.5; seedance-2.5-sp is the SP economy variant; seedance2.5-gz / seedance-2.5-gz is the GZ independent billing route."
+            "description": "Model id. Aliases seedance2.5 / seedance_2.5 / seedance25 normalize to seedance-2.5; seedance-2.5-sp is the SP economy variant; seedance2.5-gz / seedance-2.5-gz is the GZ independent billing route; seedance2.5-md is fixed 15s output (per_task); seedance2.5-30s is fixed 30s output (per_task, no 10s tier)."
           },
           "prompt": {
             "type": "string",
@@ -3507,7 +3520,7 @@
             "default": 4,
             "minimum": 4,
             "maximum": 30,
-            "description": "Duration in seconds (4–30). Default 4."
+            "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Default 4."
           },
           "aspect_ratio": {
             "type": "string",
@@ -3517,7 +3530,7 @@
               "9:16",
               "1:1"
             ],
-            "description": "Output aspect ratio. Takes precedence over ratio. Default 9:16."
+            "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. GZ also supports adaptive and more ratios. Takes precedence over ratio."
           },
           "ratio": {
             "type": "string",

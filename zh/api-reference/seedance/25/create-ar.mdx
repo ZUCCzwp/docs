@@ -1,0 +1,90 @@
+---
+title: '创建 Seedance 2.5 MD 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model` 选择 MD 固定时长型号。
+
+<Warning>
+**不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
+</Warning>
+
+## 支持的模型
+
+| model | 输出时长 | 说明 |
+|-------|---------|------|
+| `seedance2.5-md` | **15 秒**（固定） | 文生视频、参考图 |
+| `seedance2.5-30s` | **30 秒**（固定） | 文生视频、参考图 |
+
+`seedance-2.5-md`、`seedance25-md` 等别名会归一化为 `seedance2.5-md`；`seedance-2.5-30s`、`seedance25-30s` 会归一化为 `seedance2.5-30s`。
+
+<Warning>
+本线路**不提供 10 秒**档位。请求中的 `duration` 会被忽略，实际时长由 `model` 决定（15 秒或 30 秒）。
+</Warning>
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。
+- **时长（duration）**：由模型固定，无需传入；传入也会被忽略。
+- **画幅比例（aspect_ratio / ratio）**：仅支持 **`16:9`**、**`9:16`**。未传默认 `9:16`。
+- **参考图（reference_images / images）**：最多 **30** 张，须为公网可访问 URL。
+- **不支持** `first_image` / `last_image` 首尾帧。
+- **不支持** `reference_videos` / `videos`、`reference_audios` / `audios`。
+- **不支持** `resolution`、`generate_audio`、`watermark`、`output_format` 等 GZ 专用字段。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance2.5-md` 或 `seedance2.5-30s` |
+| `prompt` | string | 是 | 文本提示词 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `reference_images` | string[] | 否 | 参考图 URL（0–30） |
+| `images` | string[] | 否 | `reference_images` 别名 |
+
+## 计费说明
+
+- 计费方式：**`per_task`（按次）**
+- 计费模型：
+  - `seedance2.5-md` → 每次任务固定单价（输出 15 秒）
+  - `seedance2.5-30s` → 每次任务固定单价（输出 30 秒）
+
+```text
+费用 = 对应型号单价 × 1 次
+```
+
+单价可在控制台按型号单独配置。
+
+## 示例请求
+
+### 15 秒文生视频
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-md",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+### 30 秒带参考图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-30s",
+    "prompt": "一只猫在草地上奔跑，跟拍镜头",
+    "aspect_ratio": "9:16",
+    "reference_images": ["https://example.com/cat.png"]
+  }'
+```

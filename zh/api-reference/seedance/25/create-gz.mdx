@@ -7,7 +7,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-gz"` 选择本型号。
+本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-gz"` 选择本型号。固定时长 MD 型号见 [创建 Seedance 2.5 MD 视频](/zh/api-reference/seedance/25/create-ar)。
 
 <Warning>
 **不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。

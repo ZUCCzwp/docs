@@ -1205,7 +1205,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。GZ seedance2.5-gz：创建时按分辨率预扣（seedance2.5-gz-480p / seedance2.5-gz-720p；含参考视频时走 seedance2.5-gz-video-*），成功后按实际消耗多退少补，时长 4-30 或 -1，比例含 adaptive，支持参考图/视频/音频/首尾帧。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。GZ seedance2.5-gz：创建时按分辨率预扣（seedance2.5-gz-480p / seedance2.5-gz-720p；含参考视频时走 seedance2.5-gz-video-*），成功后按实际消耗多退少补，时长 4-30 或 -1，比例含 adaptive，支持参考图/视频/音频/首尾帧。MD seedance2.5-md / seedance2.5-30s：固定 15 秒 / 30 秒输出，画幅仅 9:16 与 16:9，支持参考图，不支持首尾帧，per_task 按次计费，不提供 10 秒档位。详见各型号专题页。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -1231,6 +1231,17 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "md15": {
+                  "summary": "Seedance 2.5 MD 15 秒",
+                  "value": {
+                    "model": "seedance2.5-md",
+                    "prompt": "电影感产品展示，自然光，缓慢推镜",
+                    "aspect_ratio": "16:9",
+                    "reference_images": [
+                      "https://example.com/reference.png"
                     ]
                   }
                 }
@@ -3503,9 +3514,11 @@
             "enum": [
               "seedance-2.5",
               "seedance-2.5-sp",
-              "seedance2.5-gz"
+              "seedance2.5-gz",
+              "seedance2.5-md",
+              "seedance2.5-30s"
             ],
-            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5；seedance-2.5-sp 为 SP 经济版；seedance2.5-gz / seedance-2.5-gz 为 GZ 独立计费线路。"
+            "description": "模型名称。seedance-2.5、seedance2.5、seedance_2.5、seedance25 归一化为 seedance-2.5；seedance-2.5-sp 为 SP 经济版；seedance2.5-gz / seedance-2.5-gz 为 GZ 独立计费线路；seedance2.5-md 固定 15 秒输出（per_task 按次）；seedance2.5-30s 固定 30 秒输出（per_task 按次，无 10 秒档位）。"
           },
           "prompt": {
             "type": "string",
@@ -3518,7 +3531,7 @@
             "default": 4,
             "minimum": 4,
             "maximum": 30,
-            "description": "视频时长，单位秒。支持 4–30。默认 4。"
+            "description": "视频时长，单位秒。标准版 / SP 支持 4–30。MD 型号（seedance2.5-md / seedance2.5-30s）由 model 固定为 15 或 30 秒，传入值会被忽略。GZ 支持 -1 自动时长。默认 4。"
           },
           "aspect_ratio": {
             "type": "string",
@@ -3528,7 +3541,7 @@
               "9:16",
               "1:1"
             ],
-            "description": "输出画幅比例。优先级高于 ratio。默认 9:16。"
+            "description": "输出画幅比例。标准版 / SP 默认 9:16。MD 仅支持 9:16、16:9。GZ 还支持 adaptive 及更多比例。优先级高于 ratio。"
           },
           "ratio": {
             "type": "string",

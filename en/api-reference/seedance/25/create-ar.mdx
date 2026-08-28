@@ -1,0 +1,90 @@
+---
+title: 'Create Seedance 2.5 MD Video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the video URL from `result.video_url`.
+</Note>
+
+This uses the same endpoint as [Create Seedance 2.5 Video](/en/api-reference/seedance/25/create): `POST /api/open-api/v1/seedance25/videos`. Select an MD fixed-duration product with `model`.
+
+<Warning>
+Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes). That would land on the Full channel.
+</Warning>
+
+## Supported models
+
+| model | Output length | Notes |
+|-------|---------------|-------|
+| `seedance2.5-md` | **15 seconds** (fixed) | Text-to-video, reference images |
+| `seedance2.5-30s` | **30 seconds** (fixed) | Text-to-video, reference images |
+
+Aliases such as `seedance-2.5-md` and `seedance25-md` normalize to `seedance2.5-md`; `seedance-2.5-30s` and `seedance25-30s` normalize to `seedance2.5-30s`.
+
+<Warning>
+There is **no 10-second** tier on this line. Any `duration` you send is ignored—the output length is determined solely by `model` (15s or 30s).
+</Warning>
+
+## Parameter constraints
+
+- **Prompt**: Required, 1–5000 characters.
+- **Duration**: Fixed by model; omit `duration` or expect it to be ignored.
+- **Aspect ratio** (`aspect_ratio` / `ratio`): **`16:9`** and **`9:16`** only. Default `9:16` when omitted.
+- **Reference images** (`reference_images` / `images`): max **30** public URLs.
+- **Not supported**: `first_image` / `last_image` (first-last frames).
+- **Not supported**: `reference_videos` / `videos`, `reference_audios` / `audios`.
+- **Not supported**: `resolution`, `generate_audio`, `watermark`, `output_format`, and other GZ-only fields.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `seedance2.5-md` or `seedance2.5-30s` |
+| `prompt` | string | Yes | Text prompt |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `reference_images` | string[] | No | Reference image URLs (0–30) |
+| `images` | string[] | No | Alias for `reference_images` |
+
+## Billing
+
+- Billing mode: **`per_task` (flat per request)**
+- Billing models:
+  - `seedance2.5-md` → one flat price per task (15s output)
+  - `seedance2.5-30s` → one flat price per task (30s output)
+
+```text
+charge = unit_price × 1 task
+```
+
+Configure unit prices per model in Console.
+
+## Example requests
+
+### 15-second text to video
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-md",
+    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+### 30-second with reference image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-30s",
+    "prompt": "A cat running on grass, tracking shot",
+    "aspect_ratio": "9:16",
+    "reference_images": ["https://example.com/cat.png"]
+  }'
+```

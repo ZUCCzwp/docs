@@ -7,7 +7,7 @@ openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status, read the video URL from `result.video_url`, and read `completion_tokens` / `total_tokens` from `data.usage`.
 </Note>
 
-This uses the same endpoint as [Create Seedance 2.5 Video](/en/api-reference/seedance/25/create): `POST /api/open-api/v1/seedance25/videos`. Select this product with `model: "seedance2.5-gz"`.
+This uses the same endpoint as [Create Seedance 2.5 Video](/en/api-reference/seedance/25/create): `POST /api/open-api/v1/seedance25/videos`. Select this product with `model: "seedance2.5-gz"`. For fixed-length MD variants, see [Create Seedance 2.5 MD Video](/en/api-reference/seedance/25/create-ar).
 
 <Warning>
 Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes). That would land on the Full channel.

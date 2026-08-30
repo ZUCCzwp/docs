@@ -52,6 +52,7 @@
               {
                 "group": "Common",
                 "pages": [
+                  "en/api-reference/common/model-catalog",
                   "en/api-reference/common/files-upload",
                   "en/api-reference/common/query",
                   "en/api-reference/images/query",
@@ -261,6 +262,7 @@
               {
                 "group": "通用",
                 "pages": [
+                  "zh/api-reference/common/model-catalog",
                   "zh/api-reference/common/files-upload",
                   "zh/api-reference/common/query",
                   "zh/api-reference/images/query",

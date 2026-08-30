@@ -1129,6 +1129,60 @@
         }
       }
     },
+    "/api/openapi/model/catalog": {
+      "get": {
+        "summary": "Probe model pricing",
+        "description": "Probe public pricing for active OpenAPI billing models with default unit prices and billing modes. Platform baseline prices only; account-specific custom pricing applies at billing time.",
+        "operationId": "listModelCatalog",
+        "security": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Optional substring filter for model_name, display_name, model_type, and remark",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelCatalogApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "Success",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "list": [
+                          {
+                            "model_name": "seedance2.5",
+                            "display_name": "Seedance 2.5",
+                            "model_type": "video",
+                            "price_mode": "per_second",
+                            "unit_price": 0.05,
+                            "official_price": 0.08,
+                            "remark": "",
+                            "group": "Seedance 2.5 Video"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/files/upload": {
       "post": {
         "summary": "Upload File",
@@ -3462,6 +3516,70 @@
           },
           "data": {
             "$ref": "#/components/schemas/ApiKeyBalanceData"
+          }
+        }
+      },
+      "ModelCatalogItem": {
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "Public OpenAPI model ID"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "Human-readable model label"
+          },
+          "model_type": {
+            "type": "string",
+            "description": "Product category such as video, image, or audio"
+          },
+          "price_mode": {
+            "type": "string",
+            "description": "Billing mode: per_task, per_second, per_million_tokens, per_10k_char, or pay_as_you_go"
+          },
+          "unit_price": {
+            "type": "number",
+            "description": "Default platform unit price in JimiCoin"
+          },
+          "official_price": {
+            "type": "number",
+            "description": "Reference list price when configured"
+          },
+          "remark": {
+            "type": "string",
+            "description": "Optional notes"
+          },
+          "group": {
+            "type": "string",
+            "description": "Optional catalog grouping label"
+          }
+        }
+      },
+      "ModelCatalogData": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelCatalogItem"
+            }
+          }
+        }
+      },
+      "ModelCatalogApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ModelCatalogData"
           }
         }
       },

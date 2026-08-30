@@ -1129,6 +1129,60 @@
         }
       }
     },
+    "/api/openapi/model/catalog": {
+      "get": {
+        "summary": "查询探测模型定价",
+        "description": "探测并返回当前启用的 OpenAPI 计费模型公开定价及默认单价、计费方式。列表为平台基准价；账户定制价在扣费时生效。",
+        "operationId": "listModelCatalog",
+        "security": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "可选，按 model_name、display_name、model_type、remark 子串过滤",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelCatalogApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "list": [
+                          {
+                            "model_name": "seedance2.5",
+                            "display_name": "Seedance 2.5",
+                            "model_type": "video",
+                            "price_mode": "per_second",
+                            "unit_price": 0.05,
+                            "official_price": 0.08,
+                            "remark": "",
+                            "group": "Seedance 2.5 Video"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/files/upload": {
       "post": {
         "summary": "上传文件",
@@ -3473,6 +3527,70 @@
           },
           "data": {
             "$ref": "#/components/schemas/ApiKeyBalanceData"
+          }
+        }
+      },
+      "ModelCatalogItem": {
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "公开 OpenAPI 模型 ID"
+          },
+          "display_name": {
+            "type": "string",
+            "description": "模型展示名称"
+          },
+          "model_type": {
+            "type": "string",
+            "description": "产品类型，如 video、image、audio"
+          },
+          "price_mode": {
+            "type": "string",
+            "description": "计费方式：per_task、per_second、per_million_tokens、per_10k_char、pay_as_you_go"
+          },
+          "unit_price": {
+            "type": "number",
+            "description": "平台默认单价（吉米币）"
+          },
+          "official_price": {
+            "type": "number",
+            "description": "参考标价（有配置时返回）"
+          },
+          "remark": {
+            "type": "string",
+            "description": "可选说明"
+          },
+          "group": {
+            "type": "string",
+            "description": "可选分组标签"
+          }
+        }
+      },
+      "ModelCatalogData": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelCatalogItem"
+            }
+          }
+        }
+      },
+      "ModelCatalogApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 20000
+          },
+          "msg": {
+            "type": "string",
+            "example": "ok"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ModelCatalogData"
           }
         }
       },

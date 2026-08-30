@@ -1,0 +1,82 @@
+---
+title: '查询探测模型定价'
+openapi: 'GET /api/openapi/model/catalog'
+---
+
+探测并返回 ViraltokAI OpenAPI **公开模型定价**：包含当前可用的计费模型 ID、展示名称、类型、默认单价与计费方式。提交生成任务前，可先用本接口确认应传入的 `model` 值并估算费用。
+
+<Note>
+本接口返回的是**平台默认单价**。若你在控制台为账户配置了某模型的专属价格，实际扣费以创建/查询响应中的 `cost` 为准（按账户定制价结算）。列表中的 `unit_price` 始终为公开基准价。
+</Note>
+
+### 鉴权
+
+无需 API Key，可不携带 `Authorization` 请求头。
+
+### 查询参数
+
+| 参数 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `search` | string | 否 | 子串过滤，匹配 `model_name`、`display_name`、`model_type`、`remark`。不传则返回全部启用模型。 |
+
+### 响应字段
+
+`data.list` 中每一项对应一个启用中的计费模型：
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `model_name` | string | 公开 OpenAPI 模型 ID，创建接口的 `model` 字段应使用此值 |
+| `display_name` | string | 模型展示名称 |
+| `model_type` | string | 产品类型（如 `video`、`image`、`audio`） |
+| `price_mode` | string | 计费方式（见下表） |
+| `unit_price` | number | 平台默认单价（吉米币） |
+| `official_price` | number | 参考标价（有配置时返回，否则省略） |
+| `remark` | string | 可选说明 |
+| `group` | string | 可选分组标签，便于归类相关模型 |
+
+### 计费方式（`price_mode`）
+
+| 取值 | 含义 |
+| :--- | :--- |
+| `per_task` | 按次/按任务固定计费（默认） |
+| `per_second` | 单价 × 视频时长（秒） |
+| `per_million_tokens` | 单价 × token 数 ÷ 1,000,000 |
+| `per_10k_char` | 按每 1 万字符计费（SoundClone） |
+| `pay_as_you_go` | 按实际用量（token 等）后结算 |
+
+任务实际费用以创建/查询接口返回的 `cost` 为准。
+
+### 示例
+
+查询全部模型：
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog'
+```
+
+搜索 Seedance 相关模型：
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog?search=seedance'
+```
+
+```json
+{
+  "code": 20000,
+  "msg": "ok",
+  "data": {
+    "list": [
+      {
+        "model_name": "seedance2.5",
+        "display_name": "Seedance 2.5",
+        "model_type": "video",
+        "price_mode": "per_second",
+        "unit_price": 0.05,
+        "official_price": 0.08,
+        "remark": "",
+        "group": "Seedance 2.5 Video"
+      }
+    ]
+  }
+}
+```

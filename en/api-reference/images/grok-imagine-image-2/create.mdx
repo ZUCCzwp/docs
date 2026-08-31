@@ -1,9 +1,9 @@
 ---
-title: 'Grok Imagine Image 2.0 generation'
+title: 'Grok Imagine Image 2.0 image generation'
 openapi: 'POST /api/open-api/v1/images'
 ---
 
-Create an async **Grok Imagine Image 2.0** (Quality) task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed. When `n > 1`, also read `result.image_urls` for all images.
+Create an async **Grok Imagine Image 2.0** task with optional `quality` tiers (`low` / `medium`) for stronger detail and typography than the standard tier. Returns `task_id` on success — poll with [Query image task](/en/api-reference/images/query). When complete, read `result.image_url`; when `n > 1`, also use `result.image_urls`.
 
 Standard tier: [Grok Imagine Image](/en/api-reference/images/grok-imagine-image/create).
 
@@ -16,48 +16,53 @@ This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-imag
 | Item | Details |
 |------|---------|
 | Model | `grok-imagine-image-2` (aliases `grok-imagine-image-2.0`, `grok-imagine-image-quality`) |
-| Billing | **Resolution base × `n`**; image-to-image adds **reference surcharge** (from the first image) |
-| Modes | Text-to-image; with `images` → edit (max 3 reference images) |
+| API | `POST /api/open-api/v1/images` (async; pass `images` for edit mode) |
+| Billing | **Resolution + quality base × `n`**; edit mode adds **reference surcharge** (from the first ref) |
+| Modes | Text-to-image; pass `images` for edit (max 3 references) |
 | Resolution | `1k`, `2k` (default `1k`) |
+| Quality | `quality`: `low` \| `medium` (default `medium`). `low` is faster/cheaper for drafts |
 | Output format | `jpeg`, `png`, `webp` (default `jpeg`) |
 
 ## Billing
 
-| Resolution / item | Billing model | Notes |
-|-------------------|---------------|-------|
-| `1k` | `grok-imagine-image-2-1k` | Output base (per image) |
-| `2k` | `grok-imagine-image-2-2k` | Output base (per image) |
+| Resolution / quality | Billing model | Notes |
+|---------------------|---------------|-------|
+| `1k` + `low` | `grok-imagine-image-2-1k-low` | Output base (per image) |
+| `1k` + `medium` | `grok-imagine-image-2-1k-medium` | Output base (per image) |
+| `2k` + `low` | `grok-imagine-image-2-2k-low` | Output base (per image) |
+| `2k` + `medium` | `grok-imagine-image-2-2k-medium` | Output base (per image) |
 | Reference surcharge (edit only) | `grok-imagine-image-2` | When `images` is set, **every reference from the first** is billed |
+
+If a quality-specific key is missing, billing falls back to `grok-imagine-image-2-{1k|2k}` (treated as medium), then `grok-imagine-image-2`.
 
 Text-to-image (no references):
 
 ```text
-total = resolution_unit_price × n
+total = resolution+quality unit price × n
 ```
 
-Image-to-image / edit (with references):
+Edit (with references):
 
 ```text
-total = resolution_unit_price × n + reference_count × ref_unit_price
+total = resolution+quality unit price × n + reference_count × reference unit price
 ```
 
-Example (console prices apply): `2k`, `n=1` with 2 references → `2k unit + 2 × ref_unit`.
+Example (console prices): `2k`, `quality=medium`, `n=1` + 2 refs → `2k medium unit + 2 × reference unit`.
 
-Unit prices follow the console / pricing page. If resolution-specific prices are missing, billing falls back to `grok-imagine-image-2`.
-
-## Request parameters
+## Request fields
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|------|------|----------|-------------|
 | `model` | string | yes | Must be `grok-imagine-image-2` |
-| `prompt` | string | yes | Generation / edit prompt (1–5000 chars) |
-| `ratio` | string | no | Aspect ratio. T2I default `1:1`; edit default `auto` |
+| `prompt` | string | yes | Prompt (1–5000 chars) |
+| `ratio` | string | no | Aspect ratio. Default `1:1` for t2i; `auto` for edit |
 | `resolution` | string | no | `1k` or `2k` (default `1k`) |
-| `n` | int | no | Number of images, `1`–`4`, default `1` |
+| `quality` | string | no | `low` or `medium` (default `medium`), 2.0 only |
+| `n` | int | no | Output count, `1`–`4`, default `1` |
 | `output_format` | string | no | `jpeg` / `png` / `webp`, default `jpeg` |
-| `images` | string[] | no | Reference image URLs (max 3); enables edit mode |
+| `images` | string[] | no | Reference URLs (max 3); enables edit mode |
 
-### Supported ratios
+### Supported aspect ratios
 
 Text-to-image: `2:1`, `20:9`, `19.5:9`, `16:9`, `4:3`, `3:2`, `1:1`, `2:3`, `3:4`, `9:16`, `9:19.5`, `9:20`, `1:2`.
 
@@ -65,7 +70,7 @@ Edit mode also supports `auto`.
 
 ## Examples
 
-### Text-to-image
+### Text-to-image (medium)
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
@@ -73,14 +78,15 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "grok-imagine-image-2",
-    "prompt": "Infographic: rainforest layers, crisp typography and labels",
+    "prompt": "Infographic: rainforest layers with clear typography",
     "ratio": "3:4",
     "resolution": "2k",
+    "quality": "medium",
     "n": 1
   }'
 ```
 
-### Image edit
+### Text-to-image (low draft)
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
@@ -88,18 +94,34 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "grok-imagine-image-2",
-    "prompt": "Replace the sky with aurora while keeping the subject",
-    "images": ["https://example.com/ref.png"],
-    "ratio": "auto",
-    "resolution": "1k"
+    "prompt": "Cyberpunk city at night, neon reflections",
+    "resolution": "1k",
+    "quality": "low",
+    "n": 4
   }'
 ```
 
-## Query result
+### Edit
 
-When completed:
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "Change the sky to aurora, keep the subject",
+    "images": ["https://example.com/ref.png"],
+    "ratio": "auto",
+    "resolution": "1k",
+    "quality": "medium"
+  }'
+```
 
-- `result.image_url`: first image URL
-- `result.image_urls`: all image URLs (`n ≥ 1`)
+## Query results
+
+When complete:
+
+- `result.image_url` — first image URL
+- `result.image_urls` — all URLs when `n ≥ 1`
 
 Poll every 3–5 seconds.

@@ -3,7 +3,7 @@ title: 'Grok Imagine Image 2.0 图像生成'
 openapi: 'POST /api/open-api/v1/images'
 ---
 
-创建 **Grok Imagine Image 2.0**（Quality）异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
+创建 **Grok Imagine Image 2.0** 高质量异步图片生成任务。支持 `quality` 档位（`low` / `medium`），细节与排版表现优于标准版。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
 
 标准版见 [Grok Imagine Image](/zh/api-reference/images/grok-imagine-image/create)。
 
@@ -16,34 +16,38 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 说明 |
 |------|------|
 | 模型名 | `grok-imagine-image-2`（别名 `grok-imagine-image-2.0`、`grok-imagine-image-quality`） |
-| 计费 | **分辨率基础价 × `n`**；图生图另加 **参考图加收**（从第 1 张起） |
+| 接口 | `POST /api/open-api/v1/images`（异步；传入 `images` 时进入编辑模式） |
+| 计费 | **分辨率 + quality 基础价 × `n`**；图生图另加 **参考图加收**（从第 1 张起） |
 | 模式 | 文生图；传入 `images` 时为图编辑（最多 3 张参考图） |
 | 分辨率 | `1k`、`2k`（默认 `1k`） |
+| 画质 | `quality`: `low` \| `medium`（默认 `medium`）。`low` 更快更省，适合试 prompt |
 | 输出格式 | `jpeg`、`png`、`webp`（默认 `jpeg`） |
 
 ## 计费说明
 
-| 分辨率 / 项目 | 计费模型名 | 说明 |
-|--------------|-----------|------|
-| `1k` | `grok-imagine-image-2-1k` | 输出基础价（按张） |
-| `2k` | `grok-imagine-image-2-2k` | 输出基础价（按张） |
+| 分辨率 / quality | 计费模型名 | 说明 |
+|-----------------|-----------|------|
+| `1k` + `low` | `grok-imagine-image-2-1k-low` | 输出基础价（按张） |
+| `1k` + `medium` | `grok-imagine-image-2-1k-medium` | 输出基础价（按张） |
+| `2k` + `low` | `grok-imagine-image-2-2k-low` | 输出基础价（按张） |
+| `2k` + `medium` | `grok-imagine-image-2-2k-medium` | 输出基础价（按张） |
 | 参考图加收（仅图生图） | `grok-imagine-image-2` | 传入 `images` 时，**从第 1 张起**每张加收 |
+
+未配置带 `quality` 后缀的价目时，会依次回退到 `grok-imagine-image-2-{1k|2k}`（视为 medium），再回退到 `grok-imagine-image-2`。
 
 文生图（无参考图）：
 
 ```text
-总费用 = 分辨率单价 × n
+总费用 = 分辨率+quality 单价 × n
 ```
 
 图生图 / 编辑（有参考图）：
 
 ```text
-总费用 = 分辨率单价 × n + 参考图数量 × 参考图单价
+总费用 = 分辨率+quality 单价 × n + 参考图数量 × 参考图单价
 ```
 
-示例（以控制台当前报价为准）：`2k`、`n=1` + 2 张参考图 → `2k 单价 + 2 × 参考图单价`。
-
-单价以控制台 / 定价页为准。若分分辨率价未配置，会回退到 `grok-imagine-image-2`。
+示例（以控制台当前报价为准）：`2k`、`quality=medium`、`n=1` + 2 张参考图 → `2k medium 单价 + 2 × 参考图单价`。
 
 ## 请求参数
 
@@ -53,6 +57,7 @@ openapi: 'POST /api/open-api/v1/images'
 | `prompt` | string | 是 | 图像生成 / 编辑提示词（1–5000 字符） |
 | `ratio` | string | 否 | 画面比例。文生图默认 `1:1`；编辑模式默认 `auto` |
 | `resolution` | string | 否 | `1k` 或 `2k`（默认 `1k`） |
+| `quality` | string | 否 | `low` 或 `medium`（默认 `medium`），仅 2.0 生效 |
 | `n` | int | 否 | 生成张数，`1`–`4`，默认 `1` |
 | `output_format` | string | 否 | `jpeg` / `png` / `webp`，默认 `jpeg` |
 | `images` | string[] | 否 | 参考图 URL（最多 3 张）；传入后走编辑模式 |
@@ -65,7 +70,7 @@ openapi: 'POST /api/open-api/v1/images'
 
 ## 示例
 
-### 文生图
+### 文生图（medium）
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
@@ -76,7 +81,23 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
     "prompt": "信息图：热带雨林分层剖面，清晰排版与标注",
     "ratio": "3:4",
     "resolution": "2k",
+    "quality": "medium",
     "n": 1
+  }'
+```
+
+### 文生图（low，草稿）
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "grok-imagine-image-2",
+    "prompt": "赛博朋克城市夜景，霓虹反射",
+    "resolution": "1k",
+    "quality": "low",
+    "n": 4
   }'
 ```
 
@@ -91,7 +112,8 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
     "prompt": "把天空改成极光，保持主体不变",
     "images": ["https://example.com/ref.png"],
     "ratio": "auto",
-    "resolution": "1k"
+    "resolution": "1k",
+    "quality": "medium"
   }'
 ```
 

@@ -105,6 +105,12 @@
                 ]
               },
               {
+                "group": "LLM",
+                "pages": [
+                  "en/api-reference/chat/completions"
+                ]
+              },
+              {
                 "group": "Tools",
                 "pages": [
                   "en/api-reference/super-resolution/create",
@@ -312,6 +318,12 @@
                 "group": "Flux 3 视频",
                 "pages": [
                   "zh/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "LLM",
+                "pages": [
+                  "zh/api-reference/chat/completions"
                 ]
               },
               {

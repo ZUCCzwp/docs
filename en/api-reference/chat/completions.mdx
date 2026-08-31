@@ -1,0 +1,145 @@
+---
+title: 'Chat Completions'
+openapi: 'POST /api/open-api/v1/chat/completions'
+---
+
+OpenAI-compatible **Chat Completions** for ViraltokAI LLM models. Send multi-turn `messages`, receive assistant replies, and optionally stream tokens. Billing is **pay-as-you-go** from your JimiCoin balance using token counts returned in `usage`.
+
+<Note>
+This endpoint returns the **upstream chat response body** directly (JSON or SSE). Platform errors (auth, balance, validation) use the standard `{ "code", "msg" }` envelope with HTTP 200.
+</Note>
+
+### Authentication
+
+```http
+Authorization: Bearer <API_KEY>
+```
+
+### Endpoint
+
+```http
+POST https://api.viraltok.ai/api/open-api/v1/chat/completions
+Content-Type: application/json
+```
+
+### Supported models
+
+| Model ID | Notes |
+| :--- | :--- |
+| `gpt-5.6-sol` | Default when `model` is omitted |
+| `claude-sonnet-5` | Claude Sonnet tier |
+
+Aliases such as `gpt-5.6`, `gpt5.6-sol`, and `gpt-5.6sol` normalize to `gpt-5.6-sol`.
+
+Confirm active LLM pricing with [Probe model pricing](/en/api-reference/common/model-catalog) (`model_type` = `llm`, or search `gpt-5.6-sol`).
+
+### Request body
+
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `model` | string | No | Billing model ID (default `gpt-5.6-sol`) |
+| `messages` | array | **Yes** | OpenAI-style chat messages (`role`, `content`, …) |
+| `stream` | boolean | No | When `true`, response is `text/event-stream` |
+| `stream_options` | object | No | Ignored on input; when `stream=true`, the platform sets `include_usage: true` so the final chunk includes `usage` |
+| `temperature` | number | No | Passed through when supported |
+| `max_tokens` | integer | No | Passed through when supported |
+
+Additional OpenAI-compatible fields are forwarded when present.
+
+### Non-stream example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-5.6-sol",
+    "messages": [
+      { "role": "user", "content": "Say hello in one sentence." }
+    ]
+  }'
+```
+
+```json
+{
+  "id": "chatcmpl-…",
+  "object": "chat.completion",
+  "model": "gpt-5.6-sol",
+  "choices": [
+    {
+      "index": 0,
+      "message": { "role": "assistant", "content": "Hello!" },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4387,
+    "completion_tokens": 17,
+    "total_tokens": 4404,
+    "prompt_tokens_details": {
+      "cached_tokens": 3840,
+      "cache_write_tokens": 0
+    }
+  }
+}
+```
+
+### Streaming
+
+Set `"stream": true`. The response is Server-Sent Events (`data: {…}` lines, ending with `data: [DONE]`). The **last chunk** that includes `usage` is used for billing.
+
+```bash
+curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-5.6-sol",
+    "stream": true,
+    "messages": [
+      { "role": "user", "content": "Count from 1 to 3." }
+    ]
+  }'
+```
+
+### Usage and billing
+
+After a successful completion (non-stream or stream with usage), the platform:
+
+1. Reads `usage.prompt_tokens`, `usage.completion_tokens`, and optional `usage.prompt_tokens_details`.
+2. Charges your account in **JimiCoin** using the model’s configured rates (`pay_as_you_go` / token meter).
+3. Records a chat task (`task_id` prefix `chat_`) and a usage line with a detailed fee breakdown.
+
+Token buckets:
+
+| Bucket | Source | Billing |
+| :--- | :--- | :--- |
+| **Input** | `prompt_tokens − cached_tokens − cache_write_tokens` | `model_ratio` / 1M |
+| **Cache read** | `prompt_tokens_details.cached_tokens` | `cache_ratio` / 1M |
+| **Cache write** | `prompt_tokens_details.cache_write_tokens` | `cache_write_ratio` / 1M |
+| **Output** | `completion_tokens` | `output_ratio` / 1M |
+
+Formula:
+
+```
+cost = (
+  input/1M × model_ratio
+  + cache_read/1M × cache_ratio
+  + cache_write/1M × cache_write_ratio
+  + output/1M × output_ratio
+) × group_ratio
+```
+
+Ratios come from the model config (`open_api_model_configs`). Defaults are listed on [Probe model pricing](/en/api-reference/common/model-catalog). Usage detail lines show these database values directly in the formula.
+
+<Warning>
+Ensure sufficient JimiCoin before calling. If `available` balance is zero or negative, the request is rejected before upstream dispatch. Check [Query user account balance](/en/api-reference/common/user-balance).
+</Warning>
+
+### Errors
+
+| Situation | Behavior |
+| :--- | :--- |
+| Missing / invalid API key | `{ "code": …, "msg": "…" }` |
+| Model not configured or disabled | Error message in `msg` |
+| Insufficient balance | Error message in `msg` |
+| Upstream model error | Upstream HTTP status and body returned when available |

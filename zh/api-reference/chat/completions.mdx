@@ -1,0 +1,145 @@
+---
+title: 'Chat Completions'
+openapi: 'POST /api/open-api/v1/chat/completions'
+---
+
+兼容 OpenAI 的 **Chat Completions** 对话接口，支持 ViraltokAI LLM 模型。传入多轮 `messages` 获取助手回复，可选流式输出。按响应 `usage` 中的 token **按量计费**，从账户吉米币（JimiCoin）扣减。
+
+<Note>
+成功时响应体为**上游 Chat 原始 JSON 或 SSE**，与 OpenAI 格式一致。平台侧错误（鉴权、余额、参数）仍返回 `{ "code", "msg" }` 且 HTTP 200。
+</Note>
+
+### 鉴权
+
+```http
+Authorization: Bearer <API_KEY>
+```
+
+### 接口地址
+
+```http
+POST https://api.viraltok.ai/api/open-api/v1/chat/completions
+Content-Type: application/json
+```
+
+### 支持的模型
+
+| 模型 ID | 说明 |
+| :--- | :--- |
+| `gpt-5.6-sol` | 省略 `model` 时的默认值 |
+| `claude-sonnet-5` | Claude Sonnet 档位 |
+
+别名 `gpt-5.6`、`gpt5.6-sol`、`gpt-5.6sol` 等会归一化为 `gpt-5.6-sol`。
+
+可用 [查询探测模型定价](/zh/api-reference/common/model-catalog)（`model_type` = `llm`，或搜索 `gpt-5.6-sol`）确认当前公开单价与计费模式。
+
+### 请求体
+
+| 字段 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | string | 否 | 计费模型 ID（默认 `gpt-5.6-sol`） |
+| `messages` | array | **是** | OpenAI 风格消息（`role`、`content` 等） |
+| `stream` | boolean | 否 | 为 `true` 时返回 `text/event-stream` |
+| `stream_options` | object | 否 | 请求中可省略；`stream=true` 时平台会自动设置 `include_usage: true`，以便最后一个 chunk 带上 `usage` |
+| `temperature` | number | 否 | 支持时原样转发 |
+| `max_tokens` | integer | 否 | 支持时原样转发 |
+
+其他 OpenAI 兼容字段在支持范围内会一并转发。
+
+### 非流式示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-5.6-sol",
+    "messages": [
+      { "role": "user", "content": "用一句话打个招呼。" }
+    ]
+  }'
+```
+
+```json
+{
+  "id": "chatcmpl-…",
+  "object": "chat.completion",
+  "model": "gpt-5.6-sol",
+  "choices": [
+    {
+      "index": 0,
+      "message": { "role": "assistant", "content": "你好！" },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4387,
+    "completion_tokens": 17,
+    "total_tokens": 4404,
+    "prompt_tokens_details": {
+      "cached_tokens": 3840,
+      "cache_write_tokens": 0
+    }
+  }
+}
+```
+
+### 流式输出
+
+设置 `"stream": true`。响应为 SSE（`data: {…}` 多行，以 `data: [DONE]` 结束）。**最后一个带 `usage` 的 chunk** 用于计费。
+
+```bash
+curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-5.6-sol",
+    "stream": true,
+    "messages": [
+      { "role": "user", "content": "从 1 数到 3。" }
+    ]
+  }'
+```
+
+### 用量与计费
+
+请求成功（非流式，或流式且收到 `usage`）后，平台会：
+
+1. 读取 `usage.prompt_tokens`、`usage.completion_tokens` 及可选的 `usage.prompt_tokens_details`；
+2. 按模型配置的 token 单价（`pay_as_you_go`）从吉米币扣费；
+3. 写入 chat 任务（`task_id` 前缀 `chat_`）及带明细的 consumption 记录。
+
+Token 分段：
+
+| 分段 | 来源 | 计费 |
+| :--- | :--- | :--- |
+| **输入** | `prompt_tokens − cached_tokens − cache_write_tokens` | `model_ratio` / 1M |
+| **缓存读** | `prompt_tokens_details.cached_tokens` | `cache_ratio` / 1M |
+| **缓存写** | `prompt_tokens_details.cache_write_tokens` | `cache_write_ratio` / 1M |
+| **输出** | `completion_tokens` | `output_ratio` / 1M |
+
+公式：
+
+```
+费用 = (
+  输入/1M × model_ratio
+  + 缓存读/1M × cache_ratio
+  + 缓存写/1M × cache_write_ratio
+  + 输出/1M × output_ratio
+) × group_ratio
+```
+
+各倍率来自模型配置（`open_api_model_configs`）。公开默认值见 [查询探测模型定价](/zh/api-reference/common/model-catalog)。消费明细中的公式会直接展示上述数据库字段。
+
+<Warning>
+调用前请保证吉米币可用余额大于 0，否则会在转发上游前拒绝。可通过 [查询用户账户余额](/zh/api-reference/common/user-balance) 查看。
+</Warning>
+
+### 错误说明
+
+| 情况 | 行为 |
+| :--- | :--- |
+| API Key 缺失或无效 | `{ "code": …, "msg": "…" }` |
+| 模型未配置或已禁用 | `msg` 中返回说明 |
+| 余额不足 | `msg` 中返回说明 |
+| 模型侧错误 | 尽量返回上游 HTTP 状态码与 body |

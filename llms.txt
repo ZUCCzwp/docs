@@ -77,6 +77,13 @@
 - [Claude Code integration](https://docs.viraltok.ai/en/api-reference/llm/integrations/claude-code.md): Use Claude Code with ViraltokAI via CC Switch local routing.
 - [Claude Code 集成](https://docs.viraltok.ai/zh/api-reference/llm/integrations/claude-code.md): 通过 CC Switch 在 Claude Code 中使用 ViraltokAI LLM。
 
+### Promotions
+
+- [Promotions overview](https://docs.viraltok.ai/en/promotions/index.md): ViraltokAI affiliate and referral programs.
+- [推广活动概览](https://docs.viraltok.ai/zh/promotions/index.md): ViraltokAI 推广与返利活动入口。
+- [Affiliate program](https://docs.viraltok.ai/en/promotions/affiliate-program.md): Apply, promotion plan, and reward rules.
+- [联盟推广计划](https://docs.viraltok.ai/zh/promotions/affiliate-program.md): 申请流程、推广计划撰写与返利规则。
+
 ### Image Services
 
 - [GPT Image 2 Image Generation](https://docs.viraltok.ai/en/api-reference/images/create.md): Create an async GPT Image 2 image task.

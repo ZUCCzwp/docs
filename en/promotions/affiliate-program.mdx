@@ -1,0 +1,168 @@
+---
+title: 'Affiliate program'
+description: 'Apply, review, referral rewards, and how to write your promotion plan'
+icon: 'handshake'
+---
+
+The **affiliate program** is for creators and developers who recommend ViraltokAI to their audience. After approval, you receive a personal invite link and poster; when friends register via your link and recharge JimiCoin, you earn **inviter rewards** on their first N recharges.
+
+<Card title="Apply in the console" icon="arrow-up-right-from-square" href="https://api.viraltok.ai/console?tab=affiliate">
+  Console → **Affiliate program** tab
+</Card>
+
+---
+
+## Rules at a glance
+
+| Item | Details |
+| :--- | :--- |
+| **Invite limit** | No cap on invitees |
+| **Reward trigger** | Each successful JimiCoin recharge by an invitee |
+| **Recharge count** | First **N** recharges per invitee (default **3**, per your tier) |
+| **Reward amount** | Invitee recharge JimiCoin × your **inviter rate** (%) from your affiliate tier |
+| **Payout** | Credited to **transferable balance**; manually transfer to JimiCoin for API use |
+| **Invite link** | `https://api.viraltok.ai/register?invite=<your_invite_code>` |
+
+<Warning>
+Rates, recharge counts, and tiers are set at review and may differ between affiliates. Do not promise fixed rates publicly—follow your console after approval.
+</Warning>
+
+---
+
+## How to apply
+
+Open [Console · Affiliate](https://api.viraltok.ai/console?tab=affiliate) and submit:
+
+<Steps>
+<Step title="Select promotion channels (multi-select)">
+  Options include **Douyin, Xiaohongshu, Bilibili, YouTube, Twitter/X, Telegram, WeChat, Other**. Pick channels you actually operate.
+</Step>
+
+<Step title="Social profile links">
+  At least one reachable profile URL (e.g. `https://…`) to verify your reach.
+</Step>
+
+<Step title="Promotion plan">
+  Describe how you will introduce ViraltokAI (see template below).
+</Step>
+
+<Step title="Account proof screenshot">
+  Backend stats, follower metrics, or representative content proving you operate the account.
+</Step>
+
+<Step title="Contact information">
+  Email, Telegram, WeChat, etc., for review follow-up.
+</Step>
+
+<Step title="Submit and wait">
+  While status is **pending**, wait for review. When approved, you are notified by email (if available) and the console shows **approved**.
+</Step>
+</Steps>
+
+---
+
+## Writing your promotion plan
+
+Reviewers look for **audience fit**, a **credible execution plan**, and **product understanding**.
+
+### Include
+
+1. **Audience** — developers, short-video creators, ecommerce teams, etc.
+2. **Channel and format** — tutorials, reviews, live demos, community Q&A, open-source demos
+3. **Focus** — e.g. Sora/Seedance video API, GPT Image, LLM (Codex integration)
+4. **Cadence** — weekly posts, series, campaign window
+5. **Compliance** — pay-as-you-go billing, JimiCoin top-up required
+
+### Example (adapt freely)
+
+```text
+I run a Bilibili channel and a Telegram developer group focused on indie builders.
+Over the next 4 weeks I will publish 2 ViraltokAI tutorials: Open API video generation
+with task polling, and Codex + ViraltokAI LLM via the Responses API, each with a GitHub demo.
+I will answer questions in the group and clearly state pay-as-you-go pricing with links to official docs.
+```
+
+### Avoid
+
+- Empty or one-line plans
+- Guaranteed fixed rebate rates or “easy money” claims
+- Plans that do not match selected channels
+
+---
+
+## After approval
+
+1. Copy your **invite link** or download the **invite poster**
+2. Have friends **register** through the link (invite code applied)
+3. When they **recharge JimiCoin**, you earn rewards on their first N recharges
+4. Review **reward records** in the console
+5. **Transfer** transferable balance to JimiCoin for API usage
+
+### Transfer rewards
+
+Rewards are not auto-applied to your spending balance. Use **Transfer to account balance** in the console to move transferable balance into JimiCoin.
+
+---
+
+## Affiliate tiers
+
+The platform assigns **affiliate tiers** (e.g. Starter, Trainee, Ambassador) based on reach and plan quality. Each tier defines:
+
+- **Inviter reward rate** (%)
+- **Max recharges per invitee** (first N)
+
+Your tier is set at approval and may be adjusted later. Names and rates are shown in the console.
+
+---
+
+## Metrics
+
+| Metric | Meaning |
+| :--- | :--- |
+| Total invitees | Users registered with your invite code |
+| Total recharge | Sum of invitee JimiCoin recharges |
+| Total rewards | Your cumulative inviter rewards |
+| Transferable balance | Rewards not yet transferred to spending balance |
+
+---
+
+## FAQ
+
+<AccordionGroup>
+<Accordion title="Can anyone apply?">
+  You need real, verifiable channels and a concrete plan. Low-quality or fraudulent applications may be rejected.
+</Accordion>
+
+<Accordion title="Must invitees use my link?">
+  Yes. Only registrations with your invite code count toward your referrals and rewards.
+</Accordion>
+
+<Accordion title="Is the reward rate fixed?">
+  No. It comes from your assigned tier and may change if your tier is updated. Follow the console.
+</Accordion>
+
+<Accordion title="Is there a reward on the 4th recharge?">
+  By default, only the first **3** recharges per invitee. If your tier sets a different N, follow the console.
+</Accordion>
+
+<Accordion title="Can I withdraw rewards to a bank account?">
+  Rewards transfer to **JimiCoin** for Open API usage. Direct bank withdrawal is not supported.
+</Accordion>
+
+<Accordion title="Promotion guidelines">
+  Describe pay-as-you-go billing accurately. Use the [public API docs](/en/api-reference/introduction) and [model pricing](/en/api-reference/common/model-catalog) in your content.
+</Accordion>
+</AccordionGroup>
+
+---
+
+## Related links
+
+<CardGroup cols={2}>
+  <Card title="Promotions overview" icon="bullhorn" href="/en/promotions">
+    Program entry and audience
+  </Card>
+  <Card title="Codex App tutorial" icon="desktop" href="/en/api-reference/llm/integrations/codex-app">
+    Example LLM integration content to promote
+  </Card>
+</CardGroup>

@@ -54,6 +54,18 @@
             ]
           },
           {
+            "tab": "Promotions",
+            "groups": [
+              {
+                "group": "Programs",
+                "pages": [
+                  "en/promotions/index",
+                  "en/promotions/affiliate-program"
+                ]
+              }
+            ]
+          },
+          {
             "tab": "API reference",
             "groups": [
               {
@@ -278,6 +290,18 @@
                   "zh/api-reference/llm/integrations/codex-app",
                   "zh/api-reference/llm/integrations/codex",
                   "zh/api-reference/llm/integrations/claude-code"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "推广活动",
+            "groups": [
+              {
+                "group": "活动",
+                "pages": [
+                  "zh/promotions/index",
+                  "zh/promotions/affiliate-program"
                 ]
               }
             ]

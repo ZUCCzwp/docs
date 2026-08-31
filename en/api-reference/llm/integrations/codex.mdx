@@ -1,0 +1,169 @@
+---
+title: 'Codex integration'
+description: 'Connect OpenAI Codex CLI or IDE extensions to the ViraltokAI LLM API'
+icon: 'terminal'
+---
+
+This guide shows how to point **OpenAI Codex** (CLI, IDE extension, or any desktop client that reads the same `config.toml`) at ViraltokAI LLM models such as `gpt-5.6-sol`, `gpt-5.6-terra`, and `claude-sonnet-5`, with pay-as-you-go JimiCoin billing from response `usage`.
+
+<Info>
+**Responses API is the default.** Codex and ViraltokAI both treat `POST /api/open-api/v1/responses` as the primary OpenAI Responses path. Fall back to Chat Completions only for legacy toolchains or when CC Switch cannot use a Responses upstream.
+</Info>
+
+<Note>
+Codex **cloud sessions** cannot be switched to custom third-party models with this workflow. These steps apply to **local** Codex only.
+</Note>
+
+## Before you start
+
+<Steps>
+<Step title="Get an API key">
+  Create an Open API key in the [ViraltokAI console](https://api.viraltok.ai) and keep a positive JimiCoin balance.
+</Step>
+<Step title="Install or update Codex CLI">
+  ```bash
+  npm install -g @openai/codex@latest
+  codex --version
+  ```
+  Run `codex` at least once so `~/.codex/config.toml` is created.
+</Step>
+<Step title="Confirm models and pricing">
+  Use [Probe model pricing](/en/api-reference/common/model-catalog) with `model_type = llm`, or search for `gpt-5.6-sol`. Billing rules are in [Chat Completions](/en/api-reference/chat/completions#usage-and-billing).
+</Step>
+</Steps>
+
+## Integration options
+
+| Approach | Priority | Codex protocol | ViraltokAI endpoint |
+| :--- | :--- | :--- | :--- |
+| **Direct Responses** | **Default / recommended** | Responses | `POST /api/open-api/v1/responses` |
+| **CC Switch + Responses upstream** | When you need a local proxy | Responses → passthrough | `POST /api/open-api/v1/responses` |
+| **CC Switch + Chat conversion** | Fallback only | Responses → adapter → Chat | `POST /api/open-api/v1/chat/completions` |
+
+Both direct and CC Switch setups share the same **API root** (do not append `/responses` or `/chat/completions` yourself):
+
+```text
+https://api.viraltok.ai/api/open-api/v1
+```
+
+Authentication:
+
+```http
+Authorization: Bearer <YOUR_API_KEY>
+```
+
+---
+
+## Default: direct Responses API
+
+Codex defaults to the **OpenAI Responses API** (`wire_api = "responses"`; omitting `wire_api` also resolves to `responses`). ViraltokAI exposes a compatible `POST /responses` endpoint with **no** protocol conversion.
+
+### 1. Set an environment variable
+
+```bash
+export VIRALTOK_API_KEY="your_open_api_key"
+```
+
+### 2. Edit `~/.codex/config.toml`
+
+```toml
+model_provider = "viraltokai"
+model = "gpt-5.6-sol"
+
+[model_providers.viraltokai]
+name = "ViraltokAI"
+base_url = "https://api.viraltok.ai/api/open-api/v1"
+wire_api = "responses"   # default; may be omitted
+env_key = "VIRALTOK_API_KEY"
+model = "gpt-5.6-sol"
+```
+
+Replace `model` with your billing model ID, for example `gpt-5.6-terra` or `claude-sonnet-5`.
+
+<Warning>
+Do not set `wire_api = "chat"`. Newer Codex builds deprecate that path.
+</Warning>
+
+### 3. Verify
+
+In Codex, run `/status` and `/debug-config`. Confirm `base_url` points at ViraltokAI and `wire_api` is `responses`.
+
+Quick probe with curl (expect auth or validation JSON, not `404 page not found`):
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" \
+  -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"gpt-5.6-sol","input":"hi"}'
+```
+
+---
+
+## CC Switch: prefer Responses upstream
+
+When you manage providers in CC Switch, **do not** set upstream format to Chat Completions unless Responses is unavailable.
+
+| Field | Value |
+| :--- | :--- |
+| API base URL | `https://api.viraltok.ai/api/open-api/v1` |
+| Full URL mode | **Off** |
+| Default model | `gpt-5.6-sol` (or `gpt-5.6-terra`, etc.) |
+| Upstream format | **Responses (native)** — direct passthrough |
+
+Enable **Settings → Routing → Local Routing** and Codex takeover. Codex still speaks Responses; CC Switch forwards to ViraltokAI `/responses`, not `/chat/completions`.
+
+After takeover, `~/.codex/config.toml` should show something like `http://127.0.0.1:15721/v1`, not `api.viraltok.ai` directly.
+
+---
+
+## Fallback: CC Switch + Chat Completions
+
+Use this only when Responses upstream is unavailable. Set upstream format to **Chat Completions (routing required)** so CC Switch converts Codex Responses traffic to [Chat Completions](/en/api-reference/chat/completions).
+
+---
+
+## Common errors
+
+| Symptom | Cause | Fix |
+| :--- | :--- | :--- |
+| 404 on `…/v1/responses` with host `api.viraltok.ai` | `/responses` not live or wrong base URL | Confirm Responses is deployed; use root base URL only |
+| Chat format selected but 404 to `/responses` | CC Switch **did not take over** Codex | Enable routing; confirm `127.0.0.1:15721` |
+| Using `wire_api = "chat"` | Deprecated Codex path | Set `wire_api = "responses"` or omit |
+| 401 / insufficient balance | Invalid key or zero JimiCoin | Check the key and [account balance](/en/api-reference/common/user-balance) |
+
+---
+
+## Supported models
+
+| Model ID | Notes |
+| :--- | :--- |
+| `gpt-5.6-sol` | Common default |
+| `gpt-5.6-terra` | GPT-5.6 Terra tier |
+| `claude-sonnet-5` | Claude Sonnet tier |
+
+Some aliases (for example `gpt-5.6`, `gpt5.6-sol`) normalize to `gpt-5.6-sol` on the Chat Completions path. On the Responses path, use the **full model IDs** above.
+
+---
+
+## Billing and usage
+
+- Successful responses expose `usage` (or a final stream event with `usage`) for metered billing.
+- Input, output, cache read, and cache write token buckets apply; see [Chat Completions — Usage and billing](/en/api-reference/chat/completions#usage-and-billing).
+- Task ID prefixes: `resp_` (Responses) or `chat_` (Chat Completions).
+
+---
+
+## Related docs
+
+<CardGroup cols={2}>
+  <Card title="Codex App tutorial" icon="desktop" href="/en/api-reference/llm/integrations/codex-app">
+    Step-by-step walkthrough with screenshots
+  </Card>
+  <Card title="Chat Completions API" icon="comments" href="/en/api-reference/chat/completions">
+    OpenAI-compatible chat endpoint and billing
+  </Card>
+  <Card title="Model pricing" icon="coins" href="/en/api-reference/common/model-catalog">
+    Public LLM rates and billing modes
+  </Card>
+</CardGroup>

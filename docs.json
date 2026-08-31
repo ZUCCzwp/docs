@@ -41,6 +41,19 @@
             ]
           },
           {
+            "tab": "Integrations",
+            "groups": [
+              {
+                "group": "LLM",
+                "pages": [
+                  "en/api-reference/llm/integrations/codex-app",
+                  "en/api-reference/llm/integrations/codex",
+                  "en/api-reference/llm/integrations/claude-code"
+                ]
+              }
+            ]
+          },
+          {
             "tab": "API reference",
             "groups": [
               {
@@ -252,6 +265,19 @@
                 "group": "常见问题",
                 "pages": [
                   "zh/faq"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "集成指南",
+            "groups": [
+              {
+                "group": "LLM",
+                "pages": [
+                  "zh/api-reference/llm/integrations/codex-app",
+                  "zh/api-reference/llm/integrations/codex",
+                  "zh/api-reference/llm/integrations/claude-code"
                 ]
               }
             ]

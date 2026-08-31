@@ -5,6 +5,10 @@ openapi: 'POST /api/open-api/v1/chat/completions'
 
 兼容 OpenAI 的 **Chat Completions** 对话接口，支持 ViraltokAI LLM 模型。传入多轮 `messages` 获取助手回复，可选流式输出。按响应 `usage` 中的 token **按量计费**，从账户吉米币（JimiCoin）扣减。
 
+<Info>
+**Codex 等 Agent 工具默认请走 Responses API**（`POST /api/open-api/v1/responses`），而非本页 Chat Completions。详见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。本接口适用于脚本、后端 SDK 及需要 `messages` 格式的集成。
+</Info>
+
 <Note>
 成功时响应体为**上游 Chat 原始 JSON 或 SSE**，与 OpenAI 格式一致。平台侧错误（鉴权、余额、参数）仍返回 `{ "code", "msg" }` 且 HTTP 200。
 </Note>
@@ -27,9 +31,12 @@ Content-Type: application/json
 | 模型 ID | 说明 |
 | :--- | :--- |
 | `gpt-5.6-sol` | 省略 `model` 时的默认值 |
+| `gpt-5.6-terra` | GPT-5.6 Terra 档位 |
 | `claude-sonnet-5` | Claude Sonnet 档位 |
 
 别名 `gpt-5.6`、`gpt5.6-sol`、`gpt-5.6sol` 等会归一化为 `gpt-5.6-sol`。
+
+在 **Codex** 或 **Claude Code** 中接入本接口，见 [Codex 集成](/zh/api-reference/llm/integrations/codex) 与 [Claude Code 集成](/zh/api-reference/llm/integrations/claude-code)。
 
 可用 [查询探测模型定价](/zh/api-reference/common/model-catalog)（`model_type` = `llm`，或搜索 `gpt-5.6-sol`）确认当前公开单价与计费模式。
 

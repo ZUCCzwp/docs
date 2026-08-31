@@ -5,6 +5,10 @@ openapi: 'POST /api/open-api/v1/chat/completions'
 
 OpenAI-compatible **Chat Completions** for ViraltokAI LLM models. Send multi-turn `messages`, receive assistant replies, and optionally stream tokens. Billing is **pay-as-you-go** from your JimiCoin balance using token counts returned in `usage`.
 
+<Info>
+**Agent tools such as Codex default to the Responses API** (`POST /api/open-api/v1/responses`), not this Chat Completions page. See [Codex integration](/en/api-reference/llm/integrations/codex). Use this endpoint for scripts, backend SDKs, and integrations that require the `messages` format.
+</Info>
+
 <Note>
 This endpoint returns the **upstream chat response body** directly (JSON or SSE). Platform errors (auth, balance, validation) use the standard `{ "code", "msg" }` envelope with HTTP 200.
 </Note>
@@ -27,9 +31,12 @@ Content-Type: application/json
 | Model ID | Notes |
 | :--- | :--- |
 | `gpt-5.6-sol` | Default when `model` is omitted |
+| `gpt-5.6-terra` | GPT-5.6 Terra tier |
 | `claude-sonnet-5` | Claude Sonnet tier |
 
 Aliases such as `gpt-5.6`, `gpt5.6-sol`, and `gpt-5.6sol` normalize to `gpt-5.6-sol`.
+
+To connect **Codex** or **Claude Code**, see [Codex integration](/en/api-reference/llm/integrations/codex) and [Claude Code integration](/en/api-reference/llm/integrations/claude-code).
 
 Confirm active LLM pricing with [Probe model pricing](/en/api-reference/common/model-catalog) (`model_type` = `llm`, or search `gpt-5.6-sol`).
 

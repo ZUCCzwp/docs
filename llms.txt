@@ -64,9 +64,18 @@
 
 ### LLM
 
-- [Chat Completions](https://docs.viraltok.ai/en/api-reference/chat/completions.md): OpenAI-compatible LLM chat (`gpt-5.6-sol`, `claude-sonnet-5`); pay-as-you-go token billing with cache read/write breakdown.
-- [Chat Completions](https://docs.viraltok.ai/zh/api-reference/chat/completions.md): 兼容 OpenAI 的 LLM 对话（`gpt-5.6-sol`、`claude-sonnet-5`）；按 token 计费，支持缓存读/写分段。
+- [Chat Completions](https://docs.viraltok.ai/en/api-reference/chat/completions.md): OpenAI-compatible LLM chat (`gpt-5.6-sol`, `gpt-5.6-terra`, `claude-sonnet-5`); pay-as-you-go token billing with cache read/write breakdown.
+- [Chat Completions](https://docs.viraltok.ai/zh/api-reference/chat/completions.md): 兼容 OpenAI 的 LLM 对话（`gpt-5.6-sol`、`gpt-5.6-terra`、`claude-sonnet-5`）；按 token 计费，支持缓存读/写分段。
 - [Probe model pricing](https://docs.viraltok.ai/en/api-reference/common/model-catalog.md): Public model catalog including `llm` billing models.
+
+### Integrations
+
+- [Codex App tutorial](https://docs.viraltok.ai/en/api-reference/llm/integrations/codex-app.md): Step-by-step Codex desktop app setup with screenshots.
+- [Codex App 使用教程](https://docs.viraltok.ai/zh/api-reference/llm/integrations/codex-app.md): Codex 桌面 App 逐步上手教程（含截图）。
+- [Codex integration](https://docs.viraltok.ai/en/api-reference/llm/integrations/codex.md): Connect OpenAI Codex to ViraltokAI LLM via Responses API or CC Switch.
+- [Codex 集成](https://docs.viraltok.ai/zh/api-reference/llm/integrations/codex.md): 在 Codex 中接入 ViraltokAI LLM（Responses 直连或 CC Switch）。
+- [Claude Code integration](https://docs.viraltok.ai/en/api-reference/llm/integrations/claude-code.md): Use Claude Code with ViraltokAI via CC Switch local routing.
+- [Claude Code 集成](https://docs.viraltok.ai/zh/api-reference/llm/integrations/claude-code.md): 通过 CC Switch 在 Claude Code 中使用 ViraltokAI LLM。
 
 ### Image Services
 

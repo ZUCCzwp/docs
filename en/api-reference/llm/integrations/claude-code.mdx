@@ -1,0 +1,145 @@
+---
+title: 'Claude Code integration'
+description: 'Use the ViraltokAI LLM API from Claude Code'
+icon: 'asterisk'
+---
+
+This guide explains how to use ViraltokAI LLM models from **Claude Code**. Claude Code speaks the Anthropic Messages protocol, so you bridge it through **CC Switch**.
+
+<Info>
+For OpenAI-compatible scripts and SDKs, **default to the Responses API** (`POST /api/open-api/v1/responses`)—see [Codex integration](/en/api-reference/llm/integrations/codex). The Claude Code CLI still requires the CC Switch flow below because of its native protocol.
+</Info>
+
+For scripts or backends, call the Responses or Chat Completions HTTP APIs directly—you do not need the Claude Code CLI.
+
+## Before you start
+
+<Steps>
+<Step title="Get an API key">
+  Create an Open API key in the [ViraltokAI console](https://api.viraltok.ai) and top up JimiCoin.
+</Step>
+<Step title="Install Claude Code">
+  ```bash
+  npm install -g @anthropic-ai/claude-code
+  claude --version
+  ```
+</Step>
+<Step title="Install CC Switch (recommended)">
+  Install the latest stable release from the [CC Switch site](https://cc-switch.cc) or official GitHub Releases.
+</Step>
+</Steps>
+
+## Recommended: CC Switch + Chat Completions
+
+```text
+Claude Code  →  Anthropic Messages  →  CC Switch (127.0.0.1)  →  ViraltokAI Chat Completions  →  Messages again
+```
+
+### 1. Create a provider in CC Switch
+
+| Field | Value |
+| :--- | :--- |
+| API base URL | `https://api.viraltok.ai/api/open-api/v1` |
+| Full URL mode | **Off** |
+| Default model | `claude-sonnet-5` or `gpt-5.6-sol` / `gpt-5.6-terra` |
+| Upstream format | **Chat Completions (routing required)** |
+| API key | Your ViraltokAI Open API key |
+
+<Note>
+The `model` ID must **exactly match** a billing model ID in the ViraltokAI console. For Claude-tier usage, use `claude-sonnet-5`—not Anthropic’s official model names.
+</Note>
+
+### 2. Enable Claude Code routing
+
+In CC Switch: **Settings → Routing → Local Routing**
+
+1. Turn on the local routing master switch
+2. Enable **Claude Code** (or the matching Claude client toggle) under **Routing Enabled**
+3. Activate the provider you created
+4. Keep CC Switch running
+
+After takeover, Claude Code should target the local proxy (commonly `http://127.0.0.1:15721`), which forwards to ViraltokAI.
+
+### 3. Restart Claude Code
+
+Fully quit Claude Code or the IDE extension so cached provider settings refresh.
+
+---
+
+## Direct API calls (scripts / backends)
+
+OpenAI-compatible integrations **default to Responses**:
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-sonnet-5",
+    "input": "Describe ViraltokAI in one sentence."
+  }'
+```
+
+If your SDK only supports Chat Completions, use [Chat Completions](/en/api-reference/chat/completions):
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-sonnet-5",
+    "messages": [
+      { "role": "user", "content": "Describe ViraltokAI in one sentence." }
+    ]
+  }'
+```
+
+Set `"stream": true` for streaming; billing uses the last event or chunk that includes `usage`.
+
+<Warning>
+Pointing Claude Code’s `ANTHROPIC_BASE_URL` directly at `https://api.viraltok.ai/...` will not work for native Messages—the ViraltokAI LLM entrypoints are OpenAI-compatible. Use CC Switch or your own protocol gateway.
+</Warning>
+
+---
+
+## Supported models
+
+| Model ID | Typical use |
+| :--- | :--- |
+| `claude-sonnet-5` | Code and chat, Claude tier |
+| `gpt-5.6-sol` | General reasoning and coding |
+| `gpt-5.6-terra` | GPT-5.6 Terra tier |
+
+Public rates: [Probe model pricing](/en/api-reference/common/model-catalog) with `model_type = llm`.
+
+---
+
+## Billing
+
+- JimiCoin is deducted from `usage` tokens (input, output, cache read, cache write).
+- Insufficient balance is rejected before the upstream call; check [user balance](/en/api-reference/common/user-balance) first.
+- Console tasks use the `chat_` prefix with usage line items.
+
+---
+
+## Troubleshooting
+
+| Symptom | What to check |
+| :--- | :--- |
+| 401 / invalid key | ViraltokAI Open API key saved correctly in CC Switch |
+| Model not found | Model is active in the console; request `model` matches the billing ID |
+| localhost connection errors | CC Switch routing is on and the app is running |
+| Replies but no charge | Response includes `usage`; for streams, the final chunk with `usage` |
+
+---
+
+## Related docs
+
+<CardGroup cols={2}>
+  <Card title="Codex integration" icon="terminal" href="/en/api-reference/llm/integrations/codex">
+    Connect OpenAI Codex to ViraltokAI LLM
+  </Card>
+  <Card title="Chat Completions" icon="comments" href="/en/api-reference/chat/completions">
+    Parameters, streaming, and billing formula
+  </Card>
+</CardGroup>

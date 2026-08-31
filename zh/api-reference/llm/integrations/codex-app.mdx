@@ -1,0 +1,171 @@
+---
+title: 'Codex App 使用教程'
+description: '从安装到首次对话：在 Codex 桌面 App / CLI 中使用 ViraltokAI LLM（含截图步骤）'
+icon: 'desktop'
+---
+
+本教程面向 **Codex 桌面 App、IDE 扩展与 CLI**（均读取 `~/.codex/config.toml`），手把手完成 ViraltokAI LLM 接入。**默认走 Responses API**；配置细节见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。
+
+<Note>
+Codex **云端会话**无法切换为第三方模型。以下步骤仅适用于**本机** Codex。
+</Note>
+
+## 你将完成什么
+
+<Steps>
+<Step title="在控制台创建 API Key">
+  登录 [ViraltokAI 控制台](https://api.viraltok.ai)，进入 Open API Key 管理，创建一把新 Key 并复制保存。
+
+  <Frame caption="在 ViraltokAI 控制台创建并管理 Open API Key">
+    <img src="/images/integrations/codex-app-01-api-key.png" alt="ViraltokAI 控制台 API 密钥页面" />
+  </Frame>
+
+  <Warning>
+  不要把完整 Key 提交到 Git、截图或公开频道。教程截图请打码。
+  </Warning>
+</Step>
+
+<Step title="确认吉米币余额">
+  在控制台查看账户余额，或调用 [查询用户账户余额](/zh/api-reference/common/user-balance)。余额须 **大于 0**，否则请求会在转发前被拒绝。
+</Step>
+
+<Step title="安装 Codex App">
+  Codex 已并入 **ChatGPT 桌面 App**（同一应用内可切换 Chat / Work / Codex）。请从官网下载并安装：
+
+  **下载地址：** [https://chatgpt.com/download](https://chatgpt.com/download)
+
+  | 平台 | 说明 |
+  | :--- | :--- |
+  | **macOS / Windows** | 在下载页选择对应安装包；已安装旧版 Codex App 的用户可直接更新到新版 ChatGPT 桌面 App |
+  | **Linux（预览）** | 见 [ChatGPT Linux 桌面 App 文档](https://learn.chatgpt.com/docs/linux/linux-app) |
+  | **Windows 详情** | 见 [Windows 安装说明](https://learn.chatgpt.com/docs/windows/windows-app) |
+
+  安装后打开应用，使用 ChatGPT 账号登录，在界面中进入 **Codex** 视图。首次运行会在本机生成 `~/.codex/config.toml`（CLI 与 App 共用该配置）。
+
+  <Note>
+  若你只用终端、不用图形界面，可另行安装 Codex CLI：`npm install -g @openai/codex@latest`。本教程以下步骤以 **Codex App** 为主。
+  </Note>
+</Step>
+</Steps>
+
+---
+
+## 方式 A：直连 ViraltokAI（推荐，默认 Responses）
+
+适合大多数用户：Codex 直接请求 ViraltokAI 的 **`/responses`**，无需 CC Switch。
+
+### 1. 设置环境变量
+
+macOS / Linux（写入 `~/.zshrc` 或 `~/.bashrc`）：
+
+```bash
+export VIRALTOK_API_KEY="你的_OpenAPI_Key"
+```
+
+Windows PowerShell：
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("VIRALTOK_API_KEY", "你的_OpenAPI_Key", "User")
+```
+
+### 2. 编辑 `~/.codex/config.toml`
+
+```toml
+model_provider = "viraltokai"
+model = "gpt-5.6-sol"
+
+[model_providers.viraltokai]
+name = "ViraltokAI"
+base_url = "https://api.viraltok.ai/api/open-api/v1"
+wire_api = "responses"   # 默认；可省略
+env_key = "VIRALTOK_API_KEY"
+model = "gpt-5.6-sol"
+```
+
+将 `model` 改为你需要的计费 ID，例如 `gpt-5.6-terra` 或 `claude-sonnet-5`。
+
+<Frame caption="编辑 config.toml，wire_api 保持 responses（示意图）">
+  <img src="/images/integrations/codex-app-02-config-toml.png" alt="Codex config.toml 配置 ViraltokAI Responses" />
+</Frame>
+
+<Check>
+保存后，在 Codex 中执行 `/debug-config`，应看到 `base_url` 为 `https://api.viraltok.ai/api/open-api/v1`，且 `wire_api` 为 `responses`。
+</Check>
+
+### 3. 重启 Codex App
+
+完全退出 Codex 桌面 App 或 IDE 扩展后重新打开，使配置生效。
+
+---
+
+## 方式 B：通过 CC Switch（需本地代理时）
+
+若你用 CC Switch 管理多个 provider，或需要在图形界面快速切换：
+
+1. 在 CC Switch 新建 Provider，API 地址填 `https://api.viraltok.ai/api/open-api/v1`
+2. **上游格式选 Responses（原生）** — 不要默认选 Chat Completions
+3. 开启 **Local Routing** 并接管 **Codex**
+4. 启用该 Provider 并重启 Codex
+
+<Frame caption="CC Switch：上游格式选 Responses（原生）（示意图）">
+  <img src="/images/integrations/codex-app-04-cc-switch.png" alt="CC Switch Provider 配置 Responses 上游" />
+</Frame>
+
+接管成功后，`/debug-config` 里的 `base_url` 应变为 `http://127.0.0.1:15721/v1` 一类本地地址，而不是直接指向 `api.viraltok.ai`。
+
+---
+
+## 第一次对话
+
+1. 在 Codex App 中打开你的项目目录
+2. 在输入框发送测试消息，例如：`列出当前目录下的文件`
+3. 执行 `/status`，确认当前 **model** 与 **provider** 正确
+
+<Frame caption="配置成功后，Codex 正常回复（示意图）">
+  <img src="/images/integrations/codex-app-03-chat-success.png" alt="Codex App 对话成功界面" />
+</Frame>
+
+建议至少完成一次**带工具能力**的测试（读文件、列目录），不要只用「你好」验证——部分错误在简单问候时不会暴露。
+
+---
+
+## 常用命令
+
+| 命令 | 作用 |
+| :--- | :--- |
+| `/status` | 查看当前模型、provider、权限 |
+| `/debug-config` | 查看生效的配置来源与 `base_url` |
+| `/model` | 切换模型（需与 ViraltokAI 已启用的计费 ID 一致） |
+
+---
+
+## 计费与用量
+
+- 按 Responses 返回的 `usage` token 从吉米币扣费，任务 ID 前缀为 `resp_`。
+- 支持输入 / 输出 / 缓存读 / 缓存写四段计费，公式见 [Chat Completions — Usage 与计费](/zh/api-reference/chat/completions#usage-与计费)。
+- 在控制台查看用量明细与任务记录。
+
+---
+
+## 常见问题
+
+| 现象 | 处理 |
+| :--- | :--- |
+| `404 …/v1/responses` | 确认平台 `/responses` 已上线；`base_url` 只填根路径，不要重复拼 `/responses` |
+| 仍打到 `/responses` 但选了 Chat 格式 | CC Switch 未接管 Codex；检查 Local Routing 与 `127.0.0.1:15721` |
+| `缺少API密钥` / 401 | 检查 `VIRALTOK_API_KEY` 与 `env_key` 名称是否一致 |
+| 余额不足 | 充值后重试 |
+| 有回复但不扣费 | 流式需最后一个带 `usage` 的事件；检查控制台任务 |
+
+---
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="Codex 集成（完整说明）" icon="terminal" href="/zh/api-reference/llm/integrations/codex">
+    Responses 默认路径、CC Switch 回退与故障排查
+  </Card>
+  <Card title="模型定价" icon="coins" href="/zh/api-reference/common/model-catalog">
+    查询 LLM 公开单价
+  </Card>
+</CardGroup>

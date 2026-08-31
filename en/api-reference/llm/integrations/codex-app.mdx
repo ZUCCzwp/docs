@@ -1,0 +1,171 @@
+---
+title: 'Codex App tutorial'
+description: 'Step-by-step: use ViraltokAI LLM in the Codex desktop app or CLI, with screenshots'
+icon: 'desktop'
+---
+
+This walkthrough covers the **Codex desktop app, IDE extension, and CLI** (all read `~/.codex/config.toml`). **Responses API is the default path.** For full integration details, see [Codex integration](/en/api-reference/llm/integrations/codex).
+
+<Note>
+Codex **cloud sessions** cannot use custom third-party models. These steps apply to **local** Codex only.
+</Note>
+
+## What you will set up
+
+<Steps>
+<Step title="Create an API key in the console">
+  Sign in to the [ViraltokAI console](https://api.viraltok.ai), open Open API Key management, create a key, and copy it to a safe place.
+
+  <Frame caption="Create and manage Open API keys in the ViraltokAI console">
+    <img src="/images/integrations/codex-app-01-api-key.png" alt="ViraltokAI console API keys page" />
+  </Frame>
+
+  <Warning>
+  Never commit your full key to Git, screenshots, or public channels. Redact keys in any captures you share.
+  </Warning>
+</Step>
+
+<Step title="Confirm JimiCoin balance">
+  Check balance in the console or via [Query user account balance](/en/api-reference/common/user-balance). Balance must be **greater than zero** or requests are rejected before forwarding.
+</Step>
+
+<Step title="Install the Codex app">
+  Codex is part of the **ChatGPT desktop app** (switch between Chat, Work, and Codex in one app). Download and install from the official page:
+
+  **Download:** [https://chatgpt.com/download](https://chatgpt.com/download)
+
+  | Platform | Notes |
+  | :--- | :--- |
+  | **macOS / Windows** | Pick the installer on the download page; existing Codex app users can update to the new ChatGPT desktop app |
+  | **Linux (preview)** | See [ChatGPT desktop app for Linux](https://learn.chatgpt.com/docs/linux/linux-app) |
+  | **Windows details** | See [Windows installation guide](https://learn.chatgpt.com/docs/windows/windows-app) |
+
+  After installation, sign in with your ChatGPT account and open the **Codex** view. The first run creates `~/.codex/config.toml` on your machine (shared by the app and CLI).
+
+  <Note>
+  For terminal-only use, you can install the Codex CLI separately: `npm install -g @openai/codex@latest`. The rest of this tutorial focuses on the **Codex app**.
+  </Note>
+</Step>
+</Steps>
+
+---
+
+## Option A: Direct ViraltokAI (recommended, Responses default)
+
+Best for most users: Codex calls ViraltokAI **`/responses`** directly—no CC Switch required.
+
+### 1. Set an environment variable
+
+macOS / Linux (add to `~/.zshrc` or `~/.bashrc`):
+
+```bash
+export VIRALTOK_API_KEY="your_open_api_key"
+```
+
+Windows PowerShell:
+
+```powershell
+[System.Environment]::SetEnvironmentVariable("VIRALTOK_API_KEY", "your_open_api_key", "User")
+```
+
+### 2. Edit `~/.codex/config.toml`
+
+```toml
+model_provider = "viraltokai"
+model = "gpt-5.6-sol"
+
+[model_providers.viraltokai]
+name = "ViraltokAI"
+base_url = "https://api.viraltok.ai/api/open-api/v1"
+wire_api = "responses"   # default; may be omitted
+env_key = "VIRALTOK_API_KEY"
+model = "gpt-5.6-sol"
+```
+
+Change `model` to your billing ID, for example `gpt-5.6-terra` or `claude-sonnet-5`.
+
+<Frame caption="Edit config.toml with wire_api = responses (illustration)">
+  <img src="/images/integrations/codex-app-02-config-toml.png" alt="Codex config.toml ViraltokAI Responses setup" />
+</Frame>
+
+<Check>
+After saving, run `/debug-config` in Codex. You should see `base_url` = `https://api.viraltok.ai/api/open-api/v1` and `wire_api` = `responses`.
+</Check>
+
+### 3. Restart the Codex app
+
+Fully quit the Codex desktop app or IDE extension, then reopen so config reloads.
+
+---
+
+## Option B: Via CC Switch (local proxy)
+
+Use this when you manage multiple providers in CC Switch or prefer a GUI toggle:
+
+1. Create a provider with API URL `https://api.viraltok.ai/api/open-api/v1`
+2. Set upstream format to **Responses (native)** — not Chat Completions by default
+3. Enable **Local Routing** and **Codex** takeover
+4. Activate the provider and restart Codex
+
+<Frame caption="CC Switch: Responses (native) upstream format (illustration)">
+  <img src="/images/integrations/codex-app-04-cc-switch.png" alt="CC Switch provider Responses upstream" />
+</Frame>
+
+After takeover, `/debug-config` should show a local `base_url` such as `http://127.0.0.1:15721/v1`, not `api.viraltok.ai` directly.
+
+---
+
+## Your first conversation
+
+1. Open your project folder in the Codex app
+2. Send a test prompt, for example: `List files in the current directory`
+3. Run `/status` and confirm **model** and **provider**
+
+<Frame caption="Codex replies successfully after setup (illustration)">
+  <img src="/images/integrations/codex-app-03-chat-success.png" alt="Codex app chat success" />
+</Frame>
+
+Run at least one **tool-capable** test (read a file, list a directory). A plain “hello” may not surface routing or auth issues.
+
+---
+
+## Useful commands
+
+| Command | Purpose |
+| :--- | :--- |
+| `/status` | Current model, provider, permissions |
+| `/debug-config` | Effective config source and `base_url` |
+| `/model` | Switch models (must match an enabled ViraltokAI billing ID) |
+
+---
+
+## Billing and usage
+
+- JimiCoin is metered from Responses `usage` tokens; task IDs use the `resp_` prefix.
+- Input, output, cache read, and cache write buckets apply; see [Chat Completions — Usage and billing](/en/api-reference/chat/completions#usage-and-billing).
+- Review usage lines and tasks in the console.
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+| :--- | :--- |
+| `404 …/v1/responses` | Confirm `/responses` is live; use root `base_url` only—do not append `/responses` |
+| Chat format selected but still hits `/responses` on ViraltokAI | CC Switch did not take over; check Local Routing and `127.0.0.1:15721` |
+| Missing API key / 401 | Match `VIRALTOK_API_KEY` with `env_key` in config |
+| Insufficient balance | Top up and retry |
+| Replies but no charge | Streams need a final event with `usage`; check console tasks |
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Codex integration (full reference)" icon="terminal" href="/en/api-reference/llm/integrations/codex">
+    Default Responses path, CC Switch fallback, troubleshooting
+  </Card>
+  <Card title="Model pricing" icon="coins" href="/en/api-reference/common/model-catalog">
+    Public LLM rates
+  </Card>
+</CardGroup>

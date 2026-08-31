@@ -1,0 +1,147 @@
+---
+title: 'Claude Code 集成'
+description: '在 Claude Code 中接入 ViraltokAI LLM API'
+icon: 'asterisk'
+---
+
+本指南说明如何在 **Claude Code** 中使用 ViraltokAI 的 LLM 能力。Claude Code 使用 Anthropic Messages 协议，需通过 **CC Switch** 转换后接入 ViraltokAI。
+
+<Info>
+若你使用 OpenAI 兼容客户端或脚本，**默认请走 Responses API**（`POST /api/open-api/v1/responses`），见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。Claude Code CLI 因协议不同，仍走下方 CC Switch 方案。
+</Info>
+
+若你只需在脚本或后端调用 LLM，优先使用 Responses 或 Chat Completions HTTP API，无需安装 Claude Code。
+
+## 开始之前
+
+<Steps>
+<Step title="获取 API Key">
+  在 [ViraltokAI 控制台](https://api.viraltok.ai) 创建 Open API Key，并充值吉米币。
+</Step>
+<Step title="安装 Claude Code">
+  ```bash
+  npm install -g @anthropic-ai/claude-code
+  claude --version
+  ```
+</Step>
+<Step title="安装 CC Switch（推荐）">
+  从 [CC Switch 官网](https://cc-switch.cc) 或官方 GitHub Releases 安装，并保持为最新稳定版。
+</Step>
+</Steps>
+
+## 推荐：CC Switch + Chat Completions
+
+数据流如下：
+
+```text
+Claude Code  →  Anthropic Messages  →  CC Switch（127.0.0.1）  →  ViraltokAI Chat Completions  →  转回 Messages
+```
+
+### 1. 在 CC Switch 中创建 Provider
+
+| 字段 | 值 |
+| :--- | :--- |
+| API 请求地址 | `https://api.viraltok.ai/api/open-api/v1` |
+| 完整 URL | **关闭** |
+| 默认模型 | `claude-sonnet-5` 或 `gpt-5.6-sol` / `gpt-5.6-terra` |
+| 上游格式 | **Chat Completions（需开启路由）** |
+| API Key | 你的 ViraltokAI Open API Key |
+
+<Note>
+模型 ID 必须与 ViraltokAI 控制台中配置的计费 ID **完全一致**。Claude 档位请用 `claude-sonnet-5`，不要用 Anthropic 官方模型名。
+</Note>
+
+### 2. 开启 Claude Code 路由
+
+在 CC Switch：**Settings → Routing → Local Routing**
+
+1. 打开本地路由总开关
+2. 在 **Routing Enabled** 中开启 **Claude Code**（或对应 Claude 客户端项）
+3. 启用上一步创建的 provider
+4. 保持 CC Switch 运行
+
+接管后，Claude Code 的 API 根地址应指向本机代理（常见为 `http://127.0.0.1:15721`），由 CC Switch 转发至 ViraltokAI。
+
+### 3. 重启 Claude Code
+
+完全退出 Claude Code 或 IDE 扩展后重新打开，避免缓存旧 provider。
+
+---
+
+## 直连 API（脚本 / 后端，非 Claude Code CLI）
+
+OpenAI 兼容集成**默认使用 Responses**：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-sonnet-5",
+    "input": "用一句话介绍 ViraltokAI。"
+  }'
+```
+
+若你的 SDK 只支持 Chat Completions，可使用 [Chat Completions](/zh/api-reference/chat/completions)：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-sonnet-5",
+    "messages": [
+      { "role": "user", "content": "用一句话介绍 ViraltokAI。" }
+    ]
+  }'
+```
+
+流式请求将 `"stream": true`，计费以最后一个带 `usage` 的事件或 chunk 为准。
+
+<Warning>
+不要将 Claude Code 的 `ANTHROPIC_BASE_URL` 直接设为 `https://api.viraltok.ai/...` 且期望原生 Messages 协议可用——ViraltokAI LLM 入口为 OpenAI 兼容格式，需 CC Switch 或自建网关做协议转换。
+</Warning>
+
+---
+
+## 支持的模型
+
+| 模型 ID | 典型用途 |
+| :--- | :--- |
+| `claude-sonnet-5` | 代码与对话，Claude 档位 |
+| `gpt-5.6-sol` | 通用推理与编码 |
+| `gpt-5.6-terra` | GPT-5.6 Terra 档位 |
+
+定价与倍率见 [查询探测模型定价](/zh/api-reference/common/model-catalog)（`model_type = llm`）。
+
+---
+
+## 计费说明
+
+- 按响应 `usage` 中的 token 从吉米币扣费（输入 / 输出 / 缓存读 / 缓存写）。
+- 余额不足时，请求会在转发上游前被拒绝；请先 [查询用户账户余额](/zh/api-reference/common/user-balance)。
+- 控制台可查看 `chat_` 前缀任务与用量明细。
+
+---
+
+## 故障排查
+
+| 现象 | 处理 |
+| :--- | :--- |
+| 401 / Key 无效 | 确认 CC Switch 中保存的是 ViraltokAI Open API Key |
+| 模型不存在 | 在控制台确认模型已启用，且 `model` 字段与计费 ID 一致 |
+| 连接 localhost 失败 | 确认 CC Switch 本地路由已开启且进程在运行 |
+| 有回复但未扣费 | 检查响应是否包含 `usage`；流式需最后一个带 usage 的 chunk |
+
+---
+
+## 相关文档
+
+<CardGroup cols={2}>
+  <Card title="Codex 集成" icon="terminal" href="/zh/api-reference/llm/integrations/codex">
+    OpenAI Codex 接入 ViraltokAI LLM
+  </Card>
+  <Card title="Chat Completions" icon="comments" href="/zh/api-reference/chat/completions">
+    接口参数、流式与计费公式
+  </Card>
+</CardGroup>

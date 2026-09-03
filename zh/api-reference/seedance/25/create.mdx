@@ -22,7 +22,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 `seedance2.5`、`seedance_2.5`、`seedance25` 等别名会归一化为 `seedance-2.5`。
 
-标准版也可直接传计费模型名：`seedance-2.5-480p`、`seedance-2.5-720p`（未传 `resolution` 时从模型名解析；若同时传了 `resolution`，以 `resolution` 为准）。
+标准版也可直接传计费模型名：`seedance-2.5-480p`、`seedance-2.5-720p`、`seedance-2.5-1080p`（未传 `resolution` 时从模型名解析；若同时传了 `resolution`，以 `resolution` 为准）。
 
 ## 参数限制
 
@@ -31,7 +31,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - **提示词（prompt）**：必填，长度 1–5000。
 - **时长（duration）**：4–30 秒，默认 `4`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`。
-- **分辨率（resolution）**：`480p`、`720p`，默认 `480p`。
+- **分辨率（resolution）**：`480p`、`720p`、`1080p`，默认 `480p`。
 - **参考图（reference_images）**：最多 **30** 张。
 - **参考视频（reference_videos）**：最多 **10** 条；单条与合计时长均不超过 **30.2** 秒。
 - **参考音频（reference_audios）**：最多 **10** 条；单条时长不超过 **30** 秒。
@@ -55,7 +55,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `duration` | integer | 否 | 时长秒数 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
-| `resolution` | string | 否 | 标准版：`480p`/`720p`；SP 仅 `720p` |
+| `resolution` | string | 否 | 标准版：`480p`/`720p`/`1080p`；SP 仅 `720p` |
 | `first_image` | string | 否 | 首帧图 URL；仅 SP |
 | `last_image` | string | 否 | 尾帧图 URL；仅 SP |
 | `reference_images` | string[] | 否 | 参考图 URL（0–30） |
@@ -71,6 +71,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - 标准版按分辨率分档：
   - `seedance-2.5-480p`
   - `seedance-2.5-720p`
+  - `seedance-2.5-1080p`
 - SP 固定计费模型：`seedance-2.5-sp`（单价 **0.5**/秒）
 
 ```text

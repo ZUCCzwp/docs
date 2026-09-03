@@ -1303,7 +1303,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。GZ seedance2.5-gz：创建时按分辨率预扣（seedance2.5-gz-480p / seedance2.5-gz-720p；含参考视频时走 seedance2.5-gz-video-*），成功后按实际消耗多退少补，时长 4-30 或 -1，比例含 adaptive，支持参考图/视频/音频/首尾帧。MD seedance2.5-md / seedance2.5-30s：固定 15 秒 / 30 秒输出，画幅仅 9:16 与 16:9，支持参考图，不支持首尾帧，per_task 按次计费，不提供 10 秒档位。详见各型号专题页。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "创建 Seedance 2.5 视频生成任务。标准版 seedance-2.5：最多 30 张参考图、最多 10 个参考视频（单条与合计 ≤30.2 秒）、最多 10 段参考音频（单条 ≤30 秒），时长 4-30 秒，resolution 480p/720p/1080p，按分辨率 per_second（seedance-2.5-480p / seedance-2.5-720p / seedance-2.5-1080p）。SP seedance-2.5-sp：固定 0.5/秒，仅 720p，时长 4-30 秒，素材限制同上，并支持 first_image / last_image 首尾帧。GZ seedance2.5-gz：创建时按分辨率预扣（seedance2.5-gz-480p / seedance2.5-gz-720p；含参考视频时走 seedance2.5-gz-video-*），成功后按实际消耗多退少补，时长 4-30 或 -1，比例含 adaptive，支持参考图/视频/音频/首尾帧。MD seedance2.5-md / seedance2.5-30s：固定 15 秒 / 30 秒输出，画幅仅 9:16 与 16:9，支持参考图，不支持首尾帧，per_task 按次计费，不提供 10 秒档位。详见各型号专题页。任务创建后请使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -3719,7 +3719,8 @@
             "default": "480p",
             "enum": [
               "480p",
-              "720p"
+              "720p",
+              "1080p"
             ],
             "description": "输出分辨率档位。默认 480p。"
           },

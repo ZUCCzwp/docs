@@ -22,7 +22,7 @@ This page covers `seedance-2.5` and `seedance-2.5-sp` only. For `seedance2.5-gz`
 
 Aliases such as `seedance2.5`, `seedance_2.5`, and `seedance25` normalize to `seedance-2.5`.
 
-Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance-2.5-720p` (resolution is parsed from the model when `resolution` is omitted; an explicit `resolution` field takes precedence).
+Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, `seedance-2.5-720p`, `seedance-2.5-1080p` (resolution is parsed from the model when `resolution` is omitted; an explicit `resolution` field takes precedence).
 
 ## Parameter constraints
 
@@ -31,7 +31,7 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 - **Prompt**: Required, 1–5000 characters.
 - **Duration**: 4–30 seconds (default `4`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`).
-- **Resolution**: `480p`, `720p` (default `480p`).
+- **Resolution**: `480p`, `720p`, `1080p` (default `480p`).
 - **Reference images** (`reference_images`): max **30**.
 - **Reference videos** (`reference_videos`): max **10**; each clip and the combined duration must be ≤ **30.2** seconds.
 - **Reference audios** (`reference_audios`): max **10**; each clip must be ≤ **30** seconds.
@@ -55,7 +55,7 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 | `duration` | integer | No | Duration in seconds |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
-| `resolution` | string | No | Standard: `480p`/`720p`; SP `720p` only |
+| `resolution` | string | No | Standard: `480p`/`720p`/`1080p`; SP `720p` only |
 | `first_image` | string | No | First-frame image URL; SP only |
 | `last_image` | string | No | Last-frame image URL; SP only |
 | `reference_images` | string[] | No | Reference image URLs (0–30) |
@@ -71,6 +71,7 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 - Standard billed by resolution:
   - `seedance-2.5-480p`
   - `seedance-2.5-720p`
+  - `seedance-2.5-1080p`
 - SP fixed billing model: `seedance-2.5-sp` (**0.5** per second)
 
 ```text

@@ -1303,7 +1303,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p/1080p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p / seedance-2.5-1080p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -3708,7 +3708,8 @@
             "default": "480p",
             "enum": [
               "480p",
-              "720p"
+              "720p",
+              "1080p"
             ],
             "description": "Output resolution tier. Default 480p."
           },

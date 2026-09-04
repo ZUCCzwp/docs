@@ -716,6 +716,72 @@
         }
       }
     },
+    "/api/open-api/v1/wan/videos": {
+      "post": {
+        "summary": "Create Wan 3.0 video task",
+        "description": "Create a Wan 3.0 video generation task. Supports text prompt, up to 10 reference images, up to 5 reference videos, up to 5 reference audios, duration 4-30 seconds, aspect ratios 9:16/16:9/3:4/4:3/1:1, and resolutions 480P/720P/1080P. Billing is per_second. After creation, poll GET /api/open-api/v1/videos/{taskId}.",
+        "operationId": "createWan30Video",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Wan30GenerationRequest"
+              },
+              "examples": {
+                "default": {
+                  "summary": "Create Wan 3.0 task",
+                  "value": {
+                    "model": "wan3.0",
+                    "prompt": "A cinematic product shot with natural lighting",
+                    "duration": 4,
+                    "aspect_ratio": "9:16",
+                    "resolution": "480P",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "Queued",
+                    "value": {
+                      "code": "20000",
+                      "msg": "ok",
+                      "data": {
+                        "task_id": "video_wan30_123456",
+                        "status": "queued",
+                        "model": "wan3.0-480p",
+                        "created_at": 1782529105,
+                        "cost": 0.32
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "Create video super-resolution task",
@@ -2559,6 +2625,123 @@
             "https://example.com/reference.png"
           ],
           "generate_audio": false
+        }
+      },
+      "Wan30GenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "wan3.0",
+              "wan3.0-480p",
+              "wan3.0-720p",
+              "wan3.0-1080p"
+            ],
+            "description": "Model name. Aliases such as wan3, wan-3.0, and wan30 normalize to wan3.0; resolution billing models are also accepted."
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Text prompt for video generation."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 4,
+            "minimum": 4,
+            "maximum": 30,
+            "description": "Video duration in seconds. Supported range 4–30. Default 4."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "9:16",
+              "16:9",
+              "3:4",
+              "4:3",
+              "1:1"
+            ],
+            "description": "Output aspect ratio. Takes precedence over ratio."
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "9:16",
+              "16:9",
+              "3:4",
+              "4:3",
+              "1:1"
+            ],
+            "description": "Alias used when aspect_ratio is empty."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480P",
+              "720P",
+              "1080P",
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Output resolution. Required."
+          },
+          "reference_images": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URLs, up to 10 public URLs."
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_images when the latter is empty."
+          },
+          "reference_videos": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference video URLs, up to 5; total duration ≤ 15s."
+          },
+          "videos": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for reference_videos when the latter is empty."
+          },
+          "reference_audios": {
+            "type": "array",
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference audio URLs, up to 5; total duration ≤ 15s."
+          }
+        },
+        "example": {
+          "model": "wan3.0",
+          "prompt": "A cinematic product shot with natural lighting",
+          "duration": 4,
+          "aspect_ratio": "9:16",
+          "resolution": "480P",
+          "reference_images": [
+            "https://example.com/reference.png"
+          ]
         }
       },
       "SuperResolutionRequest": {

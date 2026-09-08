@@ -29,8 +29,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 ### 标准版 `seedance-2.5`
 
 - **提示词（prompt）**：必填，长度 1–5000。
-- **时长（duration）**：4–30 秒，默认 `4`。
-- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`。
+- **时长（duration）**：4–30 秒，默认 `4`；带参考素材时可传 `-1` 由模型决定输出时长（见[任务类型引导](#任务类型引导)）。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`；带参考素材时还可传 `adaptive`。
 - **分辨率（resolution）**：`480p`、`720p`、`1080p`，默认 `480p`。
 - **参考图（reference_images）**：最多 **30** 张。
 - **参考视频（reference_videos）**：最多 **10** 条；单条与合计时长均不超过 **30.2** 秒。
@@ -64,6 +64,28 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `videos` | string[] | 否 | `reference_videos` 别名 |
 | `reference_audios` | string[] | 否 | 参考音频 URL（0–10）；单条 ≤ 30 秒 |
 | `audios` | string[] | 否 | `reference_audios` 别名 |
+| `omni_reference_task_type` | string | 否 | 任务类型引导：`auto` / `reference` / `edit` / `extend`；仅 `seedance-2.5` 带参考素材时可用 |
+
+## 任务类型引导
+
+带参考素材时，可用 `omni_reference_task_type` 显式声明这次要做哪种子任务。它把子任务的参数校验提前到提交阶段，让不合法的组合当场报错，而不是任务跑起来之后才失败。
+
+| 取值 | 用途 | 约束 |
+|------|------|------|
+| `auto` | 默认行为，由模型自行判定参考生视频 / 编辑 / 延长 | 建议配 `aspect_ratio: "adaptive"` 与 `duration: -1`；参考视频建议 4–30 秒 |
+| `reference` | 参考生视频：依据参考图 / 视频 / 音频生成新视频 | 比例与时长无额外限制 |
+| `edit` | 视频编辑：替换主体、增删对象、局部重绘 | 须含至少 1 个 `reference_videos`；`aspect_ratio` 须为 `adaptive`；`duration` 须为 `-1`；提示词需含「编辑 / 增加 / 删除 / 修改 / 替换」一类动词 |
+| `extend` | 视频延长：向前或向后续写 | 须含 `reference_videos`；`aspect_ratio` 须为 `adaptive`；提示词需含「延长 / 延续 / 续写」一类动词 |
+
+为省去重复填写，`edit` 未传 `aspect_ratio` 时自动补 `adaptive`、未传 `duration` 时自动补 `-1`，`extend` 未传 `aspect_ratio` 时自动补 `adaptive`。
+
+不传该字段等同于 `auto`，区别在于组合不合法时会等到任务启动后才异步失败。首帧 / 首尾帧生视频**不要**传该字段。
+
+### 自适应时长的计费
+
+`duration: -1` 时输出时长由模型决定，创建阶段无法预知。此时按参考视频时长向上取整计费，并限定在 4–30 秒区间。
+
+因此这种模式必须提供可直接访问、能读出时长的参考视频（mp4）；读不到时长会在创建阶段直接报错。若只用参考图，请显式指定 `duration`。
 
 ## 计费说明
 
@@ -95,6 +117,23 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "reference_images": ["https://example.com/reference.png"],
     "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```
+
+视频编辑（`edit`）：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5",
+    "prompt": "给画面加一群飞鸟",
+    "omni_reference_task_type": "edit",
+    "aspect_ratio": "adaptive",
+    "duration": -1,
+    "resolution": "480p",
+    "reference_videos": ["https://example.com/reference.mp4"]
   }'
 ```
 

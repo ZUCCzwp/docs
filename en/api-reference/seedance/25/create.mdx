@@ -29,8 +29,8 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 ### Standard `seedance-2.5`
 
 - **Prompt**: Required, 1–5000 characters.
-- **Duration**: 4–30 seconds (default `4`).
-- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`).
+- **Duration**: 4–30 seconds (default `4`). With reference material you can pass `-1` to let the model decide the output length — see [Task type hint](#task-type-hint).
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1` (default `9:16`). With reference material you can also pass `adaptive`.
 - **Resolution**: `480p`, `720p`, `1080p` (default `480p`).
 - **Reference images** (`reference_images`): max **30**.
 - **Reference videos** (`reference_videos`): max **10**; each clip and the combined duration must be ≤ **30.2** seconds.
@@ -64,6 +64,28 @@ Standard billing model names are also accepted as `model`: `seedance-2.5-480p`, 
 | `videos` | string[] | No | Alias for `reference_videos` |
 | `reference_audios` | string[] | No | Reference audio URLs (0–10); each ≤ 30s |
 | `audios` | string[] | No | Alias for `reference_audios` |
+| `omni_reference_task_type` | string | No | Task type hint: `auto` / `reference` / `edit` / `extend`; `seedance-2.5` with reference material only |
+
+## Task type hint
+
+When you send reference material, use `omni_reference_task_type` to declare which subtask you want. It moves subtask validation to submission time, so an invalid combination fails immediately instead of after the task starts running.
+
+| Value | Purpose | Constraints |
+|-------|---------|-------------|
+| `auto` | Default. The model decides between reference-to-video, edit, and extend | Pair with `aspect_ratio: "adaptive"` and `duration: -1`; reference videos work best at 4–30 seconds |
+| `reference` | Reference-to-video: generate a new video from reference images / videos / audios | No extra ratio or duration limits |
+| `edit` | Video editing: swap a subject, add or remove objects, repaint a region | Requires at least one `reference_videos` entry, `aspect_ratio` of `adaptive`, and `duration` of `-1`; the prompt should contain an editing verb such as edit, add, remove, change, or replace |
+| `extend` | Video extension: continue the clip forwards or backwards | Requires `reference_videos` and an `aspect_ratio` of `adaptive`; the prompt should contain a continuation verb such as extend or continue |
+
+To save repetition, `edit` defaults `aspect_ratio` to `adaptive` and `duration` to `-1` when you omit them, and `extend` defaults `aspect_ratio` to `adaptive`.
+
+Omitting the field behaves like `auto`, except that an invalid combination fails asynchronously after the task starts. Do **not** send this field for first-frame or first-and-last-frame generation.
+
+### Billing for adaptive duration
+
+With `duration: -1` the model decides the output length, which is unknown at creation time. The task is billed on the reference video duration rounded up, clamped to 4–30 seconds.
+
+This mode therefore requires a directly reachable reference video (mp4) whose duration can be read; if the duration cannot be read, the request fails at creation. Specify `duration` explicitly when you only send reference images.
 
 ## Billing
 
@@ -95,6 +117,23 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "reference_images": ["https://example.com/reference.png"],
     "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```
+
+Video editing (`edit`):
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5",
+    "prompt": "Add a flock of birds to the scene",
+    "omni_reference_task_type": "edit",
+    "aspect_ratio": "adaptive",
+    "duration": -1,
+    "resolution": "480p",
+    "reference_videos": ["https://example.com/reference.mp4"]
   }'
 ```
 

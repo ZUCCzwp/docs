@@ -1369,7 +1369,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p/1080p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p / seedance-2.5-1080p). SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p/1080p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p / seedance-2.5-1080p); with reference material you can set omni_reference_task_type (auto / reference / edit / extend) to declare the subtask and validate it at submission time, which also enables aspect_ratio=adaptive and duration=-1. SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -1395,6 +1395,20 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "omniEdit": {
+                  "summary": "Seedance 2.5 video edit (task type hint)",
+                  "value": {
+                    "model": "seedance-2.5",
+                    "prompt": "Add a flock of birds to the scene",
+                    "omni_reference_task_type": "edit",
+                    "aspect_ratio": "adaptive",
+                    "duration": -1,
+                    "resolution": "480p",
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
                     ]
                   }
                 },
@@ -3863,9 +3877,8 @@
           "duration": {
             "type": "integer",
             "default": 4,
-            "minimum": 4,
             "maximum": 30,
-            "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Default 4."
+            "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
           },
           "aspect_ratio": {
             "type": "string",
@@ -3873,16 +3886,18 @@
             "enum": [
               "16:9",
               "9:16",
-              "1:1"
+              "1:1",
+              "adaptive"
             ],
-            "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. GZ also supports adaptive and more ratios. Takes precedence over ratio."
+            "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
           },
           "ratio": {
             "type": "string",
             "enum": [
               "16:9",
               "9:16",
-              "1:1"
+              "1:1",
+              "adaptive"
             ],
             "description": "Alias used when aspect_ratio is empty."
           },
@@ -3967,6 +3982,16 @@
               "mov"
             ],
             "description": "Output container. seedance2.5-gz only; default mp4."
+          },
+          "omni_reference_task_type": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "reference",
+              "edit",
+              "extend"
+            ],
+            "description": "Task type hint. seedance-2.5 with reference material only; moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
           }
         },
         "example": {

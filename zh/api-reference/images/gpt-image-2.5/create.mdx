@@ -29,16 +29,18 @@ openapi: 'POST /api/open-api/v1/images'
 
 ## 计费说明
 
-| 请求 `model` | 计费型号 |
-|--------------|----------|
-| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
-| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+公开请求仍使用 `gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`。异步与同步使用**不同计费型号**：
+
+| 请求 `model` | 计费型号（异步） | 同步计费型号 |
+|--------------|------------------|--------------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare-async` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst-async` | `gpt-image-2.5-sunburst` |
 
 ```text
-总费用 = 型号单价 × n
+总费用 = 异步计费型号单价 × n
 ```
 
-单价以控制台 / 定价页为准。与 `gpt-image-2` 异步画质档计费相互独立。
+单价以控制台 / 定价页为准。与同步 generations/edits 价格相互独立。
 
 ## 请求参数
 

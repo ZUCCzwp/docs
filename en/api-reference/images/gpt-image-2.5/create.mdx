@@ -29,16 +29,18 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.5 Text-to-Image](/en/api-r
 
 ## Billing
 
-| Request `model` | Billing model |
-|-----------------|---------------|
-| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
-| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+Keep request `model` as `gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`. Async and sync use **different billing model names**:
+
+| Request `model` | Async billing model | Sync billing model |
+|-----------------|---------------------|--------------------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare-async` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst-async` | `gpt-image-2.5-sunburst` |
 
 ```text
-cost = unit price × n
+cost = async billing unit price × n
 ```
 
-Unit prices follow the console / pricing page. Independent from `gpt-image-2` async quality tiers.
+Unit prices follow the console / pricing page. Independent from sync generations/edits.
 
 ## Request parameters
 

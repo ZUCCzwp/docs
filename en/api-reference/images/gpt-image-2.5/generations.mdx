@@ -1,0 +1,86 @@
+---
+title: 'GPT Image 2.5 Text-to-Image'
+openapi: 'POST /api/open-api/v1/images/generations'
+---
+
+Create a **GPT Image 2.5** synchronous text-to-image request. Compatible with OpenAI `POST /v1/images/generations`. On success, billing is applied immediately and image results are returned in `data` (`url` or `b64_json`) — no task polling.
+
+<Note>
+Set `model` to `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`.
+
+For synchronous text-to-image, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/generations`).
+</Note>
+
+<Warning>
+GPT Image 2.5 supports **sync only** (generations / edits). Async `POST /api/open-api/v1/images` does **not** support these models.
+</Warning>
+
+## Model
+
+| Item | Detail |
+|------|--------|
+| Model | `gpt-image-2.5-flare`, `gpt-image-2.5-sunburst` |
+| Billing | **unit price × `n`** (per task) |
+| Mode | Synchronous text-to-image |
+| Size | `size` (e.g. `1024x1024`), default `1024x1024` |
+| Quality | `quality`: `auto` / `low` / `medium` / `high` (optional; **does not change the billing model name**) |
+
+## Billing
+
+| Request `model` | Billing model |
+|-----------------|---------------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+
+```text
+cost = unit price × n
+```
+
+Unit prices follow the console / pricing page. Independent from `gpt-image-2` sync tiers (`gpt-image-2-sync*`).
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst` |
+| `prompt` | string | Yes | Text prompt |
+| `size` | string | No | Pixel size, e.g. `1024x1024` (default) |
+| `n` | int | No | Number of images, default `1` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` |
+| `response_format` | string | No | `url` (default) or `b64_json` |
+
+## Examples
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-flare",
+    "prompt": "Cyberpunk city in the rain, neon signs, cinematic framing",
+    "size": "1024x1024",
+    "n": 1,
+    "response_format": "url"
+  }'
+```
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Sunlight through leaves on a forest path, photorealistic",
+    "size": "1024x1024",
+    "n": 1
+  }'
+```
+
+<Warning>
+Generation often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. A **504** usually means a gateway timeout — retry or reduce `size` / `n`.
+</Warning>
+
+## Related
+
+- [GPT Image 2.5 Edit Image](/en/api-reference/images/gpt-image-2.5/edits)
+- [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) (`gpt-image-2` sync)

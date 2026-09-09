@@ -3212,7 +3212,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-1.5 (async aishuch). Sync generations/edits do not support these models.",
+            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst (sync, billed by model name). gpt-image-1.5 is async-only and not supported on sync generations/edits.",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },
@@ -3284,6 +3284,7 @@
           },
           "model": {
             "type": "string",
+            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst",
             "default": "gpt-image-2"
           },
           "prompt": {

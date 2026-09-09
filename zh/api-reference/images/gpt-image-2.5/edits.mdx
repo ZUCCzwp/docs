@@ -1,0 +1,64 @@
+---
+title: 'GPT Image 2.5 编辑图片'
+openapi: 'POST /api/open-api/v1/images/edits'
+---
+
+创建 **GPT Image 2.5** 同步图片编辑。兼容 OpenAI `POST /v1/images/edits`。使用 `multipart/form-data` 上传源图，请求成功后**立即扣费**，并在响应 `data` 中返回结果（`url` 或 `b64_json`）。
+
+<Note>
+将 `model` 设为 `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst`。
+
+同步编辑可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/edits`）。
+</Note>
+
+<Warning>
+GPT Image 2.5 **仅支持同步** generations / edits。异步 `POST /api/open-api/v1/images` **不支持**本型号。
+</Warning>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `gpt-image-2.5-flare`、`gpt-image-2.5-sunburst` |
+| 计费 | **型号单价 × 张数 `n`**（按次） |
+| 模式 | 同步图生图 / 编辑（`image` 字段，可多张） |
+| 尺寸 | `size`（如 `1024x1024`），默认 `1024x1024` |
+
+## 计费说明
+
+与 [GPT Image 2.5 文生图](/zh/api-reference/images/gpt-image-2.5/generations) 相同：按请求 `model` 名扣费（`gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`），费用 = 单价 × `n`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst` |
+| `prompt` | string | 是 | 编辑 / 生成提示词 |
+| `image` | file | 是 | 源图文件；可多次传同名字段以上传多张 |
+| `mask` | file | 否 | 局部重绘遮罩 |
+| `size` | string | 否 | 像素尺寸，默认 `1024x1024` |
+| `n` | int | 否 | 生成张数，默认 `1` |
+| `quality` | string | 否 | `auto` / `low` / `medium` / `high` |
+| `response_format` | string | 否 | `url`（默认）或 `b64_json` |
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/edits' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -F 'model=gpt-image-2.5-flare' \
+  -F 'prompt=将背景换成日落海滩，保留主体人物' \
+  -F 'image=@/path/to/source.png' \
+  -F 'size=1024x1024' \
+  -F 'n=1' \
+  -F 'response_format=url'
+```
+
+<Warning>
+图片编辑通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**。单文件（`image` / `mask`）不超过 **20MB**。
+</Warning>
+
+## 相关接口
+
+- [GPT Image 2.5 文生图](/zh/api-reference/images/gpt-image-2.5/generations)
+- [GPT Image 2 编辑图片](/zh/api-reference/images/edits)（`gpt-image-2` 同步）

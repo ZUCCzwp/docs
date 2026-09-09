@@ -20,3 +20,7 @@ Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 second
 
 If sync calls return **504 Gateway Timeout**, the request may still be processing upstream — this is often a **Cloudflare** proxy timeout. For production, prefer [GPT Image 2 Image Generation](/en/api-reference/images/create) (async) and poll via [Query Image Task](/en/api-reference/images/query).
 </Warning>
+
+<Info>
+For GPT Image 2.5 sync upgrades (billed by model name), see [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations) and [GPT Image 2.5 Edit Image](/en/api-reference/images/gpt-image-2.5/edits).
+</Info>

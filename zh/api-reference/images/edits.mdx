@@ -18,5 +18,9 @@ openapi: 'POST /api/open-api/v1/images/edits'
 <Warning>
 图片编辑通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**。单文件（`image` / `mask`）不超过 **20MB**。
 
-若同步调用返回 **504 Gateway Timeout**，多为服务端经 **Cloudflare** 代理时 CF 超时断开，任务可能仍在后台执行。生产环境**建议优先使用** [GPT Image 2 图像生成](/zh/api-reference/images/create)（异步）创建后通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
+若同步调用返回 **504 Gateway Timeout**，多为服务端经 **Cloudflare** 代理时 CF 超时断开，任务可能仍在后台执行。生产环境**建议优先使用** [GPT Image 2 图像生成](/zh/api-reference/images/create)（异步），后通过 [查询图片任务](/zh/api-reference/images/query) 获取结果。
 </Warning>
+
+<Info>
+GPT Image 2.5 升级型号（同步、按型号计费）见：[GPT Image 2.5 文生图](/zh/api-reference/images/gpt-image-2.5/generations)、[GPT Image 2.5 编辑图片](/zh/api-reference/images/gpt-image-2.5/edits)。
+</Info>

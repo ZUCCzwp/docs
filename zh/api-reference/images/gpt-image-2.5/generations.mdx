@@ -1,0 +1,86 @@
+---
+title: 'GPT Image 2.5 文生图'
+openapi: 'POST /api/open-api/v1/images/generations'
+---
+
+创建 **GPT Image 2.5** 同步文生图。兼容 OpenAI `POST /v1/images/generations`。请求成功后**立即扣费**，并在响应 `data` 中直接返回图片（`url` 或 `b64_json`），无需轮询。
+
+<Note>
+将 `model` 设为 `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst`。
+
+同步生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/generations`）。
+</Note>
+
+<Warning>
+GPT Image 2.5 **仅支持同步** generations / edits。异步 `POST /api/open-api/v1/images` **不支持**本型号。
+</Warning>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `gpt-image-2.5-flare`、`gpt-image-2.5-sunburst` |
+| 计费 | **型号单价 × 张数 `n`**（按次） |
+| 模式 | 同步文生图 |
+| 尺寸 | `size`（如 `1024x1024`），默认 `1024x1024` |
+| 画质 | `quality`：`auto` / `low` / `medium` / `high`（可选；**不影响计费型号名**） |
+
+## 计费说明
+
+| 请求 `model` | 计费型号 |
+|--------------|----------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+
+```text
+总费用 = 型号单价 × n
+```
+
+单价以控制台 / 定价页为准。与 `gpt-image-2` 的 `gpt-image-2-sync*` 画质档计费相互独立。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst` |
+| `prompt` | string | 是 | 图像生成提示词 |
+| `size` | string | 否 | 像素尺寸，如 `1024x1024`，默认 `1024x1024` |
+| `n` | int | 否 | 生成张数，默认 `1` |
+| `quality` | string | 否 | `auto` / `low` / `medium` / `high` |
+| `response_format` | string | 否 | `url`（默认）或 `b64_json` |
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-flare",
+    "prompt": "赛博朋克城市雨夜，霓虹招牌特写，电影画幅",
+    "size": "1024x1024",
+    "n": 1,
+    "response_format": "url"
+  }'
+```
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "阳光透过树叶洒落的林间小径，写实摄影",
+    "size": "1024x1024",
+    "n": 1
+  }'
+```
+
+<Warning>
+图片生成通常需要 **30–120 秒**。请将客户端超时设置为 **≥ 180 秒**。若返回 **504**，多为网关超时，可稍后重试或改用较小 `size` / `n`。
+</Warning>
+
+## 相关接口
+
+- [GPT Image 2.5 编辑图片](/zh/api-reference/images/gpt-image-2.5/edits)
+- [GPT Image 2 文生图](/zh/api-reference/images/generations)（`gpt-image-2` 同步）

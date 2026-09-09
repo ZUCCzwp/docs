@@ -3212,7 +3212,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-1.5（异步，aishuch）。同步 generations/edits 不支持该模型。",
+            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-2.5-flare / gpt-image-2.5-sunburst（同步按型号计费）。gpt-image-1.5 仅异步，同步 generations/edits 不支持。",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },
@@ -3286,7 +3286,7 @@
           },
           "model": {
             "type": "string",
-            "description": "模型名称，默认 gpt-image-2",
+            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-2.5-flare / gpt-image-2.5-sunburst",
             "default": "gpt-image-2"
           },
           "prompt": {

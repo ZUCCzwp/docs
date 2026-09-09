@@ -1,0 +1,64 @@
+---
+title: 'GPT Image 2.5 Edit Image'
+openapi: 'POST /api/open-api/v1/images/edits'
+---
+
+Create a **GPT Image 2.5** synchronous image edit. Compatible with OpenAI `POST /v1/images/edits`. Upload source images via `multipart/form-data`. On success, billing is applied immediately and results are returned in `data` (`url` or `b64_json`).
+
+<Note>
+Set `model` to `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`.
+
+For synchronous edits, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/edits`).
+</Note>
+
+<Warning>
+GPT Image 2.5 supports **sync only** (generations / edits). Async `POST /api/open-api/v1/images` does **not** support these models.
+</Warning>
+
+## Model
+
+| Item | Detail |
+|------|--------|
+| Model | `gpt-image-2.5-flare`, `gpt-image-2.5-sunburst` |
+| Billing | **unit price × `n`** (per task) |
+| Mode | Synchronous edit / image-to-image (`image` field; multiple files allowed) |
+| Size | `size` (e.g. `1024x1024`), default `1024x1024` |
+
+## Billing
+
+Same as [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations): bill by request `model` (`gpt-image-2.5-flare` / `gpt-image-2.5-sunburst`). Cost = unit price × `n`.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst` |
+| `prompt` | string | Yes | Edit / generation prompt |
+| `image` | file | Yes | Source image file(s); repeat the field for multiple images |
+| `mask` | file | No | Inpainting mask |
+| `size` | string | No | Pixel size, default `1024x1024` |
+| `n` | int | No | Number of images, default `1` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` |
+| `response_format` | string | No | `url` (default) or `b64_json` |
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/edits' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -F 'model=gpt-image-2.5-flare' \
+  -F 'prompt=Replace the background with a sunset beach, keep the subject' \
+  -F 'image=@/path/to/source.png' \
+  -F 'size=1024x1024' \
+  -F 'n=1' \
+  -F 'response_format=url'
+```
+
+<Warning>
+Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 seconds**. Each file (`image` / `mask`) must be **≤ 20MB**.
+</Warning>
+
+## Related
+
+- [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations)
+- [GPT Image 2 Edit Image](/en/api-reference/images/edits) (`gpt-image-2` sync)

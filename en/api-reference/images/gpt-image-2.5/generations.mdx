@@ -12,7 +12,7 @@ For synchronous text-to-image, use the **direct image endpoint** `https://img.vi
 </Note>
 
 <Warning>
-GPT Image 2.5 supports **sync only** (generations / edits). Async `POST /api/open-api/v1/images` does **not** support these models.
+For async tasks, use [GPT Image 2.5 Image Generation](/en/api-reference/images/gpt-image-2.5/create) (`POST /api/open-api/v1/images`).
 </Warning>
 
 ## Model
@@ -82,5 +82,6 @@ Generation often takes **30–120 seconds**. Set client timeout to **≥ 180 sec
 
 ## Related
 
+- [GPT Image 2.5 Image Generation](/en/api-reference/images/gpt-image-2.5/create) (async)
 - [GPT Image 2.5 Edit Image](/en/api-reference/images/gpt-image-2.5/edits)
 - [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) (`gpt-image-2` sync)

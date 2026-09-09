@@ -1,0 +1,144 @@
+---
+title: 'GPT Image 2.5 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **GPT Image 2.5** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
+
+<Note>
+接口路径：`POST /api/open-api/v1/images`，将 `model` 设为 `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst`。
+
+- `gpt-image-2.5-flare`：生成更快，适合日常高质量出图、批量与快速原型
+- `gpt-image-2.5-sunburst`：更强调编辑精度，适合成品级商品图与多轮精细编辑
+
+两者按**型号单价 × 张数 `n`** 计费（画质档位不改变计费型号名）。
+
+若需 **OpenAI 兼容同步**接口，请使用 [GPT Image 2.5 文生图](/zh/api-reference/images/gpt-image-2.5/generations) 或 [GPT Image 2.5 编辑图片](/zh/api-reference/images/gpt-image-2.5/edits)（生图直连：`https://img.viraltok.ai`）。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `gpt-image-2.5-flare`、`gpt-image-2.5-sunburst` |
+| 计费 | **型号单价 × 张数 `n`**（按次） |
+| 模式 | 文生图、参考图编辑（`images`，最多 16 张） |
+| 比例 | `ratio`（如 `1:1`、`16:9`、像素 `1600x1200`，或 `auto`） |
+| 分辨率 | `resolution`：`1k` / `2k` / `4k`（精确像素 `ratio` 时忽略） |
+| 画质 | `quality`：`auto` / `low` / `medium` / `high` / `xhigh` / `max` |
+
+## 计费说明
+
+| 请求 `model` | 计费型号 |
+|--------------|----------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+
+```text
+总费用 = 型号单价 × n
+```
+
+单价以控制台 / 定价页为准。与 `gpt-image-2` 异步画质档计费相互独立。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `gpt-image-2.5-flare` 或 `gpt-image-2.5-sunburst` |
+| `prompt` | string | 是 | 图像生成或编辑提示词 |
+| `ratio` | string | 否 | 比例、精确像素或 `auto`；图生图时可省略，由参考图与 `resolution` 推断 |
+| `resolution` | string | 否 | `1k` / `2k` / `4k`，默认 `1k` |
+| `quality` | string | 否 | `auto` / `low` / `medium` / `high` / `xhigh` / `max` |
+| `n` | int | 否 | 生成张数，`1`～`4`，默认 `1` |
+| `images` | string[] | 否 | 参考图 URL，最多 16 张；传入后进入编辑模式 |
+| `background` | string | 否 | `transparent` / `opaque` / `auto` |
+| `output_format` | string | 否 | `png` / `jpeg` / `webp` |
+| `moderation` | string | 否 | `auto` / `low` |
+
+<Warning>
+`background: "transparent"` 仅可与 `output_format` 为 `png` 或 `webp` 搭配。
+</Warning>
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-flare",
+    "prompt": "雨天窗边温暖舒适的阅读角，暖色台灯，电影感光影",
+    "ratio": "1:1",
+    "resolution": "1k",
+    "quality": "medium",
+    "n": 1
+  }'
+```
+
+### Sunburst 精细编辑
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "保留商品主体和包装文字，将背景替换为柔和的米白色摄影棚，并增加自然投影",
+    "images": ["https://example.com/product.png"],
+    "resolution": "2k",
+    "quality": "xhigh"
+  }'
+```
+
+### 多参考图编辑
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "以第一张图的商品为主体，参考第二张图的布景和第三张图的光线，生成横版广告图",
+    "images": [
+      "https://example.com/product.png",
+      "https://example.com/set.jpg",
+      "https://example.com/lighting.jpg"
+    ],
+    "ratio": "16:9",
+    "resolution": "2k",
+    "quality": "max"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "gpt-image-2.5-flare",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。完成后从 `data.result.image_url` 获取图片地址。
+
+## 相关接口
+
+- [查询图片任务](/zh/api-reference/images/query)
+- [GPT Image 2.5 文生图](/zh/api-reference/images/gpt-image-2.5/generations)（同步）
+- [GPT Image 2.5 编辑图片](/zh/api-reference/images/gpt-image-2.5/edits)（同步）
+- [GPT Image 2 图像生成](/zh/api-reference/images/create)（`gpt-image-2` 异步）

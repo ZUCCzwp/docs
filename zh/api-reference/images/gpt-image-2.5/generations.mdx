@@ -12,7 +12,7 @@ openapi: 'POST /api/open-api/v1/images/generations'
 </Note>
 
 <Warning>
-GPT Image 2.5 **仅支持同步** generations / edits。异步 `POST /api/open-api/v1/images` **不支持**本型号。
+同步接口成功即返回图片。异步任务请使用 [GPT Image 2.5 图像生成](/zh/api-reference/images/gpt-image-2.5/create)（`POST /api/open-api/v1/images`）。
 </Warning>
 
 ## 模型说明
@@ -82,5 +82,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
 
 ## 相关接口
 
+- [GPT Image 2.5 图像生成](/zh/api-reference/images/gpt-image-2.5/create)（异步）
 - [GPT Image 2.5 编辑图片](/zh/api-reference/images/gpt-image-2.5/edits)
 - [GPT Image 2 文生图](/zh/api-reference/images/generations)（`gpt-image-2` 同步）

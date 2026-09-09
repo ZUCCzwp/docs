@@ -12,7 +12,7 @@ For synchronous edits, use the **direct image endpoint** `https://img.viraltok.a
 </Note>
 
 <Warning>
-GPT Image 2.5 supports **sync only** (generations / edits). Async `POST /api/open-api/v1/images` does **not** support these models.
+For async tasks, use [GPT Image 2.5 Image Generation](/en/api-reference/images/gpt-image-2.5/create) (`POST /api/open-api/v1/images`).
 </Warning>
 
 ## Model
@@ -60,5 +60,6 @@ Editing often takes **30–120 seconds**. Set client timeout to **≥ 180 second
 
 ## Related
 
+- [GPT Image 2.5 Image Generation](/en/api-reference/images/gpt-image-2.5/create) (async)
 - [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations)
 - [GPT Image 2 Edit Image](/en/api-reference/images/edits) (`gpt-image-2` sync)

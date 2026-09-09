@@ -79,7 +79,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "GPT Image 2 Image Generation",
-        "description": "Create an async GPT Image 2 image task (model=gpt-image-2). The same path also supports gpt-image-1.5, nano-banana family, doubao-seedream-5-0-pro, etc. See each model page. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare.",
+        "description": "Create an async GPT Image 2 image task (model=gpt-image-2). The same path also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst, gpt-image-1.5, nano-banana family, doubao-seedream-5-0-pro, etc. See each model page. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare.",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -1651,7 +1651,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (supported: gpt-image-2, gpt-image-1.5, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
+            "description": "Model name (supported: gpt-image-2, gpt-image-2.5-flare, gpt-image-2.5-sunburst, gpt-image-1.5, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
           },
           "prompt": {
             "type": "string",
@@ -3212,7 +3212,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst (sync, billed by model name). gpt-image-1.5 is async-only and not supported on sync generations/edits.",
+            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst (sync billed by model name; async via POST /images). gpt-image-1.5 is async-only and not supported on sync generations/edits.",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },

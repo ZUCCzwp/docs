@@ -170,6 +170,7 @@
                     "group": "GPT Image 2.5",
                     "icon": "image",
                     "pages": [
+                      "en/api-reference/images/gpt-image-2.5/create",
                       "en/api-reference/images/gpt-image-2.5/generations",
                       "en/api-reference/images/gpt-image-2.5/edits"
                     ]
@@ -425,6 +426,7 @@
                     "group": "GPT Image 2.5",
                     "icon": "image",
                     "pages": [
+                      "zh/api-reference/images/gpt-image-2.5/create",
                       "zh/api-reference/images/gpt-image-2.5/generations",
                       "zh/api-reference/images/gpt-image-2.5/edits"
                     ]

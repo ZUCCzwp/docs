@@ -1,0 +1,144 @@
+---
+title: 'GPT Image 2.5 Image Generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create a **GPT Image 2.5** async image task. On success you get a `task_id`; poll [Query Image Task](/en/api-reference/images/query) until completion, then read `result.image_url` (and `result.image_urls` when `n > 1`).
+
+<Note>
+Path: `POST /api/open-api/v1/images`. Set `model` to `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`.
+
+- `gpt-image-2.5-flare`: faster generation for everyday high-quality output, batches, and prototypes
+- `gpt-image-2.5-sunburst`: higher edit precision for product/creative finish work and multi-turn edits
+
+Billing is **unit price × `n`** by model name (quality does not change the billing model).
+
+For **OpenAI-compatible sync** APIs, use [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations) or [GPT Image 2.5 Edit Image](/en/api-reference/images/gpt-image-2.5/edits) (direct host: `https://img.viraltok.ai`).
+</Note>
+
+## Model
+
+| Item | Detail |
+|------|--------|
+| Model | `gpt-image-2.5-flare`, `gpt-image-2.5-sunburst` |
+| Billing | **unit price × `n`** (per task) |
+| Mode | Text-to-image, reference edit (`images`, up to 16) |
+| Ratio | `ratio` (e.g. `1:1`, `16:9`, pixel `1600x1200`, or `auto`) |
+| Resolution | `resolution`: `1k` / `2k` / `4k` (ignored for exact pixel `ratio`) |
+| Quality | `quality`: `auto` / `low` / `medium` / `high` / `xhigh` / `max` |
+
+## Billing
+
+| Request `model` | Billing model |
+|-----------------|---------------|
+| `gpt-image-2.5-flare` | `gpt-image-2.5-flare` |
+| `gpt-image-2.5-sunburst` | `gpt-image-2.5-sunburst` |
+
+```text
+cost = unit price × n
+```
+
+Unit prices follow the console / pricing page. Independent from `gpt-image-2` async quality tiers.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst` |
+| `prompt` | string | Yes | Generation or edit prompt |
+| `ratio` | string | No | Aspect ratio, exact pixels, or `auto`; omit for img2img to infer from references + `resolution` |
+| `resolution` | string | No | `1k` / `2k` / `4k`, default `1k` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` / `xhigh` / `max` |
+| `n` | int | No | Image count, `1`–`4`, default `1` |
+| `images` | string[] | No | Reference image URLs, up to 16; enables edit mode |
+| `background` | string | No | `transparent` / `opaque` / `auto` |
+| `output_format` | string | No | `png` / `jpeg` / `webp` |
+| `moderation` | string | No | `auto` / `low` |
+
+<Warning>
+`background: "transparent"` only works with `output_format` `png` or `webp`.
+</Warning>
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-flare",
+    "prompt": "Cozy reading nook by a rainy window, warm lamp, cinematic light",
+    "ratio": "1:1",
+    "resolution": "1k",
+    "quality": "medium",
+    "n": 1
+  }'
+```
+
+### Sunburst fine edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Keep the product and packaging text; replace the background with a soft off-white studio and natural shadow",
+    "images": ["https://example.com/product.png"],
+    "resolution": "2k",
+    "quality": "xhigh"
+  }'
+```
+
+### Multi-reference edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.5-sunburst",
+    "prompt": "Use the product from the first image, set from the second, lighting from the third; landscape ad layout",
+    "images": [
+      "https://example.com/product.png",
+      "https://example.com/set.jpg",
+      "https://example.com/lighting.jpg"
+    ],
+    "ratio": "16:9",
+    "resolution": "2k",
+    "quality": "max"
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "gpt-image-2.5-flare",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Statuses: `queued` → `processing` → `completed` / `failed`. Read `data.result.image_url` when completed.
+
+## Related
+
+- [Query Image Task](/en/api-reference/images/query)
+- [GPT Image 2.5 Text-to-Image](/en/api-reference/images/gpt-image-2.5/generations) (sync)
+- [GPT Image 2.5 Edit Image](/en/api-reference/images/gpt-image-2.5/edits) (sync)
+- [GPT Image 2 Image Generation](/en/api-reference/images/create) (`gpt-image-2` async)

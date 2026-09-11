@@ -1,0 +1,99 @@
+---
+title: '创建 Seedance 2.0 标准档视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+创建 Seedance **2.0 标准档**（固定分辨率）视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
+
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 选择分辨率档位。
+
+## 模型
+
+| `model` | 分辨率 | 计费 |
+|---------|--------|------|
+| `seedance-2.0-480p` | 固定 `480p` | 按秒 |
+| `seedance-2.0-720p` | 固定 `720p` | 按秒 |
+| `seedance-2.0-1080p` | 固定 `1080p` | 按秒 |
+| `seedance-2.0-4k` | 固定 `4k` | 按秒 |
+
+别名（去掉连字符或写成 `seedance20-*`）会归一化为上表 canonical 名，例如 `seedance2.0-720p` → `seedance-2.0-720p`。
+
+## 计费说明
+
+| 项目 | 说明 |
+|------|------|
+| 计费方式 | **单价（元/秒）× `duration`** |
+| 单价来源 | 以 [控制台定价](https://api.viraltok.ai) 中对应 `model` 为准 |
+| 时长 | `duration` 字段，范围 4–30 秒，默认 5 |
+
+## 参数限制
+
+- **提示词（prompt）**：必填，1–5000 字。
+- **时长（duration）**：4–30 秒，默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`；带参考时可使用 `adaptive`。默认 `16:9`。
+- **分辨率**：写在 `model` 名中，无需再传 `resolution`。
+- **参考图**：`images` / `reference_images`，最多 9 张。
+- **参考视频**：`videos` / `reference_videos`，最多 3 个。
+- **参考音频**：`audios` / `reference_audios`，最多 3 段；须搭配至少一张参考图或一个参考视频。
+- **首尾帧**：`first_image` / `last_image` 与多模态参考（参考图 / 视频 / 音频）**不可混用**；尾帧必须搭配首帧。
+
+## 素材要求
+
+参考图 / 视频 / 音频、首尾帧须为**公网可访问的 `https://` URL**（平台直接拉取）。不支持本地文件或 base64。
+
+参考图建议：jpeg / png / webp、边长约 300–6000px、单张 &lt; 30MB。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 见上表 |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，4–30，默认 `5` |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `images` | string[] | 否 | 参考图 URL（0–9） |
+| `reference_images` | string[] | 否 | `images` 为空时的别名 |
+| `videos` / `reference_videos` | string[] | 否 | 参考视频 URL（0–3） |
+| `audios` / `reference_audios` | string[] | 否 | 参考音频 URL（0–3）；须搭配图或视频 |
+| `first_image` | string | 否 | 首帧图 |
+| `last_image` | string | 否 | 尾帧图 |
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.0-720p",
+    "prompt": "日落海边，海浪拍礁石",
+    "duration": 5,
+    "ratio": "16:9"
+  }'
+```
+
+### 带参考图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.0-1080p",
+    "prompt": "镜头缓缓推进",
+    "duration": 5,
+    "images": ["https://example.com/ref.png"]
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "data": {
+    "task_id": "task_xxxxxxxx"
+  }
+}
+```

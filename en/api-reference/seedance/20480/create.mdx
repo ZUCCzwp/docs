@@ -1,0 +1,99 @@
+---
+title: 'Create Seedance 2.0 Standard Video'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+Create a Seedance **2.0 standard** (fixed-resolution) video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
+
+This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seedance/create). Choose the resolution tier with `model`.
+
+## Models
+
+| `model` | Resolution | Billing |
+|---------|------------|---------|
+| `seedance-2.0-480p` | Fixed `480p` | Per second |
+| `seedance-2.0-720p` | Fixed `720p` | Per second |
+| `seedance-2.0-1080p` | Fixed `1080p` | Per second |
+| `seedance-2.0-4k` | Fixed `4k` | Per second |
+
+Aliases (without hyphens, or `seedance20-*`) normalize to the canonical names above, e.g. `seedance2.0-720p` → `seedance-2.0-720p`.
+
+## Billing
+
+| Item | Description |
+|------|-------------|
+| Formula | **unit price (per second) × `duration`** |
+| Unit price | See [console pricing](https://api.viraltok.ai) for the matching `model` |
+| Duration | `duration` field, 4–30 seconds (default 5) |
+
+## Limits
+
+- **prompt**: required, 1–5000 characters.
+- **duration**: 4–30 seconds, default `5`.
+- **aspect_ratio / ratio**: `16:9`, `9:16`, `1:1`; `adaptive` when references are present. Default `16:9`.
+- **resolution**: encoded in `model`; you do not need to pass `resolution`.
+- **images / reference_images**: up to 9.
+- **videos / reference_videos**: up to 3.
+- **audios / reference_audios**: up to 3; must be paired with at least one image or video.
+- **first_image / last_image**: cannot be mixed with multimodal references; last frame requires first frame.
+
+## Assets
+
+Reference images / videos / audios and frame images must be **publicly reachable `https://` URLs** (the platform fetches them). Local files and base64 are not accepted.
+
+Image guidance: jpeg / png / webp, edge length about 300–6000px, under 30MB each.
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | See table above |
+| `prompt` | string | Yes | Text prompt |
+| `duration` | integer | No | Length in seconds, 4–30, default `5` |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `images` | string[] | No | Reference image URLs (0–9) |
+| `reference_images` | string[] | No | Alias when `images` is empty |
+| `videos` / `reference_videos` | string[] | No | Reference video URLs (0–3) |
+| `audios` / `reference_audios` | string[] | No | Reference audio URLs (0–3); require image or video |
+| `first_image` | string | No | First-frame image |
+| `last_image` | string | No | Last-frame image |
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.0-720p",
+    "prompt": "Sunset beach with waves on rocks",
+    "duration": 5,
+    "ratio": "16:9"
+  }'
+```
+
+### With reference image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.0-1080p",
+    "prompt": "Slow camera push-in",
+    "duration": 5,
+    "images": ["https://example.com/ref.png"]
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "data": {
+    "task_id": "task_xxxxxxxx"
+  }
+}
+```

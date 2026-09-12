@@ -32,7 +32,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 - **时长（duration）**：4–30 秒，默认 `5`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`；带参考时可使用 `adaptive`。默认 `16:9`。
 - **分辨率**：写在 `model` 名中，无需再传 `resolution`。
-- **参考图**：`images` / `reference_images`，最多 30 张。
+- **参考图**：`images` / `reference_images`，最多 9 张。
 - **参考视频**：`videos` / `reference_videos`，最多 3 个。
 - **参考音频**：`audios` / `reference_audios`，最多 3 段；须搭配至少一张参考图或一个参考视频。
 - **首尾帧**：`first_image` / `last_image` 与多模态参考（参考图 / 视频 / 音频）**不可混用**；尾帧必须搭配首帧。

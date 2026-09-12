@@ -31,7 +31,9 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 - **提示词（prompt）**：必填，长度 1–5000。
 - **时长（duration）**：由模型固定，无需传入；传入也会被忽略。
 - **画幅比例（aspect_ratio / ratio）**：仅支持 **`16:9`**、**`9:16`**。未传默认 `9:16`。
-- **参考图（reference_images / images）**：最多 **30** 张，须为公网可访问 URL。
+- **参考图（reference_images / images）**：
+  - `seedance2.5-md`：最多 **9** 张，须为公网可访问 URL。
+  - `seedance2.5-30s`：最多 **30** 张，须为公网可访问 URL。
 - **不支持** `first_image` / `last_image` 首尾帧。
 - **不支持** `reference_videos` / `videos`、`reference_audios` / `audios`。
 - **不支持** `resolution`、`generate_audio`、`watermark`、`output_format` 等 GZ 专用字段。
@@ -45,7 +47,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 | `prompt` | string | 是 | 文本提示词 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
-| `reference_images` | string[] | 否 | 参考图 URL（0–30） |
+| `reference_images` | string[] | 否 | 参考图 URL（`seedance2.5-md` 0–9；`seedance2.5-30s` 0–30） |
 | `images` | string[] | 否 | `reference_images` 别名 |
 
 ## 计费说明

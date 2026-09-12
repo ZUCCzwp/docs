@@ -31,7 +31,9 @@ There is **no 10-second** tier on this line. Any `duration` you send is ignored�
 - **Prompt**: Required, 1–5000 characters.
 - **Duration**: Fixed by model; omit `duration` or expect it to be ignored.
 - **Aspect ratio** (`aspect_ratio` / `ratio`): **`16:9`** and **`9:16`** only. Default `9:16` when omitted.
-- **Reference images** (`reference_images` / `images`): max **30** public URLs.
+- **Reference images** (`reference_images` / `images`):
+  - `seedance2.5-md`: max **9** public URLs.
+  - `seedance2.5-30s`: max **30** public URLs.
 - **Not supported**: `first_image` / `last_image` (first-last frames).
 - **Not supported**: `reference_videos` / `videos`, `reference_audios` / `audios`.
 - **Not supported**: `resolution`, `generate_audio`, `watermark`, `output_format`, and other GZ-only fields.
@@ -45,7 +47,7 @@ There is **no 10-second** tier on this line. Any `duration` you send is ignored�
 | `prompt` | string | Yes | Text prompt |
 | `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
-| `reference_images` | string[] | No | Reference image URLs (0–30) |
+| `reference_images` | string[] | No | Reference image URLs (`seedance2.5-md` 0–9; `seedance2.5-30s` 0–30) |
 | `images` | string[] | No | Alias for `reference_images` |
 
 ## Billing

@@ -25,7 +25,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 - **提示词（prompt）**：必填。
 - **时长（duration）**：4–15 秒，默认 `5`。
-- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`，默认 `16:9`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`（横屏）、`9:16`（竖屏）、`1:1`（方形）、`4:3`（传统比例）、`3:4`（竖向传统比例）、`21:9`（超宽屏）、`adaptive`（自适应，根据输入图片/视频自动匹配），默认 `16:9`。
 - **分辨率（resolution）**：标准档 `480p` / `720p` / `1080p`（默认 `720p`）；Fast 仅 `480p` / `720p`。也可把分辨率写进 `model`。
 - **参考图**：`images` 或 `reference_images`，最多 **9** 张。
 - **参考视频**：`videos` 或 `reference_videos`，最多 **3** 个。

@@ -215,14 +215,6 @@
                     ]
                   },
                   {
-                    "group": "933",
-                    "icon": "clapperboard-play",
-                    "pages": [
-                      "en/api-reference/seedance/20933/create",
-                      "en/api-reference/seedance/933720/create"
-                    ]
-                  },
-                  {
                     "group": "官链",
                     "icon": "film",
                     "pages": [
@@ -252,9 +244,7 @@
                     "group": "MD",
                     "icon": "bolt",
                     "pages": [
-                      "en/api-reference/seedance/md/create",
-                      "en/api-reference/seedance/md/fast-i2v",
-                      "en/api-reference/seedance/md/std"
+                      "en/api-reference/seedance/md/create"
                     ]
                   }
                 ]
@@ -472,14 +462,6 @@
                     ]
                   },
                   {
-                    "group": "933",
-                    "icon": "clapperboard-play",
-                    "pages": [
-                      "zh/api-reference/seedance/20933/create",
-                      "zh/api-reference/seedance/933720/create"
-                    ]
-                  },
-                  {
                     "group": "官链",
                     "icon": "film",
                     "pages": [
@@ -509,9 +491,7 @@
                     "group": "MD",
                     "icon": "bolt",
                     "pages": [
-                      "zh/api-reference/seedance/md/create",
-                      "zh/api-reference/seedance/md/fast-i2v",
-                      "zh/api-reference/seedance/md/std"
+                      "zh/api-reference/seedance/md/create"
                     ]
                   }
                 ]

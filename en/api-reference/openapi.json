@@ -20,14 +20,48 @@
     "/api/open-api/v1/videos": {
       "post": {
         "summary": "Create Video Task",
-        "description": "Create a new video generation task using Sora models. Route 1 (route1): model sora2-12s, duration must be 12. Route 3: sora2-gz-stable / sora2-gz-sp. Route 6: see model config.",
+        "description": "Create a Sora video generation task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createVideo",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VideoGenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt",
+                  "duration"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Model ID such as `sora2-12s`, `sora2-gz-stable`, or `sora2-gz-sp`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text prompt for video generation"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "description": "Duration in seconds. For `sora2-12s`, must be 12."
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": [
+                      "landscape",
+                      "portrait"
+                    ],
+                    "description": "Video orientation"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs"
+                  }
+                }
               }
             }
           }
@@ -79,14 +113,118 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "GPT Image 2 Image Generation",
-        "description": "Create an async GPT Image 2 image task (model=gpt-image-2). The same path also supports gpt-image-2.5-flare / gpt-image-2.5-sunburst, gpt-image-1.5, nano-banana family, doubao-seedream-5-0-pro, etc. See each model page. Recommended for production to avoid 504 timeouts on sync calls behind Cloudflare.",
+        "description": "Create an async image generation task. Choose the product variant with `model`; poll the task for results. See each model page for parameters and billing.",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ImageGenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Model ID such as `gpt-image-2`, `gpt-image-1.5`, or `nano-banana`. See each model docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text prompt for image generation"
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "description": "Aspect ratio. Supported values: auto, 1:1, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 16:9, 9:16, 2:1, 1:2, 3:1, 1:3, 21:9, 9:21. doubao-seedream-5-0-pro only supports 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, auto.",
+                    "enum": [
+                      "auto",
+                      "1:1",
+                      "3:2",
+                      "2:3",
+                      "4:3",
+                      "3:4",
+                      "5:4",
+                      "4:5",
+                      "16:9",
+                      "9:16",
+                      "2:1",
+                      "1:2",
+                      "3:1",
+                      "1:3",
+                      "21:9",
+                      "9:21"
+                    ],
+                    "default": "auto"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs or base64 strings. doubao-seedream-5-0-pro: max 10; per image: jpeg/png/webp/bmp/tiff/gif/heic/heif, aspect ratio [1/16,16], sides >14px, ≤30MB, pixels ≤6000×6000"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2, etc.: 1k, 2k, 4k. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
+                    "enum": [
+                      "1k",
+                      "2k",
+                      "4k"
+                    ],
+                    "default": "1k"
+                  },
+                  "quality": {
+                    "type": "string",
+                    "description": "Image quality (gpt-image-2 / gpt-image-1.5). Supported values: low, medium, high, auto.",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "auto"
+                    ],
+                    "default": "low"
+                  },
+                  "n": {
+                    "type": "integer",
+                    "description": "Number of images. gpt-image-1.5: 1–4 (clamped).",
+                    "minimum": 1,
+                    "maximum": 4,
+                    "default": 1
+                  },
+                  "background": {
+                    "type": "string",
+                    "description": "Background mode (gpt-image-1.5): auto / opaque / transparent. Use png with transparent.",
+                    "enum": [
+                      "auto",
+                      "opaque",
+                      "transparent"
+                    ],
+                    "default": "auto"
+                  },
+                  "moderation": {
+                    "type": "string",
+                    "description": "Moderation strength (gpt-image-1.5): auto / low.",
+                    "enum": [
+                      "auto",
+                      "low"
+                    ],
+                    "default": "auto"
+                  },
+                  "output_format": {
+                    "type": "string",
+                    "description": "Output format (gpt-image-1.5): png / jpeg.",
+                    "enum": [
+                      "png",
+                      "jpeg"
+                    ],
+                    "default": "png"
+                  },
+                  "mask_url": {
+                    "type": "string",
+                    "description": "Inpainting mask URL (gpt-image-1.5); requires images."
+                  }
+                }
               }
             }
           }
@@ -167,7 +305,7 @@
     "/api/open-api/v1/chat/completions": {
       "post": {
         "summary": "Chat Completions",
-        "description": "OpenAI-compatible chat completions for ViraltokAI LLM models (default model gpt-5.6-sol). Pay-as-you-go token billing from usage. Set stream=true for SSE; usage is taken from the final stream chunk when present.",
+        "description": "OpenAI-compatible chat completions for ViraltokAI LLM models. See the docs page for models, streaming, and billing.",
         "operationId": "chatCompletions",
         "requestBody": {
           "required": true,
@@ -211,7 +349,7 @@
     "/api/open-api/v1/images/upscale": {
       "post": {
         "summary": "Image upscale",
-        "description": "Synchronous image upscale. Charges immediately on success (billing model viraltok-image-upscale; cost = unit price × pass_count) and returns b64_json by default; pass response_format=url for image_url.",
+        "description": "Synchronous image upscale. Billed on success. See the docs page for parameters and billing.",
         "operationId": "upscaleImage",
         "requestBody": {
           "required": true,
@@ -247,7 +385,7 @@
     "/api/open-api/v1/images/remove-bg": {
       "post": {
         "summary": "Remove background",
-        "description": "Synchronous background removal. Charges immediately on success (billing model viraltok-remove-bg) and returns b64_json by default; pass response_format=url for image_url.",
+        "description": "Synchronous background removal. Billed on success. See the docs page for parameters and billing.",
         "operationId": "removeBackground",
         "requestBody": {
           "required": true,
@@ -276,7 +414,7 @@
     "/api/open-api/v1/images/generations": {
       "post": {
         "summary": "GPT Image 2 Text-to-Image",
-        "description": "Synchronous text-to-image, compatible with OpenAI POST /v1/images/generations. Billed on success; returns image results in data without polling. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
+        "description": "Synchronous text-to-image, compatible with OpenAI `POST /v1/images/generations`. Billed on success. See the docs page for parameters and billing.",
         "operationId": "generateOpenAIImage",
         "requestBody": {
           "required": true,
@@ -305,7 +443,7 @@
     "/api/open-api/v1/images/edits": {
       "post": {
         "summary": "GPT Image 2 Edit Image",
-        "description": "Synchronous image edit, compatible with OpenAI POST /v1/images/edits. Upload source images via multipart/form-data (multiple files supported, all using field name `image`); billed on success. Direct image endpoint: https://img.viraltok.ai. If sync calls hit 504 (often Cloudflare proxy timeout), prefer async image task creation.",
+        "description": "Synchronous image edit, compatible with OpenAI `POST /v1/images/edits`. Billed on success. See the docs page for parameters and billing.",
         "operationId": "editOpenAIImage",
         "requestBody": {
           "required": true,
@@ -334,14 +472,60 @@
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "Create VEO Video",
-        "description": "Create a VEO video task. model supports veo_3_1_fast (Fast) or veo_3_1_lite (Lite). Fast: 720p/1080p bill veo_3_1_fast, 4k bills veo_3_1_fast-4k. Lite: 720p only, bills veo_3_1_lite (per task). Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a VEO video task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VeoFramesRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Model ID such as `veo_3_1_fast` or `veo_3_1_lite`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text prompt"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "enum": [
+                      "720p",
+                      "1080p",
+                      "4k"
+                    ],
+                    "description": "Output resolution. Fast: 720p/1080p→veo_3_1_fast, 4k→veo_3_1_fast-4k. Lite: 720p only→veo_3_1_lite."
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": [
+                      "landscape",
+                      "portrait"
+                    ],
+                    "description": "Video orientation"
+                  },
+                  "first_frame_url": {
+                    "type": "string",
+                    "description": "URL of the first frame image"
+                  },
+                  "last_frame_url": {
+                    "type": "string",
+                    "description": "URL of the last frame image"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs"
+                  }
+                }
               }
             }
           }
@@ -363,14 +547,124 @@
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "Create Seedance Video Task",
-        "description": "Create a Seedance 2.0 video task. Routes: Full/Manxue (sd2_mx_*, per-second, assets require audit), SP economy (seedance2.0-sp / seedance2.0-fast-sp, per-second by resolution, 720p/1080p only, 480p not supported), SP official (seedance2.0-of-sp / seedance2.0-of-fast-sp, per-second by resolution), Mini (seedance2.0-mini, per-second by resolution), MD (seedance2.0-md / seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro, per-task, 720p; Pro supports up to 9 images and 3 audios, no reference videos), Fast I2V (seedance2.0-fast-i2v, per-task, 720p, image refs only, max 9, no reference video/audio), STD standard (seedance2.0-std, per-task, 720p, supports audio references). Seedance 2.0 933 (seedance2.0-933, per-second by resolution 480p/720p/1080p; optional reference_images/videos/audios, face_processing, generate_audio, reference_mode). Seedance 2.0 GZ (seedance2.0-gz*, per-second or per-million-tokens; assets require review, public URLs can be auto-submitted). Seedance 2.0 standard (seedance-2.0-480p / seedance-2.0-720p / seedance-2.0-1080p / seedance-2.0-4k, per-second; resolution encoded in model; public HTTPS reference URLs). Seedance 933 720p (sd2-933-720p, per-second 0.0479/s, fixed 720p; optional images/videos/audios, reference_mode, generate_audio). Poll GET /api/open-api/v1/videos/{taskId} for results. See seedance/gz720/create, seedance/20480/create, seedance/md/create, seedance/md/fast-i2v, seedance/md/std, seedance/mini/create for details.",
+        "description": "Create a Seedance 2.0 video task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See each docs page for variant-specific parameters and billing.",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SeedanceGenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt",
+                  "duration"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Model ID for the Seedance product variant. See each Seedance docs page for supported values."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Text prompt. MD route: max 5000 characters"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro: 10 or 15 only; STD standard 4-15. Default 5"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "enum": [
+                      "480p",
+                      "720p",
+                      "1080p"
+                    ],
+                    "description": "Output resolution. For SP economy: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": [
+                      "landscape",
+                      "portrait"
+                    ],
+                    "description": "Video orientation (ratio takes precedence if set)"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md / seedance2.0-fast-md max 4; seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "description": "Aspect ratio. MD: 16:9, 9:16, 1:1 only. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
+                  },
+                  "first_image": {
+                    "type": "string",
+                    "description": "First frame. Full: asset://{assetId}; Economy/MD: https:// URL. MD frame mode requires last_image as well; first frame only is not supported"
+                  },
+                  "last_image": {
+                    "type": "string",
+                    "description": "Last frame. Full: asset://{assetId}; Economy/MD: https:// URL. MD frame mode requires first_image as well"
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. seedance2.0-md / seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-pro / seedance2.0-fast-pro max 3 clips and must be paired with images; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "description": "Aspect ratio alias (used by seedance2.0-933; takes precedence over ratio). 933 supports 21:9/16:9/4:3/1:1/3:4/9:16"
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for images. seedance2.0-933: max 9"
+                  },
+                  "videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_videos. seedance2.0-933: max 3"
+                  },
+                  "audios": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_audios. seedance2.0-933: max 3"
+                  },
+                  "face_processing": {
+                    "type": "boolean",
+                    "description": "seedance2.0-933 only. Enable face processing. Default true"
+                  },
+                  "generate_audio": {
+                    "type": "boolean",
+                    "description": "seedance2.0-933 only. Generate audio. Default false"
+                  },
+                  "reference_mode": {
+                    "type": "string",
+                    "enum": [
+                      "image",
+                      "frame"
+                    ],
+                    "description": "seedance2.0-933 only. Reference mode. Default image"
+                  }
+                }
               }
             }
           }
@@ -595,14 +889,149 @@
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "Create MiniMax H3 Video",
-        "description": "Create a MiniMax H3 or MiniMax H3 GZ video task. minimax-h3 supports reference images, audio, and first/last frames. minimax-h3-gz also supports reference videos (max 3) and 2K/768P resolution (default 768P). Without reference videos, billed per_task. With reference_videos, billed per_second using billed seconds = reference video duration + duration, at a separate minimax-h3-gz-video-{resolution} rate. Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a MiniMax H3 video task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MinimaxH3GenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "minimax-h3",
+                      "minimax-h3-gz"
+                    ],
+                    "description": "Model ID such as `minimax-h3` or `minimax-h3-gz`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "description": "Text prompt for video generation. 1–2000 characters."
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "default": 5,
+                    "minimum": 5,
+                    "maximum": 15,
+                    "description": "Video duration in seconds. Supports 5–15. Defaults to 5."
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "default": "16:9",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1",
+                      "4:3",
+                      "3:4",
+                      "21:9"
+                    ],
+                    "description": "Output aspect ratio. Takes precedence over ratio."
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1",
+                      "4:3",
+                      "3:4",
+                      "21:9"
+                    ],
+                    "description": "Alias for aspect_ratio when aspect_ratio is empty."
+                  },
+                  "size": {
+                    "type": "string",
+                    "default": "2560x1440",
+                    "enum": [
+                      "2560x1440",
+                      "1440x2560",
+                      "1440x1440",
+                      "1920x1440",
+                      "1440x1920",
+                      "3360x1440"
+                    ],
+                    "description": "Output pixel size. Defaults based on aspect_ratio when omitted."
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "default": "768P",
+                    "enum": [
+                      "2K",
+                      "768P"
+                    ],
+                    "description": "Used by minimax-h3-gz only. Defaults to 768P; 2K and 768P are billed separately."
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URL list. Max 5 public URLs."
+                  },
+                  "images": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_images when reference_images is empty."
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Used by minimax-h3-gz only. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
+                  },
+                  "videos": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz only."
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "maxItems": 1,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference audio URL list. Max 1 public URL. For minimax-h3-gz, must be paired with a reference image or video."
+                  },
+                  "first_image": {
+                    "type": "string",
+                    "description": "Optional first-frame image URL."
+                  },
+                  "last_image": {
+                    "type": "string",
+                    "description": "Optional last-frame image URL."
+                  }
+                },
+                "example": {
+                  "model": "minimax-h3",
+                  "prompt": "A cinematic product shot with natural lighting",
+                  "duration": 5,
+                  "aspect_ratio": "16:9",
+                  "size": "2560x1440",
+                  "reference_images": [
+                    "https://example.com/reference.png"
+                  ],
+                  "reference_audios": [
+                    "https://example.com/reference.mp3"
+                  ]
+                }
               },
               "examples": {
                 "default": {
@@ -658,14 +1087,112 @@
     "/api/open-api/v1/kling/videos": {
       "post": {
         "summary": "Create Kling O3 Video",
-        "description": "Create a Kling O3 video generation task. Supports text prompt, up to 3 reference images, optional first/last frames, duration 3-15s, aspect_ratio 16:9/9:16/1:1, resolution 720p/1080p, and optional audio. Billed per_task (flat per request; duration does not affect cost). Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "description": "Create a Kling O3 video task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createKlingO3Video",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/KlingO3GenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "kling-o3"
+                    ],
+                    "description": "Model ID such as `kling-o3`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000,
+                    "description": "Text prompt for video generation. 1–2000 characters."
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "default": 6,
+                    "minimum": 3,
+                    "maximum": 15,
+                    "description": "Video duration in seconds. Supports 3–15. Defaults to 6."
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "default": "16:9",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1"
+                    ],
+                    "description": "Output aspect ratio. Takes precedence over ratio."
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1"
+                    ],
+                    "description": "Alias for aspect_ratio when aspect_ratio is empty."
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "default": "720p",
+                    "enum": [
+                      "720p",
+                      "1080p"
+                    ],
+                    "description": "Output resolution. Defaults to 720p."
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URL list. Max 3 public URLs."
+                  },
+                  "images": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_images when reference_images is empty."
+                  },
+                  "first_image": {
+                    "type": "string",
+                    "description": "Optional first-frame image URL."
+                  },
+                  "last_image": {
+                    "type": "string",
+                    "description": "Optional last-frame image URL."
+                  },
+                  "generate_audio": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to generate a video audio track. Defaults to false."
+                  },
+                  "reference_mode": {
+                    "type": "string",
+                    "description": "Optional reference mode."
+                  }
+                },
+                "example": {
+                  "model": "kling-o3",
+                  "prompt": "A cinematic product shot with natural lighting",
+                  "duration": 6,
+                  "aspect_ratio": "16:9",
+                  "resolution": "720p",
+                  "reference_images": [
+                    "https://example.com/reference.png"
+                  ],
+                  "generate_audio": false
+                }
               },
               "examples": {
                 "default": {
@@ -719,14 +1246,128 @@
     "/api/open-api/v1/wan/videos": {
       "post": {
         "summary": "Create Wan 3.0 video task",
-        "description": "Create a Wan 3.0 video generation task. Supports text prompt, up to 10 reference images, up to 5 reference videos, up to 5 reference audios, duration 4-30 seconds, aspect ratios 9:16/16:9/3:4/4:3/1:1, and resolutions 480P/720P/1080P. Billing is per_second. After creation, poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Wan 3.0 video task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createWan30Video",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Wan30GenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt",
+                  "duration",
+                  "resolution"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "wan3.0",
+                      "wan3.0-480p",
+                      "wan3.0-720p",
+                      "wan3.0-1080p"
+                    ],
+                    "description": "Model ID such as `wan3.0`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Text prompt for video generation."
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "default": 4,
+                    "minimum": 4,
+                    "maximum": 30,
+                    "description": "Video duration in seconds. Supported range 4–30. Default 4."
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "enum": [
+                      "9:16",
+                      "16:9",
+                      "3:4",
+                      "4:3",
+                      "1:1"
+                    ],
+                    "description": "Output aspect ratio. Takes precedence over ratio."
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "enum": [
+                      "9:16",
+                      "16:9",
+                      "3:4",
+                      "4:3",
+                      "1:1"
+                    ],
+                    "description": "Alias used when aspect_ratio is empty."
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "enum": [
+                      "480P",
+                      "720P",
+                      "1080P",
+                      "480p",
+                      "720p",
+                      "1080p"
+                    ],
+                    "description": "Output resolution. Required."
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs, up to 10 public URLs."
+                  },
+                  "images": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_images when the latter is empty."
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference video URLs, up to 5; total duration ≤ 15s."
+                  },
+                  "videos": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_videos when the latter is empty."
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference audio URLs, up to 5; total duration ≤ 15s."
+                  }
+                },
+                "example": {
+                  "model": "wan3.0",
+                  "prompt": "A cinematic product shot with natural lighting",
+                  "duration": 4,
+                  "aspect_ratio": "9:16",
+                  "resolution": "480P",
+                  "reference_images": [
+                    "https://example.com/reference.png"
+                  ]
+                }
               },
               "examples": {
                 "default": {
@@ -785,7 +1426,7 @@
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "Create video super-resolution task",
-        "description": "Enhance a publicly accessible video to higher resolution. Clarity and FPS are selected via model. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second with duration ceiled up.",
+        "description": "Submit a video super-resolution task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createSuperResolutionVideo",
         "requestBody": {
           "required": true,
@@ -839,7 +1480,7 @@
     "/api/open-api/v1/digital-human/videos": {
       "post": {
         "summary": "Create digital human task",
-        "description": "Submit a digital-human lip-sync video task from a face video and driving audio. Optional model_version, side_face, and tilted_face. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second based on ceiled video_url duration.",
+        "description": "Submit a digital-human lip-sync video task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createDigitalHumanVideo",
         "requestBody": {
           "required": true,
@@ -895,7 +1536,7 @@
     "/api/open-api/v1/remove-subtitle/videos": {
       "post": {
         "summary": "Create remove-subtitle task",
-        "description": "Submit a video subtitle-removal task with a public video URL. Poll GET /api/open-api/v1/videos/{taskId} for results. Billed per second based on ceiled video_url duration.",
+        "description": "Submit a video subtitle-removal task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createRemoveSubtitleVideo",
         "requestBody": {
           "required": true,
@@ -949,7 +1590,7 @@
     "/api/open-api/v1/video-translate/videos": {
       "post": {
         "summary": "Create video-translate task",
-        "description": "Submit a video translation task with a public video URL and target language. Max source length 8 minutes. Poll GET /api/open-api/v1/videos/{taskId} for results (result.video_url; optional result.caption_url). Billed per second based on ceiled video_url duration.",
+        "description": "Submit a video translation task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createVideoTranslate",
         "requestBody": {
           "required": true,
@@ -1174,7 +1815,7 @@
     "/api/open-api/v1/user/balance": {
       "get": {
         "summary": "Query User Account Balance",
-        "description": "Returns the JimiCoin account balance for the user who owns the API key (total balance, net consumption, available balance). used_coin is account-wide consumption minus refunds across all keys. OpenAPI usage is billed against this account.",
+        "description": "Returns the JimiCoin account balance for the user who owns the API key.",
         "operationId": "getUserBalance",
         "responses": {
           "200": {
@@ -1207,7 +1848,7 @@
     "/api/open-api/v1/key/balance": {
       "get": {
         "summary": "Query API Key Quota Balance",
-        "description": "Returns quota usage for the current API key (total, used, remaining). total_quota of 0 means unlimited. used_quota is cumulative billed OpenAPI cost for this key only; unlike /user/balance used_coin (account-wide net consumption).",
+        "description": "Returns quota usage for the current API key (total, used, remaining).",
         "operationId": "getApiKeyBalance",
         "responses": {
           "200": {
@@ -1242,7 +1883,7 @@
     "/api/openapi/model/catalog": {
       "get": {
         "summary": "Probe model pricing",
-        "description": "Probe public pricing for active OpenAPI billing models with default unit prices and billing modes. Platform baseline prices only; account-specific custom pricing applies at billing time.",
+        "description": "Probe public pricing for active OpenAPI billing models.",
         "operationId": "listModelCatalog",
         "security": [],
         "parameters": [
@@ -1369,14 +2010,172 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "Create Seedance 2.5 video task",
-        "description": "Create a Seedance 2.5 video generation task. Standard seedance-2.5: up to 30 reference images, 10 reference videos (each and total ≤30.2s), 10 audios (each ≤30s), duration 4–30s, resolution 480p/720p/1080p, billed per_second by resolution (seedance-2.5-480p / seedance-2.5-720p / seedance-2.5-1080p); with reference material you can set omni_reference_task_type (auto / reference / edit / extend) to declare the subtask and validate it at submission time, which also enables aspect_ratio=adaptive and duration=-1. SP seedance-2.5-sp: flat 0.5/s, 720p only, duration 4–30s, same media limits, optional first_image / last_image. GZ seedance2.5-gz: precharged by resolution (seedance2.5-gz-480p / seedance2.5-gz-720p; seedance2.5-gz-video-* when reference videos are present) and settled to actual usage after success, duration 4–30 or -1, adaptive ratio, reference images/videos/audios/first-last frames. MD seedance2.5-md / seedance2.5-30s: fixed 15s / 30s output, aspect ratio 9:16 and 16:9 only, reference images supported, no first-last frames, per_task flat billing, no 10s tier. See product pages for details. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Seedance 2.5 video task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See each docs page for variant-specific parameters and billing.",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Seedance25GenerationRequest"
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "seedance-2.5",
+                      "seedance-2.5-sp",
+                      "seedance2.5-gz",
+                      "seedance2.5-md",
+                      "seedance2.5-30s"
+                    ],
+                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, or `seedance2.5-30s`. See each docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 5000,
+                    "description": "Text prompt, length 1–5000."
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "default": 4,
+                    "maximum": 30,
+                    "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "default": "9:16",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1",
+                      "adaptive"
+                    ],
+                    "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "enum": [
+                      "16:9",
+                      "9:16",
+                      "1:1",
+                      "adaptive"
+                    ],
+                    "description": "Alias used when aspect_ratio is empty."
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "default": "480p",
+                    "enum": [
+                      "480p",
+                      "720p",
+                      "1080p"
+                    ],
+                    "description": "Output resolution tier. Default 480p."
+                  },
+                  "first_image": {
+                    "type": "string",
+                    "description": "First-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+                  },
+                  "last_image": {
+                    "type": "string",
+                    "description": "Last-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "maxItems": 30,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs, max 30, must be publicly accessible."
+                  },
+                  "images": {
+                    "type": "array",
+                    "maxItems": 30,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_images when the latter is empty."
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference video URLs, max 10; each clip and combined duration ≤ 30.2s."
+                  },
+                  "videos": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_videos when the latter is empty."
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference audio URLs, max 10; each clip ≤ 30s."
+                  },
+                  "audios": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias for reference_audios when the latter is empty."
+                  },
+                  "generate_audio": {
+                    "type": "boolean",
+                    "description": "Whether to generate audio. seedance2.5-gz only; default true."
+                  },
+                  "watermark": {
+                    "type": "boolean",
+                    "description": "Whether to add a watermark. seedance2.5-gz only; default false."
+                  },
+                  "output_format": {
+                    "type": "string",
+                    "enum": [
+                      "mp4",
+                      "mov"
+                    ],
+                    "description": "Output container. seedance2.5-gz only; default mp4."
+                  },
+                  "omni_reference_task_type": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "reference",
+                      "edit",
+                      "extend"
+                    ],
+                    "description": "Task type hint. seedance-2.5 with reference material only; moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
+                  }
+                },
+                "example": {
+                  "model": "seedance-2.5",
+                  "prompt": "A cinematic product shot with natural lighting",
+                  "duration": 4,
+                  "aspect_ratio": "16:9",
+                  "resolution": "720p",
+                  "reference_images": [
+                    "https://example.com/reference.png"
+                  ],
+                  "reference_videos": [
+                    "https://example.com/reference.mp4"
+                  ],
+                  "reference_audios": [
+                    "https://example.com/reference.mp3"
+                  ]
+                }
               },
               "examples": {
                 "default": {
@@ -1444,14 +2243,97 @@
     "/api/open-api/v1/flux3/videos": {
       "post": {
         "summary": "Create Flux 3 video task",
-        "description": "Create a Flux 3 video task. Only 6 models: flux-3-draft / flux-3-i2v-draft / flux-3-flf-draft / flux-3-keyframes-draft / flux-3-extend-draft (fixed 720p) and flux-3-enhance (fixed 1080p). Do not send resolution. Billing model equals request model, per_second × duration (5–20s). Draft returns result.draft_cache_url. Poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Flux 3 video task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createFlux3Video",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Flux3GenerationRequest"
+                "type": "object",
+                "required": [
+                  "model"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "flux-3-draft",
+                      "flux-3-i2v-draft",
+                      "flux-3-flf-draft",
+                      "flux-3-keyframes-draft",
+                      "flux-3-extend-draft",
+                      "flux-3-enhance"
+                    ],
+                    "description": "Model ID such as `flux-3-draft` or `flux-3-enhance`. See the docs page."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 5000,
+                    "description": "Required except for flux-3-enhance"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 20,
+                    "default": 5
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "21:9",
+                      "2:1",
+                      "16:9",
+                      "4:3",
+                      "1:1",
+                      "3:4",
+                      "9:16"
+                    ],
+                    "default": "16:9"
+                  },
+                  "ratio": {
+                    "type": "string"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "description": "Ignored. Output resolution is fixed by model (drafts 720p, enhance 1080p)."
+                  },
+                  "generate_audio": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "safety_tolerance": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4,
+                    "default": 2
+                  },
+                  "image_url": {
+                    "type": "string"
+                  },
+                  "start_image_url": {
+                    "type": "string"
+                  },
+                  "end_image_url": {
+                    "type": "string"
+                  },
+                  "video_url": {
+                    "type": "string"
+                  },
+                  "keyframes": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Flux3Keyframe"
+                    },
+                    "maxItems": 10
+                  },
+                  "draft_cache_url": {
+                    "type": "string",
+                    "description": "Required for flux-3-enhance"
+                  }
+                }
               },
               "examples": {
                 "default": {
@@ -1502,7 +2384,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Route 1: sora2-12s (duration must be 12). Route 3: sora2-gz-stable, sora2-gz-sp, etc."
+            "description": "Model ID such as `sora2-12s`, `sora2-gz-stable`, or `sora2-gz-sp`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -1510,7 +2392,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Route 1 sora2-12s must be 12"
+            "description": "Duration in seconds. For `sora2-12s`, must be 12."
           },
           "orientation": {
             "type": "string",
@@ -1539,7 +2421,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Manxue: sd2_mx_720p | sd2_mx_1080p | sd2_mx_2k | sd2_mx_4k; Fast: sd2_mx_fast_720p | sd2_mx_fast_1080p; Video ref: sd2_mx_video_720p | sd2_mx_video_1080p | sd2_mx_video_2k | sd2_mx_video_4k; Video ref Fast: sd2_mx_video_fast_720p | sd2_mx_video_fast_1080p (all per-second). reference_videos only for video-series models. SP economy: seedance2.0-sp | seedance2.0-fast-sp (per-second by resolution, 720p/1080p, 480p not supported). SP official: seedance2.0-of-sp | seedance2.0-of-fast-sp (per-second by resolution). Mini: seedance2.0-mini (per-second by resolution; billing names like seedance2.0-mini-720p / seedance2.0-mini-720p-video also accepted). MD: seedance2.0-md (4-15s, max 4 images / 3 videos / 1 audio) | seedance2.0-fast-md (10/15s, max 4 images / 3 videos / 1 audio) | seedance2.0-pro (10/15s, max 9 images / 3 audios, no videos) | seedance2.0-fast-pro (10/15s, max 9 images / 3 audios, no videos). Fast I2V: seedance2.0-fast-i2v (per-task, 720p, image refs only). STD standard: seedance2.0-std (per-task, 720p). Seedance 2.0 933: seedance2.0-933 (per-second by resolution; billing names seedance2.0-933-480p/-720p/-1080p). Seedance 2.0 GZ: seedance2.0-gz* (per-second; standard 480p/720p/1080p, fast/mini 480p/720p only; assets require review; direct upstream result URL). Seedance 933 720p: sd2-933-720p (per-second 0.0479/s, fixed 720p; max 9 images / 3 videos / 3 audios)"
+            "description": "Model ID for the Seedance product variant. See each Seedance docs page for supported values."
           },
           "prompt": {
             "type": "string",
@@ -1651,7 +2533,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name (supported: gpt-image-2, gpt-image-2.5-flare, gpt-image-2.5-sunburst, gpt-image-1.5, nano-banana, nano-banana-2, nano-banana-pro, doubao-seedream-5-0-pro)"
+            "description": "Model ID such as `gpt-image-2`, `gpt-image-1.5`, or `nano-banana`. See each model docs page."
           },
           "prompt": {
             "type": "string",
@@ -1794,7 +2676,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Request model: veo_3_1_fast / veo_3_1_fast-4k, or veo_3_1_lite (720p only)."
+            "description": "Model ID such as `veo_3_1_fast` or `veo_3_1_lite`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -2415,7 +3297,7 @@
               "minimax-h3",
               "minimax-h3-gz"
             ],
-            "description": "Model name. minimax-h3 and minimax-h3-gz are separate billing models. Aliases: minimax_h3 / minimaxh3, minimax_h3_gz / minimaxh3gz."
+            "description": "Model ID such as `minimax-h3` or `minimax-h3-gz`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -2552,7 +3434,7 @@
             "enum": [
               "kling-o3"
             ],
-            "description": "Model name. kling-o3, klingo3, kling_o3, and KlingO3 normalize to kling-o3."
+            "description": "Model ID such as `kling-o3`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -2658,7 +3540,7 @@
               "wan3.0-720p",
               "wan3.0-1080p"
             ],
-            "description": "Model name. Aliases such as wan3, wan-3.0, and wan30 normalize to wan3.0; resolution billing models are also accepted."
+            "description": "Model ID such as `wan3.0`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -3867,7 +4749,7 @@
               "seedance2.5-md",
               "seedance2.5-30s"
             ],
-            "description": "Model id. Aliases seedance2.5 / seedance_2.5 / seedance25 normalize to seedance-2.5; seedance-2.5-sp is the SP economy variant; seedance2.5-gz / seedance-2.5-gz is the GZ independent billing route; seedance2.5-md is fixed 15s output (per_task); seedance2.5-30s is fixed 30s output (per_task, no 10s tier)."
+            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, or `seedance2.5-30s`. See each docs page."
           },
           "prompt": {
             "type": "string",
@@ -4382,7 +5264,7 @@
               "flux-3-extend-draft",
               "flux-3-enhance"
             ],
-            "description": "Request model (billing model = same). Drafts fixed 720p; flux-3-enhance fixed 1080p. Do not send resolution."
+            "description": "Model ID such as `flux-3-draft` or `flux-3-enhance`. See the docs page."
           },
           "prompt": {
             "type": "string",

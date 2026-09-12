@@ -571,7 +571,7 @@
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro: 10 or 15 only; STD standard 4-15. Default 5"
+                    "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md: 10 or 15 only; STD standard 4-15. Default 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -595,7 +595,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md / seedance2.0-fast-md max 4; seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
+                    "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md / seedance2.0-fast-md max 4; seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
                   },
                   "ratio": {
                     "type": "string",
@@ -614,14 +614,14 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. seedance2.0-md / seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+                    "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. seedance2.0-md / seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-pro / seedance2.0-fast-pro max 3 clips and must be paired with images; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+                    "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2429,7 +2429,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro: 10 or 15 only; STD standard 4-15. Default 5"
+            "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md 4-15; seedance2.0-fast-md: 10 or 15 only; STD standard 4-15. Default 5"
           },
           "resolution": {
             "type": "string",
@@ -2453,7 +2453,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md / seedance2.0-fast-md max 4; seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
+            "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md / seedance2.0-fast-md max 4; seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
           },
           "ratio": {
             "type": "string",
@@ -2472,14 +2472,14 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. seedance2.0-md / seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+            "description": "Reference videos. Full: asset://{assetId}; Economy/MD: https:// URL. seedance2.0-md / seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-pro / seedance2.0-fast-pro max 3 clips and must be paired with images; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+            "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md / seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
           },
           "aspect_ratio": {
             "type": "string",

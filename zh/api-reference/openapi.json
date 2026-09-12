@@ -571,7 +571,7 @@
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro 仅 10 或 15；STD 标准版 4-15。默认 5"
+                    "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md 仅 10 或 15；STD 标准版 4-15。默认 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -595,7 +595,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
+                    "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
                   },
                   "ratio": {
                     "type": "string",
@@ -614,14 +614,14 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+                    "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-pro / seedance2.0-fast-pro 最多 3 段且须搭配 images；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+                    "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2429,7 +2429,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md / seedance2.0-pro / seedance2.0-fast-pro 仅 10 或 15；STD 标准版 4-15。默认 5"
+            "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 4-15；seedance2.0-fast-md 仅 10 或 15；STD 标准版 4-15。默认 5"
           },
           "resolution": {
             "type": "string",
@@ -2453,7 +2453,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 4 张；seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
           },
           "ratio": {
             "type": "string",
@@ -2472,14 +2472,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-pro / seedance2.0-fast-pro / seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD: https:// URL。seedance2.0-md / seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-pro / seedance2.0-fast-pro 最多 3 段且须搭配 images；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+            "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md / seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
           },
           "aspect_ratio": {
             "type": "string",

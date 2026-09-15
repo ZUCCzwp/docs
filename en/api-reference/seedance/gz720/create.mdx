@@ -75,14 +75,6 @@ Requests **with reference videos** (`reference_videos` / `videos`) use a separat
 cost = completion_tokens / 1,000,000 × unit_price of the billing name
 ```
 
-On some routes, `seedance2.0-gz-720p` **does not return tokens**, so it is billed **per second at create time** (no token settlement):
-
-```text
-cost = unit_price × duration
-```
-
-In that case console `unit_price` is the **per-second** price. Other `seedance2.0-gz*` models still use per-million-token pricing.
-
 ## Example request
 
 ```bash

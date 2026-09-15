@@ -75,14 +75,6 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 费用 = completion_tokens / 1,000,000 × 对应计费名的百万 token 单价
 ```
 
-`seedance2.0-gz-720p` 在部分线路查询**不返回 token**，改为创建时 **按秒计费**，不再按 token 结算：
-
-```text
-费用 = 单价 × duration
-```
-
-该情况下控制台 `unit_price` 表示**每秒**单价。其它 `seedance2.0-gz*` 仍按百万 token 单价。
-
 ## 示例请求
 
 ```bash

@@ -13,7 +13,7 @@ This endpoint is shared with [Create Seedance Full Video](/en/api-reference/seed
 
 | Route | `model` values | Billing | Duration |
 |-------|----------------|---------|----------|
-| MD standard | `seedance2.0-md` | Per task | 4–15 s |
+| MD standard | `seedance2.0-md` | Per task | **5** / **10** / **15** s |
 | MD fast | `seedance2.0-fast-md` | Per task | **10** or **15** s |
 
 MD output is fixed at **720p**. Billing is per task, independent of duration.
@@ -22,7 +22,7 @@ MD output is fixed at **720p**. Billing is per task, independent of duration.
 
 | Model | Billing | Duration | Asset support | Aspect ratios |
 |-------|---------|----------|---------------|---------------|
-| `seedance2.0-md` | Per task | 4–15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
+| `seedance2.0-md` | Per task | 5 / 10 / 15 s | Up to **9** reference images; no reference videos, audio, or first/last frames | `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9` |
 | `seedance2.0-fast-md` | Per task | 10 or 15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
 
 ## Request fields
@@ -30,17 +30,17 @@ MD output is fixed at **720p**. Billing is per task, independent of duration.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `model` | string | Yes | See table above |
-| `prompt` | string | Yes | Text prompt, max **5000** characters |
-| `duration` | int | Yes | Length in seconds. `seedance2.0-md` supports 4–15; `seedance2.0-fast-md` supports **10** or **15** only. Default 5 |
-| `ratio` | string | No | `16:9` (default), `9:16`, or `1:1` |
-| `images` | string[] | No | Reference images, max **4** |
-| `first_image` | string | No | First frame; must be paired with `last_image` in frame mode |
-| `last_image` | string | No | Last frame; must be paired with `first_image` in frame mode |
-| `reference_videos` | string[] | No | Reference videos, max **3** |
-| `reference_audios` | string[] | No | Reference audio, max **1** clip |
+| `prompt` | string | Yes | Text prompt. Max **6000** characters for `seedance2.0-md`; max **5000** for `seedance2.0-fast-md` |
+| `duration` | int | Yes | Length in seconds. `seedance2.0-md` supports **5**, **10**, **15** only; `seedance2.0-fast-md` supports **10** or **15** only. Default 5 |
+| `ratio` | string | No | `seedance2.0-md`: `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9` (omit for the model default). `seedance2.0-fast-md`: `16:9` (default), `9:16`, or `1:1` |
+| `images` | string[] | No | Reference images. Max **9** for `seedance2.0-md`; max **4** for `seedance2.0-fast-md` |
+| `first_image` | string | No | `seedance2.0-fast-md` only: first frame; must be paired with `last_image` |
+| `last_image` | string | No | `seedance2.0-fast-md` only: last frame; must be paired with `first_image` |
+| `reference_videos` | string[] | No | `seedance2.0-fast-md` only: reference videos, max **3** |
+| `reference_audios` | string[] | No | `seedance2.0-fast-md` only: reference audio, max **1** clip |
 
 <Warning>
-The `resolution` field is ignored; output is always 720p.
+The `resolution` field is ignored; output is always 720p. `seedance2.0-md` does not support first/last frames, reference videos, or reference audio.
 </Warning>
 
 ## Assets
@@ -50,18 +50,27 @@ The `resolution` field is ignored; output is always 720p.
 
 ## Constraints
 
+### `seedance2.0-md`
+
+- `duration` is **5**, **10**, or **15** seconds only.
+- `images` max **9**.
+- `ratio` supports `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9`; omit to use the model default.
+- Prompt at most 6000 characters.
+- `first_image` / `last_image`, `reference_videos`, and `reference_audios` are not supported.
+
+### `seedance2.0-fast-md`
+
 - Do not combine `images` (reference mode) with `first_image` / `last_image` (frame mode).
 - **First frame only is not supported**; in frame mode, `first_image` and `last_image` **must both be provided**.
 - `ratio` must be one of `16:9`, `9:16`, `1:1`.
 - Prompt at most 5000 characters.
-- `seedance2.0-md`: `duration` 4–15 s; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
-- `seedance2.0-fast-md`: `duration` **10** or **15** s only; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
+- `duration` **10** or **15** s only; `images` max 4; `reference_videos` max 3; `reference_audios` max 1 clip.
 - `reference_videos`: combined duration ≤ **15** s, combined size ≤ **200MB**; each resolution between **720px and 2160px**, frame rate **24–60 FPS**.
 - `reference_audios`: combined duration ≤ **15** s; frame mode does not support audio references.
 
 ## Examples
 
-### MD standard — reference images
+### MD standard — text or reference images
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
@@ -70,7 +79,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -d '{
     "model": "seedance2.0-md",
     "prompt": "Subject turns slowly, breeze in hair, cinematic lighting",
-    "duration": 8,
+    "duration": 5,
     "ratio": "16:9",
     "images": [
       "https://example.com/ref-1.jpg",
@@ -82,7 +91,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ### MD fast — first and last frame image-to-video
 
 <Note>
-In frame mode, `first_image` and `last_image` **must both be provided**. First frame only is not supported.
+In frame mode, `first_image` and `last_image` **must both be provided**. First frame only is not supported. Frame mode applies to `seedance2.0-fast-md` only.
 </Note>
 
 ```bash

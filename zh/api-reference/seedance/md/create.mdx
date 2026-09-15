@@ -13,7 +13,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 | 线路 | `model` 取值 | 计费 | 时长 |
 |------|-------------|------|------|
-| MD 标准 | `seedance2.0-md` | 按次 | 4–15 秒 |
+| MD 标准 | `seedance2.0-md` | 按次 | **5** / **10** / **15** 秒 |
 | MD 快速 | `seedance2.0-fast-md` | 按次 | **10** 或 **15** 秒 |
 
 MD 输出固定 **720p**。计费按次结算，与时长无关。
@@ -22,7 +22,7 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 
 | 模型 | 计费 | 时长 | 素材能力 | 画面比例 |
 |------|------|------|----------|----------|
-| `seedance2.0-md` | 按次 | 4–15 秒 | 最多 **4** 张参考图、**3** 个参考视频、**1** 段参考音频 | `16:9`、`9:16`、`1:1` |
+| `seedance2.0-md` | 按次 | 5 / 10 / 15 秒 | 最多 **9** 张参考图；不支持参考视频、参考音频、首尾帧 | `1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9` |
 | `seedance2.0-fast-md` | 按次 | 10 或 15 秒 | 最多 **4** 张参考图、**3** 个参考视频、**1** 段参考音频 | `16:9`、`9:16`、`1:1` |
 
 ## 请求参数
@@ -30,17 +30,17 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `model` | string | 是 | 见上表 |
-| `prompt` | string | 是 | 视频生成提示词，最多 **5000** 字符 |
-| `duration` | int | 是 | 时长（秒）。`seedance2.0-md` 支持 4–15；`seedance2.0-fast-md` 仅支持 **10** 或 **15**。默认 5 |
-| `ratio` | string | 否 | 画面比例：`16:9`（默认）、`9:16`、`1:1` |
-| `images` | string[] | 否 | 参考图列表，最多 **4** 张 |
-| `first_image` | string | 否 | 首帧图片；首尾帧模式须与 `last_image` 同时传入 |
-| `last_image` | string | 否 | 尾帧图片；首尾帧模式须与 `first_image` 同时传入 |
-| `reference_videos` | string[] | 否 | 参考视频列表，最多 **3** 个 |
-| `reference_audios` | string[] | 否 | 参考音频列表，最多 **1** 段 |
+| `prompt` | string | 是 | 视频生成提示词。`seedance2.0-md` 最多 **6000** 字符；`seedance2.0-fast-md` 最多 **5000** 字符 |
+| `duration` | int | 是 | 时长（秒）。`seedance2.0-md` 仅 **5**、**10**、**15**；`seedance2.0-fast-md` 仅 **10** 或 **15**。默认 5 |
+| `ratio` | string | 否 | `seedance2.0-md`：`1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9`（不传则用模型默认）。`seedance2.0-fast-md`：`16:9`（默认）、`9:16`、`1:1` |
+| `images` | string[] | 否 | 参考图列表。`seedance2.0-md` 最多 **9** 张；`seedance2.0-fast-md` 最多 **4** 张 |
+| `first_image` | string | 否 | 仅 `seedance2.0-fast-md`：首帧图片；须与 `last_image` 同时传入 |
+| `last_image` | string | 否 | 仅 `seedance2.0-fast-md`：尾帧图片；须与 `first_image` 同时传入 |
+| `reference_videos` | string[] | 否 | 仅 `seedance2.0-fast-md`：参考视频列表，最多 **3** 个 |
+| `reference_audios` | string[] | 否 | 仅 `seedance2.0-fast-md`：参考音频列表，最多 **1** 段 |
 
 <Warning>
-`resolution` 字段无效，输出固定 720p。
+`resolution` 字段无效，输出固定 720p。`seedance2.0-md` 不支持首尾帧、参考视频和参考音频。
 </Warning>
 
 ## 素材说明
@@ -50,18 +50,27 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 
 ## 约束
 
+### `seedance2.0-md`
+
+- `duration` 仅 **5**、**10**、**15** 秒。
+- `images` 最多 **9** 张。
+- `ratio` 支持 `1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9`；不传则使用模型默认比例。
+- `prompt` 最多 6000 字符。
+- 不支持 `first_image` / `last_image`、`reference_videos`、`reference_audios`。
+
+### `seedance2.0-fast-md`
+
 - `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
 - **不支持仅传首帧图**；使用首尾帧模式时，`first_image` 与 `last_image` **必须同时传入**。
 - `ratio` 仅支持 `16:9`、`9:16`、`1:1`。
 - `prompt` 最多 5000 字符。
-- `seedance2.0-md`：`duration` 4–15 秒；`images` 最多 4 张；`reference_videos` 最多 3 个；`reference_audios` 最多 1 段。
-- `seedance2.0-fast-md`：`duration` 仅 **10** 或 **15** 秒；`images` 最多 4 张；`reference_videos` 最多 3 个；`reference_audios` 最多 1 段。
+- `duration` 仅 **10** 或 **15** 秒；`images` 最多 4 张；`reference_videos` 最多 3 个；`reference_audios` 最多 1 段。
 - `reference_videos` 总时长不超过 **15** 秒，总大小不超过 **200MB**；单个参考视频分辨率须在 **720px–2160px** 之间，视频帧率在 **24–60 帧**以内。
 - `reference_audios` 总时长不超过 **15** 秒；首尾帧模式不支持音频参考。
 
 ## 示例
 
-### MD 标准 — 参考图生视频
+### MD 标准 — 文生视频 / 参考图
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
@@ -70,7 +79,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -d '{
     "model": "seedance2.0-md",
     "prompt": "人物缓缓转头，微风拂动发丝，电影感光影",
-    "duration": 8,
+    "duration": 5,
     "ratio": "16:9",
     "images": [
       "https://example.com/ref-1.jpg",
@@ -82,7 +91,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ### MD 快速 — 首尾帧图生视频
 
 <Note>
-首尾帧模式下 `first_image` 与 `last_image` **必须同时传入**，不支持仅传首帧图。
+首尾帧模式下 `first_image` 与 `last_image` **必须同时传入**，不支持仅传首帧图。该能力仅适用于 `seedance2.0-fast-md`。
 </Note>
 
 ```bash

@@ -22,7 +22,7 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 
 | 模型 | 计费 | 时长 | 素材能力 | 画面比例 |
 |------|------|------|----------|----------|
-| `seedance2.0-md` | 按次 | 5 / 10 / 15 秒 | 最多 **9** 张参考图；不支持参考视频、参考音频、首尾帧 | `1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9` |
+| `seedance2.0-md` | 按次 | 5 / 10 / 15 秒 | 最多 **9** 张参考图、**3** 个参考视频、**3** 段参考音频；不支持首尾帧 | `1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9` |
 | `seedance2.0-fast-md` | 按次 | 10 或 15 秒 | 最多 **4** 张参考图、**3** 个参考视频、**1** 段参考音频 | `16:9`、`9:16`、`1:1` |
 
 ## 请求参数
@@ -36,16 +36,16 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 | `images` | string[] | 否 | 参考图列表。`seedance2.0-md` 最多 **9** 张；`seedance2.0-fast-md` 最多 **4** 张 |
 | `first_image` | string | 否 | 仅 `seedance2.0-fast-md`：首帧图片；须与 `last_image` 同时传入 |
 | `last_image` | string | 否 | 仅 `seedance2.0-fast-md`：尾帧图片；须与 `first_image` 同时传入 |
-| `reference_videos` | string[] | 否 | 仅 `seedance2.0-fast-md`：参考视频列表，最多 **3** 个 |
-| `reference_audios` | string[] | 否 | 仅 `seedance2.0-fast-md`：参考音频列表，最多 **1** 段 |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表。`seedance2.0-md` / `seedance2.0-fast-md` 最多 **3** 个 |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表。`seedance2.0-md` 最多 **3** 段；`seedance2.0-fast-md` 最多 **1** 段 |
 
 <Warning>
-`resolution` 字段无效，输出固定 720p。`seedance2.0-md` 不支持首尾帧、参考视频和参考音频。
+`resolution` 字段无效，输出固定 720p。`seedance2.0-md` 不支持首尾帧。参考视频 / 音频请传公网 `https://` URL，不要传 base64。
 </Warning>
 
 ## 素材说明
 
-- 直接传入可公网访问的 `https://` 图片或视频 URL。**图片不支持 GIF 格式**。
+- 直接传入可公网访问的 `https://` 图片、视频或音频 URL。**图片不支持 GIF 格式**。
 - 不支持 SP 素材库 `asset://` 流程；满血版 `asset://` 审核流程也不适用于 MD。
 
 ## 约束
@@ -53,10 +53,10 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 ### `seedance2.0-md`
 
 - `duration` 仅 **5**、**10**、**15** 秒。
-- `images` 最多 **9** 张。
+- `images` 最多 **9** 张；`reference_videos` 最多 **3** 个；`reference_audios` 最多 **3** 段。
 - `ratio` 支持 `1:1`、`3:4`、`4:3`、`9:16`、`16:9`、`21:9`；不传则使用模型默认比例。
 - `prompt` 最多 6000 字符。
-- 不支持 `first_image` / `last_image`、`reference_videos`、`reference_audios`。
+- 不支持 `first_image` / `last_image`。
 
 ### `seedance2.0-fast-md`
 
@@ -70,7 +70,7 @@ MD 输出固定 **720p**。计费按次结算，与时长无关。
 
 ## 示例
 
-### MD 标准 — 文生视频 / 参考图
+### MD 标准 — 参考图 / 视频 / 音频
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
@@ -84,7 +84,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
     "images": [
       "https://example.com/ref-1.jpg",
       "https://example.com/ref-2.jpg"
-    ]
+    ],
+    "reference_videos": ["https://example.com/ref.mp4"],
+    "reference_audios": ["https://example.com/ref.mp3"]
   }'
 ```
 

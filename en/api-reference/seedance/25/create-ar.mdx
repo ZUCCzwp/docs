@@ -18,7 +18,7 @@ Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes).
 | model | Output length | Notes |
 |-------|---------------|-------|
 | `seedance2.5-md` | **15 seconds** (fixed) | Text-to-video, reference images |
-| `seedance2.5-30s` | **30 seconds** (fixed) | Text-to-video, reference images |
+| `seedance2.5-30s` | **30 seconds** (fixed) | Text-to-video, reference images / videos / audios |
 
 Aliases such as `seedance-2.5-md` and `seedance25-md` normalize to `seedance2.5-md`; `seedance-2.5-30s` and `seedance25-30s` normalize to `seedance2.5-30s`.
 
@@ -34,9 +34,11 @@ There is **no 10-second** tier on this line. Any `duration` you send is ignoredâ
 - **Reference images** (`reference_images` / `images`):
   - `seedance2.5-md`: max **9** public URLs.
   - `seedance2.5-30s`: max **30** public URLs.
+- **Reference videos** (`reference_videos` / `videos`): `seedance2.5-30s` only, max **10** public URLs.
+- **Reference audios** (`reference_audios` / `audios`): `seedance2.5-30s` only, max **10** public URLs.
 - **Not supported**: `first_image` / `last_image` (first-last frames).
-- **Not supported**: `reference_videos` / `videos`, `reference_audios` / `audios`.
 - **Not supported**: `resolution`, `generate_audio`, `watermark`, `output_format`, and other GZ-only fields.
+- Pass public `https://` URLs for reference videos/audios â€” do not send base64 payloads.
 - **`seedance2.5-30s` reference images**: pass public URLs as usual; images containing faces are face-blurred by the platform before submission.
 
 ## Request parameters
@@ -49,6 +51,10 @@ There is **no 10-second** tier on this line. Any `duration` you send is ignoredâ
 | `ratio` | string | No | Alias for `aspect_ratio` |
 | `reference_images` | string[] | No | Reference image URLs (`seedance2.5-md` 0â€“9; `seedance2.5-30s` 0â€“30) |
 | `images` | string[] | No | Alias for `reference_images` |
+| `reference_videos` | string[] | No | `seedance2.5-30s` only: reference video URLs, max 10 |
+| `videos` | string[] | No | Alias for `reference_videos` |
+| `reference_audios` | string[] | No | `seedance2.5-30s` only: reference audio URLs, max 10 |
+| `audios` | string[] | No | Alias for `reference_audios` |
 
 ## Billing
 
@@ -78,7 +84,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
   }'
 ```
 
-### 30-second with reference image
+### 30-second with images / videos / audios
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
@@ -88,6 +94,8 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
     "model": "seedance2.5-30s",
     "prompt": "A cat running on grass, tracking shot",
     "aspect_ratio": "9:16",
-    "reference_images": ["https://example.com/cat.png"]
+    "reference_images": ["https://example.com/cat.png"],
+    "reference_videos": ["https://example.com/ref.mp4"],
+    "reference_audios": ["https://example.com/ref.mp3"]
   }'
 ```

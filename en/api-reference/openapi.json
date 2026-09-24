@@ -614,14 +614,14 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference videos. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support reference videos; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+                    "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; MD/Economy: https:// URL. seedance2.0-md max 3; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md does not support reference audio; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD fast: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+                    "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, STD, and MD. seedance2.0-md max 3 clips; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2107,7 +2107,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference video URLs, max 10; each clip and combined duration ≤ 30.2s."
+                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
                   },
                   "videos": {
                     "type": "array",
@@ -2123,7 +2123,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio URLs, max 10; each clip ≤ 30s."
+                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip ≤ 30s where applicable."
                   },
                   "audios": {
                     "type": "array",
@@ -2472,14 +2472,14 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference videos. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support reference videos; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+            "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; MD/Economy: https:// URL. seedance2.0-md max 3; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference audio. Supported on Full, SP economy, and STD. seedance2.0-md does not support reference audio; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD fast: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+            "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, STD, and MD. seedance2.0-md max 3 clips; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4824,7 +4824,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs, max 10; each clip and combined duration ≤ 30.2s."
+            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
           },
           "videos": {
             "type": "array",
@@ -4840,7 +4840,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URLs, max 10; each clip ≤ 30s."
+            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip ≤ 30s where applicable."
           },
           "audios": {
             "type": "array",

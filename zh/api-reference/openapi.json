@@ -614,14 +614,14 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持参考视频；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+                    "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；MD/经济版: https:// URL。seedance2.0-md 最多 3 个；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md 不支持参考音频；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 快速可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+                    "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD/MD 支持；seedance2.0-md 最多 3 段；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2107,7 +2107,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频 URL 列表，最多 10 个；单条与合计时长均不超过 30.2 秒。"
+                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒（视渠道而定）。"
                   },
                   "videos": {
                     "type": "array",
@@ -2123,7 +2123,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表，最多 10 段；单条时长不超过 30 秒。"
+                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条时长不超过 30 秒（视渠道而定）。"
                   },
                   "audios": {
                     "type": "array",
@@ -2472,14 +2472,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持参考视频；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+            "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；MD/经济版: https:// URL。seedance2.0-md 最多 3 个；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表。满血版/SP 经济版/STD 支持；seedance2.0-md 不支持参考音频；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 快速可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+            "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD/MD 支持；seedance2.0-md 最多 3 段；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4834,7 +4834,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表，最多 10 个；单条与合计时长均不超过 30.2 秒。"
+            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒（视渠道而定）。"
           },
           "videos": {
             "type": "array",
@@ -4850,7 +4850,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表，最多 10 段；单条时长不超过 30 秒。"
+            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条时长不超过 30 秒（视渠道而定）。"
           },
           "audios": {
             "type": "array",

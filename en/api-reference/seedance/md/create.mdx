@@ -22,7 +22,7 @@ MD output is fixed at **720p**. Billing is per task, independent of duration.
 
 | Model | Billing | Duration | Asset support | Aspect ratios |
 |-------|---------|----------|---------------|---------------|
-| `seedance2.0-md` | Per task | 5 / 10 / 15 s | Up to **9** reference images; no reference videos, audio, or first/last frames | `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9` |
+| `seedance2.0-md` | Per task | 5 / 10 / 15 s | Up to **9** reference images, **3** reference videos, **3** reference audios; no first/last frames | `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9` |
 | `seedance2.0-fast-md` | Per task | 10 or 15 s | Up to **4** reference images, **3** reference videos, **1** reference audio | `16:9`, `9:16`, `1:1` |
 
 ## Request fields
@@ -36,16 +36,16 @@ MD output is fixed at **720p**. Billing is per task, independent of duration.
 | `images` | string[] | No | Reference images. Max **9** for `seedance2.0-md`; max **4** for `seedance2.0-fast-md` |
 | `first_image` | string | No | `seedance2.0-fast-md` only: first frame; must be paired with `last_image` |
 | `last_image` | string | No | `seedance2.0-fast-md` only: last frame; must be paired with `first_image` |
-| `reference_videos` | string[] | No | `seedance2.0-fast-md` only: reference videos, max **3** |
-| `reference_audios` | string[] | No | `seedance2.0-fast-md` only: reference audio, max **1** clip |
+| `reference_videos` | string[] | No | Reference video URLs. Max **3** for `seedance2.0-md` and `seedance2.0-fast-md` |
+| `reference_audios` | string[] | No | Reference audio URLs. Max **3** for `seedance2.0-md`; max **1** for `seedance2.0-fast-md` |
 
 <Warning>
-The `resolution` field is ignored; output is always 720p. `seedance2.0-md` does not support first/last frames, reference videos, or reference audio.
+The `resolution` field is ignored; output is always 720p. `seedance2.0-md` does not support first/last frames. Pass public `https://` URLs for reference videos/audios — do not send base64 payloads.
 </Warning>
 
 ## Assets
 
-- Pass publicly reachable `https://` image or video URLs directly. **Images do not support GIF format**.
+- Pass publicly reachable `https://` image, video, or audio URLs directly. **Images do not support GIF format**.
 - SP asset library (`asset://`) and Full-route audit flows do not apply to MD.
 
 ## Constraints
@@ -53,10 +53,10 @@ The `resolution` field is ignored; output is always 720p. `seedance2.0-md` does 
 ### `seedance2.0-md`
 
 - `duration` is **5**, **10**, or **15** seconds only.
-- `images` max **9**.
+- `images` max **9**; `reference_videos` max **3**; `reference_audios` max **3**.
 - `ratio` supports `1:1`, `3:4`, `4:3`, `9:16`, `16:9`, `21:9`; omit to use the model default.
 - Prompt at most 6000 characters.
-- `first_image` / `last_image`, `reference_videos`, and `reference_audios` are not supported.
+- `first_image` / `last_image` are not supported.
 
 ### `seedance2.0-fast-md`
 
@@ -70,7 +70,7 @@ The `resolution` field is ignored; output is always 720p. `seedance2.0-md` does 
 
 ## Examples
 
-### MD standard — text or reference images
+### MD standard — images / videos / audios
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
@@ -84,7 +84,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
     "images": [
       "https://example.com/ref-1.jpg",
       "https://example.com/ref-2.jpg"
-    ]
+    ],
+    "reference_videos": ["https://example.com/ref.mp4"],
+    "reference_audios": ["https://example.com/ref.mp3"]
   }'
 ```
 
@@ -123,15 +125,15 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 }
 ```
 
-## Poll for result
+## Query the task
 
 ```bash
 curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 
-Statuses: `queued` → `processing` → `completed` or `failed`. Video URL is in `data.result.video_url` when completed.
+Status flow: `queued` → `processing` → `completed` / `failed`. When completed, read the video URL from `data.result.video_url`.
 
 <Note>
-Result URLs are retained for about **3 days**. Download promptly.
+Result video URLs are retained for about **3 days** — download promptly.
 </Note>

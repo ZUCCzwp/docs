@@ -25,7 +25,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 - **提示词（prompt）**：必填。
 - **时长（duration）**：4–15 秒，默认 `5`。
-- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`，默认 `16:9`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`（横屏）、`9:16`（竖屏）、`1:1`（方形）、`4:3`（传统比例）、`3:4`（竖向传统比例）、`21:9`（超宽屏）、`adaptive`（自适应，根据输入图片/视频自动匹配），默认 `16:9`。
 - **分辨率（resolution）**：标准档 `480p` / `720p` / `1080p`（默认 `720p`）；Fast 仅 `480p` / `720p`。也可把分辨率写进 `model`。
 - **参考图**：`images` 或 `reference_images`，最多 **9** 张。
 - **参考视频**：`videos` 或 `reference_videos`，最多 **3** 个。
@@ -74,14 +74,6 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 ```text
 费用 = completion_tokens / 1,000,000 × 对应计费名的百万 token 单价
 ```
-
-`seedance2.0-gz-720p` 在部分线路查询**不返回 token**，改为创建时 **按秒计费**，不再按 token 结算：
-
-```text
-费用 = 单价 × duration
-```
-
-该情况下控制台 `unit_price` 表示**每秒**单价。其它 `seedance2.0-gz*` 仍按百万 token 单价。
 
 ## 示例请求
 

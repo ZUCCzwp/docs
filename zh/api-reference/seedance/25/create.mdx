@@ -30,7 +30,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 - **提示词（prompt）**：必填，长度 1–5000。
 - **时长（duration）**：4–30 秒，默认 `4`；带参考素材时可传 `-1` 由模型决定输出时长（见[任务类型引导](#任务类型引导)）。
-- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`，默认 `9:16`；带参考素材时还可传 `adaptive`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive`，默认 `9:16`。
 - **分辨率（resolution）**：`480p`、`720p`、`1080p`，默认 `480p`。
 - **参考图（reference_images）**：最多 **30** 张。
 - **参考视频（reference_videos）**：最多 **10** 条；单条与合计时长均不超过 **30.2** 秒。

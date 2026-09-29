@@ -167,6 +167,15 @@
                       "en/api-reference/images/edits"
                     ]
                   },
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "en/api-reference/images/gpt-image-2.5/create",
+                      "en/api-reference/images/gpt-image-2.5/generations",
+                      "en/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   "en/api-reference/images/gpt-image-1.5/create",
                   "en/api-reference/images/seedream-5-0-pro/create",
                   {
@@ -207,18 +216,11 @@
                     ]
                   },
                   {
-                    "group": "933",
-                    "icon": "clapperboard-play",
-                    "pages": [
-                      "en/api-reference/seedance/20933/create",
-                      "en/api-reference/seedance/933720/create"
-                    ]
-                  },
-                  {
                     "group": "官链",
                     "icon": "film",
                     "pages": [
-                      "en/api-reference/seedance/gz720/create"
+                      "en/api-reference/seedance/gz720/create",
+                      "en/api-reference/seedance/20480/create"
                     ]
                   },
                   {
@@ -243,9 +245,7 @@
                     "group": "MD",
                     "icon": "bolt",
                     "pages": [
-                      "en/api-reference/seedance/md/create",
-                      "en/api-reference/seedance/md/fast-i2v",
-                      "en/api-reference/seedance/md/std"
+                      "en/api-reference/seedance/md/create"
                     ]
                   }
                 ]
@@ -415,6 +415,15 @@
                       "zh/api-reference/images/edits"
                     ]
                   },
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "zh/api-reference/images/gpt-image-2.5/create",
+                      "zh/api-reference/images/gpt-image-2.5/generations",
+                      "zh/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   "zh/api-reference/images/gpt-image-1.5/create",
                   "zh/api-reference/images/seedream-5-0-pro/create",
                   {
@@ -455,18 +464,11 @@
                     ]
                   },
                   {
-                    "group": "933",
-                    "icon": "clapperboard-play",
-                    "pages": [
-                      "zh/api-reference/seedance/20933/create",
-                      "zh/api-reference/seedance/933720/create"
-                    ]
-                  },
-                  {
                     "group": "官链",
                     "icon": "film",
                     "pages": [
-                      "zh/api-reference/seedance/gz720/create"
+                      "zh/api-reference/seedance/gz720/create",
+                      "zh/api-reference/seedance/20480/create"
                     ]
                   },
                   {
@@ -491,9 +493,7 @@
                     "group": "MD",
                     "icon": "bolt",
                     "pages": [
-                      "zh/api-reference/seedance/md/create",
-                      "zh/api-reference/seedance/md/fast-i2v",
-                      "zh/api-reference/seedance/md/std"
+                      "zh/api-reference/seedance/md/create"
                     ]
                   }
                 ]

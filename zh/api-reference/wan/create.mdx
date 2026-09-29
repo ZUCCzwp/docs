@@ -9,79 +9,49 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本页仅覆盖 `wan3.0`。`wan3.0-gz` 见 [创建 Wan 3.0 GZ 视频](/zh/api-reference/wan/create-gz)。
+本页仅覆盖 `wan3.0`。`wan3.0-gz`（首尾帧、参考文件/网页等）见 [创建 Wan 3.0 GZ 视频](/zh/api-reference/wan/create-gz)。
 
 ## 支持的模型
 
 | model | 说明 |
 |-------|------|
 | `wan3.0` | Wan 3.0 视频生成，支持文生视频、参考图（最多 10 张）、参考视频（最多 5 个）、参考音频（最多 5 段），时长 4–30 秒，分辨率 480p/720p/1080p |
-| `wan3.0-gz` | Wan 3.0 GZ 视频生成，与 `wan3.0` 同一接口、独立计费。时长 2–30 秒，额外支持 `adaptive` 画幅；提供参考素材时 `prompt` 可省略 |
 
-`wan3`、`wan-3.0`、`wan30` 等别名会归一化为 `wan3.0`；`wan30-gz`、`wan-3.0-gz` 会归一化为 `wan3.0-gz`。也可直接传计费型号，如 `wan3.0-720p`、`wan3.0-gz-720p`，此时模型后缀即分辨率。
+`wan3`、`wan-3.0`、`wan30` 等别名会归一化为 `wan3.0`。也可直接传计费型号 `wan3.0-480p` / `wan3.0-720p` / `wan3.0-1080p`。
 
 ## 参数限制
 
-| 项 | `wan3.0` | `wan3.0-gz` |
-|----|----------|-------------|
-| 提示词（prompt） | 必填 | 与参考素材至少填一项 |
-| 时长（duration） | 4–30 秒，默认 `4` | 2–30 秒，默认 `5` |
-| 画幅比例（aspect_ratio / ratio） | `9:16`、`16:9`、`3:4`、`4:3`、`1:1`，默认 `16:9` | 同左，另支持 `adaptive`（自适应），默认 `16:9` |
-| 分辨率（resolution） | `480P` / `720P` / `1080P`，默认 `480P` | `480P` / `720P` / `1080P`，默认 `720P` |
-
-两个模型的共同限制：
-
-- **分辨率** 大小写不敏感，也可用 `480p` 等形式。
+- **提示词（prompt）**：必填。
+- **时长（duration）**：4–30 秒，默认 `4`。
+- **画幅比例（aspect_ratio / ratio）**：`9:16`、`16:9`、`3:4`、`4:3`、`1:1`。
+- **分辨率（resolution）**：`480P`、`720P`、`1080P`（大小写不敏感，也可用 `480p` 等形式）。
 - **参考图**：`reference_images` 或 `images`，最多 **10** 张，须为公网可访问 URL。
 - **参考视频**：`reference_videos` 或 `videos`，最多 **5** 个；总时长不大于 15 秒。
 - **参考音频**：`reference_audios`，最多 **5** 段；总时长不大于 15 秒。
-- `wan3.0-gz` 传入参考视频时，参考视频总时长 + 输出 `duration` 不能超过 30 秒。
-- 提示词中可用「图1」「视频1」「音频1」指代对应素材，编号按同类素材在数组中的顺序。
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `wan3.0` / `wan3.0-gz`，或对应分辨率计费型号 |
-| `prompt` | string | 视模型 | 文本提示词；`wan3.0` 必填，`wan3.0-gz` 有参考素材时可省略 |
-| `duration` | integer | 否 | 时长秒数；`wan3.0` 为 4–30（默认 4），`wan3.0-gz` 为 2–30（默认 5） |
+| `model` | string | 是 | 传 `wan3.0`，或分辨率计费型号 |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 是 | 时长秒数，4–30，默认 4 |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
-| `resolution` | string | 否 | 输出分辨率：`480P` / `720P` / `1080P`，同时决定计费型号 |
+| `resolution` | string | 是 | 输出分辨率：`480P` / `720P` / `1080P` |
 | `reference_images` | string[] | 否 | 参考图 URL 列表（0–10） |
 | `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
 | `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–5） |
 | `videos` | string[] | 否 | `reference_videos` 别名 |
 | `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–5） |
 
-## 示例：Wan 3.0 GZ 参考图生视频
-
-```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
-  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "wan3.0-gz",
-    "prompt": "图1 中的人物在海边奔跑，电影感运镜",
-    "duration": 5,
-    "aspect_ratio": "9:16",
-    "resolution": "720P",
-    "reference_images": ["https://example.com/person.png"]
-  }'
-```
-
 ## 计费说明
 
 - 计费方式：`per_second`（按秒）
-- `duration` 参与计费，不同分辨率单价不同
-
-| 请求模型 | 计费模型名 |
-|----------|------------|
-| `wan3.0` | `wan3.0-480p` / `wan3.0-720p` / `wan3.0-1080p`；若未配置分辨率行则回退到 `wan3.0` |
-| `wan3.0-gz` | `wan3.0-gz-480p` / `wan3.0-gz-720p` / `wan3.0-gz-1080p` |
+- 请求模型名：`wan3.0`（或分辨率计费型号）
+- 计费模型名：`wan3.0-{resolution}`（`wan3.0-480p` / `wan3.0-720p` / `wan3.0-1080p`）；若未配置分辨率行则回退到 `wan3.0`
+- `duration` 参与计费
 
 ```text
-费用 = 分辨率计费模型单价 × duration
+费用 = 单价 × duration
 ```
-
-单价以控制台模型价格为准。`wan3.0-gz` 未传 `resolution` 时按 `720P` 计费。

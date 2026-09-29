@@ -1,0 +1,130 @@
+---
+title: '创建 Wan 3.0 GZ 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-gz"` 选择本型号，独立计费。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `wan3.0-gz` | Wan 3.0 GZ 视频生成，支持文生视频、首帧/首尾帧生视频、参考生视频（参考图最多 10 张、参考视频最多 5 个、参考音频最多 5 段）、参考文件生视频、参考网页生视频，时长 2–30 秒，分辨率 480p/720p/1080p |
+
+## 生成模式
+
+| 模式 | 传参 |
+|------|------|
+| 文生视频 | 仅 `prompt` |
+| 首帧生视频 | `first_image` |
+| 首尾帧生视频 | `first_image` + `last_image` |
+| 参考生视频 | `reference_images` / `reference_videos` / `reference_audios` |
+| 参考文件生视频 | `file_url`（可不传 `prompt`） |
+| 参考网页生视频 | `link_url` |
+
+首尾帧（`first_image` / `last_image`）与参考素材（参考图/视频/音频、`file_url`、`link_url`）**不能混用**；`file_url` 与 `link_url` 只能二选一。参考图/视频/音频与 `file_url` 或 `link_url` 可同时使用。
+
+`wan30-gz`、`wan-3.0-gz` 会归一化为 `wan3.0-gz`。也可直接传计费型号 `wan3.0-gz-480p` / `wan3.0-gz-720p` / `wan3.0-gz-1080p`，此时后缀即分辨率。
+
+## 参数限制
+
+- **提示词（prompt）**：与素材（首尾帧、参考图/视频/音频、文件、网页）至少填写一项。可用「图1」「视频1」「音频1」指代素材，编号按同类素材在数组中的顺序。
+- **时长（duration）**：2–30 秒，默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`adaptive`（自适应）、`16:9`、`4:3`、`1:1`、`3:4`、`9:16`，默认 `16:9`。
+- **分辨率（resolution）**：`480P`、`720P`、`1080P`（大小写不敏感），默认 `720P`。
+- **参考图**：`reference_images` 或 `images`，最多 **10** 张，须为公网可访问 URL。
+- **参考视频**：`reference_videos` 或 `videos`，最多 **5** 个；总时长不大于 15 秒，且参考视频总时长 + `duration` 不超过 30 秒。
+- **参考音频**：`reference_audios`，最多 **5** 段；总时长不大于 15 秒。
+- **首帧 / 尾帧**：`first_image` / `last_image` 各 1 张公网 URL；传 `last_image` 时必须同时传 `first_image`。图片支持 JPEG / PNG（无透明）/ BMP / WEBP，单边 240–8000 px，不超过 20MB。
+- **参考文件**：`file_url`，1 个公网 URL；支持 docx / doc / xlsx / xls / pptx / ppt / pdf / txt / key / pages / numbers / md 等，不超过 100MB、50 页。
+- **参考网页**：`link_url`，1 个公开、免登录的网页 URL。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 传 `wan3.0-gz`，或分辨率计费型号 |
+| `prompt` | string | 否 | 文本提示词；未提供任何素材时必填 |
+| `duration` | integer | 否 | 时长秒数，2–30，默认 5 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | 输出分辨率：`480P` / `720P` / `1080P`，默认 `720P` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–10） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–5） |
+| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–5） |
+| `first_image` | string | 否 | 首帧图片 URL |
+| `last_image` | string | 否 | 尾帧图片 URL，需同时传 `first_image` |
+| `file_url` | string | 否 | 参考文件 URL，与 `link_url` 二选一 |
+| `link_url` | string | 否 | 参考网页 URL，与 `file_url` 二选一 |
+
+## 请求示例
+
+### 参考生视频
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-gz",
+    "prompt": "图1 中的人物在海边奔跑，电影感运镜",
+    "duration": 5,
+    "aspect_ratio": "9:16",
+    "resolution": "720P",
+    "reference_images": ["https://example.com/person.png"]
+  }'
+```
+
+### 首尾帧生视频
+
+```json
+{
+  "model": "wan3.0-gz",
+  "prompt": "从微笑逐渐变为大笑，背景光线由冷变暖",
+  "first_image": "https://example.com/first.png",
+  "last_image": "https://example.com/last.png",
+  "duration": 5
+}
+```
+
+### 参考文件生视频
+
+```json
+{
+  "model": "wan3.0-gz",
+  "file_url": "https://example.com/product.pptx",
+  "resolution": "480P",
+  "duration": 10
+}
+```
+
+### 参考网页生视频
+
+```json
+{
+  "model": "wan3.0-gz",
+  "prompt": "把这篇文章做成一支科普短片",
+  "link_url": "https://example.com/article/123",
+  "duration": 15
+}
+```
+
+## 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 请求模型名：`wan3.0-gz`（或分辨率计费型号）
+- 计费模型名：`wan3.0-gz-{resolution}`（`wan3.0-gz-480p` / `wan3.0-gz-720p` / `wan3.0-gz-1080p`），不同分辨率单价不同
+- 未传 `resolution` 时按 `720P` 计费
+- `duration` 参与计费
+
+```text
+费用 = 单价 × duration
+```
+
+单价以控制台模型价格为准。

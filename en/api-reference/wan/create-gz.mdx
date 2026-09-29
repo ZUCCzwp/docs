@@ -1,0 +1,130 @@
+---
+title: 'Create Wan 3.0 GZ Video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>
+
+This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-gz"`; it is billed separately.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `wan3.0-gz` | Wan 3.0 GZ video generation. Supports text-to-video, first-frame / first-and-last-frame video, reference video (up to 10 images, 5 videos, 5 audios), reference-document video, and reference-webpage video. 2–30s duration, 480p/720p/1080p. |
+
+## Generation modes
+
+| Mode | Fields |
+|------|--------|
+| Text-to-video | `prompt` only |
+| First frame | `first_image` |
+| First and last frame | `first_image` + `last_image` |
+| Reference media | `reference_images` / `reference_videos` / `reference_audios` |
+| Reference document | `file_url` (`prompt` optional) |
+| Reference webpage | `link_url` |
+
+First/last frames (`first_image` / `last_image`) **cannot be combined** with reference media (reference images/videos/audios, `file_url`, `link_url`). `file_url` and `link_url` are mutually exclusive. Reference images/videos/audios may be combined with `file_url` or `link_url`.
+
+Aliases `wan30-gz` and `wan-3.0-gz` normalize to `wan3.0-gz`. You may also pass billing models `wan3.0-gz-480p` / `wan3.0-gz-720p` / `wan3.0-gz-1080p` directly; the suffix then sets the resolution.
+
+## Parameter constraints
+
+- **Prompt**: Provide a prompt or at least one input (frames, reference images/videos/audios, document, or webpage). Refer to media as "图1", "视频1", "音频1" (image 1, video 1, audio 1), numbered by order within each media array.
+- **Duration**: 2–30 seconds (default `5`).
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `adaptive`, `16:9`, `4:3`, `1:1`, `3:4`, `9:16` (default `16:9`).
+- **Resolution**: `480P`, `720P`, `1080P` (case-insensitive), default `720P`.
+- **Reference images**: `reference_images` or `images`, max **10**, public HTTPS URLs.
+- **Reference videos**: `reference_videos` or `videos`, max **5**; total duration ≤ 15s, and total reference video duration plus `duration` must not exceed 30s.
+- **Reference audios**: `reference_audios`, max **5**; total duration ≤ 15s.
+- **First / last frame**: `first_image` / `last_image`, one public URL each; `last_image` requires `first_image`. JPEG / PNG (no transparency) / BMP / WEBP, 240–8000 px per side, ≤ 20MB.
+- **Reference document**: `file_url`, one public URL; docx / doc / xlsx / xls / pptx / ppt / pdf / txt / key / pages / numbers / md, etc., ≤ 100MB and ≤ 50 pages.
+- **Reference webpage**: `link_url`, one public webpage that requires no login.
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `wan3.0-gz`, or a resolution billing model |
+| `prompt` | string | No | Text prompt; required when no input media is provided |
+| `duration` | integer | No | Duration in seconds, 2–30, default 5 |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `resolution` | string | No | Output resolution: `480P` / `720P` / `1080P`, default `720P` |
+| `reference_images` | string[] | No | Reference image URLs (0–10) |
+| `images` | string[] | No | Alias for `reference_images` when the latter is empty |
+| `reference_videos` | string[] | No | Reference video URLs (0–5) |
+| `videos` | string[] | No | Alias for `reference_videos` |
+| `reference_audios` | string[] | No | Reference audio URLs (0–5) |
+| `first_image` | string | No | First frame image URL |
+| `last_image` | string | No | Last frame image URL; requires `first_image` |
+| `file_url` | string | No | Reference document URL; mutually exclusive with `link_url` |
+| `link_url` | string | No | Reference webpage URL; mutually exclusive with `file_url` |
+
+## Examples
+
+### Reference media
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-gz",
+    "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
+    "duration": 5,
+    "aspect_ratio": "9:16",
+    "resolution": "720P",
+    "reference_images": ["https://example.com/person.png"]
+  }'
+```
+
+### First and last frame
+
+```json
+{
+  "model": "wan3.0-gz",
+  "prompt": "The smile slowly turns into laughter; lighting shifts from cool to warm",
+  "first_image": "https://example.com/first.png",
+  "last_image": "https://example.com/last.png",
+  "duration": 5
+}
+```
+
+### Reference document
+
+```json
+{
+  "model": "wan3.0-gz",
+  "file_url": "https://example.com/product.pptx",
+  "resolution": "480P",
+  "duration": 10
+}
+```
+
+### Reference webpage
+
+```json
+{
+  "model": "wan3.0-gz",
+  "prompt": "Turn this article into a short explainer video",
+  "link_url": "https://example.com/article/123",
+  "duration": 15
+}
+```
+
+## Billing
+
+- Mode: `per_second`
+- Request model: `wan3.0-gz` (or a resolution billing model)
+- Billing model: `wan3.0-gz-{resolution}` (`wan3.0-gz-480p` / `wan3.0-gz-720p` / `wan3.0-gz-1080p`); unit price differs by resolution
+- Without `resolution`, billed as `720P`
+- `duration` **affects billing**
+
+```text
+cost = unit_price × duration
+```
+
+Unit prices follow the console model pricing.

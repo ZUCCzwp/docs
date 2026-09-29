@@ -719,7 +719,7 @@
     "/api/open-api/v1/wan/videos": {
       "post": {
         "summary": "Create Wan 3.0 video task",
-        "description": "Create a Wan 3.0 video generation task. Supports text prompt, up to 10 reference images, up to 5 reference videos, up to 5 reference audios, duration 4-30 seconds, aspect ratios 9:16/16:9/3:4/4:3/1:1, and resolutions 480P/720P/1080P. Billing is per_second. After creation, poll GET /api/open-api/v1/videos/{taskId}.",
+        "description": "Create a Wan 3.0 video generation task. model can be wan3.0 or wan3.0-gz (same endpoint, separate billing). Supports text prompt, up to 10 reference images, up to 5 reference videos, up to 5 reference audios, aspect ratios 9:16/16:9/3:4/4:3/1:1, and resolutions 480P/720P/1080P. wan3.0 supports 4-30 seconds; wan3.0-gz supports 2-30 seconds, adds the adaptive aspect ratio, and allows omitting prompt when reference media is provided. Billing is per_second: resolution billing model unit price × duration. After creation, poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createWan30Video",
         "requestBody": {
           "required": true,
@@ -745,6 +745,19 @@
                     ],
                     "reference_audios": [
                       "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "gz": {
+                  "summary": "Create Wan 3.0 GZ task",
+                  "value": {
+                    "model": "wan3.0-gz",
+                    "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
+                    "duration": 5,
+                    "aspect_ratio": "9:16",
+                    "resolution": "720P",
+                    "reference_images": [
+                      "https://example.com/person.png"
                     ]
                   }
                 }
@@ -2644,10 +2657,7 @@
       "Wan30GenerationRequest": {
         "type": "object",
         "required": [
-          "model",
-          "prompt",
-          "duration",
-          "resolution"
+          "model"
         ],
         "properties": {
           "model": {
@@ -2656,21 +2666,23 @@
               "wan3.0",
               "wan3.0-480p",
               "wan3.0-720p",
-              "wan3.0-1080p"
+              "wan3.0-1080p",
+              "wan3.0-gz",
+              "wan3.0-gz-480p",
+              "wan3.0-gz-720p",
+              "wan3.0-gz-1080p"
             ],
-            "description": "Model name. Aliases such as wan3, wan-3.0, and wan30 normalize to wan3.0; resolution billing models are also accepted."
+            "description": "Model name. Aliases such as wan3, wan-3.0, and wan30 normalize to wan3.0; wan30-gz and wan-3.0-gz normalize to wan3.0-gz. Resolution billing models are also accepted."
           },
           "prompt": {
             "type": "string",
-            "minLength": 1,
-            "description": "Text prompt for video generation."
+            "description": "Text prompt for video generation. Required for wan3.0; for wan3.0-gz, provide a prompt or reference media. Refer to media as 图1 / 视频1 / 音频1."
           },
           "duration": {
             "type": "integer",
-            "default": 4,
-            "minimum": 4,
+            "minimum": 2,
             "maximum": 30,
-            "description": "Video duration in seconds. Supported range 4–30. Default 4."
+            "description": "Video duration in seconds. wan3.0: 4–30, default 4. wan3.0-gz: 2–30, default 5."
           },
           "aspect_ratio": {
             "type": "string",
@@ -2679,9 +2691,10 @@
               "16:9",
               "3:4",
               "4:3",
-              "1:1"
+              "1:1",
+              "adaptive"
             ],
-            "description": "Output aspect ratio. Takes precedence over ratio."
+            "description": "Output aspect ratio, default 16:9. Takes precedence over ratio. adaptive is only supported by wan3.0-gz."
           },
           "ratio": {
             "type": "string",
@@ -2690,7 +2703,8 @@
               "16:9",
               "3:4",
               "4:3",
-              "1:1"
+              "1:1",
+              "adaptive"
             ],
             "description": "Alias used when aspect_ratio is empty."
           },
@@ -2704,7 +2718,7 @@
               "720p",
               "1080p"
             ],
-            "description": "Output resolution. Required."
+            "description": "Output resolution; also selects the billing model. wan3.0 defaults to 480P; wan3.0-gz defaults to 720P."
           },
           "reference_images": {
             "type": "array",
@@ -2728,7 +2742,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs, up to 5; total duration ≤ 15s."
+            "description": "Reference video URLs, up to 5; total duration ≤ 15s. For wan3.0-gz, total reference video duration plus duration must not exceed 30s."
           },
           "videos": {
             "type": "array",
@@ -2745,6 +2759,22 @@
               "type": "string"
             },
             "description": "Reference audio URLs, up to 5; total duration ≤ 15s."
+          },
+          "first_image": {
+            "type": "string",
+            "description": "First frame image URL. wan3.0-gz only; cannot be combined with reference images/videos/audios, file_url, or link_url."
+          },
+          "last_image": {
+            "type": "string",
+            "description": "Last frame image URL. wan3.0-gz only; requires first_image."
+          },
+          "file_url": {
+            "type": "string",
+            "description": "Reference document URL (docx/pptx/pdf/xlsx/txt/md, etc., ≤100MB, ≤50 pages). wan3.0-gz only; mutually exclusive with link_url; prompt optional."
+          },
+          "link_url": {
+            "type": "string",
+            "description": "Reference webpage URL; must be public and require no login. wan3.0-gz only; mutually exclusive with file_url."
           }
         },
         "example": {

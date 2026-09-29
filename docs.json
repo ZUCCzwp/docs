@@ -126,7 +126,8 @@
               {
                 "group": "Wan Video",
                 "pages": [
-                  "en/api-reference/wan/create"
+                  "en/api-reference/wan/create",
+                  "en/api-reference/wan/create-gz"
                 ]
               },
               {
@@ -373,7 +374,8 @@
               {
                 "group": "Wan 视频",
                 "pages": [
-                  "zh/api-reference/wan/create"
+                  "zh/api-reference/wan/create",
+                  "zh/api-reference/wan/create-gz"
                 ]
               },
               {

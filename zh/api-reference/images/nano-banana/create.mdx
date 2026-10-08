@@ -8,19 +8,19 @@ openapi: 'POST /api/open-api/v1/images'
 <Note>
 本模型使用异步接口：`POST /api/open-api/v1/images`。
 将 `model` 设为以下任一值：
-`nano-banana`、`nano-banana-2`、`nano-banana-pro`。
+`nano-banana`、`nano-banana-2`、`nano-banana-2.1`、`nano-banana-pro`。
 </Note>
 
 <Warning>
 同步接口 [GPT Image 2 文生图](/zh/api-reference/images/generations) 与 [GPT Image 2 编辑图片](/zh/api-reference/images/edits) 不支持 NanoBanana。
-另外，不同上游线路对 `nano-banana` 支持情况可能不同：部分线路仅支持 `nano-banana-2 / nano-banana-pro`。
+`nano-banana-2.1` 通过 `resolution` 选择 `1k`、`2k` 或 `4k`（不传时按 `1k`）。参考图最多 8 张。
 </Warning>
 
 ## 模型说明
 
 | 项目 | 说明 |
 |------|------|
-| 模型 | `nano-banana` / `nano-banana-2` / `nano-banana-pro` |
+| 模型 | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
 | 计费 | 使用所选 `model` 的控制台配置单价（通常与分辨率/档位相关） |
 | 模式 | 文生图、参考图生成（使用 `images`） |
 | 分辨率 | `1k` / `2k` / `4k`（取决于具体变体支持） |
@@ -30,7 +30,7 @@ openapi: 'POST /api/open-api/v1/images'
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `nano-banana` / `nano-banana-2` / `nano-banana-pro` |
+| `model` | string | 是 | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
 | `prompt` | string | 是 | 图像生成提示词 |
 | `ratio` | string | 否 | 画面比例，默认 `auto` |
 | `resolution` | string | 否 | `1k` / `2k` / `4k`（默认值取决于模型配置，常见为 `1k`） |
@@ -51,6 +51,20 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
     "prompt": "A studio product photo of a ceramic banana, clean background, soft lighting",
     "ratio": "1:1",
     "resolution": "2k"
+  }'
+```
+
+### Nano Banana 2.1
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "nano-banana-2.1",
+    "prompt": "A studio product photo of a glass bottle on water, soft lighting",
+    "ratio": "16:9",
+    "resolution": "4k"
   }'
 ```
 

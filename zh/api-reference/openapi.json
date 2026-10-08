@@ -166,7 +166,7 @@
                   },
                   "resolution": {
                     "type": "string",
-                    "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2 等：1k、2k、4k。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
+                    "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2、nano-banana-2.1 等：1k、2k、4k。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
                     "enum": [
                       "1k",
                       "2k",
@@ -2584,7 +2584,7 @@
           },
           "resolution": {
             "type": "string",
-            "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2 等：1k、2k、4k。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
+            "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2、nano-banana-2.1 等：1k、2k、4k。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
             "enum": [
               "1k",
               "2k",

@@ -166,7 +166,7 @@
                   },
                   "resolution": {
                     "type": "string",
-                    "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2, etc.: 1k, 2k, 4k. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
+                    "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2, nano-banana-2.1, etc.: 1k, 2k, 4k. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
                     "enum": [
                       "1k",
                       "2k",
@@ -2584,7 +2584,7 @@
           },
           "resolution": {
             "type": "string",
-            "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2, etc.: 1k, 2k, 4k. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
+            "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2, nano-banana-2.1, etc.: 1k, 2k, 4k. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
             "enum": [
               "1k",
               "2k",

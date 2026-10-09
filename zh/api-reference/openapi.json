@@ -2044,9 +2044,9 @@
                       "seedance2.5-gz",
                       "seedance2.5-md",
                       "seedance2.5-30s",
-                      "sd2.5-30s"
+                      "sd2.5-720p"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-30s`（不卡脸）等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`（不卡脸）等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -4789,9 +4789,9 @@
               "seedance2.5-gz",
               "seedance2.5-md",
               "seedance2.5-30s",
-              "sd2.5-30s"
+              "sd2.5-720p"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-30s`（不卡脸）等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`（不卡脸）等，详见各文档页。"
           },
           "prompt": {
             "type": "string",

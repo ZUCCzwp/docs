@@ -2044,9 +2044,9 @@
                       "seedance2.5-gz",
                       "seedance2.5-md",
                       "seedance2.5-30s",
-                      "sd2.5-30s"
+                      "sd2.5-720p"
                     ],
-                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-30s` (faces kept, no face blur). See each docs page."
+                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-720p` (faces kept, no face blur). See each docs page."
                   },
                   "prompt": {
                     "type": "string",
@@ -4779,9 +4779,9 @@
               "seedance2.5-gz",
               "seedance2.5-md",
               "seedance2.5-30s",
-              "sd2.5-30s"
+              "sd2.5-720p"
             ],
-            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-30s` (faces kept, no face blur). See each docs page."
+            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-720p` (faces kept, no face blur). See each docs page."
           },
           "prompt": {
             "type": "string",

@@ -51,6 +51,12 @@
 - [创建 Seedance 2.5 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create.md): 创建 Seedance 2.5 视频任务（参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
 - [Create Seedance 2.5 GZ Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-gz.md): Create a Seedance 2.5 GZ video task; precharged then settled to actual usage; poll the common query endpoint.
 - [创建 Seedance 2.5 GZ 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-gz.md): 创建 Seedance 2.5 GZ 视频任务，创建时预扣、成功后按实际用量多退少补，通过通用查询接口获取结果。
+- [seedance2.5-md](https://docs.viraltok.ai/en/api-reference/seedance/25/create-ar.md): Create a fixed 15-second Seedance 2.5 MD video; billed per task.
+- [seedance2.5-md](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-ar.md): 创建固定 15 秒的 Seedance 2.5 MD 视频，按次计费。
+- [seedance2.5-30s](https://docs.viraltok.ai/en/api-reference/seedance/25/create-30s.md): Create a fixed 30-second Seedance 2.5 video (up to 30 images, 10 videos, 10 audios); billed per task.
+- [seedance2.5-30s](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-30s.md): 创建固定 30 秒的 Seedance 2.5 视频（最多 30 张图、10 个视频、10 段音频），按次计费。
+- [sd2.5-30s](https://docs.viraltok.ai/en/api-reference/seedance/25/create-sd25-30s.md): Create a fixed 30-second video that keeps faces; billed per second on its own model `sd2.5-30s`.
+- [sd2.5-30s](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-sd25-30s.md): 创建固定 30 秒视频，参考图不卡脸，按独立型号 `sd2.5-30s` 按秒计费。
 - [Create MiniMax H3 Video](https://docs.viraltok.ai/en/api-reference/minimax/create.md): Create a MiniMax H3 video task (reference images/audio, first/last frame); billed per_task; poll the common query endpoint.
 - [创建 MiniMax H3 视频](https://docs.viraltok.ai/zh/api-reference/minimax/create.md): 创建 MiniMax H3 视频任务（参考图/音频、首尾帧），按次计费，通过通用查询接口获取结果。
 - [Create Wan 3.0 Video](https://docs.viraltok.ai/en/api-reference/wan/create.md): Create a Wan 3.0 (`wan3.0`) video task (reference images/videos/audios); billed per_second by resolution; poll the common query endpoint.

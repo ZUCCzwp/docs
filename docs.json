@@ -200,7 +200,15 @@
                 "pages": [
                   "en/api-reference/seedance/25/create",
                   "en/api-reference/seedance/25/create-gz",
-                  "en/api-reference/seedance/25/create-ar"
+                  {
+                    "group": "MD",
+                    "icon": "bolt",
+                    "pages": [
+                      "en/api-reference/seedance/25/create-ar",
+                      "en/api-reference/seedance/25/create-30s",
+                      "en/api-reference/seedance/25/create-sd25-30s"
+                    ]
+                  }
                 ]
               },
               {
@@ -448,7 +456,15 @@
                 "pages": [
                   "zh/api-reference/seedance/25/create",
                   "zh/api-reference/seedance/25/create-gz",
-                  "zh/api-reference/seedance/25/create-ar"
+                  {
+                    "group": "MD",
+                    "icon": "bolt",
+                    "pages": [
+                      "zh/api-reference/seedance/25/create-ar",
+                      "zh/api-reference/seedance/25/create-30s",
+                      "zh/api-reference/seedance/25/create-sd25-30s"
+                    ]
+                  }
                 ]
               },
               {

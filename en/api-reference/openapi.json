@@ -2044,9 +2044,10 @@
                       "seedance2.5-gz",
                       "seedance2.5-md",
                       "seedance2.5-30s",
-                      "sd2.5-720p"
+                      "sd2.5-720p",
+                      "sd2.5-720p-ac"
                     ],
-                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-720p` (faces kept, no face blur). See each docs page."
+                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
                   },
                   "prompt": {
                     "type": "string",
@@ -2121,7 +2122,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
                   },
                   "videos": {
                     "type": "array",
@@ -2137,7 +2138,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
                   },
                   "audios": {
                     "type": "array",
@@ -4779,9 +4780,10 @@
               "seedance2.5-gz",
               "seedance2.5-md",
               "seedance2.5-30s",
-              "sd2.5-720p"
+              "sd2.5-720p",
+              "sd2.5-720p-ac"
             ],
-            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, or `sd2.5-720p` (faces kept, no face blur). See each docs page."
+            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
           },
           "prompt": {
             "type": "string",
@@ -4856,7 +4858,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
           },
           "videos": {
             "type": "array",
@@ -4872,7 +4874,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
           },
           "audios": {
             "type": "array",

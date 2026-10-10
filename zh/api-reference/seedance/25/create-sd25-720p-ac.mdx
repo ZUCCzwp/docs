@@ -1,5 +1,5 @@
 ---
-title: 'seedance2.5-30s'
+title: 'sd2.5-720p-ac'
 openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 ---
 
@@ -7,7 +7,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。15 秒型号见 [seedance2.5-md](/zh/api-reference/seedance/25/create-ar)。不打码、不卡脸的型号见 [sd2.5-720p](/zh/api-reference/seedance/25/create-sd25-720p)（按秒）与 [sd2.5-720p-ac](/zh/api-reference/seedance/25/create-sd25-720p-ac)（按次）。
+本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。同系列不卡脸型号见 [sd2.5-720p](/zh/api-reference/seedance/25/create-sd25-720p)。固定 30 秒、人脸打码的型号见 [seedance2.5-30s](/zh/api-reference/seedance/25/create-30s)。
 
 <Warning>
 **不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
@@ -15,38 +15,36 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 ## 支持的模型
 
-| model | 输出时长 | 说明 |
-|-------|---------|------|
-| `seedance2.5-30s` | **30 秒**（固定） | 文生视频、参考图 / 参考视频 / 参考音频 |
-
-`seedance-2.5-30s`、`seedance25-30s` 会归一化为 `seedance2.5-30s`。
+| model | 输出 | 说明 |
+|-------|------|------|
+| `sd2.5-720p-ac` | **720p**，时长由 `duration` 决定 | 文生视频、参考图 / 参考视频 / 参考音频。**不卡脸** |
 
 <Warning>
-请求中的 `duration` 会被忽略，输出固定为 30 秒。
+**不卡脸。** 参考图中的人脸会原样保留。平台不会对人脸打码，也不会因为画面里有人脸而拒绝任务。
 </Warning>
 
 ## 参数限制
 
 - **提示词（prompt）**：必填，长度 1–5000。
-- **时长（duration）**：固定 30 秒，无需传入；传入也会被忽略。
+- **时长（duration）**：`4`–`30` 秒。未传默认 **4** 秒。时长只决定成片长度，不参与计价。
 - **画幅比例（aspect_ratio / ratio）**：仅支持 **`16:9`**、**`9:16`**。未传默认 `9:16`。
-- **参考图（reference_images / images）**：最多 **30** 张，须为公网可访问 URL。
+- **参考图（reference_images / images）**：最多 **30** 张，须为公网可访问 URL。人脸不打码。
 - **参考视频（reference_videos / videos）**：最多 **10** 个公网 URL。
 - **参考音频（reference_audios / audios）**：最多 **10** 段公网 URL。
 - **不支持** `first_image` / `last_image` 首尾帧。
-- **不支持** `resolution`、`generate_audio`、`watermark`、`output_format` 等 GZ 专用字段。
+- **不支持** `resolution`、`generate_audio`、`watermark`、`output_format` 等 GZ 专用字段。分辨率由型号固定为 720p。
 - 参考视频 / 音频请传公网 `https://` URL，不要传 base64。
-- **参考图**：直接传公网 URL；含人脸的图片会在提交前由平台自动打码，无需调用方自行处理。
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance2.5-30s` |
+| `model` | string | 是 | `sd2.5-720p-ac` |
 | `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 输出秒数，`4`–`30`。未传默认 `4` |
 | `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
 | `ratio` | string | 否 | `aspect_ratio` 别名 |
-| `reference_images` | string[] | 否 | 参考图 URL，最多 30 张 |
+| `reference_images` | string[] | 否 | 参考图 URL，最多 30 张。不卡脸 |
 | `images` | string[] | 否 | `reference_images` 别名 |
 | `reference_videos` | string[] | 否 | 参考视频 URL，最多 10 个 |
 | `videos` | string[] | 否 | `reference_videos` 别名 |
@@ -56,11 +54,10 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 ## 计费说明
 
 - 计费方式：**`per_task`（按次）**
-- 计费模型：`seedance2.5-30s`
-- 输出固定 30 秒，请求里的 `duration` 不参与计价
-- 费用 = 单价 × 1 次
+- 计费模型：`sd2.5-720p-ac`（与按秒计费的 `sd2.5-720p` 分开配置）
+- 费用 = 单价 × 1 次。`duration` 不参与计价。
 
-单价可在控制台按型号单独配置。
+单价在控制台按 `sd2.5-720p-ac` 单独配置，单位是每次价格。
 
 ## 示例请求
 
@@ -69,8 +66,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.5-30s",
+    "model": "sd2.5-720p-ac",
     "prompt": "一只猫在草地上奔跑，跟拍镜头",
+    "duration": 8,
     "aspect_ratio": "9:16",
     "reference_images": ["https://example.com/cat.png"],
     "reference_videos": ["https://example.com/ref.mp4"],

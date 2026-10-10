@@ -2044,9 +2044,10 @@
                       "seedance2.5-gz",
                       "seedance2.5-md",
                       "seedance2.5-30s",
-                      "sd2.5-720p"
+                      "sd2.5-720p",
+                      "sd2.5-720p-ac"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`（不卡脸）等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2121,7 +2122,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒（视渠道而定）。"
+                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒。"
                   },
                   "videos": {
                     "type": "array",
@@ -2137,7 +2138,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条时长不超过 30 秒（视渠道而定）。"
+                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条时长不超过 30 秒。"
                   },
                   "audios": {
                     "type": "array",
@@ -4789,9 +4790,10 @@
               "seedance2.5-gz",
               "seedance2.5-md",
               "seedance2.5-30s",
-              "sd2.5-720p"
+              "sd2.5-720p",
+              "sd2.5-720p-ac"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`（不卡脸）等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
           },
           "prompt": {
             "type": "string",
@@ -4866,7 +4868,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒（视渠道而定）。"
+            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒。"
           },
           "videos": {
             "type": "array",
@@ -4882,7 +4884,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s；seedance2.5-md 不支持。单条时长不超过 30 秒（视渠道而定）。"
+            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条时长不超过 30 秒。"
           },
           "audios": {
             "type": "array",

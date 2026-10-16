@@ -66,10 +66,10 @@
             ]
           },
           {
-            "tab": "API reference",
+            "tab": "Common APIs",
             "groups": [
               {
-                "group": "API documentation",
+                "group": "Overview",
                 "pages": [
                   "en/api-reference/introduction"
                 ]
@@ -85,73 +85,20 @@
                 ]
               },
               {
-                "group": "Account Management",
+                "group": "Account",
                 "pages": [
                   "en/api-reference/common/user-balance",
                   "en/api-reference/common/key-balance",
                   "en/api-reference/common/balance-webhook"
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "tab": "Image APIs",
+            "groups": [
               {
-                "group": "Gemini Omni Video",
-                "pages": [
-                  "en/api-reference/gemini-omni/create"
-                ]
-              },
-              {
-                "group": "Grok Video",
-                "pages": [
-                  "en/api-reference/grok/create"
-                ]
-              },
-              {
-                "group": "MiniMax Video",
-                "pages": [
-                  "en/api-reference/minimax/create",
-                  "en/api-reference/minimax/create-gz"
-                ]
-              },
-              {
-                "group": "Kling Video",
-                "pages": [
-                  "en/api-reference/kling/create"
-                ]
-              },
-              {
-                "group": "Wan Video",
-                "pages": [
-                  "en/api-reference/wan/create",
-                  "en/api-reference/wan/create-gz",
-                  "en/api-reference/wan/create-gl"
-                ]
-              },
-              {
-                "group": "Flux 3 Video",
-                "pages": [
-                  "en/api-reference/flux3/create"
-                ]
-              },
-              {
-                "group": "LLM",
-                "pages": [
-                  "en/api-reference/chat/completions"
-                ]
-              },
-              {
-                "group": "Tools",
-                "pages": [
-                  "en/api-reference/super-resolution/create",
-                  "en/api-reference/images/understand",
-                  "en/api-reference/images/remove-bg",
-                  "en/api-reference/images/upscale",
-                  "en/api-reference/videos/understand",
-                  "en/api-reference/digital-human/create",
-                  "en/api-reference/remove-subtitle/create",
-                  "en/api-reference/video-translate/create"
-                ]
-              },
-              {
-                "group": "Image Services",
+                "group": "Images",
                 "pages": [
                   {
                     "group": "GPT Image 2",
@@ -183,15 +130,59 @@
                   },
                   "en/api-reference/images/nano-banana/create"
                 ]
+              }
+            ]
+          },
+          {
+            "tab": "Video APIs",
+            "groups": [
+              {
+                "group": "Gemini Omni",
+                "pages": [
+                  "en/api-reference/gemini-omni/create"
+                ]
               },
               {
-                "group": "VEO Video",
+                "group": "Grok",
+                "pages": [
+                  "en/api-reference/grok/create"
+                ]
+              },
+              {
+                "group": "MiniMax",
+                "pages": [
+                  "en/api-reference/minimax/create",
+                  "en/api-reference/minimax/create-gz"
+                ]
+              },
+              {
+                "group": "Kling",
+                "pages": [
+                  "en/api-reference/kling/create"
+                ]
+              },
+              {
+                "group": "Wan",
+                "pages": [
+                  "en/api-reference/wan/create",
+                  "en/api-reference/wan/create-gz",
+                  "en/api-reference/wan/create-gl"
+                ]
+              },
+              {
+                "group": "Flux 3",
+                "pages": [
+                  "en/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "VEO",
                 "pages": [
                   "en/api-reference/veo/create-frames"
                 ]
               },
               {
-                "group": "Seedance 2.5 Video",
+                "group": "Seedance 2.5",
                 "pages": [
                   "en/api-reference/seedance/25/create",
                   "en/api-reference/seedance/25/create-gz",
@@ -208,7 +199,7 @@
                 ]
               },
               {
-                "group": "Seedance 2.0 Video",
+                "group": "Seedance 2.0",
                 "pages": [
                   {
                     "group": "Full",
@@ -252,6 +243,35 @@
                       "en/api-reference/seedance/md/create"
                     ]
                   }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "LLM APIs",
+            "groups": [
+              {
+                "group": "Chat",
+                "pages": [
+                  "en/api-reference/chat/completions"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Tool APIs",
+            "groups": [
+              {
+                "group": "Tools",
+                "pages": [
+                  "en/api-reference/super-resolution/create",
+                  "en/api-reference/images/understand",
+                  "en/api-reference/images/remove-bg",
+                  "en/api-reference/images/upscale",
+                  "en/api-reference/videos/understand",
+                  "en/api-reference/digital-human/create",
+                  "en/api-reference/remove-subtitle/create",
+                  "en/api-reference/video-translate/create"
                 ]
               },
               {
@@ -318,10 +338,10 @@
             ]
           },
           {
-            "tab": "API 引用",
+            "tab": "通用接口",
             "groups": [
               {
-                "group": "API 文档",
+                "group": "概览",
                 "pages": [
                   "zh/api-reference/introduction"
                 ]
@@ -343,67 +363,14 @@
                   "zh/api-reference/common/key-balance",
                   "zh/api-reference/common/balance-webhook"
                 ]
-              },
+              }
+            ]
+          },
+          {
+            "tab": "图片接口",
+            "groups": [
               {
-                "group": "Gemini Omni 视频",
-                "pages": [
-                  "zh/api-reference/gemini-omni/create"
-                ]
-              },
-              {
-                "group": "Grok 视频",
-                "pages": [
-                  "zh/api-reference/grok/create"
-                ]
-              },
-              {
-                "group": "MiniMax 视频",
-                "pages": [
-                  "zh/api-reference/minimax/create",
-                  "zh/api-reference/minimax/create-gz"
-                ]
-              },
-              {
-                "group": "Kling 视频",
-                "pages": [
-                  "zh/api-reference/kling/create"
-                ]
-              },
-              {
-                "group": "Wan 视频",
-                "pages": [
-                  "zh/api-reference/wan/create",
-                  "zh/api-reference/wan/create-gz",
-                  "zh/api-reference/wan/create-gl"
-                ]
-              },
-              {
-                "group": "Flux 3 视频",
-                "pages": [
-                  "zh/api-reference/flux3/create"
-                ]
-              },
-              {
-                "group": "LLM",
-                "pages": [
-                  "zh/api-reference/chat/completions"
-                ]
-              },
-              {
-                "group": "工具",
-                "pages": [
-                  "zh/api-reference/super-resolution/create",
-                  "zh/api-reference/images/understand",
-                  "zh/api-reference/images/remove-bg",
-                  "zh/api-reference/images/upscale",
-                  "zh/api-reference/videos/understand",
-                  "zh/api-reference/digital-human/create",
-                  "zh/api-reference/remove-subtitle/create",
-                  "zh/api-reference/video-translate/create"
-                ]
-              },
-              {
-                "group": "图片服务",
+                "group": "图片",
                 "pages": [
                   {
                     "group": "GPT Image 2",
@@ -435,15 +402,59 @@
                   },
                   "zh/api-reference/images/nano-banana/create"
                 ]
+              }
+            ]
+          },
+          {
+            "tab": "视频接口",
+            "groups": [
+              {
+                "group": "Gemini Omni",
+                "pages": [
+                  "zh/api-reference/gemini-omni/create"
+                ]
               },
               {
-                "group": "VEO 视频",
+                "group": "Grok",
+                "pages": [
+                  "zh/api-reference/grok/create"
+                ]
+              },
+              {
+                "group": "MiniMax",
+                "pages": [
+                  "zh/api-reference/minimax/create",
+                  "zh/api-reference/minimax/create-gz"
+                ]
+              },
+              {
+                "group": "Kling",
+                "pages": [
+                  "zh/api-reference/kling/create"
+                ]
+              },
+              {
+                "group": "Wan",
+                "pages": [
+                  "zh/api-reference/wan/create",
+                  "zh/api-reference/wan/create-gz",
+                  "zh/api-reference/wan/create-gl"
+                ]
+              },
+              {
+                "group": "Flux 3",
+                "pages": [
+                  "zh/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "VEO",
                 "pages": [
                   "zh/api-reference/veo/create-frames"
                 ]
               },
               {
-                "group": "Seedance 2.5 视频",
+                "group": "Seedance 2.5",
                 "pages": [
                   "zh/api-reference/seedance/25/create",
                   "zh/api-reference/seedance/25/create-gz",
@@ -460,7 +471,7 @@
                 ]
               },
               {
-                "group": "Seedance 2.0 视频",
+                "group": "Seedance 2.0",
                 "pages": [
                   {
                     "group": "满血版",
@@ -505,9 +516,38 @@
                     ]
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "tab": "LLM 接口",
+            "groups": [
+              {
+                "group": "对话",
+                "pages": [
+                  "zh/api-reference/chat/completions"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "工具接口",
+            "groups": [
+              {
+                "group": "工具",
+                "pages": [
+                  "zh/api-reference/super-resolution/create",
+                  "zh/api-reference/images/understand",
+                  "zh/api-reference/images/remove-bg",
+                  "zh/api-reference/images/upscale",
+                  "zh/api-reference/videos/understand",
+                  "zh/api-reference/digital-human/create",
+                  "zh/api-reference/remove-subtitle/create",
+                  "zh/api-reference/video-translate/create"
+                ]
               },
               {
-                "group": "SoundClone 声音克隆 ",
+                "group": "SoundClone",
                 "pages": [
                   "zh/api-reference/sound-clone/clone-create",
                   "zh/api-reference/sound-clone/audio-create"

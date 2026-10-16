@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
+  "theme": "mint",
   "name": "jimmyaidoc",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#EBF609",
+    "light": "#E1F86B",
+    "dark": "#8FCF03"
   },
   "appearance": {
     "default": "dark"
@@ -604,5 +604,8 @@
       ],
       "prefill": true
     }
+  },
+  "background": {
+    "decoration": "grid"
   }
 }

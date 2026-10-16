@@ -16,8 +16,8 @@
 
 ## API Reference
 
-- [Introduction](https://docs.viraltok.ai/en/api-reference/introduction.md): Overview of JimmyAI API capabilities — Sora, VEO, Gemini Omni, Seedance, and GPT Image models.
-- [介绍](https://docs.viraltok.ai/zh/api-reference/introduction.md): JimmyAI API 能力概览 — Sora、VEO、Gemini Omni、Seedance 及 GPT Image 模型。
+- [Introduction](https://docs.viraltok.ai/en/api-reference/introduction.md): Overview of JimmyAI API capabilities — VEO, Gemini Omni, Seedance, Wan, and GPT Image models.
+- [介绍](https://docs.viraltok.ai/zh/api-reference/introduction.md): JimmyAI API 能力概览 — VEO、Gemini Omni、Seedance、Wan 及 GPT Image 模型。
 
 ### Common
 
@@ -34,11 +34,6 @@
 - [Query API Key Quota Balance](https://docs.viraltok.ai/en/api-reference/common/key-balance.md): GET /key/balance — per-key usage quota.
 - [查询用户账户余额](https://docs.viraltok.ai/zh/api-reference/common/user-balance.md): GET /user/balance — 查询 API Key 所属用户的吉米币账户余额。
 - [查询 API Key 额度余额](https://docs.viraltok.ai/zh/api-reference/common/key-balance.md): GET /key/balance — 查询当前 Key 的调用额度。
-
-### Sora Video
-
-- [Create Video](https://docs.viraltok.ai/en/api-reference/videos/create.md): Create a video generation task using Sora models (route1, route3, route6).
-- [创建视频](https://docs.viraltok.ai/zh/api-reference/videos/create.md): 使用 Sora 模型创建视频生成任务。
 
 ### Gemini Omni Video
 

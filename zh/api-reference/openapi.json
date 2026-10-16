@@ -20,7 +20,7 @@
     "/api/open-api/v1/videos": {
       "post": {
         "summary": "Create Video Task",
-        "description": "创建 Sora 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "Sora 视频已下线，本接口不再接受新的 Sora 任务。请改用其他仍开放的视频创建接口，并轮询 GET /api/open-api/v1/videos/{taskId}。",
         "operationId": "createVideo",
         "requestBody": {
           "required": true,

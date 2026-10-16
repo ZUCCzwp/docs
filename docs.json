@@ -93,12 +93,6 @@
                 ]
               },
               {
-                "group": "Sora Video",
-                "pages": [
-                  "en/api-reference/videos/create"
-                ]
-              },
-              {
                 "group": "Gemini Omni Video",
                 "pages": [
                   "en/api-reference/gemini-omni/create"
@@ -348,12 +342,6 @@
                   "zh/api-reference/common/user-balance",
                   "zh/api-reference/common/key-balance",
                   "zh/api-reference/common/balance-webhook"
-                ]
-              },
-              {
-                "group": "Sora 视频",
-                "pages": [
-                  "zh/api-reference/videos/create"
                 ]
               },
               {

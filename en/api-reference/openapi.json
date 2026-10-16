@@ -20,7 +20,7 @@
     "/api/open-api/v1/videos": {
       "post": {
         "summary": "Create Video Task",
-        "description": "Create a Sora video generation task. Choose the product variant with `model`; poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
+        "description": "Sora video is discontinued. This endpoint no longer accepts new Sora tasks. Use other video create endpoints still listed in the docs, then poll GET /api/open-api/v1/videos/{taskId}.",
         "operationId": "createVideo",
         "requestBody": {
           "required": true,

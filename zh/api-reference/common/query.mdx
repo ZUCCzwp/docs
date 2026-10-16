@@ -8,7 +8,9 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 
 响应 `data.cost` 为本次任务扣费金额（吉米币），创建与查询接口均返回；若配置了用户定制单价，则按定制价计费。
 
-`seedance2.5-gz` 任务完成后，查询会返回 `data.usage`：
+部分任务完成后，查询会返回 `data.usage`：
+
+`seedance2.5-gz` 等按 token 结算的任务：
 
 ```json
 {
@@ -19,7 +21,17 @@ openapi: 'GET /api/open-api/v1/videos/{taskId}'
 }
 ```
 
-未完成或无 token 数据时不返回 `usage`。
+`wan3.0-gl` 等按秒结算的任务：
+
+```json
+{
+  "usage": {
+    "duration": 23.5
+  }
+}
+```
+
+`duration` 为实际计费秒数（可含小数），用于核对多退少补后的 `cost`。未完成或无用量数据时不返回 `usage`。
 
 ### 任务状态说明
 

@@ -7,7 +7,7 @@ openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-gz"`; it is billed separately.
+This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-gz"`; it is billed separately. Without a reference document or webpage, you can also use [`wan3.0-gl`](/en/api-reference/wan/create-gl).
 
 ## Supported models
 

@@ -7,7 +7,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-gz"` 选择本型号，独立计费。
+本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-gz"` 选择本型号，独立计费。不含参考文件/网页时也可使用 [`wan3.0-gl`](/zh/api-reference/wan/create-gl)。
 
 ## 支持的模型
 

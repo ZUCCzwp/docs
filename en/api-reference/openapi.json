@@ -1246,7 +1246,7 @@
     "/api/open-api/v1/wan/videos": {
       "post": {
         "summary": "Create Wan 3.0 video task",
-        "description": "Create a Wan 3.0 video task (`wan3.0` / `wan3.0-gz` / `wan3.0-gl`). Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
+        "description": "Create a Wan 3.0 video task (`wan3.0` / `wan3.0-gz` / `wan3.0-gl` / `wan3.0-prime-gl`). Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createWan30Video",
         "requestBody": {
           "required": true,
@@ -1406,6 +1406,19 @@
                   "summary": "Create Wan 3.0 GL task",
                   "value": {
                     "model": "wan3.0-gl",
+                    "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
+                    "duration": 5,
+                    "aspect_ratio": "9:16",
+                    "resolution": "720P",
+                    "reference_images": [
+                      "https://example.com/person.png"
+                    ]
+                  }
+                },
+                "primeGl": {
+                  "summary": "Create Wan 3.0 Prime GL task",
+                  "value": {
+                    "model": "wan3.0-prime-gl",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
                     "duration": 5,
                     "aspect_ratio": "9:16",
@@ -2837,7 +2850,7 @@
               },
               "usage": {
                 "type": "object",
-                "description": "Usage info. Token-settled tasks such as seedance2.5-gz return completion_tokens; per-second settled tasks such as wan3.0-gl return duration.",
+                "description": "Usage info. Token-settled tasks such as seedance2.5-gz return completion_tokens; per-second settled tasks such as wan3.0-gl / wan3.0-prime-gl return duration.",
                 "properties": {
                   "completion_tokens": {
                     "type": "integer",
@@ -2850,7 +2863,7 @@
                   "duration": {
                     "type": "number",
                     "format": "double",
-                    "description": "Actual billed seconds (may be fractional). Returned after wan3.0-gl and similar per-second settle tasks complete.",
+                    "description": "Actual billed seconds (may be fractional). Returned after wan3.0-gl / wan3.0-prime-gl and similar per-second settle tasks complete.",
                     "example": 23.5
                   }
                 }
@@ -3577,19 +3590,23 @@
               "wan3.0-gl",
               "wan3.0-gl-480p",
               "wan3.0-gl-720p",
-              "wan3.0-gl-1080p"
+              "wan3.0-gl-1080p",
+              "wan3.0-prime-gl",
+              "wan3.0-prime-gl-480p",
+              "wan3.0-prime-gl-720p",
+              "wan3.0-prime-gl-1080p"
             ],
-            "description": "Model ID such as `wan3.0`, `wan3.0-gz`, or `wan3.0-gl`. See the docs page."
+            "description": "Model ID such as `wan3.0`, `wan3.0-gz`, `wan3.0-gl`, or `wan3.0-prime-gl`. See the docs page."
           },
           "prompt": {
             "type": "string",
-            "description": "Text prompt for video generation. Required for wan3.0; for wan3.0-gz / wan3.0-gl, provide a prompt or reference media. Refer to media as 图1 / 视频1 / 音频1."
+            "description": "Text prompt for video generation. Required for wan3.0; for wan3.0-gz / wan3.0-gl / wan3.0-prime-gl, provide a prompt or reference media. Refer to media as 图1 / 视频1 / 音频1."
           },
           "duration": {
             "type": "integer",
             "minimum": 2,
             "maximum": 30,
-            "description": "Video duration in seconds. wan3.0: 4–30, default 4. wan3.0-gz / wan3.0-gl: 2–30, default 5."
+            "description": "Video duration in seconds. wan3.0: 4–30, default 4. wan3.0-gz / wan3.0-gl / wan3.0-prime-gl: 2–30, default 5."
           },
           "aspect_ratio": {
             "type": "string",
@@ -3602,7 +3619,7 @@
               "21:9",
               "adaptive"
             ],
-            "description": "Output aspect ratio, default 16:9. Takes precedence over ratio. adaptive is supported by wan3.0-gz / wan3.0-gl; 21:9 is wan3.0-gl only."
+            "description": "Output aspect ratio, default 16:9. Takes precedence over ratio. adaptive is supported by wan3.0-gz / wan3.0-gl / wan3.0-prime-gl; 21:9 is wan3.0-gl / wan3.0-prime-gl only."
           },
           "ratio": {
             "type": "string",
@@ -3627,7 +3644,7 @@
               "720p",
               "1080p"
             ],
-            "description": "Output resolution; also selects the billing model. wan3.0 defaults to 480P; wan3.0-gz / wan3.0-gl default to 720P."
+            "description": "Output resolution; also selects the billing model. wan3.0 defaults to 480P; wan3.0-gz / wan3.0-gl / wan3.0-prime-gl default to 720P."
           },
           "reference_images": {
             "type": "array",
@@ -3671,11 +3688,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First frame image URL. wan3.0-gz / wan3.0-gl only; cannot be combined with reference images/videos/audios. For wan3.0-gz, also cannot be combined with file_url or link_url."
+            "description": "First frame image URL. wan3.0-gz / wan3.0-gl / wan3.0-prime-gl only; cannot be combined with reference images/videos/audios. For wan3.0-gz, also cannot be combined with file_url or link_url."
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame image URL. wan3.0-gz / wan3.0-gl only; requires first_image."
+            "description": "Last frame image URL. wan3.0-gz / wan3.0-gl / wan3.0-prime-gl only; requires first_image."
           },
           "file_url": {
             "type": "string",

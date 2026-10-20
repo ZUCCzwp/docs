@@ -1,0 +1,49 @@
+---
+title: 'Midjourney 图生视频'
+---
+
+创建 Midjourney **图生视频**任务。固定约 5 秒，不支持纯文生视频，必须给首帧。
+
+<Note>
+接口：`POST /api/open-api/v1/midjourney/generations/video`。
+
+完成后用 [查询视频任务](/zh/api-reference/common/query) 读取 `result.video_url` / `result.video_urls`：`GET /api/open-api/v1/videos/{taskId}`。
+</Note>
+
+## 计费
+
+| 分辨率 | 计费模型名 | 说明 |
+|--------|-----------|------|
+| 480p（默认） | `midjourney-video` | 单价 × `batch_size` |
+| 720p | `midjourney-video-720p` | `video_type` 含 `720` 时命中 |
+
+`batch_size` 仅允许 `1` / `2` / `4`，默认 `1`。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `images` | string[] | △ | 首帧，1 张；与 `task_id` 二选一（也可用 `image_urls`） |
+| `task_id` | string | △ | 复用已完成的 Imagine 任务；与 `images` 二选一 |
+| `prompt` | string | 否 | 视频提示词；为空时需提供 `task_id` |
+| `index` | int | 否 | 从 Imagine 四张图选首帧（配合 `task_id`） |
+| `video_type` | string | 否 | 默认 `vid_1.1_i2v_480`；720p 用 `vid_1.1_i2v_720` |
+| `motion` | string | 否 | `low` / `high`，默认 `high`，不影响计费 |
+| `batch_size` | int | 否 | `1` / `2` / `4` |
+| `end_url` | string | 否 | 结束帧；传入后自动升级为起止帧模式 |
+| `animate_mode` | string | 否 | `manual`（默认）/ `auto`（需 `task_id` + `index`） |
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/video' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "the cat slowly turns its head to the camera",
+    "images": ["https://example.com/cat.png"],
+    "motion": "high",
+    "batch_size": 1,
+    "video_type": "vid_1.1_i2v_720"
+  }'
+```

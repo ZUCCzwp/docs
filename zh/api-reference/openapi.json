@@ -2411,6 +2411,117 @@
           }
         }
       }
+    },
+    "/api/open-api/v1/midjourney/generations": {
+      "post": {
+        "summary": "创建 Midjourney Imagine 任务",
+        "description": "创建 Midjourney 文生图 / 垫图任务。提交成功后使用 GET /api/open-api/v1/images/{taskId} 查询结果。",
+        "operationId": "createMidjourneyGenerations",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/midjourney/generations/imagine": {
+      "post": {
+        "summary": "创建 Midjourney Imagine 任务（显式入口）",
+        "operationId": "createMidjourneyImagine",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/midjourney/generations/upscale": {
+      "post": {
+        "summary": "Midjourney 放大选图",
+        "operationId": "createMidjourneyUpscale",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/midjourney/generations/video": {
+      "post": {
+        "summary": "创建 Midjourney 图生视频任务",
+        "description": "创建 Midjourney 图生视频任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createMidjourneyVideo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5417,6 +5528,67 @@
           "draft_cache_url": {
             "type": "string",
             "description": "Required for flux-3-enhance"
+          }
+        }
+      },
+      "MidjourneyGenerationsRequest": {
+        "type": "object",
+        "properties": {
+          "prompt": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "size": {
+            "type": "string"
+          },
+          "speed": {
+            "type": "string",
+            "enum": [
+              "relax",
+              "fast",
+              "turbo"
+            ]
+          },
+          "version": {
+            "type": "string"
+          },
+          "niji": {
+            "type": "boolean"
+          },
+          "task_id": {
+            "type": "string"
+          },
+          "index": {
+            "type": "integer"
+          },
+          "custom_id": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string"
+          },
+          "zoom_ratio": {
+            "type": "number"
+          },
+          "batch_size": {
+            "type": "integer"
+          },
+          "video_type": {
+            "type": "string"
+          },
+          "motion": {
+            "type": "string"
           }
         }
       }

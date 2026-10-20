@@ -1,0 +1,27 @@
+---
+title: 'Midjourney image-to-video'
+---
+
+Create a Midjourney **image-to-video** task (~5s). Text-only video is not supported; a first frame is required.
+
+<Note>
+`POST /api/open-api/v1/midjourney/generations/video`
+
+Poll [Query video task](/en/api-reference/common/query) (`GET /api/open-api/v1/videos/{taskId}`) for `result.video_url` / `result.video_urls`.
+</Note>
+
+Billing: `midjourney-video` (480p) or `midjourney-video-720p` × `batch_size` (`1` / `2` / `4`).
+
+Pass either `images` (first frame) or `task_id` (a completed Imagine task), not both.
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/video' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "the cat slowly turns its head to the camera",
+    "images": ["https://example.com/cat.png"],
+    "batch_size": 1,
+    "video_type": "vid_1.1_i2v_720"
+  }'
+```

@@ -1,0 +1,123 @@
+---
+title: 'Midjourney 文生图'
+---
+
+创建 **Midjourney** 异步绘图任务（Imagine / 垫图）。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态。完成后从 `result.image_urls` 获取四宫格单图，从 `result.buttons` 读取可继续的操作。
+
+二次操作见 [放大 / 变体 / 扩图](/zh/api-reference/images/midjourney/actions)，图生视频见 [Midjourney 视频](/zh/api-reference/images/midjourney/video)。
+
+<Note>
+接口路径：`POST /api/open-api/v1/midjourney/generations`（与 `/generations/imagine` 行为一致）。请求体不需要传 `model`。
+
+请勿把 Midjourney 发到 `POST /api/open-api/v1/images`。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `midjourney`（按操作计费） |
+| 接口 | `POST /api/open-api/v1/midjourney/generations` |
+| 计费 | Imagine：`midjourney-imagine[-version][-speed]` |
+| 模式 | 文生图；传入 `images` 时为垫图 |
+| 速度 | `speed`: `relax`（默认）/ `fast` / `turbo` |
+| 版本 | `version`: `8.2` / `8.1` / `7` / `6.1` / `5.2` / `5.1`；`niji=true` + `7` / `6` 归一为 `niji7` / `niji6` |
+
+## 计费说明
+
+匹配顺序：
+
+```text
+midjourney-imagine-{version}-{speed}
+→ midjourney-imagine-{version}
+→ midjourney-imagine-{speed}
+→ midjourney-imagine
+→ midjourney
+```
+
+`speed=relax` 或未传时不加 speed 后缀；`fast` / `turbo` 会追加。单价以控制台为准。任务失败自动退款。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `prompt` | string | 是 | 提示词，支持原生 MJ 参数（如 `--ar 16:9 --v 6.1`） |
+| `images` | string[] | 否 | 垫图 URL（也可用 `image_urls`） |
+| `size` | string | 否 | 宽高比，如 `16:9`、`1:1`、`9:16`（`ratio` 为其别名，等价 `--ar`） |
+| `speed` | string | 否 | `relax` / `fast` / `turbo`，默认 `relax` |
+| `version` | string | 否 | 主版本号；body 优先于 prompt 中的 `--v` |
+| `niji` | bool | 否 | Niji 开关，推荐配合 `version=7` 或 `6` |
+| `style` | string | 否 | 如 `raw` |
+| `quality` | string | 否 | MJ `--q`：`0.25` / `0.5` / `1` / `2` |
+| `seed` | int | 否 | 随机种子 |
+| `negative_prompt` | string | 否 | 负面提示词（`--no`） |
+| `stylize` | int | 否 | 0–1000 |
+| `chaos` | int | 否 | 0–100 |
+| `weird` | int | 否 | 0–3000 |
+| `iw` | number | 否 | 垫图权重 0–3 |
+| `raw` / `draft` / `hd` / `tile` | bool | 否 | 对应 MJ 开关 |
+| `cref` / `sref` / `dref` | string | 否 | 角色 / 风格 / 深度参考图 URL |
+| `extra` | string | 否 | 原样追加到 prompt 末尾 |
+| `nsfw_check` | bool | 否 | 默认 `false` |
+
+结构化字段写在 body 里时，优先级高于 prompt 中的同名参数。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "a cute cat, watercolor style",
+    "size": "16:9",
+    "version": "6.1",
+    "speed": "fast"
+  }'
+```
+
+### 参数写在 prompt 里
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "a beautiful sunset over mountains --ar 16:9 --v 6.1 --style raw"
+  }'
+```
+
+### 垫图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "turn this product into a luxury studio photo",
+    "images": ["https://example.com/product.png"],
+    "size": "1:1",
+    "iw": 1.2
+  }'
+```
+
+## 查询结果
+
+使用 [查询图片任务](/zh/api-reference/images/query) 轮询：`GET /api/open-api/v1/images/{taskId}`。建议 3–5 秒一次，直到 `status=completed`。
+
+| 字段 | 说明 |
+|------|------|
+| `result.image_url` | 首张图 |
+| `result.image_urls` | 单图列表（Imagine 为 4 张） |
+| `result.grid_image_url` | 四宫格合成图 |
+| `result.buttons` | 可继续操作，含 `customId` / `label`（如 U1、V1） |
+| `result.action` | 如 `IMAGINE` / `UPSCALE` |
+
+`status=modal` 表示需要调用 `/modal` 补参。图片地址有效期约 **3 天**，请及时转存。
+
+```bash
+curl 'https://api.viraltok.ai/api/open-api/v1/images/task_xxx' \
+  -H 'Authorization: Bearer sk_xxx'
+```

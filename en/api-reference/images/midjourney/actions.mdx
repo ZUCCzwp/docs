@@ -1,0 +1,37 @@
+---
+title: 'Midjourney follow-up actions'
+---
+
+Run upscale, variation, zoom, pan, inpaint, blend, describe, and edits against a completed Imagine task. Each call returns a new `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/open-api/v1/images/{taskId}`). Describe results are in `result.descriptions`.
+
+<Note>
+Pass the platform `task_id` (`task_...`). The service maps it to the original generation.
+</Note>
+
+## Endpoints
+
+| Action | Path | Billing |
+|------|------|------|
+| Blend | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney-blend[-speed]` |
+| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe[-speed]` |
+| Edits | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney-edits[-speed]` |
+| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale[-version][-speed]` |
+| Variation | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney-variation[-speed]` |
+| High variation | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney-high_variation[-speed]` |
+| Low variation | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney-low_variation[-speed]` |
+| Reroll | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney-reroll[-speed]` |
+| Zoom | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney-zoom[-version][-speed]` |
+| Pan | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney-pan[-version][-speed]` |
+| Inpaint | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney-inpaint[-version][-speed]` |
+| Modal | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney-modal[-speed]` |
+| Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney-remix_strong[-speed]` |
+| Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney-remix_subtle[-speed]` |
+
+Common fields: `task_id`, `index` (`1`–`4`), `custom_id` (from `buttons[].customId`), `speed`.
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/upscale' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{"task_id": "task_xxx", "index": 1}'
+```

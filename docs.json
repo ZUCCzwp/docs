@@ -128,7 +128,16 @@
                       "en/api-reference/images/grok-imagine-image-2/create"
                     ]
                   },
-                  "en/api-reference/images/nano-banana/create"
+                  "en/api-reference/images/nano-banana/create",
+                  {
+                    "group": "Midjourney",
+                    "icon": "image",
+                    "pages": [
+                      "en/api-reference/images/midjourney/create",
+                      "en/api-reference/images/midjourney/actions",
+                      "en/api-reference/images/midjourney/video"
+                    ]
+                  }
                 ]
               }
             ]
@@ -401,7 +410,16 @@
                       "zh/api-reference/images/grok-imagine-image-2/create"
                     ]
                   },
-                  "zh/api-reference/images/nano-banana/create"
+                  "zh/api-reference/images/nano-banana/create",
+                  {
+                    "group": "Midjourney",
+                    "icon": "image",
+                    "pages": [
+                      "zh/api-reference/images/midjourney/create",
+                      "zh/api-reference/images/midjourney/actions",
+                      "zh/api-reference/images/midjourney/video"
+                    ]
+                  }
                 ]
               }
             ]

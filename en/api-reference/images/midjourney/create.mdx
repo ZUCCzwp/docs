@@ -1,0 +1,51 @@
+---
+title: 'Midjourney text-to-image'
+---
+
+Create an async **Midjourney** Imagine task. The response includes a `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/open-api/v1/images/{taskId}`) until `status=completed`, then read `result.image_urls` and `result.buttons`.
+
+Follow-up actions: [Upscale / variation / expand](/en/api-reference/images/midjourney/actions). Image-to-video: [Midjourney video](/en/api-reference/images/midjourney/video).
+
+<Note>
+Use `POST /api/open-api/v1/midjourney/generations` (same as `/generations/imagine`). Do not send `model` in the body.
+
+Do not post Midjourney to `POST /api/open-api/v1/images`.
+</Note>
+
+## Overview
+
+| Item | Value |
+|------|------|
+| Model | `midjourney` |
+| Endpoint | `POST /api/open-api/v1/midjourney/generations` |
+| Billing | `midjourney-imagine[-version][-speed]` |
+| Speed | `relax` (default) / `fast` / `turbo` |
+| Version | `8.2` / `8.1` / `7` / `6.1` / `5.2` / `5.1`; `niji=true` + `7` / `6` → `niji7` / `niji6` |
+
+Billing fallback: action+version+speed → action+version → action+speed → action → `midjourney`. `relax` does not add a speed suffix. Failed tasks are refunded.
+
+## Request fields
+
+| Field | Type | Required | Description |
+|------|------|------|------|
+| `prompt` | string | yes | Prompt; native MJ flags such as `--ar 16:9` are allowed |
+| `images` | string[] | no | Reference images (`image_urls` alias) |
+| `size` | string | no | Aspect ratio (`ratio` alias) |
+| `speed` | string | no | `relax` / `fast` / `turbo` |
+| `version` | string | no | Body overrides the same flag in `prompt` |
+
+See the Chinese page for the full structured-parameter list.
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "a cute cat, watercolor style",
+    "size": "16:9",
+    "version": "6.1",
+    "speed": "fast"
+  }'
+```

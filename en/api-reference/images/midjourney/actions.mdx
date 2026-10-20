@@ -13,9 +13,9 @@ Pass the platform `task_id` (`task_...`). The service maps it to the original ge
 | Action | Path | Billing |
 |------|------|------|
 | Blend | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
-| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe` |
+| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney` |
 | Edits | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
-| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale` |
+| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney` |
 | Variation | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
 | High variation | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
 | Low variation | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
@@ -27,7 +27,7 @@ Pass the platform `task_id` (`task_...`). The service maps it to the original ge
 | Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
 | Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
-The table shows the regular price. `fast` uses that same price. `speed=turbo` bills as `midjourney-turbo`, which is higher. Describe and upscale keep their own regular prices. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
+The table shows the regular price. `fast` uses that same price. `speed=turbo` bills as `midjourney-turbo`, which is higher. Describe and upscale follow the same turbo split. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
 
 Common fields: `task_id`, `index` (`1`–`4`), `custom_id` (from `buttons[].customId`), `speed`.
 

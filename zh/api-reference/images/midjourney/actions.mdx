@@ -13,9 +13,9 @@ title: 'Midjourney 二次操作'
 | 功能 | 路径 | 计费 |
 |------|------|------|
 | 多图融合 | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
-| 图生文 | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe` |
+| 图生文 | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney` |
 | 图片编辑 | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
-| 放大选图 | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale` |
+| 放大选图 | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney` |
 | 变体 | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
 | 强变体 | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
 | 弱变体 | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
@@ -27,7 +27,7 @@ title: 'Midjourney 二次操作'
 | 强重塑 | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
 | 弱重塑 | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
-表中是普通价，`fast` 与此相同。`speed=turbo` 改为 `midjourney-turbo`，高于普通价。Describe、放大的普通价单独计价。完整对照见 [计费参考](/zh/api-reference/images/midjourney/create#计费参考)。Remix 仅 v8.1 / v8.2。
+表中是普通价，`fast` 与此相同。`speed=turbo` 改为 `midjourney-turbo`，高于普通价。图生文、放大选图也按是否 turbo 计价。完整对照见 [计费参考](/zh/api-reference/images/midjourney/create#计费参考)。Remix 仅 v8.1 / v8.2。
 
 ## 公共字段
 

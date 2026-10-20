@@ -27,7 +27,7 @@ Pass the platform `task_id` (`task_...`). The service maps it to the original ge
 | Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
 | Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
-Actions at the default price bill as `midjourney`. Describe and upscale have their own prices. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
+The table shows the regular price. `fast` uses that same price. `speed=turbo` bills as `midjourney-turbo`, which is higher. Describe and upscale keep their own regular prices. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
 
 Common fields: `task_id`, `index` (`1`–`4`), `custom_id` (from `buttons[].customId`), `speed`.
 

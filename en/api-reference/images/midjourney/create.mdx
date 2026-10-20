@@ -24,15 +24,14 @@ Do not post Midjourney to `POST /api/open-api/v1/images`.
 
 ## Billing reference
 
-Prices come from the console. Actions that share the default price use `midjourney`. Failed tasks are refunded.
+Prices come from the console. `fast` uses the same price as the regular speed. Image actions with `speed=turbo` use `midjourney-turbo`, which is higher than the regular price. Failed tasks are refunded.
 
 | Billing model | Covers |
 |---------------|--------|
-| `midjourney` | Imagine (`relax` or omitted `speed`), blend, edits, variation, reroll, zoom, pan, inpaint, remix |
-| `midjourney-imagine-fast` | Imagine with `speed=fast` |
-| `midjourney-imagine-turbo` | Imagine with `speed=turbo` |
-| `midjourney-describe` | Describe |
-| `midjourney-upscale` | Upscale |
+| `midjourney` | Regular price and `fast` for Imagine, blend, edits, variation, reroll, zoom, pan, inpaint, and remix |
+| `midjourney-turbo` | Image actions with `speed=turbo`, including Imagine, Describe, and upscale |
+| `midjourney-describe` | Describe at the regular price and `fast` |
+| `midjourney-upscale` | Upscale at the regular price and `fast` |
 | `midjourney-video` | Image-to-video 480p, × `batch_size` |
 | `midjourney-video-720p` | Image-to-video 720p, × `batch_size` |
 

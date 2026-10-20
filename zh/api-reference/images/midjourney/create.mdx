@@ -25,15 +25,14 @@ title: 'Midjourney 文生图'
 
 ## 计费参考
 
-单价以控制台为准。与默认价相同的操作共用 `midjourney`。任务失败自动退款。
+单价以控制台为准。`fast` 与普通价相同。`speed=turbo` 的图像操作统一按 `midjourney-turbo`，高于普通价。任务失败自动退款。
 
 | 计费模型 | 覆盖 |
 |----------|------|
-| `midjourney` | Imagine（`relax` 或未传 `speed`）、Blend、Edits、变体、重新生成、缩放、平移、局部重绘、Remix |
-| `midjourney-imagine-fast` | Imagine，`speed=fast` |
-| `midjourney-imagine-turbo` | Imagine，`speed=turbo` |
-| `midjourney-describe` | 图生文 |
-| `midjourney-upscale` | 放大选图 |
+| `midjourney` | Imagine、Blend、Edits、变体、重新生成、缩放、平移、局部重绘、Remix 的普通价与 `fast` |
+| `midjourney-turbo` | 图像操作 `speed=turbo`（含 Imagine、Describe、放大） |
+| `midjourney-describe` | 图生文的普通价与 `fast` |
+| `midjourney-upscale` | 放大选图的普通价与 `fast` |
 | `midjourney-video` | 图生视频 480p，费用 × `batch_size` |
 | `midjourney-video-720p` | 图生视频 720p，费用 × `batch_size` |
 

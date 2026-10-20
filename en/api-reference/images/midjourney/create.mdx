@@ -18,11 +18,25 @@ Do not post Midjourney to `POST /api/open-api/v1/images`.
 |------|------|
 | Model | `midjourney` |
 | Endpoint | `POST /api/open-api/v1/midjourney/generations` |
-| Billing | `midjourney-imagine[-version][-speed]` |
+| Billing | See billing reference below |
 | Speed | `relax` (default) / `fast` / `turbo` |
 | Version | `8.2` / `8.1` / `7` / `6.1` / `5.2` / `5.1`; `niji=true` + `7` / `6` → `niji7` / `niji6` |
 
-Billing fallback: action+version+speed → action+version → action+speed → action → `midjourney`. `relax` does not add a speed suffix. Failed tasks are refunded.
+## Billing reference
+
+Prices come from the console. Actions that share the default price use `midjourney`. Failed tasks are refunded.
+
+| Billing model | Covers |
+|---------------|--------|
+| `midjourney` | Imagine (`relax` or omitted `speed`), blend, edits, variation, reroll, zoom, pan, inpaint, remix |
+| `midjourney-imagine-fast` | Imagine with `speed=fast` |
+| `midjourney-imagine-turbo` | Imagine with `speed=turbo` |
+| `midjourney-describe` | Describe |
+| `midjourney-upscale` | Upscale |
+| `midjourney-video` | Image-to-video 480p, × `batch_size` |
+| `midjourney-video-720p` | Image-to-video 720p, × `batch_size` |
+
+A more specific version or speed price in the console wins over this table.
 
 ## Request fields
 

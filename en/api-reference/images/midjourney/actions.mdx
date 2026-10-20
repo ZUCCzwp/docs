@@ -12,20 +12,22 @@ Pass the platform `task_id` (`task_...`). The service maps it to the original ge
 
 | Action | Path | Billing |
 |------|------|------|
-| Blend | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney-blend[-speed]` |
-| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe[-speed]` |
-| Edits | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney-edits[-speed]` |
-| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale[-version][-speed]` |
-| Variation | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney-variation[-speed]` |
-| High variation | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney-high_variation[-speed]` |
-| Low variation | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney-low_variation[-speed]` |
-| Reroll | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney-reroll[-speed]` |
-| Zoom | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney-zoom[-version][-speed]` |
-| Pan | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney-pan[-version][-speed]` |
-| Inpaint | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney-inpaint[-version][-speed]` |
-| Modal | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney-modal[-speed]` |
-| Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney-remix_strong[-speed]` |
-| Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney-remix_subtle[-speed]` |
+| Blend | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
+| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe` |
+| Edits | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
+| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale` |
+| Variation | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
+| High variation | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
+| Low variation | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
+| Reroll | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney` |
+| Zoom | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney` |
+| Pan | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney` |
+| Inpaint | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney` |
+| Modal | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney` |
+| Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
+| Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
+
+Actions at the default price bill as `midjourney`. Describe and upscale have their own prices. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
 
 Common fields: `task_id`, `index` (`1`–`4`), `custom_id` (from `buttons[].customId`), `speed`.
 

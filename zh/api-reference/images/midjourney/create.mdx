@@ -18,24 +18,26 @@ title: 'Midjourney 文生图'
 |------|------|
 | 模型名 | `midjourney`（按操作计费） |
 | 接口 | `POST /api/open-api/v1/midjourney/generations` |
-| 计费 | Imagine：`midjourney-imagine[-version][-speed]` |
+| 计费 | 见下方计费参考 |
 | 模式 | 文生图；传入 `images` 时为垫图 |
 | 速度 | `speed`: `relax`（默认）/ `fast` / `turbo` |
 | 版本 | `version`: `8.2` / `8.1` / `7` / `6.1` / `5.2` / `5.1`；`niji=true` + `7` / `6` 归一为 `niji7` / `niji6` |
 
-## 计费说明
+## 计费参考
 
-匹配顺序：
+单价以控制台为准。与默认价相同的操作共用 `midjourney`。任务失败自动退款。
 
-```text
-midjourney-imagine-{version}-{speed}
-→ midjourney-imagine-{version}
-→ midjourney-imagine-{speed}
-→ midjourney-imagine
-→ midjourney
-```
+| 计费模型 | 覆盖 |
+|----------|------|
+| `midjourney` | Imagine（`relax` 或未传 `speed`）、Blend、Edits、变体、重新生成、缩放、平移、局部重绘、Remix |
+| `midjourney-imagine-fast` | Imagine，`speed=fast` |
+| `midjourney-imagine-turbo` | Imagine，`speed=turbo` |
+| `midjourney-describe` | 图生文 |
+| `midjourney-upscale` | 放大选图 |
+| `midjourney-video` | 图生视频 480p，费用 × `batch_size` |
+| `midjourney-video-720p` | 图生视频 720p，费用 × `batch_size` |
 
-`speed=relax` 或未传时不加 speed 后缀；`fast` / `turbo` 会追加。单价以控制台为准。任务失败自动退款。
+控制台若另配了带版本或速度后缀的价目，优先使用该价目。
 
 ## 请求参数
 

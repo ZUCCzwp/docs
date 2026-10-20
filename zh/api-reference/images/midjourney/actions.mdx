@@ -12,22 +12,22 @@ title: 'Midjourney 二次操作'
 
 | 功能 | 路径 | 计费 |
 |------|------|------|
-| 多图融合 | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney-blend[-speed]` |
-| 图生文 | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe[-speed]` |
-| 图片编辑 | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney-edits[-speed]` |
-| 放大选图 | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale[-version][-speed]` |
-| 变体 | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney-variation[-speed]` |
-| 强变体 | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney-high_variation[-speed]` |
-| 弱变体 | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney-low_variation[-speed]` |
-| 重新生成 | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney-reroll[-speed]` |
-| 缩放扩图 | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney-zoom[-version][-speed]` |
-| 平移扩图 | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney-pan[-version][-speed]` |
-| 局部重绘入口 | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney-inpaint[-version][-speed]` |
-| Modal 补参 | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney-modal[-speed]` |
-| 强重塑 | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney-remix_strong[-speed]` |
-| 弱重塑 | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney-remix_subtle[-speed]` |
+| 多图融合 | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
+| 图生文 | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney-describe` |
+| 图片编辑 | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
+| 放大选图 | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney-upscale` |
+| 变体 | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
+| 强变体 | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
+| 弱变体 | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
+| 重新生成 | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney` |
+| 缩放扩图 | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney` |
+| 平移扩图 | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney` |
+| 局部重绘入口 | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney` |
+| Modal 补参 | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney` |
+| 强重塑 | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
+| 弱重塑 | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
-未配置带后缀的价目时，按 action → `midjourney` 回退。Remix 仅 v8.1 / v8.2。
+与默认价相同的操作记在 `midjourney`。Describe、放大各自单独计价。完整对照见 [计费参考](/zh/api-reference/images/midjourney/create#计费参考)。Remix 仅 v8.1 / v8.2。
 
 ## 公共字段
 

@@ -165,12 +165,6 @@
                 ]
               },
               {
-                "group": "Kling",
-                "pages": [
-                  "en/api-reference/kling/create"
-                ]
-              },
-              {
                 "group": "Wan",
                 "pages": [
                   "en/api-reference/wan/create",
@@ -438,12 +432,6 @@
                 ]
               },
               {
-                "group": "Kling",
-                "pages": [
-                  "zh/api-reference/kling/create"
-                ]
-              },
-              {
                 "group": "Wan",
                 "pages": [
                   "zh/api-reference/wan/create",
@@ -686,6 +674,14 @@
     {
       "source": "/zh/api-reference/seedance/20480/create",
       "destination": "/zh/api-reference/seedance/create"
+    },
+    {
+      "source": "/en/api-reference/kling/create",
+      "destination": "/en/api-reference/introduction"
+    },
+    {
+      "source": "/zh/api-reference/kling/create",
+      "destination": "/zh/api-reference/introduction"
     }
   ]
 }

@@ -237,7 +237,7 @@
                     ]
                   },
                   {
-                    "group": "Seedance 2.0 Mini",
+                    "group": "Mini版",
                     "icon": "video",
                     "pages": [
                       "en/api-reference/seedance/mini/create",
@@ -510,7 +510,7 @@
                     ]
                   },
                   {
-                    "group": "Seedance 2.0 Mini",
+                    "group": "Mini版",
                     "icon": "video",
                     "pages": [
                       "zh/api-reference/seedance/mini/create",

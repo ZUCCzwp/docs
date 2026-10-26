@@ -114,7 +114,7 @@
 - [提交素材审核](https://docs.viraltok.ai/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
 - [查询素材审核状态](https://docs.viraltok.ai/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
 
-### Seedance 2.0 Mini
+### Mini版
 
 - [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
 - [创建Mini视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。

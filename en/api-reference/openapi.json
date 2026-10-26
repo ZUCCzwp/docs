@@ -859,8 +859,8 @@
     },
     "/api/open-api/v1/grok/videos": {
       "post": {
-        "summary": "Create Grok 1.5 Video",
-        "description": "Create a Grok 1.5 video generation task. Once created, use the common query task endpoint to get task details.",
+        "summary": "Create Grok Imagine 1.5 Video",
+        "description": "Create a Grok Imagine 1.5 video generation task. Once created, use the common query task endpoint to get task details.",
         "operationId": "createGrokVideo",
         "requestBody": {
           "required": true,

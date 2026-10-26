@@ -859,8 +859,8 @@
     },
     "/api/open-api/v1/grok/videos": {
       "post": {
-        "summary": "创建 Grok 1.5 视频任务",
-        "description": "创建 Grok 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
+        "summary": "创建 Grok Imagine 1.5 视频",
+        "description": "创建 Grok Imagine 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
         "operationId": "createGrokVideo",
         "requestBody": {
           "required": true,

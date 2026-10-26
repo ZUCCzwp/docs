@@ -1403,7 +1403,7 @@
                   }
                 },
                 "gl": {
-                  "summary": "Create Wan 3.0 GL task",
+                  "summary": "Create Wan 3.0 Official Channel task",
                   "value": {
                     "model": "wan3.0-gl",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
@@ -1416,7 +1416,7 @@
                   }
                 },
                 "primeGl": {
-                  "summary": "Create Wan 3.0 Prime GL task",
+                  "summary": "Create Wan 3.0 Prime Official Channel task",
                   "value": {
                     "model": "wan3.0-prime-gl",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",

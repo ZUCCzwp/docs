@@ -1,5 +1,5 @@
 ---
-title: '创建 Wan 3.0 Prime GL 视频'
+title: '创建 Wan 3.0 Prime官链视频'
 openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 ---
 
@@ -7,13 +7,13 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-prime-gl"` 选择本型号，独立计费。需要标准 GL 时见 [`wan3.0-gl`](/zh/api-reference/wan/create-gl)。
+本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-prime-gl"` 选择本型号，独立计费。需要标准官链时见 [`wan3.0-gl`](/zh/api-reference/wan/create-gl)。
 
 ## 支持的模型
 
 | model | 说明 |
 |-------|------|
-| `wan3.0-prime-gl` | Wan 3.0 Prime GL 视频生成，支持文生视频、首帧/首尾帧生视频、参考生视频（参考图最多 10 张、参考视频最多 5 个、参考音频最多 5 段），时长 2–30 秒，分辨率 480p/720p/1080p |
+| `wan3.0-prime-gl` | Wan 3.0 Prime官链视频生成，支持文生视频、首帧/首尾帧生视频、参考生视频（参考图最多 10 张、参考视频最多 5 个、参考音频最多 5 段），时长 2–30 秒，分辨率 480p/720p/1080p |
 
 本型号**不支持** `file_url` / `link_url`。需要参考文件或网页时请使用 [`wan3.0-gz`](/zh/api-reference/wan/create-gz)。
 

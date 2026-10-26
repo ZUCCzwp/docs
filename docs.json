@@ -214,8 +214,7 @@
                     "group": "官链",
                     "icon": "film",
                     "pages": [
-                      "en/api-reference/seedance/gz720/create",
-                      "en/api-reference/seedance/20480/create"
+                      "en/api-reference/seedance/gz720/create"
                     ]
                   },
                   {
@@ -479,8 +478,7 @@
                     "group": "官链",
                     "icon": "film",
                     "pages": [
-                      "zh/api-reference/seedance/gz720/create",
-                      "zh/api-reference/seedance/20480/create"
+                      "zh/api-reference/seedance/gz720/create"
                     ]
                   },
                   {
@@ -662,6 +660,14 @@
     {
       "source": "/zh/api-reference/seedance/25/create-sd25-720p-ac",
       "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/20480/create",
+      "destination": "/en/api-reference/seedance/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/20480/create",
+      "destination": "/zh/api-reference/seedance/create"
     }
   ]
 }

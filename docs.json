@@ -98,8 +98,17 @@
             "tab": "Image APIs",
             "groups": [
               {
-                "group": "Images",
+                "group": "GPT Image",
                 "pages": [
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "en/api-reference/images/gpt-image-2.5/create",
+                      "en/api-reference/images/gpt-image-2.5/generations",
+                      "en/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   {
                     "group": "GPT Image 2",
                     "icon": "image",
@@ -110,34 +119,39 @@
                     ]
                   },
                   {
-                    "group": "GPT Image 2.5",
+                    "group": "GPT Image 1.5",
                     "icon": "image",
                     "pages": [
-                      "en/api-reference/images/gpt-image-2.5/create",
-                      "en/api-reference/images/gpt-image-2.5/generations",
-                      "en/api-reference/images/gpt-image-2.5/edits"
-                    ]
-                  },
-                  "en/api-reference/images/gpt-image-1.5/create",
-                  "en/api-reference/images/seedream-5-0-pro/create",
-                  {
-                    "group": "Grok Image",
-                    "icon": "image",
-                    "pages": [
-                      "en/api-reference/images/grok-imagine-image/create",
-                      "en/api-reference/images/grok-imagine-image-2/create"
-                    ]
-                  },
-                  "en/api-reference/images/nano-banana/create",
-                  {
-                    "group": "Midjourney",
-                    "icon": "image",
-                    "pages": [
-                      "en/api-reference/images/midjourney/create",
-                      "en/api-reference/images/midjourney/actions",
-                      "en/api-reference/images/midjourney/video"
+                      "en/api-reference/images/gpt-image-1.5/create"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Seedream",
+                "pages": [
+                  "en/api-reference/images/seedream-5-0-pro/create"
+                ]
+              },
+              {
+                "group": "Grok Image",
+                "pages": [
+                  "en/api-reference/images/grok-imagine-image/create",
+                  "en/api-reference/images/grok-imagine-image-2/create"
+                ]
+              },
+              {
+                "group": "NanoBanana",
+                "pages": [
+                  "en/api-reference/images/nano-banana/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "en/api-reference/images/midjourney/create",
+                  "en/api-reference/images/midjourney/actions",
+                  "en/api-reference/images/midjourney/video"
                 ]
               }
             ]
@@ -377,8 +391,17 @@
             "tab": "图片接口",
             "groups": [
               {
-                "group": "图片",
+                "group": "GPT Image",
                 "pages": [
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "zh/api-reference/images/gpt-image-2.5/create",
+                      "zh/api-reference/images/gpt-image-2.5/generations",
+                      "zh/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   {
                     "group": "GPT Image 2",
                     "icon": "image",
@@ -389,34 +412,39 @@
                     ]
                   },
                   {
-                    "group": "GPT Image 2.5",
+                    "group": "GPT Image 1.5",
                     "icon": "image",
                     "pages": [
-                      "zh/api-reference/images/gpt-image-2.5/create",
-                      "zh/api-reference/images/gpt-image-2.5/generations",
-                      "zh/api-reference/images/gpt-image-2.5/edits"
-                    ]
-                  },
-                  "zh/api-reference/images/gpt-image-1.5/create",
-                  "zh/api-reference/images/seedream-5-0-pro/create",
-                  {
-                    "group": "Grok Image",
-                    "icon": "image",
-                    "pages": [
-                      "zh/api-reference/images/grok-imagine-image/create",
-                      "zh/api-reference/images/grok-imagine-image-2/create"
-                    ]
-                  },
-                  "zh/api-reference/images/nano-banana/create",
-                  {
-                    "group": "Midjourney",
-                    "icon": "image",
-                    "pages": [
-                      "zh/api-reference/images/midjourney/create",
-                      "zh/api-reference/images/midjourney/actions",
-                      "zh/api-reference/images/midjourney/video"
+                      "zh/api-reference/images/gpt-image-1.5/create"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Seedream",
+                "pages": [
+                  "zh/api-reference/images/seedream-5-0-pro/create"
+                ]
+              },
+              {
+                "group": "Grok Image",
+                "pages": [
+                  "zh/api-reference/images/grok-imagine-image/create",
+                  "zh/api-reference/images/grok-imagine-image-2/create"
+                ]
+              },
+              {
+                "group": "NanoBanana",
+                "pages": [
+                  "zh/api-reference/images/nano-banana/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "zh/api-reference/images/midjourney/create",
+                  "zh/api-reference/images/midjourney/actions",
+                  "zh/api-reference/images/midjourney/video"
                 ]
               }
             ]

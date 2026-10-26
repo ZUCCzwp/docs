@@ -141,7 +141,7 @@
                 ]
               },
               {
-                "group": "NanoBanana",
+                "group": "Nano Banana",
                 "pages": [
                   "en/api-reference/images/nano-banana/create"
                 ]
@@ -150,8 +150,7 @@
                 "group": "Midjourney",
                 "pages": [
                   "en/api-reference/images/midjourney/create",
-                  "en/api-reference/images/midjourney/actions",
-                  "en/api-reference/images/midjourney/video"
+                  "en/api-reference/images/midjourney/actions"
                 ]
               }
             ]
@@ -203,6 +202,12 @@
                 "group": "Flux 3",
                 "pages": [
                   "en/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "en/api-reference/images/midjourney/video"
                 ]
               },
               {
@@ -434,7 +439,7 @@
                 ]
               },
               {
-                "group": "NanoBanana",
+                "group": "Nano Banana",
                 "pages": [
                   "zh/api-reference/images/nano-banana/create"
                 ]
@@ -443,8 +448,7 @@
                 "group": "Midjourney",
                 "pages": [
                   "zh/api-reference/images/midjourney/create",
-                  "zh/api-reference/images/midjourney/actions",
-                  "zh/api-reference/images/midjourney/video"
+                  "zh/api-reference/images/midjourney/actions"
                 ]
               }
             ]
@@ -496,6 +500,12 @@
                 "group": "Flux 3",
                 "pages": [
                   "zh/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "zh/api-reference/images/midjourney/video"
                 ]
               },
               {

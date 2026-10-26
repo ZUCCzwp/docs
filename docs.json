@@ -245,13 +245,6 @@
                       "en/api-reference/seedance/sp/assets-detail",
                       "en/api-reference/seedance/sp/assets-status"
                     ]
-                  },
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "en/api-reference/seedance/md/create"
-                    ]
                   }
                 ]
               }
@@ -527,13 +520,6 @@
                       "zh/api-reference/seedance/sp/assets-detail",
                       "zh/api-reference/seedance/sp/assets-status"
                     ]
-                  },
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "zh/api-reference/seedance/md/create"
-                    ]
                   }
                 ]
               }
@@ -655,5 +641,15 @@
   },
   "background": {
     "decoration": "grid"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/en/api-reference/seedance/md/create",
+      "destination": "/en/api-reference/seedance/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/md/create",
+      "destination": "/zh/api-reference/seedance/create"
+    }
+  ]
 }

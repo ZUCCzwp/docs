@@ -144,11 +144,6 @@
 - [SP 提交真人加白](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。
 - [SP 查询真人加白状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-status.md): 查询真人加白处理状态。
 
-### Seedance MD
-
-- [MD Create Video](https://docs.viraltok.ai/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
-- [MD 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
-
 ### SoundClone
 
 - [Create Preview Task](https://docs.viraltok.ai/en/api-reference/sound-clone/clone-create.md): Submit voice-cloning preview from source audio/video URL.

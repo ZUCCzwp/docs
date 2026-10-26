@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建 Seedance **满血版超分版本sp** 视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Note>
-本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版见满血版文档，Mini 见 [创建Mini视频](/zh/api-reference/seedance/mini/create)。
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。满血版见满血版文档，Mini 见 [创建Mini视频](/zh/api-reference/seedance/mini/create)，SP Fast 见 [创建满血版超分版本sp Fast视频](/zh/api-reference/seedance/fast/create-sp)。
 </Note>
 
 ## 模型与线路
@@ -16,9 +16,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
 |------|-------------|------|------|----------|
 | **满血版超分版本sp** | `sd2_sp_720p`、`sd2_sp_1080p`、`sd2_sp_2k`、`sd2_sp_4k` | 按秒 | 4–15 秒 | 支持公网 URL 或素材库 |
-| **满血版超分版本sp Fast** | `sd2_sp_fast_780p` | 按秒 | 4–15 秒 | 同上；不支持 `reference_videos` |
 | **视频参考** | `sd2_sp_video_720p`、`sd2_sp_video_1080p`、`sd2_sp_video_2k`、`sd2_sp_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
-| **视频参考 Fast** | `sd2_sp_video_fast_780p` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
 
 ## 计费说明
 
@@ -99,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_fast_780p",
+    "model": "sd2_sp_720p",
     "prompt": "镜头缓慢推进，光影变化细腻",
     "duration": 8,
     "ratio": "16:9",

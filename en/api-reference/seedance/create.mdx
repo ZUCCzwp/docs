@@ -10,7 +10,7 @@ Do **not** send Seedance 2.5 models (`seedance-2.5`, `seedance-2.5-720p`, `seeda
 </Warning>
 
 <Note>
-Other routes: **Mini** — [Mini Create Video](/en/api-reference/seedance/mini/create); **Full Super-Resolution SP** — [Create Full Super-Resolution SP Video](/en/api-reference/seedance/sp/create); **Seedance 2.0 GZ** — [Create Seedance 2.0 GZ Video](/en/api-reference/seedance/gz720/create); **Seedance 2.5 Official Channel** — [Create Seedance 2.5 Official Channel Video](/en/api-reference/seedance/25/create); **Seedance 2.5 Official** — [Create Seedance 2.5 Official Video](/en/api-reference/seedance/25/create-gz).
+Other routes: **Mini** — [Mini Create Video](/en/api-reference/seedance/mini/create); **Full Super-Resolution SP** — [Create Full Super-Resolution SP Video](/en/api-reference/seedance/sp/create); **Seedance 2.0 GZ** — [Create Seedance 2.0 GZ Video](/en/api-reference/seedance/gz720/create); **Fast** — [Create Full Fast Video](/en/api-reference/seedance/fast/create); **Seedance 2.5 Official Channel** — [Create Seedance 2.5 Official Channel Video](/en/api-reference/seedance/25/create); **Seedance 2.5 Official** — [Create Seedance 2.5 Official Video](/en/api-reference/seedance/25/create-gz).
 </Note>
 
 ## Models and routes
@@ -20,9 +20,7 @@ Choose a Full-route sub-model with the `model` field:
 | Route | `model` values | Billing | Duration | Assets |
 |-------|----------------|---------|----------|--------|
 | **Full (Manxue)** | `sd2_mx_720p`, `sd2_mx_1080p`, `sd2_mx_2k`, `sd2_mx_4k` | Per second | 4–15 s | Must [audit assets](/en/api-reference/seedance/assets-audit) first; use `asset://{assetId}` |
-| **Fast** | `sd2_mx_fast_720p`, `sd2_mx_fast_1080p` | Per second | 4–15 s | Same as Manxue; `reference_videos` not supported |
 | **Video reference** | `sd2_mx_video_720p`, `sd2_mx_video_1080p`, `sd2_mx_video_2k`, `sd2_mx_video_4k` | Per second | 4–15 s | Same as Manxue; supports `reference_videos` |
-| **Video reference Fast** | `sd2_mx_video_fast_720p`, `sd2_mx_video_fast_1080p` | Per second | 4–15 s | Same as Manxue; supports `reference_videos` |
 
 ## Billing
 
@@ -50,8 +48,8 @@ Full (Manxue) routes are billed **per second**. Each `model` has its own unit pr
 
 ### Asset URL format
 
-- **Full / Fast / video-reference series**: `images`, `first_image`, `last_image`, `reference_videos`, and `reference_audios` must use `asset://{assetId}`. [Submit for audit](/en/api-reference/seedance/assets-audit) first, then poll [audit status](/en/api-reference/seedance/assets-status) until `Active`.
-- **`reference_videos`**: only supported on `sd2_mx_video_*` and `sd2_mx_video_fast_*`; not on standard Full or Fast models.
+- **Full / video-reference series**: `images`, `first_image`, `last_image`, `reference_videos`, and `reference_audios` must use `asset://{assetId}`. [Submit for audit](/en/api-reference/seedance/assets-audit) first, then poll [audit status](/en/api-reference/seedance/assets-status) until `Active`.
+- **`reference_videos`**: only supported on `sd2_mx_video_*`; not on standard Full models. Fast models are on [Create Full Fast Video](/en/api-reference/seedance/fast/create).
 
 ### General constraints
 

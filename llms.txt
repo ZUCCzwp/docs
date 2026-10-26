@@ -58,8 +58,6 @@
 - [创建 Wan 3.0 Prime GL 视频](https://docs.viraltok.ai/zh/api-reference/wan/create-prime-gl.md): 创建 Wan 3.0 Prime GL（`wan3.0-prime-gl`）视频任务（2–30 秒、自适应/`21:9` 画幅、首尾帧、参考图/视频/音频；不支持 file_url/link_url），按 `wan3.0-prime-gl-{分辨率}` 按秒预扣并按实际计费秒数多退少补，通过通用查询接口获取结果。
 - [Create Seedance 2.0 GZ Video](https://docs.viraltok.ai/en/api-reference/seedance/gz720/create.md): Create a Seedance 2.0 GZ video task (`seedance2.0-gz*`; asset review; direct result URL); billed per_million_tokens; poll the common query endpoint.
 - [创建 Seedance 2.0 GZ 视频](https://docs.viraltok.ai/zh/api-reference/seedance/gz720/create.md): 创建 Seedance 2.0 GZ 视频任务（`seedance2.0-gz*`；素材审核；结果为上游直链），按百万 token 计费，通过通用查询接口获取结果。
-- [Create Official Mini Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create-gz.md): Create an Official Mini video task (`seedance2.0-gz-mini*`; asset review; direct result URL); billed per_second; poll the common query endpoint.
-- [创建官链 Mini 视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create-gz.md): 创建官链 Mini 视频任务（`seedance2.0-gz-mini*`；素材审核；结果为上游直链），按秒计费，通过通用查询接口获取结果。
 
 ### LLM
 
@@ -116,10 +114,21 @@
 - [提交素材审核](https://docs.viraltok.ai/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
 - [查询素材审核状态](https://docs.viraltok.ai/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
 
-### Seedance 2.0 Video (Mini)
+### Seedance 2.0 Mini
 
 - [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
 - [创建Mini视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
+- [Create Official Mini Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create-gz.md): Create an Official Mini video task (`seedance2.0-gz-mini*`; asset review; direct result URL); billed per_million_tokens; poll the common query endpoint.
+- [创建官链 Mini 视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create-gz.md): 创建官链 Mini 视频任务（`seedance2.0-gz-mini*`；素材审核；结果为上游直链），按百万 token 计费，通过通用查询接口获取结果。
+
+### Seedance Fast
+
+- [Create Full Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create.md): Create a Seedance Full Fast video task (`sd2_mx_fast_*`, `sd2_mx_video_fast_*`).
+- [Create Full Super-Resolution SP Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-sp.md): Create a Seedance Full Super-Resolution SP Fast video task (`sd2_sp_fast_780p`, `sd2_sp_video_fast_780p`).
+- [Create Seedance 2.0 GZ Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-gz.md): Create a Seedance 2.0 GZ Fast video task (`seedance2.0-gz-fast*`).
+- [创建满血版Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create.md): 创建 Seedance 满血版 Fast 视频任务（`sd2_mx_fast_*`、`sd2_mx_video_fast_*`）。
+- [创建满血版超分版本sp Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-sp.md): 创建满血版超分版本sp Fast 视频任务（`sd2_sp_fast_780p`、`sd2_sp_video_fast_780p`）。
+- [创建 Seedance 2.0 GZ Fast 视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-gz.md): 创建 Seedance 2.0 GZ Fast 视频任务（`seedance2.0-gz-fast*`）。
 
 ### Seedance Full Super-Resolution SP
 

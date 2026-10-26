@@ -6,7 +6,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 Create a Seedance **Full Super-Resolution SP** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create).
+This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
 </Note>
 
 ## Models and Routes
@@ -16,9 +16,7 @@ Choose the Full Super-Resolution SP sub-route via the `model` field:
 | Route | `model` value | Billing | Duration | Requirements |
 |-------|---------------|---------|----------|--------------|
 | **Full Super-Resolution SP** | `sd2_sp_720p`, `sd2_sp_1080p`, `sd2_sp_2k`, `sd2_sp_4k` | Per second | 4–15 s | Public URL or asset library |
-| **Full Super-Resolution SP Fast** | `sd2_sp_fast_780p` | Per second | 4–15 s | Same as above; `reference_videos` not supported |
 | **Video Reference** | `sd2_sp_video_720p`, `sd2_sp_video_1080p`, `sd2_sp_video_2k`, `sd2_sp_video_4k` | Per second | 4–15 s | Same as above; supports `reference_videos` |
-| **Video Reference Fast** | `sd2_sp_video_fast_780p` | Per second | 4–15 s | Same as above; supports `reference_videos` |
 
 ## Billing
 
@@ -99,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_fast_780p",
+    "model": "sd2_sp_720p",
     "prompt": "Slow dolly in, subtle lighting change",
     "duration": 8,
     "ratio": "16:9",

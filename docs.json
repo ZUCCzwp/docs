@@ -218,14 +218,6 @@
                     ]
                   },
                   {
-                    "group": "Mini",
-                    "icon": "video",
-                    "pages": [
-                      "en/api-reference/seedance/mini/create",
-                      "en/api-reference/seedance/mini/create-gz"
-                    ]
-                  },
-                  {
                     "group": "Full Super-Resolution SP",
                     "icon": "coins",
                     "pages": [
@@ -235,6 +227,21 @@
                       "en/api-reference/seedance/sp/assets-status"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Fast",
+                "pages": [
+                  "en/api-reference/seedance/fast/create",
+                  "en/api-reference/seedance/fast/create-sp",
+                  "en/api-reference/seedance/fast/create-gz"
+                ]
+              },
+              {
+                "group": "Seedance 2.0 Mini",
+                "pages": [
+                  "en/api-reference/seedance/mini/create",
+                  "en/api-reference/seedance/mini/create-gz"
                 ]
               }
             ]
@@ -482,14 +489,6 @@
                     ]
                   },
                   {
-                    "group": "Mini",
-                    "icon": "video",
-                    "pages": [
-                      "zh/api-reference/seedance/mini/create",
-                      "zh/api-reference/seedance/mini/create-gz"
-                    ]
-                  },
-                  {
                     "group": "满血版超分版本sp",
                     "icon": "coins",
                     "pages": [
@@ -499,6 +498,21 @@
                       "zh/api-reference/seedance/sp/assets-status"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Fast快速版",
+                "pages": [
+                  "zh/api-reference/seedance/fast/create",
+                  "zh/api-reference/seedance/fast/create-sp",
+                  "zh/api-reference/seedance/fast/create-gz"
+                ]
+              },
+              {
+                "group": "Seedance 2.0 Mini",
+                "pages": [
+                  "zh/api-reference/seedance/mini/create",
+                  "zh/api-reference/seedance/mini/create-gz"
                 ]
               }
             ]

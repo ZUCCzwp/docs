@@ -7,7 +7,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`. Read `completion_tokens` / `total_tokens` from `data.usage`.
 </Note>
 
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Select this series with a `model` that starts with `seedance2.0-gz`.
+This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. Select this series with a `model` that starts with `seedance2.0-gz`. Fast models are on [Create Seedance 2.0 GZ Fast Video](/en/api-reference/seedance/fast/create-gz).
 
 ## Supported models
 
@@ -15,7 +15,6 @@ This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/se
 |-------|-------|------------|
 | `seedance2.0-gz` / `seedance2.0-gz-720p` | Standard GZ; default 720p | `480p` / `720p` / `1080p` |
 | `seedance2.0-gz-480p` / `seedance2.0-gz-1080p` | Standard GZ billing names | matching tier |
-| `seedance2.0-gz-fast` / `seedance2.0-gz-fast-720p` / `seedance2.0-gz-fast-480p` | Fast | `480p` / `720p` |
 
 For `seedance2.0-gz-mini*`, see [Create Official Mini Video](/en/api-reference/seedance/mini/create-gz).
 
@@ -26,7 +25,7 @@ Aliases such as `seedance2.0-gz720p` and `seedance20-gz-720p` normalize to `seed
 - **Prompt**: Required.
 - **Duration**: 4–15 seconds (default `5`).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9` (landscape), `9:16` (portrait), `1:1` (square), `4:3` (classic), `3:4` (classic portrait), `21:9` (ultrawide), `adaptive` (match input image/video). Default `16:9`.
-- **Resolution**: Standard `480p` / `720p` / `1080p` (default `720p`); Fast `480p` / `720p` only. You may also encode resolution in `model`.
+- **Resolution**: `480p` / `720p` / `1080p` (default `720p`). You may also encode resolution in `model`. Fast resolutions are on [Create Seedance 2.0 GZ Fast Video](/en/api-reference/seedance/fast/create-gz).
 - **Reference images**: `images` or `reference_images`, max **9**.
 - **Reference videos**: `videos` or `reference_videos`, max **3**.
 - **Reference audios**: `audios` or `reference_audios`, max **3**; must be paired with at least one image or video reference.
@@ -68,7 +67,6 @@ Requests **with reference videos** (`reference_videos` / `videos`) use a separat
 | Request model | No video refs | With video refs |
 |---------------|---------------|-----------------|
 | `seedance2.0-gz-720p` | `seedance2.0-gz-720p` | `seedance2.0-gz-video-720p` |
-| `seedance2.0-gz-fast` | `seedance2.0-gz-fast` | `seedance2.0-gz-fast-video` |
 | `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-720p` | `seedance2.0-gz-mini-video-720p` |
 
 ```text

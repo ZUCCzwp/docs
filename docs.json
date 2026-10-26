@@ -167,10 +167,22 @@
               {
                 "group": "Wan",
                 "pages": [
-                  "en/api-reference/wan/create",
-                  "en/api-reference/wan/create-gz",
-                  "en/api-reference/wan/create-gl",
-                  "en/api-reference/wan/create-prime-gl"
+                  {
+                    "group": "Wan 3",
+                    "icon": "film",
+                    "pages": [
+                      "en/api-reference/wan/create",
+                      "en/api-reference/wan/create-gz",
+                      "en/api-reference/wan/create-gl"
+                    ]
+                  },
+                  {
+                    "group": "Wan 3 Prime",
+                    "icon": "star",
+                    "pages": [
+                      "en/api-reference/wan/create-prime-gl"
+                    ]
+                  }
                 ]
               },
               {
@@ -434,10 +446,22 @@
               {
                 "group": "Wan",
                 "pages": [
-                  "zh/api-reference/wan/create",
-                  "zh/api-reference/wan/create-gz",
-                  "zh/api-reference/wan/create-gl",
-                  "zh/api-reference/wan/create-prime-gl"
+                  {
+                    "group": "Wan 3",
+                    "icon": "film",
+                    "pages": [
+                      "zh/api-reference/wan/create",
+                      "zh/api-reference/wan/create-gz",
+                      "zh/api-reference/wan/create-gl"
+                    ]
+                  },
+                  {
+                    "group": "Wan 3 Prime",
+                    "icon": "star",
+                    "pages": [
+                      "zh/api-reference/wan/create-prime-gl"
+                    ]
+                  }
                 ]
               },
               {

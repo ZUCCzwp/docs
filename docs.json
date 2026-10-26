@@ -227,7 +227,7 @@
                     ]
                   },
                   {
-                    "group": "SP Economy",
+                    "group": "Full Super-Resolution SP",
                     "icon": "coins",
                     "pages": [
                       "en/api-reference/seedance/sp/create",
@@ -492,7 +492,7 @@
                     ]
                   },
                   {
-                    "group": "SP 经济版",
+                    "group": "满血版超分版本sp",
                     "icon": "coins",
                     "pages": [
                       "zh/api-reference/seedance/sp/create",

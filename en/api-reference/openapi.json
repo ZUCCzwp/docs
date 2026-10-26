@@ -571,7 +571,7 @@
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "Duration in seconds. Full 4-15; SP economy 4-15; STD standard 4-15. Default 5"
+                    "description": "Duration in seconds. Full 4-15; Full Super-Resolution SP 4-15; STD standard 4-15. Default 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -580,7 +580,7 @@
                       "720p",
                       "1080p"
                     ],
-                    "description": "Output resolution. For SP economy: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
+                    "description": "Output resolution. For Full Super-Resolution SP: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
                   },
                   "orientation": {
                     "type": "string",
@@ -603,25 +603,25 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "First frame. Full: asset://{assetId}; Economy: https:// URL."
+                    "description": "First frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "Last frame. Full: asset://{assetId}; Economy: https:// URL."
+                    "description": "Last frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
                   },
                   "reference_videos": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Economy: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+                    "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Full Super-Resolution SP: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+                    "description": "Reference audio as public https:// URLs (not base64). Supported on Full, Full Super-Resolution SP, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -744,7 +744,7 @@
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP Upload Asset",
-        "description": "Upload image, video, audio, or text assets to the Seedance SP economy library. Returns asset_id for asset:// references.",
+        "description": "Upload image, video, audio, or text assets to the Seedance Full Super-Resolution SP library. Returns asset_id for asset:// references.",
         "operationId": "uploadSeedanceSpAsset",
         "requestBody": {
           "required": true,
@@ -2454,7 +2454,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-15; SP economy 4-15; STD standard 4-15. Default 5"
+            "description": "Duration in seconds. Full 4-15; Full Super-Resolution SP 4-15; STD standard 4-15. Default 5"
           },
           "resolution": {
             "type": "string",
@@ -2463,7 +2463,7 @@
               "720p",
               "1080p"
             ],
-            "description": "Output resolution. For SP economy: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
+            "description": "Output resolution. For Full Super-Resolution SP: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
           },
           "orientation": {
             "type": "string",
@@ -2486,25 +2486,25 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First frame. Full: asset://{assetId}; Economy: https:// URL."
+            "description": "First frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame. Full: asset://{assetId}; Economy: https:// URL."
+            "description": "Last frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Economy: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+            "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Full Super-Resolution SP: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+            "description": "Reference audio as public https:// URLs (not base64). Supported on Full, Full Super-Resolution SP, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
           },
           "aspect_ratio": {
             "type": "string",

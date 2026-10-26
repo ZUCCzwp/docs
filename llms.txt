@@ -121,16 +121,16 @@
 - [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
 - [Mini 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
 
-### Seedance SP Economy
+### Seedance Full Super-Resolution SP
 
-- [SP Create Video](https://docs.viraltok.ai/en/api-reference/seedance/sp/create.md): Create a Seedance SP video task (economy or official).
-- [SP Upload Asset](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the SP economy library.
+- [Create Full Super-Resolution SP Video](https://docs.viraltok.ai/en/api-reference/seedance/sp/create.md): Create a Seedance Full Super-Resolution SP video task.
+- [SP Upload Asset](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the Full Super-Resolution SP library.
 - [SP Query Asset Detail](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-detail.md): Query a single SP asset status.
 - [SP Batch Query Asset Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-status.md): Batch query SP asset status.
 - [SP Submit Real-Person Whitelist](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-submit.md): Submit real-person portrait for whitelist processing.
 - [SP Query Real-Person Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-status.md): Query real-person whitelist status.
-- [SP 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 视频任务（经济版 / 官方版）。
-- [SP 上传素材](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到 SP 经济版素材库。
+- [创建满血版超分版本sp视频](https://docs.viraltok.ai/zh/api-reference/seedance/sp/create.md): 创建 Seedance 满血版超分版本sp视频任务。
+- [SP 上传素材](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到满血版超分版本sp素材库。
 - [SP 查询素材详情](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-detail.md): 查询单个 SP 素材状态。
 - [SP 批量查询素材状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-status.md): 批量查询 SP 素材状态。
 - [SP 提交真人加白](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。

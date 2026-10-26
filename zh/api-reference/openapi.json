@@ -571,7 +571,7 @@
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；STD 标准版 4-15。默认 5"
+                    "description": "时长（秒）。满血版 4-15；满血版超分版本sp 4-15；STD 标准版 4-15。默认 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -580,7 +580,7 @@
                       "720p",
                       "1080p"
                     ],
-                    "description": "输出分辨率。SP 经济版有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
+                    "description": "输出分辨率。满血版超分版本sp 有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
                   },
                   "orientation": {
                     "type": "string",
@@ -603,25 +603,25 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "首帧图片。满血版: asset://{assetId}；经济版: https:// URL。"
+                    "description": "首帧图片。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。"
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "尾帧图片。满血版: asset://{assetId}；经济版: https:// URL。"
+                    "description": "尾帧图片。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。"
                   },
                   "reference_videos": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；经济版: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+                    "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+                    "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/满血版超分版本sp/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -686,7 +686,7 @@
     "/api/open-api/v1/seedance/assets/audit": {
       "post": {
         "summary": "提交素材审核",
-        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；经济版可直接传公网 URL。",
+        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分版本sp 可直接传公网 URL。",
         "operationId": "submitSeedanceAudit",
         "requestBody": {
           "required": true,
@@ -744,7 +744,7 @@
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP 上传素材",
-        "description": "上传图片、视频、音频或文本素材到 Seedance SP 经济版素材库。返回 asset_id 可用于 asset:// 引用。",
+        "description": "上传图片、视频、音频或文本素材到 Seedance 满血版超分版本sp素材库。返回 asset_id 可用于 asset:// 引用。",
         "operationId": "uploadSeedanceSpAsset",
         "requestBody": {
           "required": true,
@@ -2565,7 +2565,7 @@
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；STD 标准版 4-15。默认 5"
+            "description": "时长（秒）。满血版 4-15；满血版超分版本sp 4-15；STD 标准版 4-15。默认 5"
           },
           "resolution": {
             "type": "string",
@@ -2574,7 +2574,7 @@
               "720p",
               "1080p"
             ],
-            "description": "输出分辨率。SP 经济版有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
+            "description": "输出分辨率。满血版超分版本sp 有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
           },
           "orientation": {
             "type": "string",
@@ -2597,25 +2597,25 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片。满血版: asset://{assetId}；经济版: https:// URL。"
+            "description": "首帧图片。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片。满血版: asset://{assetId}；经济版: https:// URL。"
+            "description": "尾帧图片。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；经济版: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+            "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；满血版超分版本sp: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+            "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/满血版超分版本sp/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
           },
           "aspect_ratio": {
             "type": "string",

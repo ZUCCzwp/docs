@@ -2067,11 +2067,9 @@
                     "enum": [
                       "seedance-2.5",
                       "seedance-2.5-sp",
-                      "seedance2.5-gz",
-                      "sd2.5-720p",
-                      "sd2.5-720p-ac"
+                      "seedance2.5-gz"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz` 等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2094,7 +2092,7 @@
                       "1:1",
                       "adaptive"
                     ],
-                    "description": "输出画幅比例。标准版 / SP 默认 9:16。`sd2.5-720p` / `sd2.5-720p-ac` 仅支持 9:16、16:9。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+                    "description": "输出画幅比例。标准版 / SP 默认 9:16。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
                   },
                   "ratio": {
                     "type": "string",
@@ -2146,7 +2144,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac。单条与合计时长均不超过 30.2 秒。"
+                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
                   },
                   "videos": {
                     "type": "array",
@@ -2162,7 +2160,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac。单条时长不超过 30 秒。"
+                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条时长不超过 30 秒。"
                   },
                   "audios": {
                     "type": "array",
@@ -4927,11 +4925,9 @@
             "enum": [
               "seedance-2.5",
               "seedance-2.5-sp",
-              "seedance2.5-gz",
-              "sd2.5-720p",
-              "sd2.5-720p-ac"
+              "seedance2.5-gz"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz` 等，详见各文档页。"
           },
           "prompt": {
             "type": "string",
@@ -4954,7 +4950,7 @@
               "1:1",
               "adaptive"
             ],
-            "description": "输出画幅比例。标准版 / SP 默认 9:16。`sd2.5-720p` / `sd2.5-720p-ac` 仅支持 9:16、16:9。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+            "description": "输出画幅比例。标准版 / SP 默认 9:16。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
           },
           "ratio": {
             "type": "string",
@@ -5006,7 +5002,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac。单条与合计时长均不超过 30.2 秒。"
+            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
           },
           "videos": {
             "type": "array",
@@ -5022,7 +5018,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac。单条时长不超过 30 秒。"
+            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条时长不超过 30 秒。"
           },
           "audios": {
             "type": "array",

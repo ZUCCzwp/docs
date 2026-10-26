@@ -195,9 +195,7 @@
                 "group": "Seedance 2.5",
                 "pages": [
                   "en/api-reference/seedance/25/create",
-                  "en/api-reference/seedance/25/create-gz",
-                  "en/api-reference/seedance/25/create-sd25-720p",
-                  "en/api-reference/seedance/25/create-sd25-720p-ac"
+                  "en/api-reference/seedance/25/create-gz"
                 ]
               },
               {
@@ -462,9 +460,7 @@
                 "group": "Seedance 2.5",
                 "pages": [
                   "zh/api-reference/seedance/25/create",
-                  "zh/api-reference/seedance/25/create-gz",
-                  "zh/api-reference/seedance/25/create-sd25-720p",
-                  "zh/api-reference/seedance/25/create-sd25-720p-ac"
+                  "zh/api-reference/seedance/25/create-gz"
                 ]
               },
               {
@@ -649,6 +645,22 @@
     },
     {
       "source": "/zh/api-reference/seedance/25/create-30s",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-sd25-720p",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-sd25-720p",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-sd25-720p-ac",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-sd25-720p-ac",
       "destination": "/zh/api-reference/seedance/25/create"
     }
   ]

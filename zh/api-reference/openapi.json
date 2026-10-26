@@ -2066,10 +2066,9 @@
                     "type": "string",
                     "enum": [
                       "seedance-2.5",
-                      "seedance-2.5-sp",
                       "seedance2.5-gz"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz` 等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz` 等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2081,7 +2080,7 @@
                     "type": "integer",
                     "default": 4,
                     "maximum": 30,
-                    "description": "视频时长，单位秒。标准版 / SP 支持 4–30。GZ 支持 -1 自动时长。标准版带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
+                    "description": "视频时长，单位秒。官链支持 4–30。官转支持 -1 自动时长。官链带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2092,7 +2091,7 @@
                       "1:1",
                       "adaptive"
                     ],
-                    "description": "输出画幅比例。标准版 / SP 默认 9:16。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+                    "description": "输出画幅比例。官链默认 9:16。adaptive 仅在带参考素材时可用（官转及官链任务类型引导）。优先级高于 ratio。"
                   },
                   "ratio": {
                     "type": "string",
@@ -2116,11 +2115,11 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "首帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "尾帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
                   },
                   "reference_images": {
                     "type": "array",
@@ -2144,7 +2143,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
+                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
                   },
                   "videos": {
                     "type": "array",
@@ -2160,7 +2159,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条时长不超过 30 秒。"
+                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance2.5-gz。单条时长不超过 30 秒。"
                   },
                   "audios": {
                     "type": "array",
@@ -4924,10 +4923,9 @@
             "type": "string",
             "enum": [
               "seedance-2.5",
-              "seedance-2.5-sp",
               "seedance2.5-gz"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz` 等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz` 等，详见各文档页。"
           },
           "prompt": {
             "type": "string",
@@ -4939,7 +4937,7 @@
             "type": "integer",
             "default": 4,
             "maximum": 30,
-            "description": "视频时长，单位秒。标准版 / SP 支持 4–30。GZ 支持 -1 自动时长。标准版带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
+            "description": "视频时长，单位秒。官链支持 4–30。官转支持 -1 自动时长。官链带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4950,7 +4948,7 @@
               "1:1",
               "adaptive"
             ],
-            "description": "输出画幅比例。标准版 / SP 默认 9:16。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+            "description": "输出画幅比例。官链默认 9:16。adaptive 仅在带参考素材时可用（官转及官链任务类型引导）。优先级高于 ratio。"
           },
           "ratio": {
             "type": "string",
@@ -4974,11 +4972,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "reference_images": {
             "type": "array",
@@ -5002,7 +5000,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
+            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance2.5-gz。单条与合计时长均不超过 30.2 秒。"
           },
           "videos": {
             "type": "array",
@@ -5018,7 +5016,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz。单条时长不超过 30 秒。"
+            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance2.5-gz。单条时长不超过 30 秒。"
           },
           "audios": {
             "type": "array",

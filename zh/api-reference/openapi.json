@@ -2267,7 +2267,7 @@
     },
     "/api/open-api/v1/flux3/videos": {
       "post": {
-        "summary": "创建Flux3视频",
+        "summary": "创建 Flux 3 视频",
         "description": "创建 Flux 3 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createFlux3Video",
         "requestBody": {

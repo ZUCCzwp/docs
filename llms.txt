@@ -95,10 +95,10 @@
 - [图片理解](https://docs.viraltok.ai/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。
 - [Midjourney text-to-image](https://docs.viraltok.ai/en/api-reference/images/midjourney/create.md): Create a Midjourney Imagine task; poll GET /api/open-api/v1/images/{taskId}.
 - [Midjourney follow-up actions](https://docs.viraltok.ai/en/api-reference/images/midjourney/actions.md): Upscale, variation, zoom, pan, inpaint, blend, describe, edits.
-- [Midjourney image-to-video](https://docs.viraltok.ai/en/api-reference/images/midjourney/video.md): Create a Midjourney image-to-video task; poll GET /api/open-api/v1/videos/{taskId}.
+- [Create Midjourney image-to-video](https://docs.viraltok.ai/en/api-reference/images/midjourney/video.md): Create a Midjourney image-to-video task; poll GET /api/open-api/v1/videos/{taskId}.
 - [Midjourney 文生图](https://docs.viraltok.ai/zh/api-reference/images/midjourney/create.md): 创建 Midjourney Imagine 任务，轮询 GET /api/open-api/v1/images/{taskId}。
 - [Midjourney 二次操作](https://docs.viraltok.ai/zh/api-reference/images/midjourney/actions.md): 放大、变体、扩图、局部重绘、融合、识图、编辑。
-- [Midjourney 图生视频](https://docs.viraltok.ai/zh/api-reference/images/midjourney/video.md): 创建 Midjourney 图生视频任务，轮询 GET /api/open-api/v1/videos/{taskId}。
+- [创建Midjourney 图生视频](https://docs.viraltok.ai/zh/api-reference/images/midjourney/video.md): 创建 Midjourney 图生视频任务，轮询 GET /api/open-api/v1/videos/{taskId}。
 
 ### VEO Video
 

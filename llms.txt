@@ -119,7 +119,7 @@
 ### Seedance 2.0 Video (Mini)
 
 - [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
-- [Mini 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
+- [创建Mini视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
 
 ### Seedance Full Super-Resolution SP
 

@@ -7,7 +7,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [Mini 创建视频](/zh/api-reference/seedance/mini/create)、[创建 Seedance 2.0 GZ 视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-mini` 开头选择本线路。
+本接口与 [创建Mini视频](/zh/api-reference/seedance/mini/create)、[创建 Seedance 2.0 GZ 视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-mini` 开头选择本线路。
 
 ## 支持的模型
 

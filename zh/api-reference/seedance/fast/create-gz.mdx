@@ -1,5 +1,5 @@
 ---
-title: '创建 Seedance 2.0 GZ Fast 视频'
+title: '创建 Seedance 2.0官转 Fast视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
@@ -7,7 +7,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 2.0 GZ 视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-fast` 开头选择本线路。非 Fast GZ 见 GZ 文档。
+本接口与 [创建 Seedance 2.0官转视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-fast` 开头选择本线路。非 Fast 官转见官转文档。
 
 ## 支持的模型
 

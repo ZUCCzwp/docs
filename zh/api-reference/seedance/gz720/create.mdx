@@ -1,5 +1,5 @@
 ---
-title: '创建 Seedance 2.0 GZ 视频'
+title: '创建 Seedance 2.0官转视频'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
@@ -7,14 +7,14 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。Fast 型号见 [创建 Seedance 2.0 GZ Fast 视频](/zh/api-reference/seedance/fast/create-gz)。
+本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。Fast 型号见 [创建 Seedance 2.0官转 Fast视频](/zh/api-reference/seedance/fast/create-gz)。
 
 ## 支持的模型
 
 | model | 说明 | 分辨率 |
 |-------|------|--------|
-| `seedance2.0-gz` / `seedance2.0-gz-720p` | 标准 GZ；默认 720p | `480p` / `720p` / `1080p` |
-| `seedance2.0-gz-480p` / `seedance2.0-gz-1080p` | 标准 GZ，计费名已含分辨率 | 对应档位 |
+| `seedance2.0-gz` / `seedance2.0-gz-720p` | 标准官转；默认 720p | `480p` / `720p` / `1080p` |
+| `seedance2.0-gz-480p` / `seedance2.0-gz-1080p` | 标准官转，计费名已含分辨率 | 对应档位 |
 
 `seedance2.0-gz-mini*` 见 [创建官链 Mini 视频](/zh/api-reference/seedance/mini/create-gz)。
 
@@ -25,7 +25,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 - **提示词（prompt）**：必填。
 - **时长（duration）**：4–15 秒，默认 `5`。
 - **画幅比例（aspect_ratio / ratio）**：`16:9`（横屏）、`9:16`（竖屏）、`1:1`（方形）、`4:3`（传统比例）、`3:4`（竖向传统比例）、`21:9`（超宽屏）、`adaptive`（自适应，根据输入图片/视频自动匹配），默认 `16:9`。
-- **分辨率（resolution）**：`480p` / `720p` / `1080p`（默认 `720p`）。也可把分辨率写进 `model`。Fast 分辨率见 [创建 Seedance 2.0 GZ Fast 视频](/zh/api-reference/seedance/fast/create-gz)。
+- **分辨率（resolution）**：`480p` / `720p` / `1080p`（默认 `720p`）。也可把分辨率写进 `model`。Fast 分辨率见 [创建 Seedance 2.0官转 Fast视频](/zh/api-reference/seedance/fast/create-gz)。
 - **参考图**：`images` 或 `reference_images`，最多 **9** 张。
 - **参考视频**：`videos` 或 `reference_videos`，最多 **3** 个。
 - **参考音频**：`audios` 或 `reference_audios`，最多 **3** 段；须搭配至少一张参考图或一个参考视频。

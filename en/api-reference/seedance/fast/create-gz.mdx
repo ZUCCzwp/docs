@@ -1,5 +1,5 @@
 ---
-title: 'Create Seedance 2.0 GZ Fast Video'
+title: 'Create Seedance 2.0 Official Fast Video'
 openapi: 'POST /api/open-api/v1/seedance/videos'
 ---
 
@@ -7,7 +7,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`. Read `completion_tokens` / `total_tokens` from `data.usage`.
 </Note>
 
-This uses the same endpoint as [Create Seedance 2.0 GZ Video](/en/api-reference/seedance/gz720/create): `POST /api/open-api/v1/seedance/videos`. Select this route with a `model` that starts with `seedance2.0-gz-fast`. Non-Fast GZ models are on the GZ page.
+This uses the same endpoint as [Create Seedance 2.0 Official Video](/en/api-reference/seedance/gz720/create): `POST /api/open-api/v1/seedance/videos`. Select this route with a `model` that starts with `seedance2.0-gz-fast`. Non-Fast Official models are on the Official page.
 
 ## Supported models
 

@@ -205,7 +205,7 @@
                     ]
                   },
                   {
-                    "group": "官链",
+                    "group": "官转",
                     "icon": "film",
                     "pages": [
                       "en/api-reference/seedance/gz720/create"
@@ -472,7 +472,7 @@
                     ]
                   },
                   {
-                    "group": "官链",
+                    "group": "官转",
                     "icon": "film",
                     "pages": [
                       "zh/api-reference/seedance/gz720/create"

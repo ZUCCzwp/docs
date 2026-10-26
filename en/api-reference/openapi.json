@@ -1051,7 +1051,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "Create MiniMax H3 GZ task with reference video",
+                  "summary": "Create MiniMax H3 Official task with reference video",
                   "value": {
                     "model": "minimax-h3-gz",
                     "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
@@ -1390,7 +1390,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "Create Wan 3.0 GZ task",
+                  "summary": "Create Wan 3.0 Official task",
                   "value": {
                     "model": "wan3.0-gz",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
@@ -2080,7 +2080,7 @@
                     "type": "integer",
                     "default": 4,
                     "maximum": 30,
-                    "description": "Duration in seconds. Official channel: 4–30. GZ supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+                    "description": "Duration in seconds. Official channel: 4–30. Official supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2091,7 +2091,7 @@
                       "1:1",
                       "adaptive"
                     ],
-                    "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (GZ, or the official-channel task type hint). Takes precedence over ratio."
+                    "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (Official, or the official-channel task type hint). Takes precedence over ratio."
                   },
                   "ratio": {
                     "type": "string",
@@ -4815,7 +4815,7 @@
             "type": "integer",
             "default": 4,
             "maximum": 30,
-            "description": "Duration in seconds. Official channel: 4–30. GZ supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+            "description": "Duration in seconds. Official channel: 4–30. Official supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
           },
           "aspect_ratio": {
             "type": "string",
@@ -4826,7 +4826,7 @@
               "1:1",
               "adaptive"
             ],
-            "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (GZ, or the official-channel task type hint). Takes precedence over ratio."
+            "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (Official, or the official-channel task type hint). Takes precedence over ratio."
           },
           "ratio": {
             "type": "string",

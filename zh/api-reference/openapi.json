@@ -1051,7 +1051,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "创建 MiniMax H3 GZ 任务（含参考视频）",
+                  "summary": "创建 MiniMax H3官转任务（含参考视频）",
                   "value": {
                     "model": "minimax-h3-gz",
                     "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
@@ -1390,7 +1390,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "创建 Wan 3.0 GZ 任务",
+                  "summary": "创建 Wan 3.0官转任务",
                   "value": {
                     "model": "wan3.0-gz",
                     "prompt": "图1 中的人物在海边奔跑，电影感运镜",

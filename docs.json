@@ -226,22 +226,24 @@
                       "en/api-reference/seedance/sp/assets-detail",
                       "en/api-reference/seedance/sp/assets-status"
                     ]
+                  },
+                  {
+                    "group": "Fast",
+                    "icon": "bolt",
+                    "pages": [
+                      "en/api-reference/seedance/fast/create",
+                      "en/api-reference/seedance/fast/create-sp",
+                      "en/api-reference/seedance/fast/create-gz"
+                    ]
+                  },
+                  {
+                    "group": "Seedance 2.0 Mini",
+                    "icon": "video",
+                    "pages": [
+                      "en/api-reference/seedance/mini/create",
+                      "en/api-reference/seedance/mini/create-gz"
+                    ]
                   }
-                ]
-              },
-              {
-                "group": "Fast",
-                "pages": [
-                  "en/api-reference/seedance/fast/create",
-                  "en/api-reference/seedance/fast/create-sp",
-                  "en/api-reference/seedance/fast/create-gz"
-                ]
-              },
-              {
-                "group": "Seedance 2.0 Mini",
-                "pages": [
-                  "en/api-reference/seedance/mini/create",
-                  "en/api-reference/seedance/mini/create-gz"
                 ]
               }
             ]
@@ -489,7 +491,7 @@
                     ]
                   },
                   {
-                    "group": "满血版超分版本sp",
+                    "group": "满血版超分",
                     "icon": "coins",
                     "pages": [
                       "zh/api-reference/seedance/sp/create",
@@ -497,22 +499,24 @@
                       "zh/api-reference/seedance/sp/assets-detail",
                       "zh/api-reference/seedance/sp/assets-status"
                     ]
+                  },
+                  {
+                    "group": "Fast快速版",
+                    "icon": "bolt",
+                    "pages": [
+                      "zh/api-reference/seedance/fast/create",
+                      "zh/api-reference/seedance/fast/create-sp",
+                      "zh/api-reference/seedance/fast/create-gz"
+                    ]
+                  },
+                  {
+                    "group": "Seedance 2.0 Mini",
+                    "icon": "video",
+                    "pages": [
+                      "zh/api-reference/seedance/mini/create",
+                      "zh/api-reference/seedance/mini/create-gz"
+                    ]
                   }
-                ]
-              },
-              {
-                "group": "Fast快速版",
-                "pages": [
-                  "zh/api-reference/seedance/fast/create",
-                  "zh/api-reference/seedance/fast/create-sp",
-                  "zh/api-reference/seedance/fast/create-gz"
-                ]
-              },
-              {
-                "group": "Seedance 2.0 Mini",
-                "pages": [
-                  "zh/api-reference/seedance/mini/create",
-                  "zh/api-reference/seedance/mini/create-gz"
                 ]
               }
             ]

@@ -196,16 +196,8 @@
                 "pages": [
                   "en/api-reference/seedance/25/create",
                   "en/api-reference/seedance/25/create-gz",
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "en/api-reference/seedance/25/create-ar",
-                      "en/api-reference/seedance/25/create-30s",
-                      "en/api-reference/seedance/25/create-sd25-720p",
-                      "en/api-reference/seedance/25/create-sd25-720p-ac"
-                    ]
-                  }
+                  "en/api-reference/seedance/25/create-sd25-720p",
+                  "en/api-reference/seedance/25/create-sd25-720p-ac"
                 ]
               },
               {
@@ -471,16 +463,8 @@
                 "pages": [
                   "zh/api-reference/seedance/25/create",
                   "zh/api-reference/seedance/25/create-gz",
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "zh/api-reference/seedance/25/create-ar",
-                      "zh/api-reference/seedance/25/create-30s",
-                      "zh/api-reference/seedance/25/create-sd25-720p",
-                      "zh/api-reference/seedance/25/create-sd25-720p-ac"
-                    ]
-                  }
+                  "zh/api-reference/seedance/25/create-sd25-720p",
+                  "zh/api-reference/seedance/25/create-sd25-720p-ac"
                 ]
               },
               {
@@ -650,6 +634,22 @@
     {
       "source": "/zh/api-reference/seedance/md/create",
       "destination": "/zh/api-reference/seedance/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-ar",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-ar",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-30s",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-30s",
+      "destination": "/zh/api-reference/seedance/25/create"
     }
   ]
 }

@@ -2068,12 +2068,10 @@
                       "seedance-2.5",
                       "seedance-2.5-sp",
                       "seedance2.5-gz",
-                      "seedance2.5-md",
-                      "seedance2.5-30s",
                       "sd2.5-720p",
                       "sd2.5-720p-ac"
                     ],
-                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
+                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
                   },
                   "prompt": {
                     "type": "string",
@@ -2085,7 +2083,7 @@
                     "type": "integer",
                     "default": 4,
                     "maximum": 30,
-                    "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+                    "description": "Duration in seconds. Standard / SP: 4–30. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2096,7 +2094,7 @@
                       "1:1",
                       "adaptive"
                     ],
-                    "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
+                    "description": "Output aspect ratio. Standard / SP default 9:16. `sd2.5-720p` / `sd2.5-720p-ac` support 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
                   },
                   "ratio": {
                     "type": "string",
@@ -2148,7 +2146,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac. Each clip and combined duration ≤ 30.2s where applicable."
                   },
                   "videos": {
                     "type": "array",
@@ -2164,7 +2162,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac. Each clip ≤ 30s where applicable."
                   },
                   "audios": {
                     "type": "array",
@@ -2249,17 +2247,6 @@
                     "resolution": "480p",
                     "reference_videos": [
                       "https://example.com/reference.mp4"
-                    ]
-                  }
-                },
-                "md15": {
-                  "summary": "Seedance 2.5 MD 15 seconds",
-                  "value": {
-                    "model": "seedance2.5-md",
-                    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
-                    "aspect_ratio": "16:9",
-                    "reference_images": [
-                      "https://example.com/reference.png"
                     ]
                   }
                 }
@@ -4820,12 +4807,10 @@
               "seedance-2.5",
               "seedance-2.5-sp",
               "seedance2.5-gz",
-              "seedance2.5-md",
-              "seedance2.5-30s",
               "sd2.5-720p",
               "sd2.5-720p-ac"
             ],
-            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
+            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
           },
           "prompt": {
             "type": "string",
@@ -4837,7 +4822,7 @@
             "type": "integer",
             "default": 4,
             "maximum": 30,
-            "description": "Duration in seconds. Standard / SP: 4–30. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+            "description": "Duration in seconds. Standard / SP: 4–30. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
           },
           "aspect_ratio": {
             "type": "string",
@@ -4848,7 +4833,7 @@
               "1:1",
               "adaptive"
             ],
-            "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
+            "description": "Output aspect ratio. Standard / SP default 9:16. `sd2.5-720p` / `sd2.5-720p-ac` support 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
           },
           "ratio": {
             "type": "string",
@@ -4900,7 +4885,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac. Each clip and combined duration ≤ 30.2s where applicable."
           },
           "videos": {
             "type": "array",
@@ -4916,7 +4901,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / sd2.5-720p / sd2.5-720p-ac. Each clip ≤ 30s where applicable."
           },
           "audios": {
             "type": "array",

@@ -4066,10 +4066,9 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni",
-              "omni-10s"
+              "gemini-omni"
             ],
-            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini; omni-10s is a fixed 10s model (720p, up to 7 reference images)."
+            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini."
           },
           "prompt": {
             "type": "string",
@@ -4107,14 +4106,14 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference image URL list. omni-10s supports up to 7 images."
+            "description": "Reference image URL list."
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty. omni-10s supports up to 7 images."
+            "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty."
           },
           "generation_type": {
             "type": "string",

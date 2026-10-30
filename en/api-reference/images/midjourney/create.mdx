@@ -4,7 +4,7 @@ title: 'Midjourney text-to-image'
 
 Create an async **Midjourney** Imagine task. The response includes a `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/open-api/v1/images/{taskId}`) until `status=completed`, then read `result.image_urls` and `result.buttons`.
 
-Follow-up actions: [Upscale / variation / expand](/en/api-reference/images/midjourney/actions). Image-to-video: [Midjourney video](/en/api-reference/images/midjourney/video).
+Follow-up actions: [Upscale / variation / expand](/en/api-reference/images/midjourney/actions). Image-to-video: [Create Midjourney image-to-video](/en/api-reference/images/midjourney/video).
 
 <Note>
 Use `POST /api/open-api/v1/midjourney/generations` (same as `/generations/imagine`). Do not send `model` in the body.

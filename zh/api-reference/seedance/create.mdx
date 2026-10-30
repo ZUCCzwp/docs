@@ -6,11 +6,11 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 创建 Seedance **满血版**（Manxue）视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Warning>
-**请勿**把 `seedance-2.5` / `seedance-2.5-sp` / `seedance2.5-gz` / `seedance2.5-md` / `seedance2.5-30s` / `seedance-2.5-720p` 等 Seedance 2.5 型号发到本接口。标准版 / SP 使用 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create)，GZ 使用 [创建 Seedance 2.5 GZ 视频](/zh/api-reference/seedance/25/create-gz)，`seedance2.5-md` 使用 [seedance2.5-md](/zh/api-reference/seedance/25/create-ar)，`seedance2.5-30s` 使用 [seedance2.5-30s](/zh/api-reference/seedance/25/create-30s)：`POST /api/open-api/v1/seedance25/videos`。误用 `/seedance/videos` 会落到 Seedance 2.0 满血线路。
+**请勿**把 `seedance-2.5` / `seedance2.5-gz` / `seedance-2.5-720p` 等 Seedance 2.5 型号发到本接口。官链使用 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create)，官转使用 [创建 Seedance 2.5官转视频](/zh/api-reference/seedance/25/create-gz)：`POST /api/open-api/v1/seedance25/videos`。误用 `/seedance/videos` 会落到 Seedance 2.0 满血线路。
 </Warning>
 
 <Note>
-其他线路文档：**Mini** 见 [Mini 创建视频](/zh/api-reference/seedance/mini/create)；**SP 经济版** 见 [SP 创建视频](/zh/api-reference/seedance/sp/create)；**MD** 见 [MD 创建视频](/zh/api-reference/seedance/md/create)；**Seedance 2.0 GZ** 见 [创建 Seedance 2.0 GZ 视频](/zh/api-reference/seedance/gz720/create)；**Seedance 2.0 标准档** 见 [创建 Seedance 2.0 标准档视频](/zh/api-reference/seedance/20480/create)；**Seedance 2.5** 见 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create)；**Seedance 2.5 GZ** 见 [创建 Seedance 2.5 GZ 视频](/zh/api-reference/seedance/25/create-gz)。
+其他线路文档：**Mini** 见 [创建Mini视频](/zh/api-reference/seedance/mini/create)；**满血版超分** 见 [创建满血版超分视频](/zh/api-reference/seedance/sp/create)；**Seedance 2.0 官转** 见 [创建 Seedance 2.0官转视频](/zh/api-reference/seedance/gz720/create)；**Fast快速版** 见 [创建满血版Fast视频](/zh/api-reference/seedance/fast/create)；**Seedance 2.5 官链** 见 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create)；**Seedance 2.5 官转** 见 [创建 Seedance 2.5官转视频](/zh/api-reference/seedance/25/create-gz)。
 </Note>
 
 ## 模型与线路
@@ -20,9 +20,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 | 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
 |------|-------------|------|------|----------|
 | **满血版** | `sd2_mx_720p`、`sd2_mx_1080p`、`sd2_mx_2k`、`sd2_mx_4k` | 按秒 | 4–15 秒 | 参考素材须先 [素材审核](/zh/api-reference/seedance/assets-audit)，使用 `asset://{assetId}` |
-| **Fast** | `sd2_mx_fast_720p`、`sd2_mx_fast_1080p` | 按秒 | 4–15 秒 | 同上；不支持 `reference_videos` |
 | **视频参考** | `sd2_mx_video_720p`、`sd2_mx_video_1080p`、`sd2_mx_video_2k`、`sd2_mx_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
-| **视频参考 Fast** | `sd2_mx_video_fast_720p`、`sd2_mx_video_fast_1080p` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
 
 ## 计费说明
 
@@ -50,8 +48,8 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 
 ### 素材链接格式
 
-- **满血版 / Fast / 视频参考系列**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
-- **`reference_videos`**：仅 `sd2_mx_video_*`、`sd2_mx_video_fast_*` 模型支持；满血版与 Fast 系列不支持。
+- **满血版 / 视频参考系列**：`images`、`first_image`、`last_image`、`reference_videos`、`reference_audios` 须使用 `asset://{assetId}` 格式。须先调用 [提交素材审核](/zh/api-reference/seedance/assets-audit)，再 [查询审核状态](/zh/api-reference/seedance/assets-status) 直至 `Active`。
+- **`reference_videos`**：仅 `sd2_mx_video_*` 模型支持；满血版不支持。Fast 型号见 [创建满血版Fast视频](/zh/api-reference/seedance/fast/create)。
 
 ### 通用约束
 

@@ -567,11 +567,11 @@
                   },
                   "prompt": {
                     "type": "string",
-                    "description": "Text prompt. seedance2.0-md max 6000 characters; seedance2.0-fast-md max 5000 characters"
+                    "description": "Text prompt."
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md: 5, 10, or 15 only; seedance2.0-fast-md: 10 or 15 only; STD standard 4-15. Default 5"
+                    "description": "Duration in seconds. Full 4-15; Full Super-Resolution SP 4-15; STD standard 4-15. Default 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -580,7 +580,7 @@
                       "720p",
                       "1080p"
                     ],
-                    "description": "Output resolution. For SP economy: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
+                    "description": "Output resolution. For Full Super-Resolution SP: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
                   },
                   "orientation": {
                     "type": "string",
@@ -595,33 +595,33 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md max 9; seedance2.0-fast-md max 4; seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image (seedance2.0-md does not support frames). seedance2.0-gz*: https:// or asset://, max 9"
+                    "description": "Reference images. Full route: asset://{assetId}; SP/STD/Fast I2V: https:// URL. seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
                   },
                   "ratio": {
                     "type": "string",
-                    "description": "Aspect ratio. seedance2.0-md: 1:1, 3:4, 4:3, 9:16, 16:9, 21:9. seedance2.0-fast-md: 16:9, 9:16, 1:1 only. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
+                    "description": "Aspect ratio. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "First frame. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support frames; seedance2.0-fast-md frame mode requires last_image as well; first frame only is not supported"
+                    "description": "First frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "Last frame. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support frames; seedance2.0-fast-md frame mode requires first_image as well"
+                    "description": "Last frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
                   },
                   "reference_videos": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; MD/Economy: https:// URL. seedance2.0-md max 3; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+                    "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Full Super-Resolution SP: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, STD, and MD. seedance2.0-md max 3 clips; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+                    "description": "Reference audio as public https:// URLs (not base64). Supported on Full, Full Super-Resolution SP, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -744,7 +744,7 @@
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP Upload Asset",
-        "description": "Upload image, video, audio, or text assets to the Seedance SP economy library. Returns asset_id for asset:// references.",
+        "description": "Upload image, video, audio, or text assets to the Seedance Full Super-Resolution SP library. Returns asset_id for asset:// references.",
         "operationId": "uploadSeedanceSpAsset",
         "requestBody": {
           "required": true,
@@ -859,8 +859,8 @@
     },
     "/api/open-api/v1/grok/videos": {
       "post": {
-        "summary": "Create Grok 1.5 Video",
-        "description": "Create a Grok 1.5 video generation task. Once created, use the common query task endpoint to get task details.",
+        "summary": "Create Grok Imagine 1.5 Video",
+        "description": "Create a Grok Imagine 1.5 video generation task. Once created, use the common query task endpoint to get task details.",
         "operationId": "createGrokVideo",
         "requestBody": {
           "required": true,
@@ -1051,7 +1051,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "Create MiniMax H3 GZ task with reference video",
+                  "summary": "Create MiniMax H3 Official task with reference video",
                   "value": {
                     "model": "minimax-h3-gz",
                     "prompt": "A boy playing basketball on the beach at dusk, cinematic camera",
@@ -1390,7 +1390,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "Create Wan 3.0 GZ task",
+                  "summary": "Create Wan 3.0 Official task",
                   "value": {
                     "model": "wan3.0-gz",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
@@ -1403,7 +1403,7 @@
                   }
                 },
                 "gl": {
-                  "summary": "Create Wan 3.0 GL task",
+                  "summary": "Create Wan 3.0 Official Channel task",
                   "value": {
                     "model": "wan3.0-gl",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
@@ -1416,7 +1416,7 @@
                   }
                 },
                 "primeGl": {
-                  "summary": "Create Wan 3.0 Prime GL task",
+                  "summary": "Create Wan 3.0 Prime Official Channel task",
                   "value": {
                     "model": "wan3.0-prime-gl",
                     "prompt": "The person in 图1 runs along the beach, cinematic camera movement",
@@ -2066,15 +2066,10 @@
                     "type": "string",
                     "enum": [
                       "seedance-2.5",
-                      "seedance-2.5-sp",
                       "seedance2.5-gz",
-                      "seedance2.5-dreamina",
-                      "seedance2.5-md",
-                      "seedance2.5-30s",
-                      "sd2.5-720p",
-                      "sd2.5-720p-ac"
+                      "seedance2.5-dreamina"
                     ],
-                    "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-dreamina`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
+                    "description": "Model ID such as `seedance-2.5`, `seedance2.5-gz`, or `seedance2.5-dreamina`. See each docs page."
                   },
                   "prompt": {
                     "type": "string",
@@ -2086,7 +2081,7 @@
                     "type": "integer",
                     "default": 4,
                     "maximum": 30,
-                    "description": "Duration in seconds. Standard / SP: 4–30. Dreamina: 5–30, default 5. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+                    "description": "Duration in seconds. Official channel: 4–30. Dreamina: 5–30, default 5. Official supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2100,7 +2095,7 @@
                       "21:9",
                       "adaptive"
                     ],
-                    "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
+                    "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (Official, or the official-channel task type hint). Takes precedence over ratio."
                   },
                   "ratio": {
                     "type": "string",
@@ -2127,11 +2122,11 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "First-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+                    "description": "First-frame image URL. seedance2.5-gz; mutually exclusive with reference_images / images."
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "Last-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+                    "description": "Last-frame image URL. seedance2.5-gz; mutually exclusive with reference_images / images."
                   },
                   "reference_images": {
                     "type": "array",
@@ -2155,7 +2150,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+                    "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina. Each clip and combined duration ≤ 30.2s where applicable."
                   },
                   "videos": {
                     "type": "array",
@@ -2171,7 +2166,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+                    "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina. Each clip ≤ 30s where applicable."
                   },
                   "audios": {
                     "type": "array",
@@ -2256,17 +2251,6 @@
                     "resolution": "480p",
                     "reference_videos": [
                       "https://example.com/reference.mp4"
-                    ]
-                  }
-                },
-                "md15": {
-                  "summary": "Seedance 2.5 MD 15 seconds",
-                  "value": {
-                    "model": "seedance2.5-md",
-                    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
-                    "aspect_ratio": "16:9",
-                    "reference_images": [
-                      "https://example.com/reference.png"
                     ]
                   }
                 }
@@ -2473,11 +2457,11 @@
           },
           "prompt": {
             "type": "string",
-            "description": "Text prompt. seedance2.0-md max 6000 characters; seedance2.0-fast-md max 5000 characters"
+            "description": "Text prompt."
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in seconds. Full 4-15; SP economy 4-15; seedance2.0-md: 5, 10, or 15 only; seedance2.0-fast-md: 10 or 15 only; STD standard 4-15. Default 5"
+            "description": "Duration in seconds. Full 4-15; Full Super-Resolution SP 4-15; STD standard 4-15. Default 5"
           },
           "resolution": {
             "type": "string",
@@ -2486,7 +2470,7 @@
               "720p",
               "1080p"
             ],
-            "description": "Output resolution. For SP economy: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
+            "description": "Output resolution. For Full Super-Resolution SP: 720p (default), 1080p; 480p not supported. Mini also supports 480p"
           },
           "orientation": {
             "type": "string",
@@ -2501,33 +2485,33 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference images. Full route: asset://{assetId}; SP/MD/STD/Fast I2V: https:// URL. seedance2.0-md max 9; seedance2.0-fast-md max 4; seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image (seedance2.0-md does not support frames). seedance2.0-gz*: https:// or asset://, max 9"
+            "description": "Reference images. Full route: asset://{assetId}; SP/STD/Fast I2V: https:// URL. seedance2.0-fast-i2v / STD max 9. Mutually exclusive with first_image/last_image. seedance2.0-gz*: https:// or asset://, max 9"
           },
           "ratio": {
             "type": "string",
-            "description": "Aspect ratio. seedance2.0-md: 1:1, 3:4, 4:3, 9:16, 16:9, 21:9. seedance2.0-fast-md: 16:9, 9:16, 1:1 only. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
+            "description": "Aspect ratio. STD: 21:9, 16:9, 4:3, 1:1, 3:4, 9:16. Full route also supports 4:3, 3:4, 21:9, Adaptive"
           },
           "first_image": {
             "type": "string",
-            "description": "First frame. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support frames; seedance2.0-fast-md frame mode requires last_image as well; first frame only is not supported"
+            "description": "First frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
           },
           "last_image": {
             "type": "string",
-            "description": "Last frame. Full: asset://{assetId}; Economy/MD fast: https:// URL. seedance2.0-md does not support frames; seedance2.0-fast-md frame mode requires first_image as well"
+            "description": "Last frame. Full: asset://{assetId}; Full Super-Resolution SP: https:// URL."
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; MD/Economy: https:// URL. seedance2.0-md max 3; seedance2.0-fast-md max 3, combined duration ≤15s, combined size ≤200MB, each resolution 720px–2160px. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
+            "description": "Reference videos as public https:// URLs (not base64). Full: asset://{assetId}; Full Super-Resolution SP: https:// URL. seedance2.0-fast-i2v not supported. seedance2.0-gz* max 3"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference audio as public https:// URLs (not base64). Supported on Full, SP economy, STD, and MD. seedance2.0-md max 3 clips; seedance2.0-fast-md max 1 clip; seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP/MD: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
+            "description": "Reference audio as public https:// URLs (not base64). Supported on Full, Full Super-Resolution SP, and STD. seedance2.0-fast-i2v not supported. Full: asset://{assetId}; SP: https:// URL. Frame mode does not support audio references. seedance2.0-gz* max 3 and must pair with images/videos"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4089,10 +4073,9 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni",
-              "omni-10s"
+              "gemini-omni"
             ],
-            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini; omni-10s is a fixed 10s model (720p, up to 7 reference images)."
+            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini."
           },
           "prompt": {
             "type": "string",
@@ -4130,14 +4113,14 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference image URL list. omni-10s supports up to 7 images."
+            "description": "Reference image URL list."
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty. omni-10s supports up to 7 images."
+            "description": "Compatibility field for common OpenAPI image inputs; used when image_urls is empty."
           },
           "generation_type": {
             "type": "string",
@@ -4825,15 +4808,10 @@
             "type": "string",
             "enum": [
               "seedance-2.5",
-              "seedance-2.5-sp",
               "seedance2.5-gz",
-              "seedance2.5-dreamina",
-              "seedance2.5-md",
-              "seedance2.5-30s",
-              "sd2.5-720p",
-              "sd2.5-720p-ac"
+              "seedance2.5-dreamina"
             ],
-            "description": "Model ID such as `seedance-2.5`, `seedance-2.5-sp`, `seedance2.5-gz`, `seedance2.5-dreamina`, `seedance2.5-md`, `seedance2.5-30s`, `sd2.5-720p`, or `sd2.5-720p-ac` (faces kept, no face blur). See each docs page."
+            "description": "Model ID such as `seedance-2.5`, `seedance2.5-gz`, or `seedance2.5-dreamina`. See each docs page."
           },
           "prompt": {
             "type": "string",
@@ -4845,7 +4823,7 @@
             "type": "integer",
             "default": 4,
             "maximum": 30,
-            "description": "Duration in seconds. Standard / SP: 4–30. Dreamina: 5–30, default 5. MD models (seedance2.5-md / seedance2.5-30s) fix output at 15 or 30 seconds; any value you send is ignored. GZ supports -1 for auto duration. Standard also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
+            "description": "Duration in seconds. Official channel: 4–30. Dreamina: 5–30, default 5. Official supports -1 for auto duration. Official channel also supports -1 when reference material is present, billed on the reference video duration rounded up and clamped to 4–30 seconds. Default 4."
           },
           "aspect_ratio": {
             "type": "string",
@@ -4859,7 +4837,7 @@
               "21:9",
               "adaptive"
             ],
-            "description": "Output aspect ratio. Standard / SP default 9:16. MD supports 9:16 and 16:9 only. adaptive requires reference material (GZ, or the Standard task type hint). Takes precedence over ratio."
+            "description": "Output aspect ratio. Official channel default 9:16. adaptive requires reference material (Official, or the official-channel task type hint). Takes precedence over ratio."
           },
           "ratio": {
             "type": "string",
@@ -4886,11 +4864,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+            "description": "First-frame image URL. seedance2.5-gz; mutually exclusive with reference_images / images."
           },
           "last_image": {
             "type": "string",
-            "description": "Last-frame image URL. seedance-2.5-sp / seedance2.5-gz; mutually exclusive with reference_images / images."
+            "description": "Last-frame image URL. seedance2.5-gz; mutually exclusive with reference_images / images."
           },
           "reference_images": {
             "type": "array",
@@ -4914,7 +4892,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip and combined duration ≤ 30.2s where applicable."
+            "description": "Reference video URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina. Each clip and combined duration ≤ 30.2s where applicable."
           },
           "videos": {
             "type": "array",
@@ -4930,7 +4908,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac; not on seedance2.5-md. Each clip ≤ 30s where applicable."
+            "description": "Reference audio URLs (public https://, not base64), max 10. Supported on seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina. Each clip ≤ 30s where applicable."
           },
           "audios": {
             "type": "array",

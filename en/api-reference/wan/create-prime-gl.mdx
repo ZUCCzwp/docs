@@ -1,5 +1,5 @@
 ---
-title: 'Create Wan 3.0 Prime GL Video'
+title: 'Create Wan 3.0 Prime Official Channel Video'
 openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 ---
 
@@ -7,13 +7,13 @@ openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-prime-gl"`; it is billed separately. For standard GL, see [`wan3.0-gl`](/en/api-reference/wan/create-gl).
+This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-prime-gl"`; it is billed separately. For standard Official Channel, see [`wan3.0-gl`](/en/api-reference/wan/create-gl).
 
 ## Supported models
 
 | model | Notes |
 |-------|-------|
-| `wan3.0-prime-gl` | Wan 3.0 Prime GL video generation. Supports text-to-video, first-frame / first-and-last-frame video, and reference video (up to 10 images, 5 videos, 5 audios). 2–30s duration, 480p/720p/1080p. |
+| `wan3.0-prime-gl` | Wan 3.0 Prime Official Channel video generation. Supports text-to-video, first-frame / first-and-last-frame video, and reference video (up to 10 images, 5 videos, 5 audios). 2–30s duration, 480p/720p/1080p. |
 
 This model **does not** support `file_url` / `link_url`. Use [`wan3.0-gz`](/en/api-reference/wan/create-gz) when you need a reference document or webpage.
 

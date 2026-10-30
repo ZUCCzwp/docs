@@ -98,8 +98,17 @@
             "tab": "Image APIs",
             "groups": [
               {
-                "group": "Images",
+                "group": "GPT Image",
                 "pages": [
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "en/api-reference/images/gpt-image-2.5/create",
+                      "en/api-reference/images/gpt-image-2.5/generations",
+                      "en/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   {
                     "group": "GPT Image 2",
                     "icon": "image",
@@ -110,34 +119,38 @@
                     ]
                   },
                   {
-                    "group": "GPT Image 2.5",
+                    "group": "GPT Image 1.5",
                     "icon": "image",
                     "pages": [
-                      "en/api-reference/images/gpt-image-2.5/create",
-                      "en/api-reference/images/gpt-image-2.5/generations",
-                      "en/api-reference/images/gpt-image-2.5/edits"
-                    ]
-                  },
-                  "en/api-reference/images/gpt-image-1.5/create",
-                  "en/api-reference/images/seedream-5-0-pro/create",
-                  {
-                    "group": "Grok Image",
-                    "icon": "image",
-                    "pages": [
-                      "en/api-reference/images/grok-imagine-image/create",
-                      "en/api-reference/images/grok-imagine-image-2/create"
-                    ]
-                  },
-                  "en/api-reference/images/nano-banana/create",
-                  {
-                    "group": "Midjourney",
-                    "icon": "image",
-                    "pages": [
-                      "en/api-reference/images/midjourney/create",
-                      "en/api-reference/images/midjourney/actions",
-                      "en/api-reference/images/midjourney/video"
+                      "en/api-reference/images/gpt-image-1.5/create"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Seedream",
+                "pages": [
+                  "en/api-reference/images/seedream-5-0-pro/create"
+                ]
+              },
+              {
+                "group": "Grok Image",
+                "pages": [
+                  "en/api-reference/images/grok-imagine-image/create",
+                  "en/api-reference/images/grok-imagine-image-2/create"
+                ]
+              },
+              {
+                "group": "Nano Banana",
+                "pages": [
+                  "en/api-reference/images/nano-banana/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "en/api-reference/images/midjourney/create",
+                  "en/api-reference/images/midjourney/actions"
                 ]
               }
             ]
@@ -165,24 +178,36 @@
                 ]
               },
               {
-                "group": "Kling",
-                "pages": [
-                  "en/api-reference/kling/create"
-                ]
-              },
-              {
                 "group": "Wan",
                 "pages": [
-                  "en/api-reference/wan/create",
-                  "en/api-reference/wan/create-gz",
-                  "en/api-reference/wan/create-gl",
-                  "en/api-reference/wan/create-prime-gl"
+                  {
+                    "group": "Wan 3",
+                    "icon": "film",
+                    "pages": [
+                      "en/api-reference/wan/create",
+                      "en/api-reference/wan/create-gz",
+                      "en/api-reference/wan/create-gl"
+                    ]
+                  },
+                  {
+                    "group": "Wan 3 Prime",
+                    "icon": "star",
+                    "pages": [
+                      "en/api-reference/wan/create-prime-gl"
+                    ]
+                  }
                 ]
               },
               {
                 "group": "Flux 3",
                 "pages": [
                   "en/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "en/api-reference/images/midjourney/video"
                 ]
               },
               {
@@ -196,17 +221,7 @@
                 "pages": [
                   "en/api-reference/seedance/25/create",
                   "en/api-reference/seedance/25/create-gz",
-                  "en/api-reference/seedance/25/create-dreamina",
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "en/api-reference/seedance/25/create-ar",
-                      "en/api-reference/seedance/25/create-30s",
-                      "en/api-reference/seedance/25/create-sd25-720p",
-                      "en/api-reference/seedance/25/create-sd25-720p-ac"
-                    ]
-                  }
+                  "en/api-reference/seedance/25/create-dreamina"
                 ]
               },
               {
@@ -222,23 +237,14 @@
                     ]
                   },
                   {
-                    "group": "官链",
+                    "group": "官转",
                     "icon": "film",
                     "pages": [
-                      "en/api-reference/seedance/gz720/create",
-                      "en/api-reference/seedance/20480/create"
+                      "en/api-reference/seedance/gz720/create"
                     ]
                   },
                   {
-                    "group": "Mini",
-                    "icon": "video",
-                    "pages": [
-                      "en/api-reference/seedance/mini/create",
-                      "en/api-reference/seedance/mini/create-gz"
-                    ]
-                  },
-                  {
-                    "group": "SP Economy",
+                    "group": "Full Super-Resolution SP",
                     "icon": "coins",
                     "pages": [
                       "en/api-reference/seedance/sp/create",
@@ -248,10 +254,20 @@
                     ]
                   },
                   {
-                    "group": "MD",
+                    "group": "Fast",
                     "icon": "bolt",
                     "pages": [
-                      "en/api-reference/seedance/md/create"
+                      "en/api-reference/seedance/fast/create",
+                      "en/api-reference/seedance/fast/create-sp",
+                      "en/api-reference/seedance/fast/create-gz"
+                    ]
+                  },
+                  {
+                    "group": "Mini版",
+                    "icon": "video",
+                    "pages": [
+                      "en/api-reference/seedance/mini/create",
+                      "en/api-reference/seedance/mini/create-gz"
                     ]
                   }
                 ]
@@ -381,8 +397,17 @@
             "tab": "图片接口",
             "groups": [
               {
-                "group": "图片",
+                "group": "GPT Image",
                 "pages": [
+                  {
+                    "group": "GPT Image 2.5",
+                    "icon": "image",
+                    "pages": [
+                      "zh/api-reference/images/gpt-image-2.5/create",
+                      "zh/api-reference/images/gpt-image-2.5/generations",
+                      "zh/api-reference/images/gpt-image-2.5/edits"
+                    ]
+                  },
                   {
                     "group": "GPT Image 2",
                     "icon": "image",
@@ -393,34 +418,38 @@
                     ]
                   },
                   {
-                    "group": "GPT Image 2.5",
+                    "group": "GPT Image 1.5",
                     "icon": "image",
                     "pages": [
-                      "zh/api-reference/images/gpt-image-2.5/create",
-                      "zh/api-reference/images/gpt-image-2.5/generations",
-                      "zh/api-reference/images/gpt-image-2.5/edits"
-                    ]
-                  },
-                  "zh/api-reference/images/gpt-image-1.5/create",
-                  "zh/api-reference/images/seedream-5-0-pro/create",
-                  {
-                    "group": "Grok Image",
-                    "icon": "image",
-                    "pages": [
-                      "zh/api-reference/images/grok-imagine-image/create",
-                      "zh/api-reference/images/grok-imagine-image-2/create"
-                    ]
-                  },
-                  "zh/api-reference/images/nano-banana/create",
-                  {
-                    "group": "Midjourney",
-                    "icon": "image",
-                    "pages": [
-                      "zh/api-reference/images/midjourney/create",
-                      "zh/api-reference/images/midjourney/actions",
-                      "zh/api-reference/images/midjourney/video"
+                      "zh/api-reference/images/gpt-image-1.5/create"
                     ]
                   }
+                ]
+              },
+              {
+                "group": "Seedream",
+                "pages": [
+                  "zh/api-reference/images/seedream-5-0-pro/create"
+                ]
+              },
+              {
+                "group": "Grok Image",
+                "pages": [
+                  "zh/api-reference/images/grok-imagine-image/create",
+                  "zh/api-reference/images/grok-imagine-image-2/create"
+                ]
+              },
+              {
+                "group": "Nano Banana",
+                "pages": [
+                  "zh/api-reference/images/nano-banana/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "zh/api-reference/images/midjourney/create",
+                  "zh/api-reference/images/midjourney/actions"
                 ]
               }
             ]
@@ -448,24 +477,36 @@
                 ]
               },
               {
-                "group": "Kling",
-                "pages": [
-                  "zh/api-reference/kling/create"
-                ]
-              },
-              {
                 "group": "Wan",
                 "pages": [
-                  "zh/api-reference/wan/create",
-                  "zh/api-reference/wan/create-gz",
-                  "zh/api-reference/wan/create-gl",
-                  "zh/api-reference/wan/create-prime-gl"
+                  {
+                    "group": "Wan 3",
+                    "icon": "film",
+                    "pages": [
+                      "zh/api-reference/wan/create",
+                      "zh/api-reference/wan/create-gz",
+                      "zh/api-reference/wan/create-gl"
+                    ]
+                  },
+                  {
+                    "group": "Wan 3 Prime",
+                    "icon": "star",
+                    "pages": [
+                      "zh/api-reference/wan/create-prime-gl"
+                    ]
+                  }
                 ]
               },
               {
                 "group": "Flux 3",
                 "pages": [
                   "zh/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "Midjourney",
+                "pages": [
+                  "zh/api-reference/images/midjourney/video"
                 ]
               },
               {
@@ -479,17 +520,7 @@
                 "pages": [
                   "zh/api-reference/seedance/25/create",
                   "zh/api-reference/seedance/25/create-gz",
-                  "zh/api-reference/seedance/25/create-dreamina",
-                  {
-                    "group": "MD",
-                    "icon": "bolt",
-                    "pages": [
-                      "zh/api-reference/seedance/25/create-ar",
-                      "zh/api-reference/seedance/25/create-30s",
-                      "zh/api-reference/seedance/25/create-sd25-720p",
-                      "zh/api-reference/seedance/25/create-sd25-720p-ac"
-                    ]
-                  }
+                  "zh/api-reference/seedance/25/create-dreamina"
                 ]
               },
               {
@@ -505,23 +536,14 @@
                     ]
                   },
                   {
-                    "group": "官链",
+                    "group": "官转",
                     "icon": "film",
                     "pages": [
-                      "zh/api-reference/seedance/gz720/create",
-                      "zh/api-reference/seedance/20480/create"
+                      "zh/api-reference/seedance/gz720/create"
                     ]
                   },
                   {
-                    "group": "Mini",
-                    "icon": "video",
-                    "pages": [
-                      "zh/api-reference/seedance/mini/create",
-                      "zh/api-reference/seedance/mini/create-gz"
-                    ]
-                  },
-                  {
-                    "group": "SP 经济版",
+                    "group": "满血版超分",
                     "icon": "coins",
                     "pages": [
                       "zh/api-reference/seedance/sp/create",
@@ -531,10 +553,20 @@
                     ]
                   },
                   {
-                    "group": "MD",
+                    "group": "Fast快速版",
                     "icon": "bolt",
                     "pages": [
-                      "zh/api-reference/seedance/md/create"
+                      "zh/api-reference/seedance/fast/create",
+                      "zh/api-reference/seedance/fast/create-sp",
+                      "zh/api-reference/seedance/fast/create-gz"
+                    ]
+                  },
+                  {
+                    "group": "Mini版",
+                    "icon": "video",
+                    "pages": [
+                      "zh/api-reference/seedance/mini/create",
+                      "zh/api-reference/seedance/mini/create-gz"
                     ]
                   }
                 ]
@@ -657,5 +689,63 @@
   },
   "background": {
     "decoration": "grid"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/en/api-reference/seedance/md/create",
+      "destination": "/en/api-reference/seedance/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/md/create",
+      "destination": "/zh/api-reference/seedance/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-ar",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-ar",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-30s",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-30s",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-sd25-720p",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-sd25-720p",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/25/create-sd25-720p-ac",
+      "destination": "/en/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/25/create-sd25-720p-ac",
+      "destination": "/zh/api-reference/seedance/25/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/20480/create",
+      "destination": "/en/api-reference/seedance/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/20480/create",
+      "destination": "/zh/api-reference/seedance/create"
+    },
+    {
+      "source": "/en/api-reference/kling/create",
+      "destination": "/en/api-reference/introduction"
+    },
+    {
+      "source": "/zh/api-reference/kling/create",
+      "destination": "/zh/api-reference/introduction"
+    }
+  ]
 }

@@ -1,9 +1,9 @@
 ---
-title: 'NanoBanana Image Generation'
+title: 'Nano Banana Image Generation'
 openapi: 'POST /api/open-api/v1/images'
 ---
 
-Create an async **NanoBanana** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `data.result.image_url` when completed.
+Create an async **Nano Banana** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `data.result.image_url` when completed.
 
 <Note>
 This model uses the async endpoint `POST /api/open-api/v1/images`.
@@ -12,7 +12,7 @@ Set `model` to one of:
 </Note>
 
 <Warning>
-Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) and [GPT Image 2 Edit Image](/en/api-reference/images/edits) do not support NanoBanana.
+Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) and [GPT Image 2 Edit Image](/en/api-reference/images/edits) do not support Nano Banana.
 `nano-banana-2.1` selects output size with `resolution`: `1k`, `2k`, or `4k` (defaults to `1k` when omitted). Reference images are limited to 8.
 </Warning>
 
@@ -35,7 +35,7 @@ Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations)
 | `ratio` | string | No | Aspect ratio, default `auto` |
 | `resolution` | string | No | `1k` / `2k` / `4k` (default depends on your model config; commonly `1k`) |
 | `images` | string[] | No | Reference image URLs (or base64 Data URIs, depending on your client) |
-| `quality` | string | No | Ignored by NanoBanana routes (only relevant for gpt-image-2 / gpt-image-1.5) |
+| `quality` | string | No | Ignored by Nano Banana routes (only relevant for gpt-image-2 / gpt-image-1.5) |
 | `n` | int | No | Recommended to use `n=1` (the query result returns a single `image_url`) |
 
 ## Examples

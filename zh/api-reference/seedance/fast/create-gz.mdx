@@ -1,0 +1,91 @@
+---
+title: '创建 Seedance 2.0官转 Fast视频'
+openapi: 'POST /api/open-api/v1/seedance/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
+</Note>
+
+本接口与 [创建 Seedance 2.0官转视频](/zh/api-reference/seedance/gz720/create) 共用 `POST /api/open-api/v1/seedance/videos`。通过 `model` 以 `seedance2.0-gz-fast` 开头选择本线路。非 Fast 官转见官转文档。
+
+## 支持的模型
+
+| model | 说明 | 分辨率 |
+|-------|------|--------|
+| `seedance2.0-gz-fast` / `seedance2.0-gz-fast-720p` / `seedance2.0-gz-fast-480p` | Fast | `480p` / `720p` |
+
+不支持 `1080p`。也可把分辨率写进 `model`。
+
+## 参数限制
+
+- **提示词（prompt）**：必填。
+- **时长（duration）**：4–15 秒，默认 `5`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`（横屏）、`9:16`（竖屏）、`1:1`（方形）、`4:3`（传统比例）、`3:4`（竖向传统比例）、`21:9`（超宽屏）、`adaptive`（自适应，根据输入图片/视频自动匹配），默认 `16:9`。
+- **分辨率（resolution）**：仅 `480p` / `720p`（默认 `720p`）。
+- **参考图**：`images` 或 `reference_images`，最多 **9** 张。
+- **参考视频**：`videos` 或 `reference_videos`，最多 **3** 个。
+- **参考音频**：`audios` 或 `reference_audios`，最多 **3** 段；须搭配至少一张参考图或一个参考视频。
+- **首尾帧**：`first_image` / `last_image` 与多模态参考（参考图 / 视频 / 音频）**不可混用**；尾帧必须搭配首帧。
+- **生成音频（generate_audio）**：默认 `true`。
+
+## 素材审核
+
+参考图 / 视频 / 音频、首尾帧须为公网 `https://` URL，或已审核素材 `asset://{assetId}` / `assetId://{assetId}`。
+
+传入公网 URL 时，平台会先提交 [Seedance 2.0 素材库](/zh/api-reference/seedance/sp/assets-upload) 并等待审核通过后再创建任务。也可自行上传后传 `asset://`。
+
+场景互斥：首帧 / 首尾帧 与 多模态参考 不可同时使用。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `seedance2.0-gz-fast*`，见上表 |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 `5` |
+| `resolution` | string | 否 | `480p` / `720p`；可省略若 `model` 已含分辨率 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `images` | string[] | 否 | 参考图 URL（0–9） |
+| `reference_images` | string[] | 否 | `images` 为空时的别名 |
+| `videos` / `reference_videos` | string[] | 否 | 参考视频 URL（0–3） |
+| `audios` / `reference_audios` | string[] | 否 | 参考音频 URL（0–3）；须搭配图或视频 |
+| `first_image` | string | 否 | 首帧图 |
+| `last_image` | string | 否 | 尾帧图 |
+| `generate_audio` | boolean | 否 | 是否生成音轨，默认 `true` |
+
+## 计费说明
+
+`seedance2.0-gz-fast*` 按 **百万 token 单价** 计费；任务成功后按上游 `completion_tokens` 结算（多退少补）。
+
+**带参考视频**（`reference_videos` / `videos`）使用独立计费名（在型号中插入 `-video`），单价与无参考视频不同。请求里的 `model` 不必改；若直接传 `seedance2.0-gz-fast-video*`，则 **必须** 传参考视频，否则请改用不带 `-video` 的型号重试。
+
+| 请求 model | 无参考视频 | 有参考视频 |
+|------------|------------|------------|
+| `seedance2.0-gz-fast` | `seedance2.0-gz-fast` | `seedance2.0-gz-fast-video` |
+| `seedance2.0-gz-fast-720p` | `seedance2.0-gz-fast-720p` | `seedance2.0-gz-fast-video-720p` |
+| `seedance2.0-gz-fast-480p` | `seedance2.0-gz-fast-480p` | `seedance2.0-gz-fast-video-480p` |
+
+```text
+费用 = completion_tokens / 1,000,000 × 对应计费名的百万 token 单价
+```
+
+## 示例请求
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.0-gz-fast-720p",
+    "prompt": "电影感产品展示，自然光，缓慢推镜",
+    "duration": 5,
+    "aspect_ratio": "16:9",
+    "images": ["https://example.com/reference.png"]
+  }'
+```
+
+## 结果地址
+
+任务完成后从 `data.result.video_url` 读取地址。`seedance2.0-gz-fast` 系列返回的是**上游直链**，平台**不转存 OSS**，请及时下载。

@@ -567,11 +567,11 @@
                   },
                   "prompt": {
                     "type": "string",
-                    "description": "用于生成视频的文本提示词。seedance2.0-md 最多 6000 字符；seedance2.0-fast-md 最多 5000 字符"
+                    "description": "用于生成视频的文本提示词。"
                   },
                   "duration": {
                     "type": "integer",
-                    "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 仅 5、10、15；seedance2.0-fast-md 仅 10 或 15；STD 标准版 4-15。默认 5"
+                    "description": "时长（秒）。满血版 4-15；满血版超分 4-15；STD 标准版 4-15。默认 5"
                   },
                   "resolution": {
                     "type": "string",
@@ -580,7 +580,7 @@
                       "720p",
                       "1080p"
                     ],
-                    "description": "输出分辨率。SP 经济版有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
+                    "description": "输出分辨率。满血版超分 有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
                   },
                   "orientation": {
                     "type": "string",
@@ -595,33 +595,33 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md 最多 9 张；seedance2.0-fast-md 最多 4 张；seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用（seedance2.0-md 不支持首尾帧）。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
+                    "description": "参考图列表。满血版须为 asset://{assetId}；SP/STD/Fast I2V 可为 https:// URL。seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
                   },
                   "ratio": {
                     "type": "string",
-                    "description": "输出比例。seedance2.0-md 支持 1:1、3:4、4:3、9:16、16:9、21:9；seedance2.0-fast-md 仅 16:9、9:16、1:1；STD 支持 21:9、16:9、4:3、1:1、3:4、9:16；满血版还支持 4:3、3:4、21:9、Adaptive"
+                    "description": "输出比例。STD 支持 21:9、16:9、4:3、1:1、3:4、9:16；满血版还支持 4:3、3:4、21:9、Adaptive"
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "首帧图片。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持首尾帧；seedance2.0-fast-md 首尾帧模式须与 last_image 同时传入，不支持仅传首帧"
+                    "description": "首帧图片。满血版: asset://{assetId}；满血版超分: https:// URL。"
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "尾帧图片。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持首尾帧；seedance2.0-fast-md 首尾帧模式须与 first_image 同时传入"
+                    "description": "尾帧图片。满血版: asset://{assetId}；满血版超分: https:// URL。"
                   },
                   "reference_videos": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；MD/经济版: https:// URL。seedance2.0-md 最多 3 个；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+                    "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；满血版超分: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
                   },
                   "reference_audios": {
                     "type": "array",
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD/MD 支持；seedance2.0-md 最多 3 段；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+                    "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/满血版超分/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -686,7 +686,7 @@
     "/api/open-api/v1/seedance/assets/audit": {
       "post": {
         "summary": "提交素材审核",
-        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；经济版与 MD 可直接传公网 URL。",
+        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
         "operationId": "submitSeedanceAudit",
         "requestBody": {
           "required": true,
@@ -744,7 +744,7 @@
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP 上传素材",
-        "description": "上传图片、视频、音频或文本素材到 Seedance SP 经济版素材库。返回 asset_id 可用于 asset:// 引用。",
+        "description": "上传图片、视频、音频或文本素材到 Seedance 满血版超分素材库。返回 asset_id 可用于 asset:// 引用。",
         "operationId": "uploadSeedanceSpAsset",
         "requestBody": {
           "required": true,
@@ -859,8 +859,8 @@
     },
     "/api/open-api/v1/grok/videos": {
       "post": {
-        "summary": "创建 Grok 1.5 视频任务",
-        "description": "创建 Grok 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
+        "summary": "创建 Grok Imagine 1.5 视频",
+        "description": "创建 Grok Imagine 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
         "operationId": "createGrokVideo",
         "requestBody": {
           "required": true,
@@ -1051,7 +1051,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "创建 MiniMax H3 GZ 任务（含参考视频）",
+                  "summary": "创建 MiniMax H3官转任务（含参考视频）",
                   "value": {
                     "model": "minimax-h3-gz",
                     "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
@@ -1390,7 +1390,7 @@
                   }
                 },
                 "gz": {
-                  "summary": "创建 Wan 3.0 GZ 任务",
+                  "summary": "创建 Wan 3.0官转任务",
                   "value": {
                     "model": "wan3.0-gz",
                     "prompt": "图1 中的人物在海边奔跑，电影感运镜",
@@ -1403,7 +1403,7 @@
                   }
                 },
                 "gl": {
-                  "summary": "创建 Wan 3.0 GL 任务",
+                  "summary": "创建 Wan 3.0官链任务",
                   "value": {
                     "model": "wan3.0-gl",
                     "prompt": "图1 中的人物在海边奔跑，电影感运镜",
@@ -1416,7 +1416,7 @@
                   }
                 },
                 "primeGl": {
-                  "summary": "创建 Wan 3.0 Prime GL 任务",
+                  "summary": "创建 Wan 3.0 Prime官链任务",
                   "value": {
                     "model": "wan3.0-prime-gl",
                     "prompt": "图1 中的人物在海边奔跑，电影感运镜",
@@ -2066,15 +2066,10 @@
                     "type": "string",
                     "enum": [
                       "seedance-2.5",
-                      "seedance-2.5-sp",
                       "seedance2.5-gz",
-                      "seedance2.5-dreamina",
-                      "seedance2.5-md",
-                      "seedance2.5-30s",
-                      "sd2.5-720p",
-                      "sd2.5-720p-ac"
+                      "seedance2.5-dreamina"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-dreamina`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-dreamina` 等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2086,7 +2081,7 @@
                     "type": "integer",
                     "default": 4,
                     "maximum": 30,
-                    "description": "视频时长，单位秒。标准版 / SP 支持 4–30。Dreamina 支持 5–30，默认 5。MD 型号（seedance2.5-md / seedance2.5-30s）由 model 固定为 15 或 30 秒，传入值会被忽略。GZ 支持 -1 自动时长。标准版带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
+                    "description": "视频时长，单位秒。官链支持 4–30。Dreamina 支持 5–30，默认 5。官转支持 -1 自动时长。官链带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -2100,7 +2095,7 @@
                       "21:9",
                       "adaptive"
                     ],
-                    "description": "输出画幅比例。标准版 / SP 默认 9:16。MD 仅支持 9:16、16:9。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+                    "description": "输出画幅比例。官链默认 9:16。adaptive 仅在带参考素材时可用（官转及官链任务类型引导）。优先级高于 ratio。"
                   },
                   "ratio": {
                     "type": "string",
@@ -2127,11 +2122,11 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "首帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "尾帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
                   },
                   "reference_images": {
                     "type": "array",
@@ -2155,7 +2150,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒。"
+                    "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina。单条与合计时长均不超过 30.2 秒。"
                   },
                   "videos": {
                     "type": "array",
@@ -2171,7 +2166,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条时长不超过 30 秒。"
+                    "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina。单条时长不超过 30 秒。"
                   },
                   "audios": {
                     "type": "array",
@@ -2258,17 +2253,6 @@
                       "https://example.com/reference.mp4"
                     ]
                   }
-                },
-                "md15": {
-                  "summary": "Seedance 2.5 MD 15 秒",
-                  "value": {
-                    "model": "seedance2.5-md",
-                    "prompt": "电影感产品展示，自然光，缓慢推镜",
-                    "aspect_ratio": "16:9",
-                    "reference_images": [
-                      "https://example.com/reference.png"
-                    ]
-                  }
                 }
               }
             }
@@ -2290,7 +2274,7 @@
     },
     "/api/open-api/v1/flux3/videos": {
       "post": {
-        "summary": "创建 Flux 3 视频任务",
+        "summary": "创建 Flux 3 视频",
         "description": "创建 Flux 3 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createFlux3Video",
         "requestBody": {
@@ -2584,11 +2568,11 @@
           },
           "prompt": {
             "type": "string",
-            "description": "用于生成视频的文本提示词。seedance2.0-md 最多 6000 字符；seedance2.0-fast-md 最多 5000 字符"
+            "description": "用于生成视频的文本提示词。"
           },
           "duration": {
             "type": "integer",
-            "description": "时长（秒）。满血版 4-15；SP 经济版 4-15；seedance2.0-md 仅 5、10、15；seedance2.0-fast-md 仅 10 或 15；STD 标准版 4-15。默认 5"
+            "description": "时长（秒）。满血版 4-15；满血版超分 4-15；STD 标准版 4-15。默认 5"
           },
           "resolution": {
             "type": "string",
@@ -2597,7 +2581,7 @@
               "720p",
               "1080p"
             ],
-            "description": "输出分辨率。SP 经济版有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
+            "description": "输出分辨率。满血版超分 有效：720p（默认）、1080p，不支持 480p；Mini 版另支持 480p"
           },
           "orientation": {
             "type": "string",
@@ -2612,33 +2596,33 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图列表。满血版须为 asset://{assetId}；SP/MD/STD/Fast I2V 可为 https:// URL。seedance2.0-md 最多 9 张；seedance2.0-fast-md 最多 4 张；seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用（seedance2.0-md 不支持首尾帧）。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
+            "description": "参考图列表。满血版须为 asset://{assetId}；SP/STD/Fast I2V 可为 https:// URL。seedance2.0-fast-i2v / STD 最多 9 张。与首尾帧不可同时使用。seedance2.0-gz*: https:// 或 asset://，最多 9 张；公网 URL 会先走素材审核"
           },
           "ratio": {
             "type": "string",
-            "description": "输出比例。seedance2.0-md 支持 1:1、3:4、4:3、9:16、16:9、21:9；seedance2.0-fast-md 仅 16:9、9:16、1:1；STD 支持 21:9、16:9、4:3、1:1、3:4、9:16；满血版还支持 4:3、3:4、21:9、Adaptive"
+            "description": "输出比例。STD 支持 21:9、16:9、4:3、1:1、3:4、9:16；满血版还支持 4:3、3:4、21:9、Adaptive"
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持首尾帧；seedance2.0-fast-md 首尾帧模式须与 last_image 同时传入，不支持仅传首帧"
+            "description": "首帧图片。满血版: asset://{assetId}；满血版超分: https:// URL。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片。满血版: asset://{assetId}；经济版/MD 快速: https:// URL。seedance2.0-md 不支持首尾帧；seedance2.0-fast-md 首尾帧模式须与 first_image 同时传入"
+            "description": "尾帧图片。满血版: asset://{assetId}；满血版超分: https:// URL。"
           },
           "reference_videos": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；MD/经济版: https:// URL。seedance2.0-md 最多 3 个；seedance2.0-fast-md 最多 3 个，总时长不超过 15 秒，总大小不超过 200MB，单个分辨率须在 720px–2160px 之间。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
+            "description": "参考视频列表（公网 https:// URL，勿传 base64）。满血版: asset://{assetId}；满血版超分: https:// URL。seedance2.0-fast-i2v 不支持。seedance2.0-gz* 最多 3 个"
           },
           "reference_audios": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/SP 经济版/STD/MD 支持；seedance2.0-md 最多 3 段；seedance2.0-fast-md 最多 1 段；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP/MD 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
+            "description": "参考音频列表（公网 https:// URL，勿传 base64）。满血版/满血版超分/STD 支持；seedance2.0-fast-i2v 不支持。满血版须 asset://{assetId}，SP 可为 https:// URL。首尾帧模式不支持音频参考。seedance2.0-gz* 最多 3 段且须搭配图或视频"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4200,10 +4184,9 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni",
-              "omni-10s"
+              "gemini-omni"
             ],
-            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini；omni-10s 为固定 10 秒模型（720p，参考图最多 7 张）。"
+            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini。"
           },
           "prompt": {
             "type": "string",
@@ -4241,14 +4224,14 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图片 URL 列表。omni-10s 最多 7 张。"
+            "description": "参考图片 URL 列表。"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "兼容 OpenAPI 通用图片字段；当 image_urls 为空时使用。omni-10s 最多 7 张。"
+            "description": "兼容 OpenAPI 通用图片字段；当 image_urls 为空时使用。"
           },
           "generation_type": {
             "type": "string",
@@ -4946,15 +4929,10 @@
             "type": "string",
             "enum": [
               "seedance-2.5",
-              "seedance-2.5-sp",
               "seedance2.5-gz",
-              "seedance2.5-dreamina",
-              "seedance2.5-md",
-              "seedance2.5-30s",
-              "sd2.5-720p",
-              "sd2.5-720p-ac"
+              "seedance2.5-dreamina"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance-2.5-sp`、`seedance2.5-gz`、`seedance2.5-dreamina`、`seedance2.5-md`、`seedance2.5-30s`、`sd2.5-720p`、`sd2.5-720p-ac`（不卡脸）等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-dreamina` 等，详见各文档页。"
           },
           "prompt": {
             "type": "string",
@@ -4966,7 +4944,7 @@
             "type": "integer",
             "default": 4,
             "maximum": 30,
-            "description": "视频时长，单位秒。标准版 / SP 支持 4–30。Dreamina 支持 5–30，默认 5。MD 型号（seedance2.5-md / seedance2.5-30s）由 model 固定为 15 或 30 秒，传入值会被忽略。GZ 支持 -1 自动时长。标准版带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
+            "description": "视频时长，单位秒。官链支持 4–30。Dreamina 支持 5–30，默认 5。官转支持 -1 自动时长。官链带参考素材时也支持 -1，此时按参考视频时长向上取整计费（限定 4–30 秒）。默认 4。"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4980,7 +4958,7 @@
               "21:9",
               "adaptive"
             ],
-            "description": "输出画幅比例。标准版 / SP 默认 9:16。MD 仅支持 9:16、16:9。adaptive 仅在带参考素材时可用（GZ 及标准版任务类型引导）。优先级高于 ratio。"
+            "description": "输出画幅比例。官链默认 9:16。adaptive 仅在带参考素材时可用（官转及官链任务类型引导）。优先级高于 ratio。"
           },
           "ratio": {
             "type": "string",
@@ -5007,11 +4985,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 URL。seedance-2.5-sp / seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
           },
           "reference_images": {
             "type": "array",
@@ -5035,7 +5013,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条与合计时长均不超过 30.2 秒。"
+            "description": "参考视频 URL 列表（公网 https://，勿传 base64），最多 10 个。适用于 seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina。单条与合计时长均不超过 30.2 秒。"
           },
           "videos": {
             "type": "array",
@@ -5051,7 +5029,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance-2.5-sp / seedance2.5-gz / seedance2.5-dreamina / seedance2.5-30s / sd2.5-720p / sd2.5-720p-ac；seedance2.5-md 不支持。单条时长不超过 30 秒。"
+            "description": "参考音频 URL 列表（公网 https://，勿传 base64），最多 10 段。适用于 seedance-2.5 / seedance2.5-gz / seedance2.5-dreamina。单条时长不超过 30 秒。"
           },
           "audios": {
             "type": "array",

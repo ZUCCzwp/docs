@@ -42,34 +42,24 @@
 
 ### MiniMax Video
 
-- [Create Seedance 2.5 Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create.md): Create a Seedance 2.5 video task (reference images/videos/audios); billed per_second; poll the common query endpoint.
-- [创建 Seedance 2.5 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create.md): 创建 Seedance 2.5 视频任务（参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
-- [Create Seedance 2.5 GZ Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-gz.md): Create a Seedance 2.5 GZ video task; precharged then settled to actual usage; poll the common query endpoint.
-- [创建 Seedance 2.5 GZ 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-gz.md): 创建 Seedance 2.5 GZ 视频任务，创建时预扣、成功后按实际用量多退少补，通过通用查询接口获取结果。
+- [Create Seedance 2.5 Official Channel Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create.md): Create a Seedance 2.5 official-channel video task (reference images/videos/audios); billed per_second; poll the common query endpoint.
+- [创建 Seedance 2.5官链视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create.md): 创建 Seedance 2.5 官链视频任务（参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
+- [Create Seedance 2.5 Official Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-gz.md): Create a Seedance 2.5 official video task; precharged then settled to actual usage; poll the common query endpoint.
+- [创建 Seedance 2.5官转视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-gz.md): 创建 Seedance 2.5 官转视频任务，创建时预扣、成功后按实际用量多退少补，通过通用查询接口获取结果。
 - [Create Seedance 2.5 Dreamina Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-dreamina.md): Create a Seedance 2.5 Dreamina video task (`seedance2.5-dreamina`); per-second precharge by resolution, then settle to actual tokens; poll the common query endpoint.
 - [创建 Seedance 2.5 Dreamina 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-dreamina.md): 创建 Seedance 2.5 Dreamina（`seedance2.5-dreamina`）视频任务，创建时按分辨率预扣、成功后按实际 token 多退少补，通过通用查询接口获取结果。
-- [seedance2.5-md](https://docs.viraltok.ai/en/api-reference/seedance/25/create-ar.md): Create a fixed 15-second Seedance 2.5 MD video; billed per task.
-- [seedance2.5-md](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-ar.md): 创建固定 15 秒的 Seedance 2.5 MD 视频，按次计费。
-- [seedance2.5-30s](https://docs.viraltok.ai/en/api-reference/seedance/25/create-30s.md): Create a fixed 30-second Seedance 2.5 video (up to 30 images, 10 videos, 10 audios); billed per task.
-- [seedance2.5-30s](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-30s.md): 创建固定 30 秒的 Seedance 2.5 视频（最多 30 张图、10 个视频、10 段音频），按次计费。
-- [sd2.5-720p](https://docs.viraltok.ai/en/api-reference/seedance/25/create-sd25-720p.md): Create a 720p video (4–30 seconds) that keeps faces; billed per second on `sd2.5-720p`.
-- [sd2.5-720p](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-sd25-720p.md): 创建 720p 视频（4–30 秒），参考图不卡脸，按独立型号 `sd2.5-720p` 按秒计费。
-- [sd2.5-720p-ac](https://docs.viraltok.ai/en/api-reference/seedance/25/create-sd25-720p-ac.md): Create a 720p video (4–30 seconds, up to 30 images, 10 videos, 10 audios) that keeps faces; billed per task on `sd2.5-720p-ac`.
-- [sd2.5-720p-ac](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-sd25-720p-ac.md): 创建 720p 视频（4–30 秒，最多 30 张图、10 个参考视频、10 个参考音频），参考图不卡脸，按独立型号 `sd2.5-720p-ac` 按次计费。
 - [Create MiniMax H3 Video](https://docs.viraltok.ai/en/api-reference/minimax/create.md): Create a MiniMax H3 video task (reference images/audio, first/last frame); billed per_task; poll the common query endpoint.
 - [创建 MiniMax H3 视频](https://docs.viraltok.ai/zh/api-reference/minimax/create.md): 创建 MiniMax H3 视频任务（参考图/音频、首尾帧），按次计费，通过通用查询接口获取结果。
 - [Create Wan 3.0 Video](https://docs.viraltok.ai/en/api-reference/wan/create.md): Create a Wan 3.0 (`wan3.0`) video task (reference images/videos/audios); billed per_second by resolution; poll the common query endpoint.
 - [创建 Wan 3.0 视频](https://docs.viraltok.ai/zh/api-reference/wan/create.md): 创建 Wan 3.0（`wan3.0`）视频任务（参考图/视频/音频），按分辨率按秒计费，通过通用查询接口获取结果。
-- [Create Wan 3.0 GZ Video](https://docs.viraltok.ai/en/api-reference/wan/create-gz.md): Create a Wan 3.0 GZ (`wan3.0-gz`) video task (2–30s, adaptive ratio, first/last frame, reference images/videos/audios, reference document or webpage); billed per_second via `wan3.0-gz-{resolution}`; poll the common query endpoint.
-- [创建 Wan 3.0 GZ 视频](https://docs.viraltok.ai/zh/api-reference/wan/create-gz.md): 创建 Wan 3.0 GZ（`wan3.0-gz`）视频任务（2–30 秒、自适应画幅、首尾帧、参考图/视频/音频、参考文件或网页），按 `wan3.0-gz-{分辨率}` 按秒计费，通过通用查询接口获取结果。
-- [Create Wan 3.0 GL Video](https://docs.viraltok.ai/en/api-reference/wan/create-gl.md): Create a Wan 3.0 GL (`wan3.0-gl`) video task (2–30s, adaptive/`21:9` ratio, first/last frame, reference images/videos/audios; no file_url/link_url); prepaid per_second via `wan3.0-gl-{resolution}`, then settled to actual billed seconds; poll the common query endpoint.
-- [创建 Wan 3.0 GL 视频](https://docs.viraltok.ai/zh/api-reference/wan/create-gl.md): 创建 Wan 3.0 GL（`wan3.0-gl`）视频任务（2–30 秒、自适应/`21:9` 画幅、首尾帧、参考图/视频/音频；不支持 file_url/link_url），按 `wan3.0-gl-{分辨率}` 按秒预扣并按实际计费秒数多退少补，通过通用查询接口获取结果。
-- [Create Wan 3.0 Prime GL Video](https://docs.viraltok.ai/en/api-reference/wan/create-prime-gl.md): Create a Wan 3.0 Prime GL (`wan3.0-prime-gl`) video task (2–30s, adaptive/`21:9` ratio, first/last frame, reference images/videos/audios; no file_url/link_url); prepaid per_second via `wan3.0-prime-gl-{resolution}`, then settled to actual billed seconds; poll the common query endpoint.
-- [创建 Wan 3.0 Prime GL 视频](https://docs.viraltok.ai/zh/api-reference/wan/create-prime-gl.md): 创建 Wan 3.0 Prime GL（`wan3.0-prime-gl`）视频任务（2–30 秒、自适应/`21:9` 画幅、首尾帧、参考图/视频/音频；不支持 file_url/link_url），按 `wan3.0-prime-gl-{分辨率}` 按秒预扣并按实际计费秒数多退少补，通过通用查询接口获取结果。
-- [Create Seedance 2.0 GZ Video](https://docs.viraltok.ai/en/api-reference/seedance/gz720/create.md): Create a Seedance 2.0 GZ video task (`seedance2.0-gz*`; asset review; direct result URL); billed per_million_tokens; poll the common query endpoint.
-- [创建 Seedance 2.0 GZ 视频](https://docs.viraltok.ai/zh/api-reference/seedance/gz720/create.md): 创建 Seedance 2.0 GZ 视频任务（`seedance2.0-gz*`；素材审核；结果为上游直链），按百万 token 计费，通过通用查询接口获取结果。
-- [Create Official Mini Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create-gz.md): Create an Official Mini video task (`seedance2.0-gz-mini*`; asset review; direct result URL); billed per_second; poll the common query endpoint.
-- [创建官链 Mini 视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create-gz.md): 创建官链 Mini 视频任务（`seedance2.0-gz-mini*`；素材审核；结果为上游直链），按秒计费，通过通用查询接口获取结果。
+- [Create Wan 3.0 Official Video](https://docs.viraltok.ai/en/api-reference/wan/create-gz.md): Create a Wan 3.0 Official (`wan3.0-gz`) video task (2–30s, adaptive ratio, first/last frame, reference images/videos/audios, reference document or webpage); billed per_second via `wan3.0-gz-{resolution}`; poll the common query endpoint.
+- [创建 Wan 3.0官转视频](https://docs.viraltok.ai/zh/api-reference/wan/create-gz.md): 创建 Wan 3.0 官转（`wan3.0-gz`）视频任务（2–30 秒、自适应画幅、首尾帧、参考图/视频/音频、参考文件或网页），按 `wan3.0-gz-{分辨率}` 按秒计费，通过通用查询接口获取结果。
+- [Create Wan 3.0 Official Channel Video](https://docs.viraltok.ai/en/api-reference/wan/create-gl.md): Create a Wan 3.0 Official Channel (`wan3.0-gl`) video task (2–30s, adaptive/`21:9` ratio, first/last frame, reference images/videos/audios; no file_url/link_url); prepaid per_second via `wan3.0-gl-{resolution}`, then settled to actual billed seconds; poll the common query endpoint.
+- [创建 Wan 3.0官链视频](https://docs.viraltok.ai/zh/api-reference/wan/create-gl.md): 创建 Wan 3.0官链（`wan3.0-gl`）视频任务（2–30 秒、自适应/`21:9` 画幅、首尾帧、参考图/视频/音频；不支持 file_url/link_url），按 `wan3.0-gl-{分辨率}` 按秒预扣并按实际计费秒数多退少补，通过通用查询接口获取结果。
+- [Create Wan 3.0 Prime Official Channel Video](https://docs.viraltok.ai/en/api-reference/wan/create-prime-gl.md): Create a Wan 3.0 Prime Official Channel (`wan3.0-prime-gl`) video task (2–30s, adaptive/`21:9` ratio, first/last frame, reference images/videos/audios; no file_url/link_url); prepaid per_second via `wan3.0-prime-gl-{resolution}`, then settled to actual billed seconds; poll the common query endpoint.
+- [创建 Wan 3.0 Prime官链视频](https://docs.viraltok.ai/zh/api-reference/wan/create-prime-gl.md): 创建 Wan 3.0 Prime官链（`wan3.0-prime-gl`）视频任务（2–30 秒、自适应/`21:9` 画幅、首尾帧、参考图/视频/音频；不支持 file_url/link_url），按 `wan3.0-prime-gl-{分辨率}` 按秒预扣并按实际计费秒数多退少补，通过通用查询接口获取结果。
+- [Create Seedance 2.0 Official Video](https://docs.viraltok.ai/en/api-reference/seedance/gz720/create.md): Create a Seedance 2.0 Official video task (`seedance2.0-gz*`; asset review; direct result URL); billed per_million_tokens; poll the common query endpoint.
+- [创建 Seedance 2.0官转视频](https://docs.viraltok.ai/zh/api-reference/seedance/gz720/create.md): 创建 Seedance 2.0官转视频任务（`seedance2.0-gz*`；素材审核；结果为上游直链），按百万 token 计费，通过通用查询接口获取结果。
 
 ### LLM
 
@@ -107,10 +97,10 @@
 - [图片理解](https://docs.viraltok.ai/zh/api-reference/images/understand.md): 基于 Gemini 的图片理解与分析。
 - [Midjourney text-to-image](https://docs.viraltok.ai/en/api-reference/images/midjourney/create.md): Create a Midjourney Imagine task; poll GET /api/open-api/v1/images/{taskId}.
 - [Midjourney follow-up actions](https://docs.viraltok.ai/en/api-reference/images/midjourney/actions.md): Upscale, variation, zoom, pan, inpaint, blend, describe, edits.
-- [Midjourney image-to-video](https://docs.viraltok.ai/en/api-reference/images/midjourney/video.md): Create a Midjourney image-to-video task; poll GET /api/open-api/v1/videos/{taskId}.
+- [Create Midjourney image-to-video](https://docs.viraltok.ai/en/api-reference/images/midjourney/video.md): Create a Midjourney image-to-video task; poll GET /api/open-api/v1/videos/{taskId}.
 - [Midjourney 文生图](https://docs.viraltok.ai/zh/api-reference/images/midjourney/create.md): 创建 Midjourney Imagine 任务，轮询 GET /api/open-api/v1/images/{taskId}。
 - [Midjourney 二次操作](https://docs.viraltok.ai/zh/api-reference/images/midjourney/actions.md): 放大、变体、扩图、局部重绘、融合、识图、编辑。
-- [Midjourney 图生视频](https://docs.viraltok.ai/zh/api-reference/images/midjourney/video.md): 创建 Midjourney 图生视频任务，轮询 GET /api/open-api/v1/videos/{taskId}。
+- [创建Midjourney 图生视频](https://docs.viraltok.ai/zh/api-reference/images/midjourney/video.md): 创建 Midjourney 图生视频任务，轮询 GET /api/open-api/v1/videos/{taskId}。
 
 ### VEO Video
 
@@ -126,30 +116,36 @@
 - [提交素材审核](https://docs.viraltok.ai/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
 - [查询素材审核状态](https://docs.viraltok.ai/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
 
-### Seedance 2.0 Video (Mini)
+### Mini版
 
 - [Mini Create Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create.md): Create a Seedance 2.0 Mini video task (per-second billing by resolution).
-- [Mini 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
+- [创建Mini视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create.md): 创建 Seedance 2.0 Mini 视频任务（按分辨率按秒计费）。
+- [Create Official Mini Video](https://docs.viraltok.ai/en/api-reference/seedance/mini/create-gz.md): Create an Official Mini video task (`seedance2.0-gz-mini*`; asset review; direct result URL); billed per_million_tokens; poll the common query endpoint.
+- [创建官链 Mini 视频](https://docs.viraltok.ai/zh/api-reference/seedance/mini/create-gz.md): 创建官链 Mini 视频任务（`seedance2.0-gz-mini*`；素材审核；结果为上游直链），按百万 token 计费，通过通用查询接口获取结果。
 
-### Seedance SP Economy
+### Seedance Fast
 
-- [SP Create Video](https://docs.viraltok.ai/en/api-reference/seedance/sp/create.md): Create a Seedance SP video task (economy or official).
-- [SP Upload Asset](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the SP economy library.
+- [Create Full Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create.md): Create a Seedance Full Fast video task (`sd2_mx_fast_*`, `sd2_mx_video_fast_*`).
+- [Create Full Super-Resolution SP Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-sp.md): Create a Seedance Full Super-Resolution SP Fast video task (`sd2_sp_fast_780p`, `sd2_sp_video_fast_780p`).
+- [Create Seedance 2.0 Official Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-gz.md): Create a Seedance 2.0 Official Fast video task (`seedance2.0-gz-fast*`).
+- [创建满血版Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create.md): 创建 Seedance 满血版 Fast 视频任务（`sd2_mx_fast_*`、`sd2_mx_video_fast_*`）。
+- [创建满血版超分 Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-sp.md): 创建满血版超分 Fast 视频任务（`sd2_sp_fast_780p`、`sd2_sp_video_fast_780p`）。
+- [创建 Seedance 2.0官转 Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-gz.md): 创建 Seedance 2.0官转 Fast视频任务（`seedance2.0-gz-fast*`）。
+
+### Seedance Full Super-Resolution SP
+
+- [Create Full Super-Resolution SP Video](https://docs.viraltok.ai/en/api-reference/seedance/sp/create.md): Create a Seedance Full Super-Resolution SP video task.
+- [SP Upload Asset](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-upload.md): Upload assets to the Full Super-Resolution SP library.
 - [SP Query Asset Detail](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-detail.md): Query a single SP asset status.
 - [SP Batch Query Asset Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/assets-status.md): Batch query SP asset status.
 - [SP Submit Real-Person Whitelist](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-submit.md): Submit real-person portrait for whitelist processing.
 - [SP Query Real-Person Status](https://docs.viraltok.ai/en/api-reference/seedance/sp/realperson-status.md): Query real-person whitelist status.
-- [SP 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/sp/create.md): 创建 Seedance SP 视频任务（经济版 / 官方版）。
-- [SP 上传素材](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到 SP 经济版素材库。
+- [创建满血版超分视频](https://docs.viraltok.ai/zh/api-reference/seedance/sp/create.md): 创建 Seedance 满血版超分视频任务。
+- [SP 上传素材](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-upload.md): 上传素材到满血版超分素材库。
 - [SP 查询素材详情](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-detail.md): 查询单个 SP 素材状态。
 - [SP 批量查询素材状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/assets-status.md): 批量查询 SP 素材状态。
 - [SP 提交真人加白](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-submit.md): 提交真人图片进行加白处理。
 - [SP 查询真人加白状态](https://docs.viraltok.ai/zh/api-reference/seedance/sp/realperson-status.md): 查询真人加白处理状态。
-
-### Seedance MD
-
-- [MD Create Video](https://docs.viraltok.ai/en/api-reference/seedance/md/create.md): Create a Seedance MD video task.
-- [MD 创建视频](https://docs.viraltok.ai/zh/api-reference/seedance/md/create.md): 创建 Seedance MD 视频任务。
 
 ### SoundClone
 

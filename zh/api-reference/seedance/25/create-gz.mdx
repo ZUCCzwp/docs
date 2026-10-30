@@ -1,5 +1,5 @@
 ---
-title: '创建 Seedance 2.5 GZ 视频'
+title: '创建 Seedance 2.5官转视频'
 openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 ---
 
@@ -7,7 +7,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 2.5 视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-gz"` 选择本型号。MD 型号见 [seedance2.5-md](/zh/api-reference/seedance/25/create-ar) 与 [seedance2.5-30s](/zh/api-reference/seedance/25/create-30s)。
+本接口与 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-gz"` 选择本型号。
 
 <Warning>
 **不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
@@ -17,7 +17,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 | model | 说明 |
 |-------|------|
-| `seedance2.5-gz` | Seedance 2.5 GZ：独立计费；支持文生视频、首尾帧、参考图 / 视频 / 音频 |
+| `seedance2.5-gz` | Seedance 2.5 官转：独立计费；支持文生视频、首尾帧、参考图 / 视频 / 音频 |
 
 `seedance-2.5-gz`、`seedance25-gz` 等别名会归一化为 `seedance2.5-gz`。也可直接传计费名：`seedance2.5-gz-480p`、`seedance2.5-gz-720p`。
 

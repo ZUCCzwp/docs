@@ -4,7 +4,7 @@ title: 'Midjourney 文生图'
 
 创建 **Midjourney** 异步绘图任务（Imagine / 垫图）。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态。完成后从 `result.image_urls` 获取四宫格单图，从 `result.buttons` 读取可继续的操作。
 
-二次操作见 [放大 / 变体 / 扩图](/zh/api-reference/images/midjourney/actions)，图生视频见 [Midjourney 视频](/zh/api-reference/images/midjourney/video)。
+二次操作见 [放大 / 变体 / 扩图](/zh/api-reference/images/midjourney/actions)，图生视频见 [创建Midjourney 图生视频](/zh/api-reference/images/midjourney/video)。
 
 <Note>
 接口路径：`POST /api/open-api/v1/midjourney/generations`（与 `/generations/imagine` 行为一致）。请求体不需要传 `model`。

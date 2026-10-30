@@ -53,17 +53,15 @@ Aliases such as `seedance-2.5-dreamina` and `seedance25-dreamina` normalize to `
 
 ## Billing
 
-Creation precharges by resolution. After the task succeeds, usage is settled from actual tokens (overage charged / unused refunded in one delta). Tasks with reference videos use different precharge and per-million-token prices (JimiCoin; Console-configurable).
+Creation precharges by resolution (the same precharge model and seconds whether or not you send reference videos). After the task succeeds, usage is settled from actual tokens (overage charged / unused refunded in one delta). Tasks with reference videos use a different per-million-token price (JimiCoin; Console-configurable).
 
 - Precharge mode: `per_second`
 - Precharge models: `seedance2.5-480p-dreamina` / `seedance2.5-720p-dreamina` / `seedance2.5-1080p-dreamina`
-- With reference videos: `seedance2.5-video-480p-dreamina` / `seedance2.5-video-720p-dreamina` / `seedance2.5-video-1080p-dreamina`
 - Settlement models: `seedance2.5-480p-dreamina-token` / `seedance2.5-720p-dreamina-token` / `seedance2.5-1080p-dreamina-token`
-- With reference videos: `seedance2.5-video-480p-dreamina-token` / `seedance2.5-video-720p-dreamina-token` / `seedance2.5-video-1080p-dreamina-token`
-- With reference videos, precharge seconds = **output duration + reference video duration**
+- With reference videos, settlement uses `seedance2.5-video-480p-dreamina-token` / `seedance2.5-video-720p-dreamina-token` / `seedance2.5-video-1080p-dreamina-token`
 
 ```text
-precharge = unit price × precharge seconds
+precharge = unit price × output seconds
 due JimiCoin = completion_tokens / 1,000,000 × per-million-token price
 after success, charge or refund the delta vs precharge
 ```

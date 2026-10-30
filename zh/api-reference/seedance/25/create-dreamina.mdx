@@ -53,17 +53,15 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 
 ## 计费说明
 
-创建时按分辨率预扣。任务成功后按实际 token 用量结算，多退少补，差额记一笔。含参考视频与不含参考视频使用不同的预扣单价和百万 token 单价（吉米币，控制台可配）。
+创建时按分辨率预扣（是否含参考视频不影响预扣型号和预扣秒数）。任务成功后按实际 token 用量结算，多退少补，差额记一笔。含参考视频与不含参考视频使用不同的百万 token 单价（吉米币，控制台可配）。
 
 - 预扣方式：`per_second`
 - 预扣模型：`seedance2.5-480p-dreamina` / `seedance2.5-720p-dreamina` / `seedance2.5-1080p-dreamina`
-- 带参考视频时改为 `seedance2.5-video-480p-dreamina` / `seedance2.5-video-720p-dreamina` / `seedance2.5-video-1080p-dreamina`
 - 结算模型：`seedance2.5-480p-dreamina-token` / `seedance2.5-720p-dreamina-token` / `seedance2.5-1080p-dreamina-token`
-- 带参考视频时改为 `seedance2.5-video-480p-dreamina-token` / `seedance2.5-video-720p-dreamina-token` / `seedance2.5-video-1080p-dreamina-token`
-- 含参考视频时，预扣秒数 = **输出时长 + 参考视频时长**
+- 带参考视频时结算改为 `seedance2.5-video-480p-dreamina-token` / `seedance2.5-video-720p-dreamina-token` / `seedance2.5-video-1080p-dreamina-token`
 
 ```text
-预扣 = 对应单价 × 预扣秒数
+预扣 = 对应单价 × 输出秒数
 应付吉米币 = completion_tokens / 1,000,000 × 百万 token 单价
 成功后按应付与预扣差额多退少补
 ```

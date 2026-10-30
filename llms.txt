@@ -46,6 +46,8 @@
 - [创建 Seedance 2.5 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create.md): 创建 Seedance 2.5 视频任务（参考图/视频/音频），按秒计费，通过通用查询接口获取结果。
 - [Create Seedance 2.5 GZ Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-gz.md): Create a Seedance 2.5 GZ video task; precharged then settled to actual usage; poll the common query endpoint.
 - [创建 Seedance 2.5 GZ 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-gz.md): 创建 Seedance 2.5 GZ 视频任务，创建时预扣、成功后按实际用量多退少补，通过通用查询接口获取结果。
+- [Create Seedance 2.5 Dreamina Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-dreamina.md): Create a Seedance 2.5 Dreamina video task (`seedance2.5-dreamina`); per-second precharge by resolution, then settle to actual tokens; poll the common query endpoint.
+- [创建 Seedance 2.5 Dreamina 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-dreamina.md): 创建 Seedance 2.5 Dreamina（`seedance2.5-dreamina`）视频任务，创建时按分辨率预扣、成功后按实际 token 多退少补，通过通用查询接口获取结果。
 - [seedance2.5-md](https://docs.viraltok.ai/en/api-reference/seedance/25/create-ar.md): Create a fixed 15-second Seedance 2.5 MD video; billed per task.
 - [seedance2.5-md](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-ar.md): 创建固定 15 秒的 Seedance 2.5 MD 视频，按次计费。
 - [seedance2.5-30s](https://docs.viraltok.ai/en/api-reference/seedance/25/create-30s.md): Create a fixed 30-second Seedance 2.5 video (up to 30 images, 10 videos, 10 audios); billed per task.

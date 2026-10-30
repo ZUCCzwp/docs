@@ -196,6 +196,7 @@
                 "pages": [
                   "en/api-reference/seedance/25/create",
                   "en/api-reference/seedance/25/create-gz",
+                  "en/api-reference/seedance/25/create-dreamina",
                   {
                     "group": "MD",
                     "icon": "bolt",
@@ -478,6 +479,7 @@
                 "pages": [
                   "zh/api-reference/seedance/25/create",
                   "zh/api-reference/seedance/25/create-gz",
+                  "zh/api-reference/seedance/25/create-dreamina",
                   {
                     "group": "MD",
                     "icon": "bolt",

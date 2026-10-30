@@ -886,6 +886,35 @@
         }
       }
     },
+    "/api/open-api/v1/muse/videos": {
+      "post": {
+        "summary": "Create Muse Video",
+        "description": "Create a Muse video task (`muse-videos`). Text-to-video or up to 9 reference images; ~10s 720p with audio. Poll GET /api/open-api/v1/videos/{taskId} for results.",
+        "operationId": "createMuseVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MuseGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "Create MiniMax H3 Video",
@@ -3246,6 +3275,106 @@
               }
             }
           }
+        }
+      },
+      "MuseGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "muse-videos"
+            ],
+            "description": "Canonical model is muse-videos. Aliases muse and muse-video are accepted."
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Text prompt for video generation. Required even with reference images."
+          },
+          "duration": {
+            "type": "integer",
+            "default": 10,
+            "enum": [
+              10
+            ],
+            "description": "Video duration in seconds. Fixed at about 10 seconds. Defaults to 10."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "Output aspect ratio. Text-to-video defaults to 16:9. Image-to-video follows the reference when omitted. Takes precedence over size."
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "Alias for aspect_ratio when aspect_ratio is empty."
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "auto"
+            ],
+            "description": "Compatibility alias for aspect ratio. auto means unspecified. Illegal size is rejected even if aspect_ratio is valid."
+          },
+          "resolution": {
+            "type": "string",
+            "default": "720p",
+            "enum": [
+              "720p"
+            ],
+            "description": "Output resolution. 720p only."
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URL list. Max 9 public URLs. Omit or [] for text-to-video."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for images when images is empty."
+          }
+        },
+        "example": {
+          "model": "muse-videos",
+          "prompt": "Sunset waves on a beach, slow pan, keep natural ocean sound, no text",
+          "aspect_ratio": "16:9",
+          "duration": 10,
+          "resolution": "720p"
         }
       },
       "GrokGenerationRequest": {

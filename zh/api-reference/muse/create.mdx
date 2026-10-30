@@ -1,0 +1,63 @@
+---
+title: '创建 Muse 视频'
+openapi: 'POST /api/open-api/v1/muse/videos'
+---
+
+<Note>
+本接口采用异步处理。提交后保存 `task_id`，通过 [查询视频任务](/zh/api-reference/common/query) 轮询状态。完成后从 `result.video_url` 读取 MP4 地址。
+</Note>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `muse-videos` | Muse 视频。支持文生视频和最多 9 张参考图生视频。每次返回 1 段约 10 秒、720p、带声音的 MP4。按次计费。 |
+
+`muse`、`muse-video` 等别名会归一化为 `muse-videos`。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，去除首尾空白后不能为空。带参考图时也必填。
+- **参考图片**：`images` 或 `image_urls`，最多 9 张公网 URL。省略或传空为纯文字生成。参考图用于指导生成，不保证成为逐像素一致的首帧。
+- **时长**：固定约 10 秒。可省略，或显式传 `10`。
+- **分辨率**：仅支持 `720p`（默认）。
+- **比例**：支持 `1:1`、`16:9`、`9:16`、`4:3`、`3:4`、`3:2`、`2:3`。文生视频默认 `16:9`；参考图生视频省略时跟随参考图构图。`size` 为比例兼容字段，可传上述比例或 `auto`；两者均合法时 `aspect_ratio` 优先。
+- **声音**：输出默认带声音，无需传入 `audio`。
+- 不支持参考视频、参考音频、遮罩、首尾帧、续写或 remix。
+
+## 计费
+
+- 请求模型名：`muse-videos`
+- 计费模型名：`muse-videos`，`per_task`（按次）。单价以控制台为准。
+
+## 示例请求
+
+文生视频：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-videos",
+    "prompt": "日落时海浪轻拍沙滩，镜头缓慢平移，保留自然海浪声，无文字",
+    "aspect_ratio": "16:9",
+    "duration": 10,
+    "resolution": "720p"
+  }'
+```
+
+参考图生视频（省略比例以跟随构图）：
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-videos",
+    "prompt": "让参考图中的狐狸缓慢抬头，微风吹动毛发，镜头轻轻推进",
+    "images": ["https://example.com/fox.png"],
+    "duration": 10,
+    "resolution": "720p"
+  }'
+```

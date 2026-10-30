@@ -1,0 +1,63 @@
+---
+title: 'Create Muse Video'
+openapi: 'POST /api/open-api/v1/muse/videos'
+---
+
+<Note>
+This endpoint is async. Save the `task_id` from the create response, then poll [Query Video Task](/en/api-reference/common/query). When complete, read the MP4 URL from `result.video_url`.
+</Note>
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `muse-videos` | Muse video. Text-to-video or up to 9 reference images. Each request returns one ~10s, 720p, audio-on MP4. Billed per task. |
+
+Aliases such as `muse` and `muse-video` normalize to `muse-videos`.
+
+## Parameter constraints
+
+- **Prompt**: Required. Must be non-empty after trimming. Still required when you send reference images.
+- **Reference images**: `images` or `image_urls`, up to 9 public URLs. Omit or send an empty list for text-to-video. References guide generation; they are not guaranteed pixel-identical first frames.
+- **Duration**: Fixed at about 10 seconds. Omit, or pass `10`.
+- **Resolution**: `720p` only (default).
+- **Aspect ratio**: `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`. Text-to-video defaults to `16:9`. Image-to-video follows the reference composition when omitted. `size` is a compatibility alias and also accepts `auto`. When both are valid, `aspect_ratio` wins.
+- **Audio**: Output includes audio by default. Do not send `audio`.
+- Reference video, reference audio, masks, first/last-frame control, extend, and remix are not supported.
+
+## Billing
+
+- Request model: `muse-videos`
+- Billing model: `muse-videos`, `per_task`. Unit price is set in the console.
+
+## Example request
+
+Text-to-video:
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-videos",
+    "prompt": "Sunset waves on a beach, slow pan, keep natural ocean sound, no text",
+    "aspect_ratio": "16:9",
+    "duration": 10,
+    "resolution": "720p"
+  }'
+```
+
+Image-to-video (omit ratio to follow the reference):
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-videos",
+    "prompt": "The fox in the reference slowly lifts its head, breeze in the fur, gentle push-in",
+    "images": ["https://example.com/fox.png"],
+    "duration": 10,
+    "resolution": "720p"
+  }'
+```

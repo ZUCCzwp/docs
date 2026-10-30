@@ -171,6 +171,12 @@
                 ]
               },
               {
+                "group": "Muse",
+                "pages": [
+                  "en/api-reference/muse/create"
+                ]
+              },
+              {
                 "group": "MiniMax",
                 "pages": [
                   "en/api-reference/minimax/create",
@@ -467,6 +473,12 @@
                 "group": "Grok",
                 "pages": [
                   "zh/api-reference/grok/create"
+                ]
+              },
+              {
+                "group": "Muse",
+                "pages": [
+                  "zh/api-reference/muse/create"
                 ]
               },
               {

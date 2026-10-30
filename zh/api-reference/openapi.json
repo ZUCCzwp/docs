@@ -886,6 +886,35 @@
         }
       }
     },
+    "/api/open-api/v1/muse/videos": {
+      "post": {
+        "summary": "创建 Muse 视频",
+        "description": "创建 Muse（`muse-videos`）视频任务。文生视频或最多 9 张参考图；约 10 秒、720p、带声音。提交后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createMuseVideo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MuseGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "创建 MiniMax H3 视频任务",
@@ -3357,6 +3386,106 @@
               }
             }
           }
+        }
+      },
+      "MuseGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "muse-videos"
+            ],
+            "description": "规范模型名为 muse-videos。muse、muse-video 等别名会被接受并归一化。"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "用于生成视频的文本提示词。带参考图时也必填。"
+          },
+          "duration": {
+            "type": "integer",
+            "default": 10,
+            "enum": [
+              10
+            ],
+            "description": "视频时长，单位秒。固定约 10 秒。默认 10。"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "输出比例。文生视频默认 16:9；参考图生视频省略时跟随参考图构图。优先级高于 size。"
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "aspect_ratio 为空时的别名。"
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "auto"
+            ],
+            "description": "比例兼容字段。auto 等同未指定。非法 size 即使 aspect_ratio 合法也会被拒绝。"
+          },
+          "resolution": {
+            "type": "string",
+            "default": "720p",
+            "enum": [
+              "720p"
+            ],
+            "description": "输出分辨率。仅支持 720p。"
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图片 URL 列表，最多 9 张公网地址。省略或传 [] 为纯文字生成。"
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "images 为空时的别名。"
+          }
+        },
+        "example": {
+          "model": "muse-videos",
+          "prompt": "日落时海浪轻拍沙滩，镜头缓慢平移，保留自然海浪声，无文字",
+          "aspect_ratio": "16:9",
+          "duration": 10,
+          "resolution": "720p"
         }
       },
       "GrokGenerationRequest": {

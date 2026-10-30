@@ -1,6 +1,6 @@
 ---
 title: 'Create Muse Video'
-openapi: 'POST /api/open-api/v1/muse/videos'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/muse/videos'
 ---
 
 <Note>
@@ -30,11 +30,8 @@ Aliases such as `muse` and `muse-video` normalize to `muse-videos`.
 - Request model: `muse-videos`
 - Billing model: `muse-videos`, `per_task`. Unit price is set in the console.
 
-## Example request
-
-Text-to-video:
-
-```bash
+<RequestExample>
+```bash Text-to-video
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
@@ -47,9 +44,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   }'
 ```
 
-Image-to-video (omit ratio to follow the reference):
-
-```bash
+```bash Image-to-video
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
@@ -61,3 +56,18 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
     "resolution": "720p"
   }'
 ```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": "20000",
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_xxxxxxxx",
+    "status": "submitted",
+    "model": "muse-videos"
+  }
+}
+```
+</ResponseExample>

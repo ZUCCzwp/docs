@@ -141,6 +141,12 @@
                 ]
               },
               {
+                "group": "Muse",
+                "pages": [
+                  "en/api-reference/muse/create-image"
+                ]
+              },
+              {
                 "group": "Nano Banana",
                 "pages": [
                   "en/api-reference/images/nano-banana/create"
@@ -443,6 +449,12 @@
                 "pages": [
                   "zh/api-reference/images/grok-imagine-image/create",
                   "zh/api-reference/images/grok-imagine-image-2/create"
+                ]
+              },
+              {
+                "group": "Muse",
+                "pages": [
+                  "zh/api-reference/muse/create-image"
                 ]
               },
               {

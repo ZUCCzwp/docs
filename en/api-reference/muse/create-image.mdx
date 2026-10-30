@@ -1,0 +1,70 @@
+---
+title: 'Create Muse Image'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/muse/images'
+---
+
+<Note>
+This endpoint is async. Save the `task_id` from the create response, then poll [Query Image Task](/en/api-reference/images/query). When complete, read the image URL from `result.image_url`.
+</Note>
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `muse-images` | Muse image. Text-to-image or up to 9 reference images. Each request returns one WebP. Billed per task. |
+
+Aliases such as `muse-image` normalize to `muse-images`.
+
+## Parameter constraints
+
+- **Prompt**: Required. Must be non-empty after trimming. Still required when you send reference images.
+- **Reference images**: `images` or `image_urls`, up to 9 public URLs. Omit or send an empty list for text-to-image. References guide generation; they are not guaranteed pixel-identical sources.
+- **Aspect ratio**: `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`. Text-to-image defaults to `1:1`. Image-to-image follows the reference composition when omitted. `size` is a compatibility alias and also accepts `auto`. When both are valid, `aspect_ratio` wins. Do not send `"auto"` on `aspect_ratio`, and do not send pixel sizes such as `1024x1024`.
+- **Count**: One image per request. Omit `n`, or pass `1`.
+- Output size is chosen by the model. Do not send `resolution` or any duration field.
+- Reference video, reference audio, masks, first/last-frame control, extend, and remix are not supported. Sync endpoints `/images/generations` and `/images/edits` do not support this model.
+
+## Billing
+
+- Request model: `muse-images`
+- Billing model: `muse-images`, `per_task`. Unit price is set in the console.
+
+<RequestExample>
+```bash Text-to-image
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-images",
+    "prompt": "A red ceramic cup on a white table, soft studio light, product photography, no text",
+    "aspect_ratio": "1:1",
+    "n": 1
+  }'
+```
+
+```bash Image-to-image
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "muse-images",
+    "prompt": "Keep the cup from the reference, change the background to a wooden coffee table, warm natural light",
+    "images": ["https://example.com/cup.png"],
+    "n": 1
+  }'
+```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": "20000",
+  "msg": "ok",
+  "data": {
+    "task_id": "img_xxxxxxxx",
+    "status": "submitted",
+    "model": "muse-images"
+  }
+}
+```
+</ResponseExample>

@@ -1,6 +1,6 @@
 ---
 title: '创建 Muse 视频'
-openapi: 'POST /api/open-api/v1/muse/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/muse/videos'
 ---
 
 <Note>
@@ -30,11 +30,8 @@ openapi: 'POST /api/open-api/v1/muse/videos'
 - 请求模型名：`muse-videos`
 - 计费模型名：`muse-videos`，`per_task`（按次）。单价以控制台为准。
 
-## 示例请求
-
-文生视频：
-
-```bash
+<RequestExample>
+```bash 文生视频
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
@@ -47,9 +44,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   }'
 ```
 
-参考图生视频（省略比例以跟随构图）：
-
-```bash
+```bash 参考图生视频
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
@@ -61,3 +56,18 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
     "resolution": "720p"
   }'
 ```
+</RequestExample>
+
+<ResponseExample>
+```json 200
+{
+  "code": "20000",
+  "msg": "ok",
+  "data": {
+    "task_id": "vid_xxxxxxxx",
+    "status": "submitted",
+    "model": "muse-videos"
+  }
+}
+```
+</ResponseExample>

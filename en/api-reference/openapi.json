@@ -897,6 +897,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MuseGenerationRequest"
+              },
+              "example": {
+                "model": "muse-videos",
+                "prompt": "Sunset waves on a beach, slow pan, keep natural ocean sound, no text",
+                "aspect_ratio": "16:9",
+                "duration": 10,
+                "resolution": "720p"
               }
             }
           }
@@ -908,6 +915,41 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/open-api/v1/muse/images": {
+      "post": {
+        "summary": "Create Muse Image",
+        "description": "Create a Muse image task (`muse-images`). Text-to-image or up to 9 reference images; one WebP per request. Poll GET /api/open-api/v1/images/{taskId} for results.",
+        "operationId": "createMuseImage",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MuseImageGenerationRequest"
+              },
+              "example": {
+                "model": "muse-images",
+                "prompt": "A red ceramic cup on a white table, soft studio light, product photography, no text",
+                "aspect_ratio": "1:1",
+                "n": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
                 }
               }
             }
@@ -5529,6 +5571,97 @@
             "type": "string",
             "description": "Required for flux-3-enhance"
           }
+        }
+      },
+      "MuseImageGenerationRequest": {
+        "type": "object",
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "muse-images"
+            ],
+            "description": "Canonical model is muse-images. Alias muse-image is accepted."
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Text prompt for image generation. Required even with reference images."
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "Output aspect ratio. Text-to-image defaults to 1:1. Image-to-image follows the reference when omitted. Takes precedence over size."
+          },
+          "ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3"
+            ],
+            "description": "Alias for aspect_ratio when aspect_ratio is empty."
+          },
+          "size": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4",
+              "3:2",
+              "2:3",
+              "auto"
+            ],
+            "description": "Compatibility alias for aspect ratio. auto means unspecified. Illegal size is rejected even if aspect_ratio is valid."
+          },
+          "n": {
+            "type": "integer",
+            "default": 1,
+            "enum": [
+              1
+            ],
+            "description": "Number of images. Must be 1."
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URL list. Max 9 public URLs. Omit or [] for text-to-image."
+          },
+          "image_urls": {
+            "type": "array",
+            "maxItems": 9,
+            "items": {
+              "type": "string"
+            },
+            "description": "Alias for images when images is empty."
+          }
+        },
+        "example": {
+          "model": "muse-images",
+          "prompt": "A red ceramic cup on a white table, soft studio light, product photography, no text",
+          "aspect_ratio": "1:1",
+          "n": 1
         }
       }
     },

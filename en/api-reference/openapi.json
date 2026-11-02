@@ -1029,9 +1029,10 @@
                     "type": "string",
                     "enum": [
                       "minimax-h3",
+                      "minimax-h3-768p",
                       "minimax-h3-gz"
                     ],
-                    "description": "Model ID such as `minimax-h3` or `minimax-h3-gz`. See the docs page."
+                    "description": "Model ID such as `minimax-h3`, `minimax-h3-768p`, or `minimax-h3-gz`. See the docs page. `minimax-h3` with `resolution` `768P` selects `minimax-h3-768p`."
                   },
                   "prompt": {
                     "type": "string",
@@ -1091,7 +1092,7 @@
                       "2K",
                       "768P"
                     ],
-                    "description": "Used by minimax-h3-gz only. Defaults to 768P; 2K and 768P are billed separately."
+                    "description": "minimax-h3-gz accepts 2K or 768P, billed separately. minimax-h3 with 768P, or model minimax-h3-768p, is fixed at 768P and billed per second. See the docs page."
                   },
                   "reference_images": {
                     "type": "array",
@@ -1115,7 +1116,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Used by minimax-h3-gz only. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
+                    "description": "Used by minimax-h3-gz and minimax-h3-768p. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
                   },
                   "videos": {
                     "type": "array",
@@ -1123,7 +1124,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz only."
+                    "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz and minimax-h3-768p."
                   },
                   "reference_audios": {
                     "type": "array",
@@ -1131,7 +1132,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference audio URL list. Max 1 public URL. For minimax-h3-gz, must be paired with a reference image or video."
+                    "description": "Reference audio URL list. Max 1 for minimax-h3 and minimax-h3-gz; max 3 for minimax-h3-768p. minimax-h3-gz must pair audio with a reference image or video."
                   },
                   "first_image": {
                     "type": "string",
@@ -1187,6 +1188,15 @@
                     "reference_videos": [
                       "https://example.com/ref_motion.mp4"
                     ]
+                  }
+                },
+                "h3-768p": {
+                  "summary": "Create MiniMax H3 768P task",
+                  "value": {
+                    "model": "minimax-h3-768p",
+                    "prompt": "A cinematic product shot with natural lighting and a slow push-in",
+                    "duration": 6,
+                    "aspect_ratio": "16:9"
                   }
                 }
               }
@@ -3556,9 +3566,10 @@
             "type": "string",
             "enum": [
               "minimax-h3",
+              "minimax-h3-768p",
               "minimax-h3-gz"
             ],
-            "description": "Model ID such as `minimax-h3` or `minimax-h3-gz`. See the docs page."
+            "description": "Model ID such as `minimax-h3`, `minimax-h3-768p`, or `minimax-h3-gz`. See the docs page. `minimax-h3` with `resolution` `768P` selects `minimax-h3-768p`."
           },
           "prompt": {
             "type": "string",
@@ -3618,7 +3629,7 @@
               "2K",
               "768P"
             ],
-            "description": "Used by minimax-h3-gz only. Defaults to 768P; 2K and 768P are billed separately."
+            "description": "minimax-h3-gz accepts 2K or 768P, billed separately. minimax-h3 with 768P, or model minimax-h3-768p, is fixed at 768P and billed per second. See the docs page."
           },
           "reference_images": {
             "type": "array",
@@ -3642,7 +3653,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Used by minimax-h3-gz only. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
+            "description": "Used by minimax-h3-gz and minimax-h3-768p. Reference video URL list, max 3. Mutually exclusive with first_image / last_image."
           },
           "videos": {
             "type": "array",
@@ -3650,7 +3661,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz only."
+            "description": "Alias for reference_videos when reference_videos is empty. Used by minimax-h3-gz and minimax-h3-768p."
           },
           "reference_audios": {
             "type": "array",
@@ -3658,7 +3669,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference audio URL list. Max 1 public URL. For minimax-h3-gz, must be paired with a reference image or video."
+            "description": "Reference audio URL list. Max 1 for minimax-h3 and minimax-h3-gz; max 3 for minimax-h3-768p. minimax-h3-gz must pair audio with a reference image or video."
           },
           "first_image": {
             "type": "string",

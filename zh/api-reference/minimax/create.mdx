@@ -7,17 +7,22 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本页仅覆盖 `minimax-h3`。`minimax-h3-gz`（含参考视频）见 [创建 MiniMax H3官转视频](/zh/api-reference/minimax/create-gz)。
+本页覆盖 `minimax-h3` 与 `minimax-h3-768p`。官转型号见 [创建 MiniMax H3官转视频](/zh/api-reference/minimax/create-gz)。`minimax-h3-768p` 和官转计费 ID `minimax-h3-gz-768p` 不是同一个模型。
 
 ## 支持的模型
 
 | model | 说明 |
 |-------|------|
-| `minimax-h3` | MiniMax H3 标准版 |
+| `minimax-h3` | MiniMax H3 标准版。默认 2K，按次计费 |
+| `minimax-h3-768p` | MiniMax H3 768P。固定 768P，按秒计费 |
 
-别名：`minimax_h3`、`minimaxh3`。
+`minimax-h3` 别名：`minimax_h3`、`minimaxh3`。`minimax-h3-768p` 别名：`minimax_h3_768p`、`minimaxh3768p`。
 
-## 参数限制
+在 `minimax-h3` 请求里传 `resolution: "768P"` 时，按 `minimax-h3-768p` 处理。
+
+## minimax-h3
+
+### 参数限制
 
 - **提示词（prompt）**：必填，长度 1–2000。
 - **时长（duration）**：5–15 秒，默认 `5`。
@@ -26,9 +31,9 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 - **参考图**：`reference_images` 或 `images`，最多 **5** 张，须为公网可访问 URL。
 - **参考音频**：`reference_audios`，最多 **1** 段。
 - **首尾帧**：`first_image` / `last_image` 各最多 1 张（可选）。
-- 本型号**不支持** `reference_videos`。需要参考视频时请使用 [`minimax-h3-gz`](/zh/api-reference/minimax/create-gz)。
+- 本型号不支持 `reference_videos`。需要参考视频时使用 `minimax-h3-768p`，或见 [`minimax-h3-gz`](/zh/api-reference/minimax/create-gz)。
 
-## 请求参数
+### 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
@@ -44,17 +49,17 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 | `first_image` | string | 否 | 首帧图 URL |
 | `last_image` | string | 否 | 尾帧图 URL |
 
-## 计费说明
+### 计费说明
 
 - 计费方式：`per_task`（按次）
 - 计费模型名：`minimax-h3`（单价以控制台为准）
-- `duration` 仅影响生成时长，**不参与计费**
+- `duration` 仅影响生成时长，不参与计费
 
 ```text
 费用 = 模型单价
 ```
 
-## 示例请求
+### 示例请求
 
 ```bash
 curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
@@ -66,5 +71,81 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
     "duration": 5,
     "aspect_ratio": "16:9",
     "size": "2560x1440"
+  }'
+```
+
+## minimax-h3-768p
+
+固定 768P。支持文生视频、首尾帧图生视频，以及参考图 / 参考视频 / 参考音频。
+
+无需额外 `mode` 字段，按传入素材自动区分：
+
+| 模式 | 触发条件 |
+|------|----------|
+| 文生视频 | 只传 `prompt` 及通用字段 |
+| 图生视频 | 传入 `first_image` / `last_image` |
+| 多模态参考 | 传入 `reference_images` / `reference_videos` / `reference_audios` |
+
+<Warning>
+`first_image` / `last_image` 与 `reference_images`、`reference_videos`、`reference_audios` 不能同时使用。
+</Warning>
+
+### 参数限制
+
+- **提示词（prompt）**：必填，长度 1–7000。
+- **时长（duration）**：1–15 秒，默认 `5`。
+- **分辨率（resolution）**：仅 `768P`。`model` 为 `minimax-h3-768p` 时会固定为 `768P`。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`，默认 `16:9`。
+- `adaptive` 仅在带首尾帧、参考图或参考视频时可用。只有参考音频时须使用固定比例。
+- **参考图**：`reference_images` 或 `images`，最多 **9** 张。
+- **参考视频**：`reference_videos` 或 `videos`，最多 **3** 个。时长须大于 0 秒。
+- **参考音频**：`reference_audios`，最多 **3** 段。
+- **首尾帧**：各最多 1 张，与参考素材互斥。
+- 参考图、参考视频、参考音频与首尾帧合计最多 **12** 个。
+- 本型号不使用 `size`。
+
+### 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `minimax-h3-768p`。也可传 `minimax-h3` 并设置 `resolution` 为 `768P` |
+| `prompt` | string | 是 | 文本提示词，长度 1–7000 |
+| `duration` | integer | 否 | 时长秒数，1–15，默认 5 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | 仅 `768P` |
+| `reference_images` | string[] | 否 | 参考图 URL 列表（0–9） |
+| `images` | string[] | 否 | `reference_images` 别名（当后者为空时生效） |
+| `reference_videos` | string[] | 否 | 参考视频 URL 列表（0–3） |
+| `videos` | string[] | 否 | `reference_videos` 别名（当后者为空时生效） |
+| `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–3） |
+| `first_image` | string | 否 | 首帧图 URL |
+| `last_image` | string | 否 | 尾帧图 URL |
+
+### 计费说明
+
+- 计费方式：`per_second`（按秒）
+- 计费模型名：`minimax-h3-768p`（单价以控制台为准）
+- 计费秒数 = 请求里的 `duration`（省略时按 5 秒）
+- 参考视频时长不计入费用
+
+```text
+费用 = 每秒单价 × duration
+```
+
+### 示例请求
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "minimax-h3-768p",
+    "prompt": "角色沿参考视频的动作走路，音色参考音频",
+    "reference_images": ["https://example.com/char.png"],
+    "reference_videos": ["https://example.com/ref_motion.mp4"],
+    "reference_audios": ["https://example.com/ref_voice.mp3"],
+    "duration": 5,
+    "aspect_ratio": "adaptive"
   }'
 ```

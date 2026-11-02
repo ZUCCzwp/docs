@@ -50,8 +50,8 @@
 - [创建 Seedance 2.5官转视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-gz.md): 创建 Seedance 2.5 官转视频任务，创建时预扣、成功后按实际用量多退少补，通过通用查询接口获取结果。
 - [Create Seedance 2.5 Dreamina Video](https://docs.viraltok.ai/en/api-reference/seedance/25/create-dreamina.md): Create a Seedance 2.5 Dreamina video task (`seedance2.5-dreamina`); per-second precharge by resolution, then settle to actual tokens; poll the common query endpoint.
 - [创建 Seedance 2.5 Dreamina 视频](https://docs.viraltok.ai/zh/api-reference/seedance/25/create-dreamina.md): 创建 Seedance 2.5 Dreamina（`seedance2.5-dreamina`）视频任务，创建时按分辨率预扣、成功后按实际 token 多退少补，通过通用查询接口获取结果。
-- [Create MiniMax H3 Video](https://docs.viraltok.ai/en/api-reference/minimax/create.md): Create a MiniMax H3 video task (reference images/audio, first/last frame); billed per_task; poll the common query endpoint.
-- [创建 MiniMax H3 视频](https://docs.viraltok.ai/zh/api-reference/minimax/create.md): 创建 MiniMax H3 视频任务（参考图/音频、首尾帧），按次计费，通过通用查询接口获取结果。
+- [Create MiniMax H3 Video](https://docs.viraltok.ai/en/api-reference/minimax/create.md): Create a MiniMax H3 video task. `minimax-h3` is per_task; `minimax-h3-768p` is per_second and accepts reference images/videos/audios or first/last frame. Poll the common query endpoint.
+- [创建 MiniMax H3 视频](https://docs.viraltok.ai/zh/api-reference/minimax/create.md): 创建 MiniMax H3 视频任务。`minimax-h3` 按次计费；`minimax-h3-768p` 按秒计费，支持参考图/视频/音频或首尾帧。通过通用查询接口获取结果。
 - [Create Wan 3.0 Video](https://docs.viraltok.ai/en/api-reference/wan/create.md): Create a Wan 3.0 (`wan3.0`) video task (reference images/videos/audios); billed per_second by resolution; poll the common query endpoint.
 - [创建 Wan 3.0 视频](https://docs.viraltok.ai/zh/api-reference/wan/create.md): 创建 Wan 3.0（`wan3.0`）视频任务（参考图/视频/音频），按分辨率按秒计费，通过通用查询接口获取结果。
 - [Create Wan 3.0 Official Video](https://docs.viraltok.ai/en/api-reference/wan/create-gz.md): Create a Wan 3.0 Official (`wan3.0-gz`) video task (2–30s, adaptive ratio, first/last frame, reference images/videos/audios, reference document or webpage); billed per_second via `wan3.0-gz-{resolution}`; poll the common query endpoint.

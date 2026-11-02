@@ -1029,9 +1029,10 @@
                     "type": "string",
                     "enum": [
                       "minimax-h3",
+                      "minimax-h3-768p",
                       "minimax-h3-gz"
                     ],
-                    "description": "模型名称。如 `minimax-h3`、`minimax-h3-gz`，详见文档页。"
+                    "description": "模型名称。如 `minimax-h3`、`minimax-h3-768p`、`minimax-h3-gz`，详见文档页。`minimax-h3` 传 `resolution=768P` 时与 `minimax-h3-768p` 相同。"
                   },
                   "prompt": {
                     "type": "string",
@@ -1091,7 +1092,7 @@
                       "2K",
                       "768P"
                     ],
-                    "description": "仅 minimax-h3-gz 使用。默认 768P；2K 与 768P 分别计费。"
+                    "description": "minimax-h3-gz 使用 2K 或 768P，分别计费。minimax-h3 传 768P，或 model 为 minimax-h3-768p 时，固定 768P 并按秒计费。详见文档页。"
                   },
                   "reference_images": {
                     "type": "array",
@@ -1115,7 +1116,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "仅 minimax-h3-gz 使用。参考视频 URL 列表，最多 3 个；与 first_image / last_image 互斥。"
+                    "description": "minimax-h3-gz 与 minimax-h3-768p 使用。参考视频 URL 列表，最多 3 个；与 first_image / last_image 互斥。"
                   },
                   "videos": {
                     "type": "array",
@@ -1123,7 +1124,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "reference_videos 为空时的别名。仅 minimax-h3-gz 使用。"
+                    "description": "reference_videos 为空时的别名。minimax-h3-gz 与 minimax-h3-768p 使用。"
                   },
                   "reference_audios": {
                     "type": "array",
@@ -1131,7 +1132,7 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考音频 URL 列表，最多 1 段。minimax-h3-gz 须搭配参考图或参考视频。"
+                    "description": "参考音频 URL 列表。minimax-h3 与 minimax-h3-gz 最多 1 段；minimax-h3-768p 最多 3 段。minimax-h3-gz 须搭配参考图或参考视频。"
                   },
                   "first_image": {
                     "type": "string",
@@ -1187,6 +1188,15 @@
                     "reference_videos": [
                       "https://example.com/ref_motion.mp4"
                     ]
+                  }
+                },
+                "h3-768p": {
+                  "summary": "创建 MiniMax H3 768P 任务",
+                  "value": {
+                    "model": "minimax-h3-768p",
+                    "prompt": "电影感产品展示，自然光，缓慢推镜",
+                    "duration": 6,
+                    "aspect_ratio": "16:9"
                   }
                 }
               }
@@ -3667,9 +3677,10 @@
             "type": "string",
             "enum": [
               "minimax-h3",
+              "minimax-h3-768p",
               "minimax-h3-gz"
             ],
-            "description": "模型名称。如 `minimax-h3`、`minimax-h3-gz`，详见文档页。"
+            "description": "模型名称。如 `minimax-h3`、`minimax-h3-768p`、`minimax-h3-gz`，详见文档页。`minimax-h3` 传 `resolution=768P` 时与 `minimax-h3-768p` 相同。"
           },
           "prompt": {
             "type": "string",
@@ -3729,7 +3740,7 @@
               "2K",
               "768P"
             ],
-            "description": "仅 minimax-h3-gz 使用。默认 768P；2K 与 768P 分别计费。"
+            "description": "minimax-h3-gz 使用 2K 或 768P，分别计费。minimax-h3 传 768P，或 model 为 minimax-h3-768p 时，固定 768P 并按秒计费。详见文档页。"
           },
           "reference_images": {
             "type": "array",
@@ -3753,7 +3764,7 @@
             "items": {
               "type": "string"
             },
-            "description": "仅 minimax-h3-gz 使用。参考视频 URL 列表，最多 3 个；与 first_image / last_image 互斥。"
+            "description": "minimax-h3-gz 与 minimax-h3-768p 使用。参考视频 URL 列表，最多 3 个；与 first_image / last_image 互斥。"
           },
           "videos": {
             "type": "array",
@@ -3761,7 +3772,7 @@
             "items": {
               "type": "string"
             },
-            "description": "reference_videos 为空时的别名。仅 minimax-h3-gz 使用。"
+            "description": "reference_videos 为空时的别名。minimax-h3-gz 与 minimax-h3-768p 使用。"
           },
           "reference_audios": {
             "type": "array",
@@ -3769,7 +3780,7 @@
             "items": {
               "type": "string"
             },
-            "description": "参考音频 URL 列表，最多 1 段。minimax-h3-gz 须搭配参考图或参考视频。"
+            "description": "参考音频 URL 列表。minimax-h3 与 minimax-h3-gz 最多 1 段；minimax-h3-768p 最多 3 段。minimax-h3-gz 须搭配参考图或参考视频。"
           },
           "first_image": {
             "type": "string",

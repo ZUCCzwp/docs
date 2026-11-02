@@ -82,7 +82,7 @@ env_key = "VIRALTOK_API_KEY"
 model = "gpt-5.6-sol"
 ```
 
-将 `model` 改为你需要的计费 ID，例如 `gpt-5.6-terra` 或 `claude-sonnet-5`。
+将 `model` 改为你需要的计费 ID，例如 `gpt-5.6-terra` 或 `claude-sonnet-5`。`claude-opus-5-5` 只支持 [Messages](/zh/api-reference/chat/messages)，不要填在本页的 Responses 配置里。
 
 <Frame caption="编辑 config.toml，wire_api 保持 responses（示意图）">
   <img src="/images/integrations/codex-app-02-config-toml.png" alt="Codex config.toml 配置 ViraltokAI Responses" />

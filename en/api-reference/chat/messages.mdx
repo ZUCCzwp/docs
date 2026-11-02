@@ -1,0 +1,133 @@
+---
+title: 'Messages'
+openapi: 'POST /api/open-api/v1/messages'
+---
+
+**Messages** API for Claude Opus 5.5. The request and response follow the Anthropic Messages protocol. Send `messages`, receive an assistant reply, and optionally stream. Billing is **pay-as-you-go** from your JimiCoin balance using token counts in `usage`.
+
+<Info>
+This endpoint accepts `claude-opus-5-5` only. Use [Chat Completions](/en/api-reference/chat/completions) or the [Responses API](/en/api-reference/llm/integrations/codex) for `gpt-5.6-sol`, `claude-sonnet-5`, and other models.
+</Info>
+
+<Note>
+A successful call returns the **Messages JSON or SSE body**. Platform errors (auth, balance, validation) use `{ "code", "msg" }` with HTTP 200.
+</Note>
+
+### Authentication
+
+Send either `Authorization: Bearer <API_KEY>` or `x-api-key: <API_KEY>`.
+
+### Endpoint
+
+```http
+POST https://api.viraltok.ai/api/open-api/v1/messages
+Content-Type: application/json
+```
+
+For the Claude SDK or Claude Code, set the base URL to `https://api.viraltok.ai/api/open-api`. The client calls `/v1/messages`.
+
+### Supported models
+
+| Model ID | Notes |
+| :--- | :--- |
+| `claude-opus-5-5` | Claude Opus 5.5. Default when `model` is omitted |
+
+`claude-opus-5.5` and `claude-opus-55` normalize to `claude-opus-5-5`.
+
+See [Claude Code integration](/en/api-reference/llm/integrations/claude-code).
+
+Confirm the current price with [Probe model pricing](/en/api-reference/common/model-catalog) (`model_type` = `llm`, or search `claude-opus-5-5`).
+
+### Request body
+
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `model` | string | No | Billing model ID. Defaults to `claude-opus-5-5` |
+| `messages` | array | **Yes** | Messages (`role` is `user` or `assistant`) |
+| `system` | string or array | No | System prompt |
+| `max_tokens` | integer | No | Defaults to **8192** when omitted |
+| `stream` | boolean | No | When `true`, the response is `text/event-stream` |
+| `temperature` | number | No | 0 to 1 |
+| `tools` | array | No | Messages tool definitions |
+
+Other Messages fields are forwarded.
+
+### Non-stream example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -H 'anthropic-version: 2023-06-01' \
+  -d '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 256,
+    "messages": [
+      { "role": "user", "content": "Say hello in one sentence." }
+    ]
+  }'
+```
+
+```json
+{
+  "id": "msg_…",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-opus-5-5",
+  "content": [
+    { "type": "text", "text": "Hello!" }
+  ],
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 8,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0
+  }
+}
+```
+
+### Streaming
+
+Set `"stream": true`. The response is Messages SSE. Billing reads `usage` from `message_start` and `message_delta`.
+
+```bash
+curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 256,
+    "stream": true,
+    "messages": [
+      { "role": "user", "content": "Count from 1 to 3." }
+    ]
+  }'
+```
+
+### Usage and billing
+
+After a successful call, the platform charges from Messages `usage`:
+
+| Bucket | Source | Billing |
+| :--- | :--- | :--- |
+| **Input** | `input_tokens` | `model_ratio` / 1M |
+| **Cache read** | `cache_read_input_tokens` | `cache_ratio` / 1M |
+| **Cache write** | `cache_creation_input_tokens` | `cache_write_ratio` / 1M |
+| **Output** | `output_tokens` (includes thinking) | `output_ratio` / 1M |
+
+The formula matches [Chat Completions](/en/api-reference/chat/completions#usage-and-billing). Task IDs use the `msg_` prefix.
+
+<Warning>
+Ensure your JimiCoin balance is above 0. Check [Query user account balance](/en/api-reference/common/user-balance).
+</Warning>
+
+### Errors
+
+| Situation | Behavior |
+| :--- | :--- |
+| Missing / invalid API key | `{ "code": …, "msg": "…" }` |
+| Any model other than `claude-opus-5-5` | `msg` says only `claude-opus-5-5` is supported |
+| Insufficient balance | Error message in `msg` |
+| Calling this model on Chat Completions or Responses | `msg` points to this endpoint |
+| Model error | Upstream HTTP status and body returned when available |

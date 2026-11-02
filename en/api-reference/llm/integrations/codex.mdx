@@ -4,7 +4,7 @@ description: 'Connect OpenAI Codex CLI or IDE extensions to the ViraltokAI LLM A
 icon: 'terminal'
 ---
 
-This guide shows how to point **OpenAI Codex** (CLI, IDE extension, or any desktop client that reads the same `config.toml`) at ViraltokAI LLM models such as `gpt-5.6-sol`, `gpt-5.6-terra`, and `claude-sonnet-5`, with pay-as-you-go JimiCoin billing from response `usage`.
+This guide shows how to point **OpenAI Codex** (CLI, IDE extension, or any desktop client that reads the same `config.toml`) at ViraltokAI LLM models such as `gpt-5.6-sol`, `gpt-5.6-terra`, and `claude-sonnet-5`, with pay-as-you-go JimiCoin billing from response `usage`. Use [Messages](/en/api-reference/chat/messages) for `claude-opus-5-5`.
 
 <Info>
 **Responses API is the default.** Codex and ViraltokAI both treat `POST /api/open-api/v1/responses` as the primary OpenAI Responses path. Fall back to Chat Completions only for legacy toolchains or when CC Switch cannot use a Responses upstream.
@@ -141,8 +141,9 @@ Use this only when Responses upstream is unavailable. Set upstream format to **C
 | `gpt-5.6-sol` | Common default |
 | `gpt-5.6-terra` | GPT-5.6 Terra tier |
 | `claude-sonnet-5` | Claude Sonnet tier |
+| `claude-opus-5-5` | Claude Opus 5.5. [Messages](/en/api-reference/chat/messages) only — do not use Responses or Chat Completions |
 
-Some aliases (for example `gpt-5.6`, `gpt5.6-sol`) normalize to `gpt-5.6-sol` on the Chat Completions path. On the Responses path, use the **full model IDs** above.
+Aliases such as `gpt-5.6` and `gpt5.6-sol` normalize to `gpt-5.6-sol` on the Chat Completions path. `claude-opus-5.5` and `claude-opus-55` normalize to `claude-opus-5-5` on [Messages](/en/api-reference/chat/messages). On the Responses path, use a **full model ID** from the table that supports Responses.
 
 ---
 

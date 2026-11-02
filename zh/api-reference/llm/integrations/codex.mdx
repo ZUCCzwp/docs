@@ -4,7 +4,7 @@ description: '在 OpenAI Codex CLI / IDE 扩展中接入 ViraltokAI LLM API'
 icon: 'terminal'
 ---
 
-本指南说明如何将 **OpenAI Codex**（CLI、IDE 扩展或读取同一套 `config.toml` 的桌面客户端）指向 ViraltokAI 的 LLM 接口，使用 `gpt-5.6-sol`、`gpt-5.6-terra`、`claude-sonnet-5` 等模型，并按 token 从吉米币（JimiCoin）扣费。
+本指南说明如何将 **OpenAI Codex**（CLI、IDE 扩展或读取同一套 `config.toml` 的桌面客户端）指向 ViraltokAI 的 LLM 接口，使用 `gpt-5.6-sol`、`gpt-5.6-terra`、`claude-sonnet-5` 等模型，并按 token 从吉米币（JimiCoin）扣费。`claude-opus-5-5` 请走 [Messages](/zh/api-reference/chat/messages)。
 
 <Info>
 **默认走 Responses API。** Codex 与 ViraltokAI 均以对 `POST /api/open-api/v1/responses` 的 OpenAI Responses 协议为首选路径。仅在旧工具链或 CC Switch 无法使用 Responses 上游格式时，才回退到 Chat Completions。
@@ -141,8 +141,9 @@ curl -s -o /dev/null -w "%{http_code}\n" \
 | `gpt-5.6-sol` | 常用默认模型 |
 | `gpt-5.6-terra` | GPT-5.6 Terra 档位 |
 | `claude-sonnet-5` | Claude Sonnet 档位 |
+| `claude-opus-5-5` | Claude Opus 5.5。仅 [Messages](/zh/api-reference/chat/messages)，不要用于 Responses 或 Chat Completions |
 
-部分别名（如 `gpt-5.6`、`gpt5.6-sol`）会在 Chat Completions 路径下归一化为 `gpt-5.6-sol`。Responses 路径请使用上表中的**完整模型 ID**。
+部分别名（如 `gpt-5.6`、`gpt5.6-sol`）会在 Chat Completions 路径下归一化为 `gpt-5.6-sol`。`claude-opus-5.5`、`claude-opus-55` 会在 [Messages](/zh/api-reference/chat/messages) 路径归一化为 `claude-opus-5-5`。Responses 路径请使用上表中支持 Responses 的**完整模型 ID**。
 
 ---
 

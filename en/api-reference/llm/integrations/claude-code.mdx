@@ -4,13 +4,11 @@ description: 'Use the ViraltokAI LLM API from Claude Code'
 icon: 'asterisk'
 ---
 
-This guide explains how to use ViraltokAI LLM models from **Claude Code**. Claude Code speaks the Anthropic Messages protocol, so you bridge it through **CC Switch**.
+This guide explains how to use ViraltokAI LLM models from **Claude Code**. `claude-opus-5-5` calls [Messages](/en/api-reference/chat/messages) directly. Other models can still go through **CC Switch** to Chat Completions.
 
 <Info>
-For OpenAI-compatible scripts and SDKs, **default to the Responses API** (`POST /api/open-api/v1/responses`)—see [Codex integration](/en/api-reference/llm/integrations/codex). The Claude Code CLI still requires the CC Switch flow below because of its native protocol.
+Scripts and backends should call `POST /api/open-api/v1/messages` for `claude-opus-5-5`. OpenAI-compatible models use [Responses](/en/api-reference/llm/integrations/codex) or [Chat Completions](/en/api-reference/chat/completions).
 </Info>
-
-For scripts or backends, call the Responses or Chat Completions HTTP APIs directly—you do not need the Claude Code CLI.
 
 ## Before you start
 
@@ -29,7 +27,18 @@ For scripts or backends, call the Responses or Chat Completions HTTP APIs direct
 </Step>
 </Steps>
 
-## Recommended: CC Switch + Chat Completions
+## Claude Opus 5.5: native Messages
+
+```bash
+export ANTHROPIC_BASE_URL=https://api.viraltok.ai/api/open-api
+export ANTHROPIC_API_KEY=YOUR_API_KEY
+export ANTHROPIC_MODEL=claude-opus-5-5
+claude
+```
+
+Do not append `/v1` to the base URL. The client requests `/v1/messages`. `claude-opus-5.5` and `claude-opus-55` normalize to `claude-opus-5-5`.
+
+## Other models: CC Switch + Chat Completions
 
 ```text
 Claude Code  →  Anthropic Messages  →  CC Switch (127.0.0.1)  →  ViraltokAI Chat Completions  →  Messages again
@@ -41,12 +50,12 @@ Claude Code  →  Anthropic Messages  →  CC Switch (127.0.0.1)  →  ViraltokA
 | :--- | :--- |
 | API base URL | `https://api.viraltok.ai/api/open-api/v1` |
 | Full URL mode | **Off** |
-| Default model | `claude-sonnet-5` or `gpt-5.6-sol` / `gpt-5.6-terra` |
+| Default model | `claude-sonnet-5`, or `gpt-5.6-sol` / `gpt-5.6-terra` |
 | Upstream format | **Chat Completions (routing required)** |
 | API key | Your ViraltokAI Open API key |
 
 <Note>
-The `model` ID must **exactly match** a billing model ID in the ViraltokAI console. For Claude-tier usage, use `claude-sonnet-5`—not Anthropic’s official model names.
+The `model` ID must **exactly match** a billing model ID in the ViraltokAI console. Do not configure `claude-opus-5-5` here; use the native Messages setup above.
 </Note>
 
 ### 2. Enable Claude Code routing
@@ -97,7 +106,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 Set `"stream": true` for streaming; billing uses the last event or chunk that includes `usage`.
 
 <Warning>
-Pointing Claude Code’s `ANTHROPIC_BASE_URL` directly at `https://api.viraltok.ai/...` will not work for native Messages—the ViraltokAI LLM entrypoints are OpenAI-compatible. Use CC Switch or your own protocol gateway.
+For `claude-opus-5-5`, set `ANTHROPIC_BASE_URL` to `https://api.viraltok.ai/api/open-api`. `claude-sonnet-5` and GPT models stay on the OpenAI-compatible APIs; do not point those clients at Messages.
 </Warning>
 
 ---
@@ -106,6 +115,7 @@ Pointing Claude Code’s `ANTHROPIC_BASE_URL` directly at `https://api.viraltok.
 
 | Model ID | Typical use |
 | :--- | :--- |
+| `claude-opus-5-5` | Claude Opus 5.5. [Messages](/en/api-reference/chat/messages) only |
 | `claude-sonnet-5` | Code and chat, Claude tier |
 | `gpt-5.6-sol` | General reasoning and coding |
 | `gpt-5.6-terra` | GPT-5.6 Terra tier |
@@ -118,7 +128,7 @@ Public rates: [Probe model pricing](/en/api-reference/common/model-catalog) with
 
 - JimiCoin is deducted from `usage` tokens (input, output, cache read, cache write).
 - Insufficient balance is rejected before the upstream call; check [user balance](/en/api-reference/common/user-balance) first.
-- Console tasks use the `chat_` prefix with usage line items.
+- Console tasks use the `msg_` prefix for Messages and `chat_` for Chat Completions, with usage line items.
 
 ---
 
@@ -138,6 +148,9 @@ Public rates: [Probe model pricing](/en/api-reference/common/model-catalog) with
 <CardGroup cols={2}>
   <Card title="Codex integration" icon="terminal" href="/en/api-reference/llm/integrations/codex">
     Connect OpenAI Codex to ViraltokAI LLM
+  </Card>
+  <Card title="Messages" icon="message" href="/en/api-reference/chat/messages">
+    Claude Opus 5.5 on /v1/messages
   </Card>
   <Card title="Chat Completions" icon="comments" href="/en/api-reference/chat/completions">
     Parameters, streaming, and billing formula

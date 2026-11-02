@@ -302,10 +302,62 @@
         }
       }
     },
+    "/api/open-api/v1/messages": {
+      "post": {
+        "summary": "Messages",
+        "description": "Claude Opus 5.5 的 Anthropic Messages 接口。仅支持 claude-opus-5-5。鉴权可用 Authorization Bearer 或 x-api-key。未传 max_tokens 时按 8192 处理。stream=true 返回 Messages SSE。按 usage token 从吉米币扣费。",
+        "operationId": "messages",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["messages"],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "default": "claude-opus-5-5",
+                    "description": "计费模型 ID。默认 claude-opus-5-5。claude-opus-5.5 与 claude-opus-55 会归一化。"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "minItems": 1
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "default": 8192
+                  },
+                  "stream": {
+                    "type": "boolean"
+                  },
+                  "system": {}
+                }
+              },
+              "example": {
+                "model": "claude-opus-5-5",
+                "max_tokens": 256,
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "用一句话打个招呼。"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Messages JSON，或 stream=true 时的 SSE"
+          }
+        }
+      }
+    },
     "/api/open-api/v1/chat/completions": {
       "post": {
         "summary": "Chat Completions",
-        "description": "兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。",
+        "description": "兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
         "operationId": "chatCompletions",
         "requestBody": {
           "required": true,
@@ -5492,7 +5544,7 @@
           "model": {
             "type": "string",
             "default": "gpt-5.6-sol",
-            "description": "Billing model ID. Also supports claude-sonnet-5."
+            "description": "计费模型 ID。默认 gpt-5.6-sol，也支持 gpt-5.6-terra、claude-sonnet-5。claude-opus-5-5 请使用 /api/open-api/v1/messages。"
           },
           "messages": {
             "type": "array",

@@ -1,0 +1,133 @@
+---
+title: 'Messages'
+openapi: 'POST /api/open-api/v1/messages'
+---
+
+Claude Opus 5.5 的 **Messages** 接口，协议与 Anthropic Messages 一致。传入 `messages` 获取助手回复，可选流式输出。按响应 `usage` 中的 token **按量计费**，从账户吉米币（JimiCoin）扣减。
+
+<Info>
+本接口只接受 `claude-opus-5-5`。`gpt-5.6-sol`、`claude-sonnet-5` 等模型请用 [Chat Completions](/zh/api-reference/chat/completions) 或 [Responses](/zh/api-reference/llm/integrations/codex)。
+</Info>
+
+<Note>
+成功时响应体为 **Messages 原始 JSON 或 SSE**。平台侧错误（鉴权、余额、参数）仍返回 `{ "code", "msg" }` 且 HTTP 200。
+</Note>
+
+### 鉴权
+
+`Authorization: Bearer <API_KEY>` 或 `x-api-key: <API_KEY>` 均可。
+
+### 接口地址
+
+```http
+POST https://api.viraltok.ai/api/open-api/v1/messages
+Content-Type: application/json
+```
+
+Claude SDK / Claude Code 的 Base URL 填 `https://api.viraltok.ai/api/open-api`，客户端会请求 `/v1/messages`。
+
+### 支持的模型
+
+| 模型 ID | 说明 |
+| :--- | :--- |
+| `claude-opus-5-5` | Claude Opus 5.5。省略 `model` 时的默认值 |
+
+`claude-opus-5.5`、`claude-opus-55` 会归一化为 `claude-opus-5-5`。
+
+在 Claude Code 中接入，见 [Claude Code 集成](/zh/api-reference/llm/integrations/claude-code)。
+
+可用 [查询探测模型定价](/zh/api-reference/common/model-catalog)（`model_type` = `llm`，或搜索 `claude-opus-5-5`）确认当前公开单价。
+
+### 请求体
+
+| 字段 | 类型 | 必填 | 说明 |
+| :--- | :--- | :--- | :--- |
+| `model` | string | 否 | 计费模型 ID，默认 `claude-opus-5-5` |
+| `messages` | array | **是** | Messages 消息（`role` 为 `user` 或 `assistant`） |
+| `system` | string 或 array | 否 | 系统提示 |
+| `max_tokens` | integer | 否 | 未传时按 **8192** 处理 |
+| `stream` | boolean | 否 | 为 `true` 时返回 `text/event-stream` |
+| `temperature` | number | 否 | 0 到 1 |
+| `tools` | array | 否 | Messages 工具定义 |
+
+其余 Messages 字段会一并转发。
+
+### 非流式示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -H 'anthropic-version: 2023-06-01' \
+  -d '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 256,
+    "messages": [
+      { "role": "user", "content": "用一句话打个招呼。" }
+    ]
+  }'
+```
+
+```json
+{
+  "id": "msg_…",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-opus-5-5",
+  "content": [
+    { "type": "text", "text": "你好！" }
+  ],
+  "stop_reason": "end_turn",
+  "usage": {
+    "input_tokens": 12,
+    "output_tokens": 8,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0
+  }
+}
+```
+
+### 流式输出
+
+设置 `"stream": true`。响应为 Messages SSE。计费读取 `message_start` 与 `message_delta` 中的 `usage`。
+
+```bash
+curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 256,
+    "stream": true,
+    "messages": [
+      { "role": "user", "content": "从 1 数到 3。" }
+    ]
+  }'
+```
+
+### 用量与计费
+
+请求成功后，平台按 Messages `usage` 扣费：
+
+| 分段 | 来源 | 计费 |
+| :--- | :--- | :--- |
+| **输入** | `input_tokens` | `model_ratio` / 1M |
+| **缓存读** | `cache_read_input_tokens` | `cache_ratio` / 1M |
+| **缓存写** | `cache_creation_input_tokens` | `cache_write_ratio` / 1M |
+| **输出** | `output_tokens`（含思考） | `output_ratio` / 1M |
+
+公式与 [Chat Completions](/zh/api-reference/chat/completions#usage-与计费) 相同。任务 ID 前缀为 `msg_`。
+
+<Warning>
+调用前请保证吉米币可用余额大于 0。可通过 [查询用户账户余额](/zh/api-reference/common/user-balance) 查看。
+</Warning>
+
+### 错误说明
+
+| 情况 | 行为 |
+| :--- | :--- |
+| API Key 缺失或无效 | `{ "code": …, "msg": "…" }` |
+| 使用了其他模型 | `msg` 提示仅支持 `claude-opus-5-5` |
+| 余额不足 | `msg` 中返回说明 |
+| 在 Chat Completions 或 Responses 中调用本模型 | `msg` 指向本接口 |
+| 模型侧错误 | 尽量返回模型 HTTP 状态码与 body |

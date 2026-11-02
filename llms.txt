@@ -67,6 +67,8 @@
 
 - [Chat Completions](https://docs.viraltok.ai/en/api-reference/chat/completions.md): OpenAI-compatible LLM chat (`gpt-5.6-sol`, `gpt-5.6-terra`, `claude-sonnet-5`); pay-as-you-go token billing with cache read/write breakdown.
 - [Chat Completions](https://docs.viraltok.ai/zh/api-reference/chat/completions.md): 兼容 OpenAI 的 LLM 对话（`gpt-5.6-sol`、`gpt-5.6-terra`、`claude-sonnet-5`）；按 token 计费，支持缓存读/写分段。
+- [Messages](https://docs.viraltok.ai/en/api-reference/chat/messages.md): Anthropic Messages API for `claude-opus-5-5` at `POST /api/open-api/v1/messages`. Not available on Chat Completions.
+- [Messages](https://docs.viraltok.ai/zh/api-reference/chat/messages.md): `claude-opus-5-5` 的 Anthropic Messages 接口，路径 `POST /api/open-api/v1/messages`，不走 Chat Completions。
 - [Probe model pricing](https://docs.viraltok.ai/en/api-reference/common/model-catalog.md): Public model catalog including `llm` billing models.
 
 ### Integrations

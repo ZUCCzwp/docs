@@ -4,13 +4,11 @@ description: '在 Claude Code 中接入 ViraltokAI LLM API'
 icon: 'asterisk'
 ---
 
-本指南说明如何在 **Claude Code** 中使用 ViraltokAI 的 LLM 能力。Claude Code 使用 Anthropic Messages 协议，需通过 **CC Switch** 转换后接入 ViraltokAI。
+本指南说明如何在 **Claude Code** 中使用 ViraltokAI 的 LLM 能力。`claude-opus-5-5` 直接走 [Messages](/zh/api-reference/chat/messages)。其他模型仍可通过 **CC Switch** 转到 Chat Completions。
 
 <Info>
-若你使用 OpenAI 兼容客户端或脚本，**默认请走 Responses API**（`POST /api/open-api/v1/responses`），见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。Claude Code CLI 因协议不同，仍走下方 CC Switch 方案。
+脚本或后端调用 `claude-opus-5-5` 时，直接请求 `POST /api/open-api/v1/messages`。OpenAI 兼容模型请走 [Responses](/zh/api-reference/llm/integrations/codex) 或 [Chat Completions](/zh/api-reference/chat/completions)。
 </Info>
-
-若你只需在脚本或后端调用 LLM，优先使用 Responses 或 Chat Completions HTTP API，无需安装 Claude Code。
 
 ## 开始之前
 
@@ -29,7 +27,18 @@ icon: 'asterisk'
 </Step>
 </Steps>
 
-## 推荐：CC Switch + Chat Completions
+## Claude Opus 5.5：直连 Messages
+
+```bash
+export ANTHROPIC_BASE_URL=https://api.viraltok.ai/api/open-api
+export ANTHROPIC_API_KEY=YOUR_API_KEY
+export ANTHROPIC_MODEL=claude-opus-5-5
+claude
+```
+
+Base URL 不要再加 `/v1`。客户端会请求 `/v1/messages`。`claude-opus-5.5` 与 `claude-opus-55` 会归一化为 `claude-opus-5-5`。
+
+## 其他模型：CC Switch + Chat Completions
 
 数据流如下：
 
@@ -48,7 +57,7 @@ Claude Code  →  Anthropic Messages  →  CC Switch（127.0.0.1）  →  Viralt
 | API Key | 你的 ViraltokAI Open API Key |
 
 <Note>
-模型 ID 必须与 ViraltokAI 控制台中配置的计费 ID **完全一致**。Claude 档位请用 `claude-sonnet-5`，不要用 Anthropic 官方模型名。
+模型 ID 必须与 ViraltokAI 控制台中的计费 ID **完全一致**。`claude-opus-5-5` 不要配在这里，请用上面的 Messages 直连。
 </Note>
 
 ### 2. 开启 Claude Code 路由
@@ -99,7 +108,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 流式请求将 `"stream": true`，计费以最后一个带 `usage` 的事件或 chunk 为准。
 
 <Warning>
-不要将 Claude Code 的 `ANTHROPIC_BASE_URL` 直接设为 `https://api.viraltok.ai/...` 且期望原生 Messages 协议可用——ViraltokAI LLM 入口为 OpenAI 兼容格式，需 CC Switch 或自建网关做协议转换。
+`claude-opus-5-5` 可以把 `ANTHROPIC_BASE_URL` 设为 `https://api.viraltok.ai/api/open-api`。`claude-sonnet-5` 与 GPT 模型仍是 OpenAI 兼容协议，不要把它们的 Base URL 指到 Messages。
 </Warning>
 
 ---
@@ -108,6 +117,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 
 | 模型 ID | 典型用途 |
 | :--- | :--- |
+| `claude-opus-5-5` | Claude Opus 5.5。仅 [Messages](/zh/api-reference/chat/messages) |
 | `claude-sonnet-5` | 代码与对话，Claude 档位 |
 | `gpt-5.6-sol` | 通用推理与编码 |
 | `gpt-5.6-terra` | GPT-5.6 Terra 档位 |
@@ -120,7 +130,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 
 - 按响应 `usage` 中的 token 从吉米币扣费（输入 / 输出 / 缓存读 / 缓存写）。
 - 余额不足时，请求会在转发上游前被拒绝；请先 [查询用户账户余额](/zh/api-reference/common/user-balance)。
-- 控制台可查看 `chat_` 前缀任务与用量明细。
+- 控制台可查看 `msg_`（Messages）或 `chat_`（Chat Completions）前缀任务与用量明细。
 
 ---
 
@@ -140,6 +150,9 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 <CardGroup cols={2}>
   <Card title="Codex 集成" icon="terminal" href="/zh/api-reference/llm/integrations/codex">
     OpenAI Codex 接入 ViraltokAI LLM
+  </Card>
+  <Card title="Messages" icon="message" href="/zh/api-reference/chat/messages">
+    Claude Opus 5.5 的 /v1/messages
   </Card>
   <Card title="Chat Completions" icon="comments" href="/zh/api-reference/chat/completions">
     接口参数、流式与计费公式

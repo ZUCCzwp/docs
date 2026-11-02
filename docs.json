@@ -292,7 +292,8 @@
               {
                 "group": "Chat",
                 "pages": [
-                  "en/api-reference/chat/completions"
+                  "en/api-reference/chat/completions",
+                  "en/api-reference/chat/messages"
                 ]
               }
             ]
@@ -603,7 +604,8 @@
               {
                 "group": "对话",
                 "pages": [
-                  "zh/api-reference/chat/completions"
+                  "zh/api-reference/chat/completions",
+                  "zh/api-reference/chat/messages"
                 ]
               }
             ]

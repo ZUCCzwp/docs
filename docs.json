@@ -205,6 +205,7 @@
                     "group": "Wan 3 Prime",
                     "icon": "star",
                     "pages": [
+                      "en/api-reference/wan/create-prime",
                       "en/api-reference/wan/create-prime-gl"
                     ]
                   }
@@ -517,6 +518,7 @@
                     "group": "Wan 3 Prime",
                     "icon": "star",
                     "pages": [
+                      "zh/api-reference/wan/create-prime",
                       "zh/api-reference/wan/create-prime-gl"
                     ]
                   }

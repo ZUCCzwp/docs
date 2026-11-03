@@ -1,0 +1,127 @@
+---
+title: 'Create Wan 3.0 Prime video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+---
+
+<Note>
+A successful create call returns a `task_id`. Poll [Query video task](/en/api-reference/common/query) until the task finishes, then read the video URL from `result.video_url`.
+</Note>
+
+This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-prime"`; it is billed separately. For Prime Official Channel, see [`wan3.0-prime-gl`](/en/api-reference/wan/create-prime-gl).
+
+## Supported models
+
+| model | Description |
+|-------|-------------|
+| `wan3.0-prime` | Wan 3.0 Prime video generation. Supports text-to-video, first-frame / first-and-last-frame video, and reference video (up to 10 images, 5 videos, 5 audios). 4–30s duration, 480p/720p/1080p. |
+
+This model **does not** support `file_url` / `link_url`. Use [`wan3.0-gz`](/en/api-reference/wan/create-gz) when you need a reference document or webpage.
+
+## Generation modes
+
+| Mode | What to send |
+|------|----------------|
+| Text to video | `prompt` |
+| First frame | `prompt` + `first_image` |
+| First and last frame | `prompt` + `first_image` + `last_image` |
+| Reference video | `prompt` + `reference_images` / `reference_videos` / `reference_audios` |
+
+`prompt` is required. First/last frames (`first_image` / `last_image`) **cannot** be combined with reference images, videos, or audios.
+
+Aliases `wan30-prime` and `wan-3.0-prime` normalize to `wan3.0-prime`. You may also pass billing models `wan3.0-prime-480p` / `wan3.0-prime-720p` / `wan3.0-prime-1080p` directly; the suffix then sets the resolution.
+
+## Limits
+
+- **Prompt**: required. Refer to media as 图1 / 视频1 / 音频1, numbered in array order within each media type.
+- **Duration**: 4–30 seconds, default `5`.
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `adaptive`, `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`. Default `adaptive`.
+- **Resolution**: `480P`, `720P`, `1080P` (case-insensitive). Default `1080P`.
+- **Reference images**: `reference_images` or `images`, up to **10** public URLs.
+- **Reference videos**: `reference_videos` or `videos`, up to **5**, total duration at most 15 seconds, public URLs.
+- **Reference audios**: `reference_audios`, up to **5**, total duration at most 15 seconds, public URLs.
+- **First / last frame**: one public URL each. `last_image` requires `first_image`.
+- **Seed**: `-1`–`2147483647`, default `-1`.
+- **Generate audio** (`generate_audio`): default `false`.
+- **Prompt rewrite** (`prompt_extend`): default `true`.
+- **Watermark**: default `false`.
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `wan3.0-prime`, or a resolution billing model |
+| `prompt` | string | Yes | Text prompt |
+| `duration` | integer | No | Seconds, 4–30, default 5 |
+| `aspect_ratio` | string | No | Aspect ratio. Takes precedence over `ratio`. Default `adaptive` |
+| `ratio` | string | No | Alias for `aspect_ratio` |
+| `resolution` | string | No | `480P` / `720P` / `1080P`, default `1080P` |
+| `reference_images` | string[] | No | Reference image URLs (0–10) |
+| `images` | string[] | No | Alias for `reference_images` when that field is empty |
+| `reference_videos` | string[] | No | Reference video URLs (0–5) |
+| `videos` | string[] | No | Alias for `reference_videos` |
+| `reference_audios` | string[] | No | Reference audio URLs (0–5) |
+| `first_image` | string | No | First-frame image URL |
+| `last_image` | string | No | Last-frame image URL. Requires `first_image` |
+| `seed` | integer | No | Random seed, default -1 |
+| `generate_audio` | boolean | No | Whether to generate an audio track, default false |
+| `prompt_extend` | boolean | No | Whether to rewrite the prompt, default true |
+| `watermark` | boolean | No | Whether to add a watermark, default false |
+
+## Examples
+
+### Reference video
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-prime",
+    "prompt": "The person in image 1 runs along the shore, cinematic camera move",
+    "duration": 5,
+    "aspect_ratio": "9:16",
+    "resolution": "1080P",
+    "reference_images": ["https://example.com/person.png"]
+  }'
+```
+
+### First and last frame
+
+```json
+{
+  "model": "wan3.0-prime",
+  "prompt": "A smile grows into a laugh as the light shifts from cool to warm",
+  "first_image": "https://example.com/first.png",
+  "last_image": "https://example.com/last.png",
+  "duration": 5
+}
+```
+
+### Text to video
+
+```json
+{
+  "model": "wan3.0-prime",
+  "prompt": "Morning sea, mist lifting, cinematic push-in",
+  "duration": 8,
+  "aspect_ratio": "21:9",
+  "resolution": "1080P",
+  "generate_audio": false,
+  "prompt_extend": true,
+  "watermark": false
+}
+```
+
+## Billing
+
+- Mode: `per_second`
+- Request model: `wan3.0-prime` (or a resolution billing model)
+- Billing model: `wan3.0-prime-{resolution}` (`wan3.0-prime-480p` / `wan3.0-prime-720p` / `wan3.0-prime-1080p`); unit price differs by resolution
+- When `resolution` is omitted, billing uses `1080P`
+- `duration` affects the charge
+
+```text
+cost = unit_price × duration
+```
+
+Unit prices are the ones configured in the console.

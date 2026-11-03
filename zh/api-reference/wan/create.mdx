@@ -49,7 +49,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 
 - 计费方式：`per_second`（按秒）
 - 请求模型名：`wan3.0`（或分辨率计费型号）
-- 计费模型名：`wan3.0-{resolution}`（`wan3.0-480p` / `wan3.0-720p` / `wan3.0-1080p`）；若未配置分辨率行则回退到 `wan3.0`
+- 计费模型名：`wan3.0-{resolution}`（`wan3.0-480p` / `wan3.0-720p` / `wan3.0-1080p`）。未传 `resolution` 时按 `wan3.0-480p` 计费
 - `duration` 参与计费
 
 ```text

@@ -11,7 +11,7 @@ Path: `POST /api/open-api/v1/images`. Set `model` to `gpt-image-2.6-flare` or `g
 - `gpt-image-2.6-flare`: faster generation for everyday output, batches, and prototypes
 - `gpt-image-2.6-sunburst`: higher edit precision for finished product images and multi-turn edits
 
-Billing is **quality unit price × `n`**. `auto`, `low`, `medium`, `high`, `xhigh`, and `max` each have their own price.
+Async billing is **quality unit price × `n`**. `auto`, `low`, `medium`, `high`, `xhigh`, and `max` each have their own price. Sync calls bill by model name and ignore quality for pricing.
 
 For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations) or [GPT Image 2.6 Edit Image](/en/api-reference/images/gpt-image-2.6/edits) (direct host: `https://img.viraltok.ai`).
 </Note>
@@ -21,7 +21,7 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-r
 | Item | Description |
 |------|-------------|
 | Model | `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
-| Billing | **quality unit price × `n`** (per image) |
+| Billing | **async: quality unit price × `n`** (per image) |
 | Mode | Text-to-image, or edit with `images` (up to 16) |
 | Ratio | `ratio` (for example `1:1`, `16:9`, pixels `1600x1200`, or `auto`) |
 | Resolution | `resolution`: `1k` / `2k` / `4k` (ignored when `ratio` is an exact pixel size) |
@@ -29,9 +29,11 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-r
 
 ## Billing
 
-Keep the request `model` as `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`. Cost = that quality's unit price × `n`. Omit `quality` or send `auto` to use the auto price. Async and sync prices are independent. If a quality tier is not configured, billing falls back to that model's auto price.
+Keep the request `model` as `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`. Async cost = that quality's unit price × `n`. Omit `quality` or send `auto` to use the auto price. If a quality tier is not configured, billing falls back to that model's auto price.
 
-### Async
+Sync generations / edits bill `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst` only. `quality` does not change the sync price. See [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations).
+
+Async billing models:
 
 | `quality` | `gpt-image-2.6-flare` | `gpt-image-2.6-sunburst` |
 |-----------|------------------------|---------------------------|
@@ -42,11 +44,7 @@ Keep the request `model` as `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`. Co
 | `xhigh` | `gpt-image-2.6-flare-async-xhigh` | `gpt-image-2.6-sunburst-async-xhigh` |
 | `max` | `gpt-image-2.6-flare-async-max` | `gpt-image-2.6-sunburst-async-max` |
 
-### Sync
-
-Sync generations / edits use a separate set of billing models. See [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations).
-
-Unit prices follow the console / pricing page.
+Unit prices follow the console / pricing page. They are independent from sync prices.
 
 ## Request fields
 

@@ -20,25 +20,27 @@ Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Ima
 | Item | Description |
 |------|-------------|
 | Model | `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
-| Billing | **unit price × `n`** (per image) |
+| Billing | **quality unit price × `n`** (per image) |
 | Mode | Synchronous text-to-image |
 | Size | `size` (for example `1024x1024`), default `1024x1024` |
-| Quality | `quality`: `auto` / `low` / `medium` / `high` (optional; **does not change the billing model**) |
+| Quality | `quality`: `auto` / `low` / `medium` / `high` / `xhigh` / `max` |
 
 `gpt-image-2.6-flare` is faster for everyday output, batches, and prototypes. `gpt-image-2.6-sunburst` favors edit precision for finished product images and multi-turn edits.
 
 ## Billing
 
-| Request `model` | Billing model |
-|-----------------|---------------|
-| `gpt-image-2.6-flare` | `gpt-image-2.6-flare` |
-| `gpt-image-2.6-sunburst` | `gpt-image-2.6-sunburst` |
+Cost = that quality's unit price × `n`. Omit `quality` or send `auto` to use the auto price. If a quality tier is not configured, billing falls back to that model's auto price. Independent from async `POST /images` billing models.
 
-```text
-total cost = unit price × n
-```
+| `quality` | `gpt-image-2.6-flare` | `gpt-image-2.6-sunburst` |
+|-----------|------------------------|---------------------------|
+| `auto` (default) | `gpt-image-2.6-flare` | `gpt-image-2.6-sunburst` |
+| `low` | `gpt-image-2.6-flare-low` | `gpt-image-2.6-sunburst-low` |
+| `medium` | `gpt-image-2.6-flare-medium` | `gpt-image-2.6-sunburst-medium` |
+| `high` | `gpt-image-2.6-flare-high` | `gpt-image-2.6-sunburst-high` |
+| `xhigh` | `gpt-image-2.6-flare-xhigh` | `gpt-image-2.6-sunburst-xhigh` |
+| `max` | `gpt-image-2.6-flare-max` | `gpt-image-2.6-sunburst-max` |
 
-Unit prices follow the console / pricing page. Independent from async billing keys `gpt-image-2.6-*-async`.
+Unit prices follow the console / pricing page.
 
 ## Request fields
 
@@ -48,7 +50,7 @@ Unit prices follow the console / pricing page. Independent from async billing ke
 | `prompt` | string | Yes | Image prompt |
 | `size` | string | No | Pixel size, such as `1024x1024`. Default `1024x1024` |
 | `n` | int | No | Number of images. Default `1` |
-| `quality` | string | No | `auto` / `low` / `medium` / `high` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` / `xhigh` / `max`. Omitted requests are billed as `auto` |
 | `response_format` | string | No | `url` (default) or `b64_json` |
 
 ## Examples

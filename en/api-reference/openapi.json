@@ -176,7 +176,7 @@
                   },
                   "quality": {
                     "type": "string",
-                    "description": "Image quality (gpt-image-2 / gpt-image-1.5). Supported values: low, medium, high, auto.",
+                    "description": "Image quality. gpt-image-2 / gpt-image-1.5: low, medium, high, auto. gpt-image-2.6 also accepts xhigh and max. auto, low, medium, high, xhigh, and max each have their own price.",
                     "enum": [
                       "low",
                       "medium",
@@ -2759,7 +2759,7 @@
           },
           "quality": {
             "type": "string",
-            "description": "Image quality (gpt-image-2 / gpt-image-1.5). Supported values: low, medium, high, auto.",
+            "description": "Image quality. gpt-image-2 / gpt-image-1.5: low, medium, high, auto. gpt-image-2.6 also accepts xhigh and max. auto, low, medium, high, xhigh, and max each have their own price.",
             "enum": [
               "low",
               "medium",
@@ -4445,7 +4445,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.6-flare / gpt-image-2.6-sunburst (sync billed by model name; async via POST /images) and gpt-image-2.5-flare / gpt-image-2.5-sunburst (sync billed by model name; async via POST /images). gpt-image-1.5 is async-only and not supported on sync generations/edits.",
+            "description": "Model name. Default: gpt-image-2. Also supports gpt-image-2.6-flare / gpt-image-2.6-sunburst (billed by quality: auto / low / medium / high / xhigh / max; async via POST /images) and gpt-image-2.5-flare / gpt-image-2.5-sunburst (sync billed by model name; async via POST /images). gpt-image-1.5 is async-only and not supported on sync generations/edits.",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },
@@ -4466,7 +4466,7 @@
           },
           "quality": {
             "type": "string",
-            "description": "Quality tier. gpt-image-2 sync billing: auto→gpt-image-2-sync, low/medium/high→gpt-image-2-sync-{quality}",
+            "description": "Quality tier. gpt-image-2 sync billing: auto→gpt-image-2-sync, low/medium/high→gpt-image-2-sync-{quality}. gpt-image-2.6: auto, low, medium, high, xhigh, and max each have their own price",
             "enum": [
               "low",
               "medium",

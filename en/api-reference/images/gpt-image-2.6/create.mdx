@@ -11,7 +11,7 @@ Path: `POST /api/open-api/v1/images`. Set `model` to `gpt-image-2.6-flare` or `g
 - `gpt-image-2.6-flare`: faster generation for everyday output, batches, and prototypes
 - `gpt-image-2.6-sunburst`: higher edit precision for finished product images and multi-turn edits
 
-Billing is **unit price × `n`**. `quality` does not change the billing model name.
+Billing is **quality unit price × `n`**. `auto`, `low`, `medium`, `high`, `xhigh`, and `max` each have their own price.
 
 For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations) or [GPT Image 2.6 Edit Image](/en/api-reference/images/gpt-image-2.6/edits) (direct host: `https://img.viraltok.ai`).
 </Note>
@@ -21,7 +21,7 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-r
 | Item | Description |
 |------|-------------|
 | Model | `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
-| Billing | **unit price × `n`** (per image) |
+| Billing | **quality unit price × `n`** (per image) |
 | Mode | Text-to-image, or edit with `images` (up to 16) |
 | Ratio | `ratio` (for example `1:1`, `16:9`, pixels `1600x1200`, or `auto`) |
 | Resolution | `resolution`: `1k` / `2k` / `4k` (ignored when `ratio` is an exact pixel size) |
@@ -29,18 +29,24 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-r
 
 ## Billing
 
-Keep the request `model` as `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`. Async and sync use **different billing model names**:
+Keep the request `model` as `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`. Cost = that quality's unit price × `n`. Omit `quality` or send `auto` to use the auto price. Async and sync prices are independent. If a quality tier is not configured, billing falls back to that model's auto price.
 
-| Request `model` | Async billing model | Sync billing model |
-|-----------------|---------------------|--------------------|
-| `gpt-image-2.6-flare` | `gpt-image-2.6-flare-async` | `gpt-image-2.6-flare` |
-| `gpt-image-2.6-sunburst` | `gpt-image-2.6-sunburst-async` | `gpt-image-2.6-sunburst` |
+### Async
 
-```text
-total cost = async unit price × n
-```
+| `quality` | `gpt-image-2.6-flare` | `gpt-image-2.6-sunburst` |
+|-----------|------------------------|---------------------------|
+| `auto` (default) | `gpt-image-2.6-flare-async` | `gpt-image-2.6-sunburst-async` |
+| `low` | `gpt-image-2.6-flare-async-low` | `gpt-image-2.6-sunburst-async-low` |
+| `medium` | `gpt-image-2.6-flare-async-medium` | `gpt-image-2.6-sunburst-async-medium` |
+| `high` | `gpt-image-2.6-flare-async-high` | `gpt-image-2.6-sunburst-async-high` |
+| `xhigh` | `gpt-image-2.6-flare-async-xhigh` | `gpt-image-2.6-sunburst-async-xhigh` |
+| `max` | `gpt-image-2.6-flare-async-max` | `gpt-image-2.6-sunburst-async-max` |
 
-Unit prices follow the console / pricing page. They are independent from sync generations/edits prices.
+### Sync
+
+Sync generations / edits use a separate set of billing models. See [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations).
+
+Unit prices follow the console / pricing page.
 
 ## Request fields
 
@@ -50,7 +56,7 @@ Unit prices follow the console / pricing page. They are independent from sync ge
 | `prompt` | string | Yes | Generation or edit prompt |
 | `ratio` | string | No | Aspect ratio, exact pixels, or `auto`. Omitted text-to-image requests use `auto`. Omitted edits follow the first reference image and `resolution` |
 | `resolution` | string | No | `1k` / `2k` / `4k`. Default `1k` |
-| `quality` | string | No | `auto` / `low` / `medium` / `high` / `xhigh` / `max`. Omitted requests let the model choose a tier. **Does not change the billing model** |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` / `xhigh` / `max`. Omitted requests are billed as `auto` |
 | `n` | int | No | Number of images, `1`–`4`. Default `1` |
 | `images` | string[] | No | Reference image URLs, up to 16. Turns the request into an edit |
 | `mask_url` | string | No | Inpainting mask. Requires `images` |

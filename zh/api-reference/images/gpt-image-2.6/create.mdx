@@ -11,7 +11,7 @@ openapi: 'POST /api/open-api/v1/images'
 - `gpt-image-2.6-flare`：生成更快，适合日常高质量出图、批量与快速原型
 - `gpt-image-2.6-sunburst`：更强调编辑精度，适合成品级商品图与多轮精细编辑
 
-两者按**型号单价 × 张数 `n`** 计费（画质档位不改变计费型号名）。
+两者按**画质单价 × 张数 `n`** 计费。`quality` 为 `auto`、`low`、`medium`、`high`、`xhigh`、`max` 时单价不同。
 
 若需 **OpenAI 兼容同步**接口，请使用 [GPT Image 2.6 文生图](/zh/api-reference/images/gpt-image-2.6/generations) 或 [GPT Image 2.6 编辑图片](/zh/api-reference/images/gpt-image-2.6/edits)（生图直连：`https://img.viraltok.ai`）。
 </Note>
@@ -21,7 +21,7 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 说明 |
 |------|------|
 | 模型名 | `gpt-image-2.6-flare`、`gpt-image-2.6-sunburst` |
-| 计费 | **型号单价 × 张数 `n`**（按次） |
+| 计费 | **画质单价 × 张数 `n`**（按次） |
 | 模式 | 文生图、参考图编辑（`images`，最多 16 张） |
 | 比例 | `ratio`（如 `1:1`、`16:9`、像素 `1600x1200`，或 `auto`） |
 | 分辨率 | `resolution`：`1k` / `2k` / `4k`（精确像素 `ratio` 时忽略） |
@@ -29,18 +29,24 @@ openapi: 'POST /api/open-api/v1/images'
 
 ## 计费说明
 
-公开请求仍使用 `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`。异步与同步使用**不同计费型号**：
+公开请求仍使用 `gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`。费用 = 对应画质计费型号单价 × `n`。省略 `quality` 或传 `auto` 走该型号的 auto 价。异步与同步价格相互独立。未配置某一档时，回退到同型号 auto 价。
 
-| 请求 `model` | 计费型号（异步） | 同步计费型号 |
-|--------------|------------------|--------------|
-| `gpt-image-2.6-flare` | `gpt-image-2.6-flare-async` | `gpt-image-2.6-flare` |
-| `gpt-image-2.6-sunburst` | `gpt-image-2.6-sunburst-async` | `gpt-image-2.6-sunburst` |
+### 异步
 
-```text
-总费用 = 异步计费型号单价 × n
-```
+| `quality` | `gpt-image-2.6-flare` | `gpt-image-2.6-sunburst` |
+|-----------|------------------------|---------------------------|
+| `auto`（默认） | `gpt-image-2.6-flare-async` | `gpt-image-2.6-sunburst-async` |
+| `low` | `gpt-image-2.6-flare-async-low` | `gpt-image-2.6-sunburst-async-low` |
+| `medium` | `gpt-image-2.6-flare-async-medium` | `gpt-image-2.6-sunburst-async-medium` |
+| `high` | `gpt-image-2.6-flare-async-high` | `gpt-image-2.6-sunburst-async-high` |
+| `xhigh` | `gpt-image-2.6-flare-async-xhigh` | `gpt-image-2.6-sunburst-async-xhigh` |
+| `max` | `gpt-image-2.6-flare-async-max` | `gpt-image-2.6-sunburst-async-max` |
 
-单价以控制台 / 定价页为准。与同步 generations/edits 价格相互独立。
+### 同步
+
+同步 generations / edits 使用另一套计费型号，见 [GPT Image 2.6 文生图](/zh/api-reference/images/gpt-image-2.6/generations)。
+
+单价以控制台 / 定价页为准。
 
 ## 请求参数
 
@@ -50,7 +56,7 @@ openapi: 'POST /api/open-api/v1/images'
 | `prompt` | string | 是 | 图像生成或编辑提示词 |
 | `ratio` | string | 否 | 比例、精确像素或 `auto`。文生图省略时按 `auto`。图生图省略时按首张参考图与 `resolution` 推断 |
 | `resolution` | string | 否 | `1k` / `2k` / `4k`，默认 `1k` |
-| `quality` | string | 否 | `auto` / `low` / `medium` / `high` / `xhigh` / `max`。省略时由模型选择档位，**不改变计费型号** |
+| `quality` | string | 否 | `auto` / `low` / `medium` / `high` / `xhigh` / `max`。省略时按 `auto` 计费 |
 | `n` | int | 否 | 生成张数，`1`～`4`，默认 `1` |
 | `images` | string[] | 否 | 参考图 URL，最多 16 张；传入后进入编辑模式 |
 | `mask_url` | string | 否 | 局部重绘蒙版，需同时传 `images` |

@@ -4346,9 +4346,10 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni"
+              "gemini-omni",
+              "gemini-omni-1.1"
             ],
-            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini."
+            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini. gemini-omni-1.1 is billed per second by resolution."
           },
           "prompt": {
             "type": "string",
@@ -4357,17 +4358,18 @@
           "duration": {
             "type": "integer",
             "default": 6,
-            "description": "Video duration in seconds. Default: 6. Only supports: 4, 6, 8, 10. Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time."
+            "description": "Video duration in seconds. Gemini-Omini defaults to 6 and only supports 4, 6, 8, or 10. Do not send duration together with video_urls. gemini-omni-1.1 ignores this field."
           },
           "resolution": {
             "type": "string",
             "default": "720p",
             "enum": [
+              "360p",
               "720p",
               "1080p",
               "4k"
             ],
-            "description": "Video resolution. Defaults to 720p."
+            "description": "Video resolution. Defaults to 720p. 360p is for gemini-omni-1.1. 2160p is treated as 4k."
           },
           "aspect_ratio": {
             "type": "string",
@@ -4409,7 +4411,19 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference video URL list (currently supports up to 1 video). Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time."
+            "description": "Reference video URL list (currently supports up to 1 video). Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time. For gemini-omni-1.1 the clip must be 10 seconds or shorter, and cannot be combined with extend_from_task_id."
+          },
+          "first_frame_image": {
+            "type": "string",
+            "description": "gemini-omni-1.1 first frame image URL. Do not send it together with image_urls."
+          },
+          "last_frame_image": {
+            "type": "string",
+            "description": "gemini-omni-1.1 last frame image URL. Requires first_frame_image."
+          },
+          "extend_from_task_id": {
+            "type": "string",
+            "description": "gemini-omni-1.1 task_id of a completed Gemini Omni 1.1 video to continue. Mutually exclusive with video_urls."
           }
         },
         "example": {

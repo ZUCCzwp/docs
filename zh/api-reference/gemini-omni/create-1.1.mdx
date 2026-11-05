@@ -1,0 +1,40 @@
+---
+title: '创建 Gemini Omni 1.1 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/gemini/omni/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Gemini Omni 视频](/zh/api-reference/gemini-omni/create) 共用 `POST /api/open-api/v1/gemini/omni/videos`。将 `model` 设为 `gemini-omni-1.1` 即使用本型号。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `gemini-omni-1.1` | Gemini Omni 1.1。分辨率 `360p` / `720p` / `1080p` / `4k`，按秒计费 |
+
+## 计费
+
+不要传 `duration`。成片时长由模型决定，通常为 3–10 秒。提交时按所选分辨率预扣 10 秒，任务完成后按成片实际时长多退少补。
+
+| 分辨率 | 计费型号 |
+|--------|----------|
+| `360p` | `gemini-omni-1.1-360p` |
+| `720p`（默认） | `gemini-omni-1.1-720p` |
+| `1080p` | `gemini-omni-1.1-1080p` |
+| `4k` | `gemini-omni-1.1-4k` |
+
+`2160p` 按 `4k` 处理。默认比例是 `16:9`。`portrait` 映射为 `9:16`，`landscape` 映射为 `16:9`。只支持这两种比例。
+
+## 请求字段
+
+`prompt` 与素材至少填一项。素材可以是 `image_urls`、首尾帧或 `video_urls`。
+
+- `first_frame_image` / `last_frame_image`：首帧、尾帧。只传尾帧会失败。首尾帧不要和 `image_urls` 同时传。
+- `generation_type` 设为 `frame`，且 `image_urls` 只有 1 张图时，这张图作为首帧。
+- `video_urls`：最多 1 段参考视频，时长不超过 10 秒。不能和 `extend_from_task_id` 同时传。
+- `extend_from_task_id`：上一轮已完成的 Gemini Omni 1.1 任务 `task_id`，用于续写。
+
+图片和首尾帧合计最多 10 张。

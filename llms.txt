@@ -38,7 +38,9 @@
 ### Gemini Omni Video
 
 - [Create Gemini Omni Video](https://docs.viraltok.ai/en/api-reference/gemini-omni/create.md): Create a Gemini Omni video generation task; poll the common query endpoint for results.
+- [Create Gemini Omni 1.1 video](https://docs.viraltok.ai/en/api-reference/gemini-omni/create-1.1.md): Create a Gemini Omni 1.1 video. Billed per second by resolution on the same endpoint.
 - [创建 Gemini Omni 视频](https://docs.viraltok.ai/zh/api-reference/gemini-omni/create.md): 创建 Gemini Omni 视频生成任务，通过通用查询接口获取结果。
+- [创建 Gemini Omni 1.1 视频](https://docs.viraltok.ai/zh/api-reference/gemini-omni/create-1.1.md): 创建 Gemini Omni 1.1 视频，按分辨率按秒计费，与标准版共用同一接口。
 - [Create Muse Video](https://docs.viraltok.ai/en/api-reference/muse/create.md): Create a Muse (`muse-videos`) video task (text-to-video or up to 9 reference images; ~10s 720p with audio); billed per_task; poll the common query endpoint.
 - [创建 Muse 视频](https://docs.viraltok.ai/zh/api-reference/muse/create.md): 创建 Muse（`muse-videos`）视频任务（文生视频或最多 9 张参考图；约 10 秒 720p 带声音），按次计费，通过通用查询接口获取结果。
 

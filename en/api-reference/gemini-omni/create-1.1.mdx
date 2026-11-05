@@ -1,0 +1,40 @@
+---
+title: 'Create Gemini Omni 1.1 video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/gemini/omni/videos'
+---
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>
+
+This call shares `POST /api/open-api/v1/gemini/omni/videos` with [Create Gemini Omni Video](/en/api-reference/gemini-omni/create). Set `model` to `gemini-omni-1.1`.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `gemini-omni-1.1` | Gemini Omni 1.1. Resolutions `360p` / `720p` / `1080p` / `4k`, billed per second |
+
+## Billing
+
+Do not send `duration`. The model chooses the length, usually 3–10 seconds. The request prepays 10 seconds at the selected resolution. After the task completes, the charge is adjusted to the actual video length.
+
+| Resolution | Billing model |
+|------------|---------------|
+| `360p` | `gemini-omni-1.1-360p` |
+| `720p` (default) | `gemini-omni-1.1-720p` |
+| `1080p` | `gemini-omni-1.1-1080p` |
+| `4k` | `gemini-omni-1.1-4k` |
+
+`2160p` is treated as `4k`. The default aspect ratio is `16:9`. `portrait` maps to `9:16`, and `landscape` maps to `16:9`. Only these two ratios are supported.
+
+## Request fields
+
+Provide `prompt` or at least one asset: `image_urls`, a first/last frame, or `video_urls`.
+
+- `first_frame_image` / `last_frame_image`: start and end frames. A last frame without a first frame fails. Do not send frames together with `image_urls`.
+- With `generation_type` set to `frame` and a single `image_urls` entry, that image is the first frame.
+- `video_urls`: at most one reference video, no longer than 10 seconds. Do not send it with `extend_from_task_id`.
+- `extend_from_task_id`: `task_id` of a completed Gemini Omni 1.1 task, used to continue that video.
+
+Images plus frames can total at most 10.

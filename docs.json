@@ -167,7 +167,8 @@
               {
                 "group": "Gemini Omni",
                 "pages": [
-                  "en/api-reference/gemini-omni/create"
+                  "en/api-reference/gemini-omni/create",
+                  "en/api-reference/gemini-omni/create-1.1"
                 ]
               },
               {
@@ -480,7 +481,8 @@
               {
                 "group": "Gemini Omni",
                 "pages": [
-                  "zh/api-reference/gemini-omni/create"
+                  "zh/api-reference/gemini-omni/create",
+                  "zh/api-reference/gemini-omni/create-1.1"
                 ]
               },
               {

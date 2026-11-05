@@ -4457,9 +4457,10 @@
             "enum": [
               "Gemini-Omini",
               "Omni-Flash-Ext",
-              "gemini-omni"
+              "gemini-omni",
+              "gemini-omni-1.1"
             ],
-            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini。"
+            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini。gemini-omni-1.1 按分辨率按秒计费。"
           },
           "prompt": {
             "type": "string",
@@ -4468,17 +4469,18 @@
           "duration": {
             "type": "integer",
             "default": 6,
-            "description": "视频时长，单位为秒。默认值：6。仅支持：4、6、8、10。注意：传入 video_urls 时不需要传入 duration，且 duration 与 video_urls 不可以同时传入。"
+            "description": "视频时长，单位为秒。Gemini-Omini 默认 6，仅支持 4、6、8、10。传入 video_urls 时不要传 duration。gemini-omni-1.1 不使用该字段。"
           },
           "resolution": {
             "type": "string",
             "default": "720p",
             "enum": [
+              "360p",
               "720p",
               "1080p",
               "4k"
             ],
-            "description": "视频分辨率，默认 720p。"
+            "description": "视频分辨率，默认 720p。360p 仅用于 gemini-omni-1.1。2160p 按 4k 处理。"
           },
           "aspect_ratio": {
             "type": "string",
@@ -4520,7 +4522,19 @@
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（目前最多支持 1 个视频）。注意：上传参考视频时不需要传入 duration，且 duration 与 video_urls 不可以同时传入。"
+            "description": "参考视频 URL 列表（目前最多支持 1 个视频）。上传参考视频时不要传 duration。gemini-omni-1.1 的参考视频不超过 10 秒，且不能和 extend_from_task_id 同时传。"
+          },
+          "first_frame_image": {
+            "type": "string",
+            "description": "gemini-omni-1.1 首帧图片 URL。不要和 image_urls 同时传。"
+          },
+          "last_frame_image": {
+            "type": "string",
+            "description": "gemini-omni-1.1 尾帧图片 URL。必须同时传 first_frame_image。"
+          },
+          "extend_from_task_id": {
+            "type": "string",
+            "description": "上一轮已完成的 Gemini Omni 1.1 任务 task_id，用于续写。不能和 video_urls 同时传。"
           }
         },
         "example": {

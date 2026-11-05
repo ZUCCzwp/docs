@@ -200,6 +200,12 @@
                 ]
               },
               {
+                "group": "Kling",
+                "pages": [
+                  "en/api-reference/kling/v4"
+                ]
+              },
+              {
                 "group": "Wan",
                 "pages": [
                   {
@@ -520,6 +526,12 @@
                 "pages": [
                   "zh/api-reference/minimax/create",
                   "zh/api-reference/minimax/create-gz"
+                ]
+              },
+              {
+                "group": "Kling",
+                "pages": [
+                  "zh/api-reference/kling/v4"
                 ]
               },
               {

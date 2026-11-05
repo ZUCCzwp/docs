@@ -1219,8 +1219,8 @@
     },
     "/api/open-api/v1/kling/videos": {
       "post": {
-        "summary": "Create Kling O3 Video",
-        "description": "Create a Kling O3 video task. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
+        "summary": "Create a Kling video",
+        "description": "Create a Kling video task. `kling-o3` and `kling-v4` share this endpoint. Poll GET /api/open-api/v1/videos/{taskId} for results. See the docs page for parameters and billing.",
         "operationId": "createKlingO3Video",
         "requestBody": {
           "required": true,
@@ -1236,9 +1236,10 @@
                   "model": {
                     "type": "string",
                     "enum": [
-                      "kling-o3"
+                      "kling-o3",
+                      "kling-v4"
                     ],
-                    "description": "Model ID such as `kling-o3`. See the docs page."
+                    "description": "Model ID. `kling-o3` or `kling-v4`. See the docs page."
                   },
                   "prompt": {
                     "type": "string",
@@ -1251,7 +1252,7 @@
                     "default": 6,
                     "minimum": 3,
                     "maximum": 15,
-                    "description": "Video duration in seconds. Supports 3–15. Defaults to 6."
+                    "description": "Video duration in seconds. kling-o3 supports 3–15 and defaults to 6. kling-v4 supports 3–30 and defaults to 5. If omitted on a kling-v4 edit, the output length follows the input video."
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -1303,7 +1304,91 @@
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "Optional last-frame image URL."
+                    "description": "Optional last-frame image URL. For kling-v4 this is the image-to-video last frame, or the target last frame of an extend."
+                  },
+                  "first_frame_image": {
+                    "type": "string",
+                    "description": "kling-v4 image-to-video first frame. Alias of first_image."
+                  },
+                  "last_frame_image": {
+                    "type": "string",
+                    "description": "kling-v4 last frame. Alias of last_image."
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 image URLs. Image-to-video accepts at most 2: image 1 is the first frame and image 2 is the last frame. Reference-to-video and edit accept at most 10 reference images. Set generation_type to reference when these images are references."
+                  },
+                  "image_with_roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["url", "role"],
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["first_frame", "last_frame", "keyframe", "middle_frame", "reference_image"]
+                        }
+                      }
+                    },
+                    "description": "kling-v4 images with roles. first_frame, last_frame, keyframe, or reference_image."
+                  },
+                  "video_url": {
+                    "type": "string",
+                    "description": "kling-v4 input video for edit or extend. Set generation_type to edit or extend."
+                  },
+                  "video_urls": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 reference videos, at most 5. Edit or extend can send exactly one URL here instead of video_url."
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias of video_urls for kling-v4."
+                  },
+                  "videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias of video_urls for kling-v4."
+                  },
+                  "audio_urls": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 reference audio, at most 3 clips, each 5–30 seconds."
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Alias of audio_urls for kling-v4."
+                  },
+                  "generation_type": {
+                    "type": "string",
+                    "enum": ["auto", "reference", "edit", "extend"],
+                    "default": "auto",
+                    "description": "kling-v4 mode. auto selects from the assets. reference, edit, and extend select those modes."
+                  },
+                  "audio_setting": {
+                    "type": "string",
+                    "enum": ["origin", "auto"],
+                    "description": "kling-v4 audio handling. origin keeps the source sound. auto generates new sound. Edit, or reference-to-video with a reference video, only."
                   },
                   "generate_audio": {
                     "type": "boolean",
@@ -3717,9 +3802,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "kling-o3"
+              "kling-o3",
+              "kling-v4"
             ],
-            "description": "Model ID such as `kling-o3`. See the docs page."
+            "description": "Model ID. `kling-o3` or `kling-v4`. See the docs page."
           },
           "prompt": {
             "type": "string",
@@ -3732,7 +3818,7 @@
             "default": 6,
             "minimum": 3,
             "maximum": 15,
-            "description": "Video duration in seconds. Supports 3–15. Defaults to 6."
+            "description": "Video duration in seconds. kling-o3 supports 3–15 and defaults to 6. kling-v4 supports 3–30 and defaults to 5. If omitted on a kling-v4 edit, the output length follows the input video."
           },
           "aspect_ratio": {
             "type": "string",

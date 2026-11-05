@@ -1,0 +1,128 @@
+---
+title: 'Create a Kling V4 video'
+openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
+---
+
+<Note>
+A successful call returns `task_id`. Poll [Query video task](/en/api-reference/common/query) and read the finished video from `result.video_url`.
+</Note>
+
+Set `model` to `kling-v4` and call `POST /api/open-api/v1/kling/videos`. You can create a video from text, images, or references, edit a video, or extend one. Output is `720p` or `1080p`, 3–30 seconds, and always includes a stereo soundtrack.
+
+## Modes
+
+All five modes use the same model id. The mode follows the assets you send and `generation_type`.
+
+| Mode | How to call it |
+|------|----------------|
+| Text to video | Do not send images, video, or audio |
+| Image to video | Send a first frame. You can add a last frame and up to 8 intermediate frames |
+| Reference to video | Send `video_urls`, `audio_urls`, or a `reference_image` in `image_with_roles`. To treat `image_urls` as reference images, set `generation_type` to `reference` |
+| Video edit | Set `generation_type` to `edit` and send one input video |
+| Video extend | Set `generation_type` to `extend` and send one input video |
+
+`generation_type` defaults to `auto`. You can omit it.
+
+Sending only `video_url` without `edit` or `extend` fails. To use a video as reference material, send `video_urls`.
+
+## Billing
+
+Billing is per second. `720p` and `1080p` have separate prices. Video edit, and reference-to-video that includes a reference video, use the video-input price.
+
+| Resolution | Standard | Video input |
+|------------|----------|-------------|
+| `720p` (default) | `kling-v4-720p` | `kling-v4-720p-video` |
+| `1080p` | `kling-v4-1080p` | `kling-v4-1080p-video` |
+
+| Mode | Billed seconds |
+|------|----------------|
+| Text, image, and reference with only images or audio | Output seconds |
+| Video extend | Seconds added by the new clip |
+| Video edit, and reference with video | Output seconds + max(output seconds, input video seconds) |
+
+Input video seconds are added together, rounded up, and capped at 30. If you omit `duration` on an edit, the output length follows the input video and uses the same rounding. Editing a 3.04 second video without `duration` bills 4 + 4 = 8 seconds.
+
+Video extend bills only the new clip. The result is the original video joined with the new clip.
+
+Input video length is read at submit. If the URL cannot be opened or the file is not a video, the call fails and you are not charged. A failed generation is refunded in full.
+
+## Parameters
+
+- **prompt**: What to generate or edit. You can omit it for image-to-video. Other modes require it. In reference-to-video, use `@Image1`, `@Video1`, and `@Audio1`. Numbering starts at 1 in each asset list. In an edit, the input video is `@Video1` and reference images are `@Image1`, `@Image2`, and so on.
+- **duration**: 3–30 seconds. Default `5`. If you omit it on an edit, the output length follows the input video. On an extend, this is the length of the new clip.
+- **resolution**: `720p` or `1080p`. Default `720p`. `mode` is not supported.
+- **aspect_ratio**: `16:9`, `9:16`, `1:1`, or `21:9`. Reference-to-video also accepts `auto`. `ratio` is an alias. When omitted, text-to-video uses `16:9`, image-to-video follows the first frame, reference-to-video uses `auto`, and an edit follows the input video. You cannot send this field on an extend.
+- **image_urls** / **images** / **reference_images**: For image-to-video, image 1 is the first frame and image 2 is the last frame, with at most 2 images. For reference-to-video and edit, these are reference images, at most 10.
+- **image_with_roles**: Each item has `url` and `role`. `first_frame` is the first frame, and you must send exactly one. `last_frame` is the last frame, or the target last frame of an extend. `keyframe` is an intermediate frame. `middle_frame` is accepted as the same role. At most 8. `reference_image` is a reference image. First frame, last frame, and intermediate frames together are at most 10.
+- **first_image** / **first_frame_image**: First frame for image-to-video.
+- **last_image** / **last_frame_image**: Last frame for image-to-video, or the target last frame of an extend.
+- **video_urls** / **reference_videos** / **videos**: Reference videos, at most 5, using at most 30 seconds in total. For edit or extend you can send exactly one URL here instead of `video_url`.
+- **video_url**: Input video for edit or extend. An edit input must be at least 3 seconds. Longer than 30 seconds, the first 30 seconds are used.
+- **audio_urls** / **reference_audios**: Reference audio, at most 3 clips, each 5–30 seconds. Reference images, videos, and audio together are at most 15 assets.
+- **audio_setting**: `origin` keeps the source sound. `auto` generates new sound. Use it only for an edit, or for reference-to-video that includes a reference video. An edit keeps the original sound unless you set `auto`. Reference-to-video with a reference video generates new sound unless you set `origin`. Extend does not accept this field: the original sound stays, and the new clip gets generated sound.
+
+Asset URLs must be publicly reachable `http` or `https` addresses.
+
+These values fail: `mode`, `negative_prompt`, `watermark: true`, and turning audio off.
+
+## Examples
+
+### Text to video
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "A paper boat drifts along a rainy street at night",
+    "duration": 5,
+    "resolution": "720p",
+    "aspect_ratio": "9:16"
+  }'
+```
+
+### Image to video
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "The camera slowly pushes in",
+    "image_urls": ["https://example.com/start.png", "https://example.com/end.png"]
+  }'
+```
+
+Image 1 is the first frame and image 2 is the last frame. You can omit `prompt` for image-to-video.
+
+### Video edit
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "Change the scene to a snowy winter night",
+    "generation_type": "edit",
+    "video_url": "https://example.com/in.mp4",
+    "image_urls": ["https://example.com/style.png"]
+  }'
+```
+
+### Video extend
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "The camera keeps moving forward as the sky darkens",
+    "generation_type": "extend",
+    "video_url": "https://example.com/in.mp4",
+    "duration": 5
+  }'
+```

@@ -1,0 +1,128 @@
+---
+title: '创建 Kling V4 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
+---
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+将 `model` 设为 `kling-v4`，调用 `POST /api/open-api/v1/kling/videos`。支持文生视频、图生视频、参考生视频、视频编辑和视频续写。输出 `720p` 或 `1080p`，时长 3–30 秒，成片始终带立体声音轨。
+
+## 模式
+
+五种模式使用同一个模型名。按传入的素材和 `generation_type` 选择。
+
+| 模式 | 传参 |
+|------|------|
+| 文生视频 | 不传图片、视频或音频 |
+| 图生视频 | 提供首帧，可加尾帧和最多 8 张中间帧 |
+| 参考生视频 | 传入 `video_urls`、`audio_urls`，或 `image_with_roles` 中包含 `reference_image`。只把 `image_urls` 当参考图时，设置 `generation_type` 为 `reference` |
+| 视频编辑 | `generation_type` 为 `edit`，并提供 1 个输入视频 |
+| 视频续写 | `generation_type` 为 `extend`，并提供 1 个输入视频 |
+
+`generation_type` 默认为 `auto`，可以不传。
+
+只传 `video_url` 却不指定 `edit` 或 `extend` 会失败。要把视频当作参考素材，请使用 `video_urls`。
+
+## 计费
+
+按秒计费。`720p` 和 `1080p` 分别计价。视频编辑，以及带参考视频的参考生视频，使用视频输入单价。
+
+| 分辨率 | 普通生成 | 视频输入 |
+|--------|----------|----------|
+| `720p`（默认） | `kling-v4-720p` | `kling-v4-720p-video` |
+| `1080p` | `kling-v4-1080p` | `kling-v4-1080p-video` |
+
+| 模式 | 计费秒数 |
+|------|----------|
+| 文生视频、图生视频，以及只带图片或音频的参考生视频 | 输出秒数 |
+| 视频续写 | 新增片段秒数 |
+| 视频编辑、带参考视频的参考生视频 | 输出秒数 + max(输出秒数, 输入视频秒数) |
+
+输入视频秒数先相加，再向上取整，最多计 30 秒。视频编辑不传 `duration` 时，输出时长跟随输入视频，并按同样规则向上取整。例如编辑一段 3.04 秒的视频且不传 `duration`，输出按 4 秒计，费用为 4 + 4 = 8 秒。
+
+视频续写只按新增片段计费，返回原视频与新片段拼接后的完整视频。
+
+提交时会读取输入视频时长。地址不可访问或文件无效时直接失败，不扣费。生成失败全额退款。
+
+## 参数
+
+- **prompt**：描述要生成或编辑的内容。图生视频可以不传，其他模式必填。参考生视频可以用 `@Image1`、`@Video1`、`@Audio1` 引用素材，编号从 1 开始，按同类素材的顺序。视频编辑里，输入视频是 `@Video1`，参考图是 `@Image1`、`@Image2`。
+- **duration**：3–30 秒，默认 `5`。视频编辑不传时，输出时长跟随输入视频。视频续写表示新增片段的时长。
+- **resolution**：`720p` 或 `1080p`，默认 `720p`。不支持 `mode`。
+- **aspect_ratio**：`16:9`、`9:16`、`1:1`、`21:9`。参考生视频还可以传 `auto`。`ratio` 是别名。不传时，文生视频为 `16:9`，图生视频跟随首帧，参考生视频为 `auto`，视频编辑跟随输入视频。视频续写不能传这个字段。
+- **image_urls** / **images** / **reference_images**：图生视频时，第 1 张是首帧，第 2 张是尾帧，最多 2 张。参考生视频和视频编辑时作为参考图，最多 10 张。
+- **image_with_roles**：每项包含 `url` 和 `role`。`first_frame` 是首帧，必须恰好 1 张。`last_frame` 是尾帧，或续写的目标尾帧。`keyframe` 是中间帧，也接受 `middle_frame`，最多 8 张。`reference_image` 是参考图。首帧、尾帧和中间帧合计最多 10 张。
+- **first_image** / **first_frame_image**：图生视频的首帧。
+- **last_image** / **last_frame_image**：图生视频的尾帧，或续写的目标尾帧。
+- **video_urls** / **reference_videos** / **videos**：参考视频，最多 5 段，合计最多使用 30 秒。编辑或续写时也可以传恰好 1 条，代替 `video_url`。
+- **video_url**：编辑或续写的输入视频。编辑的视频至少 3 秒；超过 30 秒时使用前 30 秒。
+- **audio_urls** / **reference_audios**：参考音频，最多 3 段，每段 5–30 秒。参考图、参考视频和参考音频合计最多 15 个。
+- **audio_setting**：`origin` 保留原声，`auto` 重新生成声音。只用于视频编辑，或带参考视频的参考生视频。编辑默认保留原声。带参考视频的参考生视频默认重新生成声音。续写不支持这个字段：原视频声音保留，新增片段自动配声。
+
+素材地址必须是可公开访问的 http(s) URL。
+
+以下取值会失败：`mode`、`negative_prompt`、`watermark: true`，以及关闭声音。
+
+## 请求示例
+
+### 文生视频
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "雨夜街道上一只纸船顺着水沟漂流",
+    "duration": 5,
+    "resolution": "720p",
+    "aspect_ratio": "9:16"
+  }'
+```
+
+### 图生视频
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "镜头缓缓推近",
+    "image_urls": ["https://example.com/start.png", "https://example.com/end.png"]
+  }'
+```
+
+第 1 张是首帧，第 2 张是尾帧。图生视频可以不传 `prompt`。
+
+### 视频编辑
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "把场景换成下雪的冬夜",
+    "generation_type": "edit",
+    "video_url": "https://example.com/in.mp4",
+    "image_urls": ["https://example.com/style.png"]
+  }'
+```
+
+### 视频续写
+
+```bash
+curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "kling-v4",
+    "prompt": "镜头继续向前推进，天色渐暗",
+    "generation_type": "extend",
+    "video_url": "https://example.com/in.mp4",
+    "duration": 5
+  }'
+```

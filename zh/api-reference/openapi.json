@@ -1219,8 +1219,8 @@
     },
     "/api/open-api/v1/kling/videos": {
       "post": {
-        "summary": "创建 Kling O3 视频任务",
-        "description": "创建 Kling O3 视频生成任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "summary": "创建 Kling 视频任务",
+        "description": "创建 Kling 视频任务。`kling-o3` 与 `kling-v4` 共用本接口。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createKlingO3Video",
         "requestBody": {
           "required": true,
@@ -1236,9 +1236,10 @@
                   "model": {
                     "type": "string",
                     "enum": [
-                      "kling-o3"
+                      "kling-o3",
+                      "kling-v4"
                     ],
-                    "description": "模型名称。如 `kling-o3`，详见文档页。"
+                    "description": "模型名称。`kling-o3` 或 `kling-v4`，详见文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -1251,7 +1252,7 @@
                     "default": 6,
                     "minimum": 3,
                     "maximum": 15,
-                    "description": "视频时长，单位秒。支持 3–15。默认 6。"
+                    "description": "视频时长，单位秒。kling-o3 支持 3–15，默认 6。kling-v4 支持 3–30，默认 5。视频编辑不传时输出时长跟随输入视频。"
                   },
                   "aspect_ratio": {
                     "type": "string",
@@ -1303,7 +1304,91 @@
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "可选尾帧图 URL。"
+                    "description": "可选尾帧图 URL。kling-v4 图生视频的尾帧，或视频续写的目标尾帧。"
+                  },
+                  "first_frame_image": {
+                    "type": "string",
+                    "description": "kling-v4 图生视频的首帧，与 first_image 二选一。"
+                  },
+                  "last_frame_image": {
+                    "type": "string",
+                    "description": "kling-v4 尾帧，与 last_image 二选一。"
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 图片 URL。图生视频最多 2 张：第 1 张首帧，第 2 张尾帧。参考生视频和视频编辑最多 10 张参考图。只把这些图片当参考图时，将 generation_type 设为 reference。"
+                  },
+                  "image_with_roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["url", "role"],
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["first_frame", "last_frame", "keyframe", "middle_frame", "reference_image"]
+                        }
+                      }
+                    },
+                    "description": "kling-v4 带角色的图片。first_frame 为首帧，last_frame 为尾帧，keyframe 为中间帧，reference_image 为参考图。"
+                  },
+                  "video_url": {
+                    "type": "string",
+                    "description": "kling-v4 视频编辑或续写的输入视频。必须同时设置 generation_type 为 edit 或 extend。"
+                  },
+                  "video_urls": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 参考视频，最多 5 段。编辑或续写时可传恰好 1 条代替 video_url。"
+                  },
+                  "reference_videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 video_urls 的别名。"
+                  },
+                  "videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 video_urls 的别名。"
+                  },
+                  "audio_urls": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 参考音频，最多 3 段，每段 5–30 秒。"
+                  },
+                  "reference_audios": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "kling-v4 audio_urls 的别名。"
+                  },
+                  "generation_type": {
+                    "type": "string",
+                    "enum": ["auto", "reference", "edit", "extend"],
+                    "default": "auto",
+                    "description": "kling-v4 模式。auto 按素材自动选择。reference 为参考生视频。edit 为视频编辑。extend 为视频续写。"
+                  },
+                  "audio_setting": {
+                    "type": "string",
+                    "enum": ["origin", "auto"],
+                    "description": "kling-v4 声音处理。origin 保留原声，auto 重新生成。仅用于视频编辑或带参考视频的参考生视频。"
                   },
                   "generate_audio": {
                     "type": "boolean",
@@ -3828,9 +3913,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "kling-o3"
+              "kling-o3",
+              "kling-v4"
             ],
-            "description": "模型名称。如 `kling-o3`，详见文档页。"
+            "description": "模型名称。`kling-o3` 或 `kling-v4`，详见文档页。"
           },
           "prompt": {
             "type": "string",

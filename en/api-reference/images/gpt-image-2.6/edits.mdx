@@ -1,0 +1,60 @@
+---
+title: 'GPT Image 2.6 Edit Image'
+openapi: 'POST /api/open-api/v1/images/edits'
+---
+
+Create a **GPT Image 2.6** synchronous image edit. Compatible with OpenAI `POST /v1/images/edits`. Upload the source image with `multipart/form-data`. Billing is applied immediately on success, and the result is returned in `data` (`url` or `b64_json`).
+
+<Note>
+Set `model` to `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst`.
+
+You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/open-api/v1/images/edits`).
+</Note>
+
+## Model
+
+| Item | Description |
+|------|-------------|
+| Model | `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
+| Billing | **unit price × `n`** (per image) |
+| Mode | Synchronous image edit (`image` field, multiple files allowed) |
+| Size | `size` (for example `1024x1024`), default `1024x1024` |
+
+## Billing
+
+Same as [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations): bill by the request `model` (`gpt-image-2.6-flare` / `gpt-image-2.6-sunburst`). Cost = unit price × `n`. Unit prices follow the console / pricing page.
+
+## Request fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst` |
+| `prompt` | string | Yes | Edit prompt |
+| `image` | file | Yes | Source image. Repeat the field to upload more than one |
+| `mask` | file | No | Inpainting mask |
+| `size` | string | No | Pixel size. Default `1024x1024` |
+| `n` | int | No | Number of images. Default `1` |
+| `quality` | string | No | `auto` / `low` / `medium` / `high` |
+| `response_format` | string | No | `url` (default) or `b64_json` |
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/edits' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -F 'model=gpt-image-2.6-flare' \
+  -F 'prompt=Replace the background with a sunset beach and keep the subject' \
+  -F 'image=@/path/to/source.png' \
+  -F 'size=1024x1024' \
+  -F 'n=1' \
+  -F 'response_format=url'
+```
+
+<Warning>
+Editing often takes **30–120 seconds**. Set the client timeout to **at least 180 seconds**. Each file (`image` / `mask`) must be **20MB or smaller**.
+</Warning>
+
+## Related
+
+- [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations)
+- [GPT Image 2 Edit Image](/en/api-reference/images/edits) (`gpt-image-2` sync)

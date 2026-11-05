@@ -101,6 +101,14 @@
                 "group": "GPT Image",
                 "pages": [
                   {
+                    "group": "GPT Image 2.6",
+                    "icon": "image",
+                    "pages": [
+                      "en/api-reference/images/gpt-image-2.6/generations",
+                      "en/api-reference/images/gpt-image-2.6/edits"
+                    ]
+                  },
+                  {
                     "group": "GPT Image 2.5",
                     "icon": "image",
                     "pages": [
@@ -414,6 +422,14 @@
               {
                 "group": "GPT Image",
                 "pages": [
+                  {
+                    "group": "GPT Image 2.6",
+                    "icon": "image",
+                    "pages": [
+                      "zh/api-reference/images/gpt-image-2.6/generations",
+                      "zh/api-reference/images/gpt-image-2.6/edits"
+                    ]
+                  },
                   {
                     "group": "GPT Image 2.5",
                     "icon": "image",

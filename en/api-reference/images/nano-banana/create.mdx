@@ -13,7 +13,7 @@ Set `model` to one of:
 
 <Warning>
 Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) and [GPT Image 2 Edit Image](/en/api-reference/images/edits) do not support Nano Banana.
-`nano-banana-2.1` selects output size with `resolution`: `1k`, `2k`, or `4k` (defaults to `1k` when omitted). Reference images are limited to 8.
+`nano-banana-2` is billed by `resolution`: omitted or `1k` uses `nano-banana-2`; `0.5k`, `2k`, and `4k` use their own billing models. `nano-banana-2.1` selects output size with `resolution`: `1k`, `2k`, or `4k` (defaults to `1k` when omitted). Reference images are limited to 8.
 </Warning>
 
 ## Model overview
@@ -21,9 +21,9 @@ Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations)
 | Item | Details |
 |------|---------|
 | Models | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
-| Billing | Uses the configured unit price for the selected `model` (usually depends on resolution/model tier). |
+| Billing | `nano-banana-2` is billed by resolution: billing-model unit price × `n`. Other models use the unit price of the selected `model` |
 | Modes | Text-to-image, reference-image generation (use `images`) |
-| Resolution | `1k` / `2k` / `4k` (for supported variants) |
+| Resolution | `nano-banana-2`: `0.5k` / `1k` / `2k` / `4k`. `nano-banana-2.1` and `nano-banana-pro`: `1k` / `2k` / `4k` |
 | Ratios | `auto`, `1:1`, `3:2`, `2:3`, `4:3`, `3:4`, `5:4`, `4:5`, `16:9`, `9:16`, `2:1`, `1:2`, `3:1`, `1:3`, `21:9`, `9:21` |
 
 ## Request parameters
@@ -33,10 +33,23 @@ Sync endpoints [GPT Image 2 Text-to-Image](/en/api-reference/images/generations)
 | `model` | string | Yes | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
 | `prompt` | string | Yes | Text prompt |
 | `ratio` | string | No | Aspect ratio, default `auto` |
-| `resolution` | string | No | `1k` / `2k` / `4k` (default depends on your model config; commonly `1k`) |
+| `resolution` | string | No | `nano-banana-2`: `0.5k` / `1k` / `2k` / `4k`. Omitted resolution bills as `1k`. Other models commonly use `1k` / `2k` / `4k` |
 | `images` | string[] | No | Reference image URLs (or base64 Data URIs, depending on your client) |
 | `quality` | string | No | Ignored by Nano Banana routes (only relevant for gpt-image-2 / gpt-image-1.5) |
 | `n` | int | No | Recommended to use `n=1` (the query result returns a single `image_url`) |
+
+## Billing
+
+Keep the request `model` as `nano-banana-2`. Cost = the resolution billing model's unit price × `n`. If a tier has no price config, that request uses the `nano-banana-2` price.
+
+| `resolution` | Billing model |
+|--------------|----------------|
+| omitted / `1k` | `nano-banana-2` |
+| `0.5k` | `nano-banana-2-0.5k` |
+| `2k` | `nano-banana-2-2k` |
+| `4k` | `nano-banana-2-4k` |
+
+The `model` on the task response is the billing model used for that request. Prices come from the console. `nano-banana`, `nano-banana-2.1`, and `nano-banana-pro` stay on their own `model` price and are not split by resolution.
 
 ## Examples
 
@@ -85,6 +98,8 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 
 ## Response example
 
+This sample matches the `resolution: 2k` request above. `model` is the billing model for that request.
+
 ```json
 {
   "code": 0,
@@ -92,7 +107,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
   "data": {
     "task_id": "img_abc123",
     "status": "queued",
-    "model": "nano-banana-2",
+    "model": "nano-banana-2-2k",
     "created_at": 1710000000
   }
 }

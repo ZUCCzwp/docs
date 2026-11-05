@@ -13,7 +13,7 @@ openapi: 'POST /api/open-api/v1/images'
 
 <Warning>
 同步接口 [GPT Image 2 文生图](/zh/api-reference/images/generations) 与 [GPT Image 2 编辑图片](/zh/api-reference/images/edits) 不支持 Nano Banana。
-`nano-banana-2` 按 `resolution` 分别计费：不传或 `1k` 使用 `nano-banana-2`，`0.5k` / `2k` / `4k` 使用对应计费型号。`nano-banana-2.1` 通过 `resolution` 选择 `1k`、`2k` 或 `4k`（不传时按 `1k`）。参考图最多 8 张。
+`nano-banana-2` 按 `resolution` 分别计费：不传或 `1k` 使用 `nano-banana-2`，`0.5k` / `2k` / `4k` 使用对应计费型号。`nano-banana-pro` 仅 `4k` 使用 `nano-banana-pro-4k`，其余分辨率使用 `nano-banana-pro`。`nano-banana-2.1` 通过 `resolution` 选择 `1k`、`2k` 或 `4k`（不传时按 `1k`）。参考图最多 8 张。
 </Warning>
 
 ## 模型说明
@@ -21,7 +21,7 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 说明 |
 |------|------|
 | 模型 | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
-| 计费 | `nano-banana-2` 按分辨率计费，费用 = 对应计费型号单价 × `n`。其余型号使用所选 `model` 的控制台单价 |
+| 计费 | `nano-banana-2` 按分辨率计费；`nano-banana-pro` 的 `4k` 单独计费。费用 = 对应计费型号单价 × `n` |
 | 模式 | 文生图、参考图生成（使用 `images`） |
 | 分辨率 | `nano-banana-2`：`0.5k` / `1k` / `2k` / `4k`。`nano-banana-2.1`、`nano-banana-pro`：`1k` / `2k` / `4k` |
 | 比例 | `auto`、`1:1`、`3:2`、`2:3`、`4:3`、`3:4`、`5:4`、`4:5`、`16:9`、`9:16`、`2:1`、`1:2`、`3:1`、`1:3`、`21:9`、`9:21` |
@@ -33,14 +33,16 @@ openapi: 'POST /api/open-api/v1/images'
 | `model` | string | 是 | `nano-banana` / `nano-banana-2` / `nano-banana-2.1` / `nano-banana-pro` |
 | `prompt` | string | 是 | 图像生成提示词 |
 | `ratio` | string | 否 | 画面比例，默认 `auto` |
-| `resolution` | string | 否 | `nano-banana-2`：`0.5k` / `1k` / `2k` / `4k`。不传时按 `1k` 计费。其他型号常见为 `1k` / `2k` / `4k` |
+| `resolution` | string | 否 | `nano-banana-2`：`0.5k` / `1k` / `2k` / `4k`，不传时按 `1k` 计费。`nano-banana-pro`：`1k` / `2k` / `4k`，仅 `4k` 单独计费 |
 | `images` | string[] | 否 | 参考图 URL（或你客户端支持的 base64 Data URI） |
 | `quality` | string | 否 | Nano Banana 路由一般会忽略（主要用于 gpt-image-2 / gpt-image-1.5） |
 | `n` | int | 否 | 建议使用 `n=1`（查询结果只返回单个 `image_url`） |
 
 ## 计费说明
 
-请求 `model` 仍为 `nano-banana-2`。费用 = 对应分辨率计费型号单价 × `n`。未配置某一档时，回退到 `nano-banana-2`。
+请求 `model` 仍为公开型号。费用 = 对应计费型号单价 × `n`。未配置某一档时，使用该型号的基础价。
+
+`nano-banana-2`：
 
 | `resolution` | 计费型号 |
 |--------------|----------|
@@ -49,7 +51,14 @@ openapi: 'POST /api/open-api/v1/images'
 | `2k` | `nano-banana-2-2k` |
 | `4k` | `nano-banana-2-4k` |
 
-响应和任务记录里的 `model` 是本次计费型号。单价以控制台为准。`nano-banana`、`nano-banana-2.1`、`nano-banana-pro` 仍按各自 `model` 计费，不按分辨率拆分。
+`nano-banana-pro`：
+
+| `resolution` | 计费型号 |
+|--------------|----------|
+| 不传 / `1k` / `2k` | `nano-banana-pro` |
+| `4k` | `nano-banana-pro-4k` |
+
+响应和任务记录里的 `model` 是本次计费型号。单价以控制台为准。`nano-banana`、`nano-banana-2.1` 仍按各自 `model` 计费，不按分辨率拆分。
 
 ## 示例
 

@@ -11,6 +11,10 @@ openapi: 'POST /api/open-api/v1/images/generations'
 同步生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/generations`）。
 </Note>
 
+<Warning>
+同步接口成功即返回图片。异步任务请使用 [GPT Image 2.6 图像生成](/zh/api-reference/images/gpt-image-2.6/create)（`POST /api/open-api/v1/images`）。
+</Warning>
+
 ## 模型说明
 
 | 项目 | 说明 |
@@ -34,7 +38,7 @@ openapi: 'POST /api/open-api/v1/images/generations'
 总费用 = 型号单价 × n
 ```
 
-单价以控制台 / 定价页为准。这两个型号只提供同步文生图和编辑，不支持 `POST /api/open-api/v1/images` 异步任务。
+单价以控制台 / 定价页为准。与异步 `POST /images` 的计费型号 `gpt-image-2.6-*-async` 相互独立。
 
 ## 请求参数
 
@@ -80,5 +84,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
 
 ## 相关接口
 
+- [GPT Image 2.6 图像生成](/zh/api-reference/images/gpt-image-2.6/create)（异步）
 - [GPT Image 2.6 编辑图片](/zh/api-reference/images/gpt-image-2.6/edits)
 - [GPT Image 2 文生图](/zh/api-reference/images/generations)（`gpt-image-2` 同步）

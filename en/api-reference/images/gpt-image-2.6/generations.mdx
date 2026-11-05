@@ -11,6 +11,10 @@ Set `model` to `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst`.
 You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/open-api/v1/images/generations`).
 </Note>
 
+<Warning>
+Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/open-api/v1/images`).
+</Warning>
+
 ## Model
 
 | Item | Description |
@@ -34,7 +38,7 @@ You can call the **direct image host** `https://img.viraltok.ai` (same paths as 
 total cost = unit price × n
 ```
 
-Unit prices follow the console / pricing page. These models are synchronous only. They are not available on `POST /api/open-api/v1/images`.
+Unit prices follow the console / pricing page. Independent from async billing keys `gpt-image-2.6-*-async`.
 
 ## Request fields
 
@@ -80,5 +84,6 @@ Generation often takes **30–120 seconds**. Set the client timeout to **at leas
 
 ## Related
 
+- [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (async)
 - [GPT Image 2.6 Edit Image](/en/api-reference/images/gpt-image-2.6/edits)
 - [GPT Image 2 Text-to-Image](/en/api-reference/images/generations) (`gpt-image-2` sync)

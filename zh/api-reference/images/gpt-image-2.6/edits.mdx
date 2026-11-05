@@ -11,6 +11,10 @@ openapi: 'POST /api/open-api/v1/images/edits'
 同步编辑可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/edits`）。
 </Note>
 
+<Warning>
+同步接口成功即返回图片。异步任务请使用 [GPT Image 2.6 图像生成](/zh/api-reference/images/gpt-image-2.6/create)（`POST /api/open-api/v1/images`）。
+</Warning>
+
 ## 模型说明
 
 | 项目 | 说明 |
@@ -56,5 +60,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/edits' \
 
 ## 相关接口
 
+- [GPT Image 2.6 图像生成](/zh/api-reference/images/gpt-image-2.6/create)（异步）
 - [GPT Image 2.6 文生图](/zh/api-reference/images/gpt-image-2.6/generations)
 - [GPT Image 2 编辑图片](/zh/api-reference/images/edits)（`gpt-image-2` 同步）

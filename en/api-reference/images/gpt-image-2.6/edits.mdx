@@ -11,6 +11,10 @@ Set `model` to `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst`.
 You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/open-api/v1/images/edits`).
 </Note>
 
+<Warning>
+Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/open-api/v1/images`).
+</Warning>
+
 ## Model
 
 | Item | Description |
@@ -56,5 +60,6 @@ Editing often takes **30–120 seconds**. Set the client timeout to **at least 1
 
 ## Related
 
+- [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (async)
 - [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/generations)
 - [GPT Image 2 Edit Image](/en/api-reference/images/edits) (`gpt-image-2` sync)

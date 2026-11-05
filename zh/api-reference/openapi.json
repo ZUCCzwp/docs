@@ -4556,7 +4556,7 @@
         "properties": {
           "model": {
             "type": "string",
-            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-2.6-flare / gpt-image-2.6-sunburst（仅同步，按型号计费）和 gpt-image-2.5-flare / gpt-image-2.5-sunburst（同步按型号计费；异步见 POST /images）。gpt-image-1.5 仅异步，同步 generations/edits 不支持。",
+            "description": "模型名称，默认 gpt-image-2。亦支持 gpt-image-2.6-flare / gpt-image-2.6-sunburst（同步按型号计费；异步见 POST /images）和 gpt-image-2.5-flare / gpt-image-2.5-sunburst（同步按型号计费；异步见 POST /images）。gpt-image-1.5 仅异步，同步 generations/edits 不支持。",
             "default": "gpt-image-2",
             "example": "gpt-image-2"
           },

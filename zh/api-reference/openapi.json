@@ -2161,7 +2161,7 @@
             "name": "search",
             "in": "query",
             "required": false,
-            "description": "可选，按 model_name、display_name、model_type、remark 子串过滤",
+            "description": "可选，按 model_name、display_name、model_type、series、remark 子串过滤",
             "schema": {
               "type": "string"
             }
@@ -5215,6 +5215,10 @@
           "model_type": {
             "type": "string",
             "description": "产品类型，如 video、image、audio"
+          },
+          "series": {
+            "type": "string",
+            "description": "可选产品系列。多条 catalog 共用，例如 wan3.0 与 wan3.0-gz 同为 wan3"
           },
           "price_mode": {
             "type": "string",

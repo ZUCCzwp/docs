@@ -17,7 +17,7 @@ openapi: 'GET /api/openapi/model/catalog'
 
 | 参数 | 类型 | 必填 | 说明 |
 | :--- | :--- | :--- | :--- |
-| `search` | string | 否 | 子串过滤，匹配 `model_name`、`display_name`、`model_type`、`remark`。不传则返回全部启用模型。 |
+| `search` | string | 否 | 子串过滤，匹配 `model_name`、`display_name`、`model_type`、`series`、`remark`。不传则返回全部启用模型。 |
 
 ### 响应字段
 
@@ -28,6 +28,7 @@ openapi: 'GET /api/openapi/model/catalog'
 | `model_name` | string | 公开 OpenAPI 模型 ID，创建接口的 `model` 字段应使用此值 |
 | `display_name` | string | 模型展示名称 |
 | `model_type` | string | 产品类型（如 `video`、`image`、`audio`、`llm`） |
+| `series` | string | 可选产品系列。多条 catalog 共用同一系列，例如 Wan 3.0 特价 `wan3.0` 与官转 `wan3.0-gz` 都是 `wan3`。各自的 `group` 仍然分开 |
 | `price_mode` | string | 计费方式（见下表） |
 | `unit_price` | number | 平台默认单价（吉米币） |
 | `official_price` | number | 参考标价（有配置时返回，否则省略） |

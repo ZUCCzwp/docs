@@ -2161,7 +2161,7 @@
             "name": "search",
             "in": "query",
             "required": false,
-            "description": "Optional substring filter for model_name, display_name, model_type, and remark",
+            "description": "Optional substring filter for model_name, display_name, model_type, series, and remark",
             "schema": {
               "type": "string"
             }
@@ -5094,6 +5094,10 @@
           "model_type": {
             "type": "string",
             "description": "Product category such as video, image, or audio"
+          },
+          "series": {
+            "type": "string",
+            "description": "Optional product series shared by several catalogs, for example wan3.0 and wan3.0-gz both use wan3"
           },
           "price_mode": {
             "type": "string",

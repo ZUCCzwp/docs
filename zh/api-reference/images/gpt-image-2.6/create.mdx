@@ -22,7 +22,7 @@ openapi: 'POST /api/open-api/v1/images'
 |------|------|
 | 模型名 | `gpt-image-2.6-flare`、`gpt-image-2.6-sunburst` |
 | 计费 | **异步：画质单价 × 张数 `n`**（按次） |
-| 模式 | 文生图、参考图编辑（`images`，最多 16 张） |
+| 模式 | 文生图、参考图编辑（`images`，最多 16 张）、动图（`output_format: gif`，仅文生图） |
 | 比例 | `ratio`（如 `1:1`、`16:9`、像素 `1600x1200`，或 `auto`） |
 | 分辨率 | `resolution`：`1k` / `2k` / `4k`（精确像素 `ratio` 时忽略） |
 | 画质 | `quality`：`auto` / `low` / `medium` / `high` / `xhigh` / `max` |
@@ -59,11 +59,13 @@ openapi: 'POST /api/open-api/v1/images'
 | `images` | string[] | 否 | 参考图 URL，最多 16 张；传入后进入编辑模式 |
 | `mask_url` | string | 否 | 局部重绘蒙版，需同时传 `images` |
 | `background` | string | 否 | `transparent` / `opaque` / `auto` |
-| `output_format` | string | 否 | `png` / `jpeg` / `webp` |
+| `output_format` | string | 否 | `png` / `jpeg` / `webp` / `gif`。`gif` 为动图 |
 | `moderation` | string | 否 | `auto` / `low` |
 
 <Warning>
 `background: "transparent"` 仅可与 `output_format` 为 `png` 或 `webp` 搭配。精确像素 `ratio` 的宽高须为 16 的倍数。
+
+动图（`output_format: "gif"`）只支持文生图：`n` 必须为 `1`，不能传 `images` 或 `mask_url`，`ratio` 省略或传 `auto`。计费仍按对应画质单价 × 1。在 `prompt` 里写清动作和是否循环。
 </Warning>
 
 ## 示例
@@ -79,6 +81,21 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
     "prompt": "雨天窗边温暖舒适的阅读角，暖色台灯，电影感光影",
     "ratio": "1:1",
     "resolution": "1k",
+    "quality": "medium",
+    "n": 1
+  }'
+```
+
+### 动图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.6-flare",
+    "prompt": "卡通小狗抬起一只爪子挥手，再回到起始姿势。白底，固定机位，无缝循环",
+    "output_format": "gif",
     "quality": "medium",
     "n": 1
   }'

@@ -213,7 +213,7 @@
                   },
                   "output_format": {
                     "type": "string",
-                    "description": "输出格式（gpt-image-1.5）。png / jpeg。",
+                    "description": "输出格式。gpt-image-1.5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
                     "enum": [
                       "png",
                       "jpeg"
@@ -2992,7 +2992,7 @@
           },
           "output_format": {
             "type": "string",
-            "description": "输出格式（gpt-image-1.5）。png / jpeg。",
+            "description": "输出格式。gpt-image-1.5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
             "enum": [
               "png",
               "jpeg"

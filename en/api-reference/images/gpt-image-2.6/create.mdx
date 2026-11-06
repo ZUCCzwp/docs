@@ -22,7 +22,7 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2.6 Text-to-Image](/en/api-r
 |------|-------------|
 | Model | `gpt-image-2.6-flare`, `gpt-image-2.6-sunburst` |
 | Billing | **async: quality unit price × `n`** (per image) |
-| Mode | Text-to-image, or edit with `images` (up to 16) |
+| Mode | Text-to-image, edit with `images` (up to 16), or animation (`output_format: gif`, text-to-image only) |
 | Ratio | `ratio` (for example `1:1`, `16:9`, pixels `1600x1200`, or `auto`) |
 | Resolution | `resolution`: `1k` / `2k` / `4k` (ignored when `ratio` is an exact pixel size) |
 | Quality | `quality`: `auto` / `low` / `medium` / `high` / `xhigh` / `max` |
@@ -59,11 +59,13 @@ Unit prices follow the console / pricing page. They are independent from sync pr
 | `images` | string[] | No | Reference image URLs, up to 16. Turns the request into an edit |
 | `mask_url` | string | No | Inpainting mask. Requires `images` |
 | `background` | string | No | `transparent` / `opaque` / `auto` |
-| `output_format` | string | No | `png` / `jpeg` / `webp` |
+| `output_format` | string | No | `png` / `jpeg` / `webp` / `gif`. `gif` is an animation |
 | `moderation` | string | No | `auto` / `low` |
 
 <Warning>
 `background: "transparent"` only works with `output_format` `png` or `webp`. Exact pixel `ratio` values must use widths and heights that are multiples of 16.
+
+Animations (`output_format: "gif"`) are text-to-image only: `n` must be `1`, do not send `images` or `mask_url`, and omit `ratio` or set it to `auto`. Billing is still that quality's unit price × 1. Describe the motion and whether it should loop in `prompt`.
 </Warning>
 
 ## Examples
@@ -79,6 +81,21 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
     "prompt": "A cozy reading nook by a rainy window, warm lamp light",
     "ratio": "1:1",
     "resolution": "1k",
+    "quality": "medium",
+    "n": 1
+  }'
+```
+
+### Animation
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gpt-image-2.6-flare",
+    "prompt": "A cartoon puppy raises one paw to wave, then returns to the starting pose. White background, fixed camera, seamless loop",
+    "output_format": "gif",
     "quality": "medium",
     "n": 1
   }'

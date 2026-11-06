@@ -213,7 +213,7 @@
                   },
                   "output_format": {
                     "type": "string",
-                    "description": "Output format (gpt-image-1.5): png / jpeg.",
+                    "description": "Output format. gpt-image-1.5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
                     "enum": [
                       "png",
                       "jpeg"
@@ -2881,7 +2881,7 @@
           },
           "output_format": {
             "type": "string",
-            "description": "Output format (gpt-image-1.5): png / jpeg.",
+            "description": "Output format. gpt-image-1.5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
             "enum": [
               "png",
               "jpeg"

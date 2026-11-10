@@ -139,7 +139,8 @@
               {
                 "group": "Seedream",
                 "pages": [
-                  "en/api-reference/images/seedream-5-0-pro/create"
+                  "en/api-reference/images/seedream-5-0-pro/create",
+                  "en/api-reference/images/seedream-5-5/create"
                 ]
               },
               {
@@ -468,7 +469,8 @@
               {
                 "group": "Seedream",
                 "pages": [
-                  "zh/api-reference/images/seedream-5-0-pro/create"
+                  "zh/api-reference/images/seedream-5-0-pro/create",
+                  "zh/api-reference/images/seedream-5-5/create"
                 ]
               },
               {

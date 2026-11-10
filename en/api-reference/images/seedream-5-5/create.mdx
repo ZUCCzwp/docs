@@ -1,0 +1,174 @@
+---
+title: 'Seedream 5.5 Image Generation'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+Create an async **Seedream 5.5** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query).
+
+<Note>
+This model uses `POST /api/open-api/v1/images` with `"model": "doubao-seedream-5-5"`.
+</Note>
+
+## Model overview
+
+| Item | Details |
+|------|---------|
+| Model | `doubao-seedream-5-5` (aliases `seedream-5-5`, `seedream-5.5`) |
+| Billing | **Output tier × image count + every reference image** (no free first reference) |
+| Modes | Image generation (text-to-image or up to 10 references), layer decomposition |
+| Size | `1K`, `1.5K`, `2K`; omitted size bills as `2K`. `3K` / `4K` are not supported |
+| Output | `png` (default) or `jpeg` |
+
+## Modes
+
+| Mode | How to select | Input images | Prompt |
+|------|---------------|--------------|--------|
+| Image generation | Default | 0–10 | Required |
+| Layer decomposition | `layer_decomposition: true` | Exactly 1 | Optional |
+
+## Billing
+
+| Item | Billing model | Notes |
+|------|---------------|-------|
+| Low tier | `doubao-seedream-5-5-1k` | `1K`, `1.5K`, and outputs of at most 2,610,000 pixels |
+| High tier | `doubao-seedream-5-5-2k` | `2K`, `auto`, omitted size, and outputs above 2,610,000 pixels |
+| Reference image | `doubao-seedream-5-5-ref` | **Every reference is billed**, including the single layer-decomposition input |
+
+Prices are the current console rates.
+
+Image generation prepays **one** output at the selected tier, plus reference count × reference unit price. Exact pixel sizes use width × height to pick the tier.
+
+Layer decomposition prepays `max_images` × the selected tier (default **30**, including the base image) plus **one** reference image. `1K` / `1.5K` are the low tier. `2K`, `auto`, and an omitted size are the high tier.
+
+On completion the charge is adjusted to the actual output count, each image's pixel tier, and the reference count. Extra amount is charged or refunded. A failed task is refunded in full.
+
+```text
+prepaid = output_count × selected_tier_price + reference_count × reference_price
+final = sum(each result image's tier price) + reference_count × reference_price
+```
+
+<Info>
+Image generation accepts `n` of **1** only. Layer count is `max_images`, from `2` to `100`. Layer jobs can take several minutes. Keep the `task_id` and keep polling instead of submitting again.
+</Info>
+
+## Request parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `model` | string | Yes | `doubao-seedream-5-5` |
+| `prompt` | string | Required for image generation | Optional for layer decomposition |
+| `ratio` | string | No | Size. `size` is used when `ratio` is omitted |
+| `resolution` | string | No | With an aspect ratio: `1K`, `1.5K`, or `2K`. An omitted resolution bills as `2K` |
+| `images` | string[] | No | Reference URLs or Data URIs. `image_urls` is used when `images` is empty. Max 10 for image generation |
+| `background` | string | No | `auto`, `opaque`, or `transparent`. `transparent` requires PNG |
+| `output_format` | string | No | `png` (default) or `jpeg` |
+| `watermark` | boolean | No | Add a watermark. Default `false` |
+| `n` | int | No | Must be `1` |
+| `layer_decomposition` | boolean | No | `true` splits the input into layers |
+| `max_images` | int | No | Layer mode only. `2`–`100`, default `30`, including the base image |
+| `text_recognition` | boolean | No | Layer mode only. Requests text recognition. The query response still returns images |
+
+## Size formats
+
+| Form | Example | Rule |
+|------|---------|------|
+| Tier | `"size": "2K"` | `1K` / `1.5K` / `2K`. Omitted or `auto` bills as `2K` |
+| Aspect ratio + tier | `"size": "16:9", "resolution": "1.5K"` | Ratios: `1:1`, `4:3`, `3:4`, `16:9`, `9:16`, `3:2`, `2:3`, `21:9`, `2:1`, `1:2`. `16x9` is also accepted |
+| Exact pixels | `"size": "2048x1152"` | Image generation only. Total pixels 921,600–4,624,220, aspect ratio within 1/16–16. Do not send `resolution` |
+
+Layer decomposition accepts only `1K`, `1.5K`, `2K`, or `auto`. If both `size` and `resolution` are set, `size` wins. If only `resolution` is set, it selects the tier.
+
+## Reference image limits (each image)
+
+| Item | Limit |
+|------|-------|
+| Formats | `jpeg`, `png`, `webp`, `bmp`, `tiff`, `gif`, `heic`, `heif` |
+| Aspect ratio (width/height) | \[1/16, 16\] |
+| Sides (px) | Each side **> 14** |
+| File size | ≤ **30MB** |
+| Total pixels | ≤ **6000×6000** |
+
+- Public URLs must be full `https://` addresses.
+- Base64 must be a Data URI: `data:image/{format};base64,{data}`.
+
+## Examples
+
+### Text-to-image
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "prompt": "An orange cat sticker with clean edges",
+    "size": "2K",
+    "background": "transparent",
+    "output_format": "png"
+  }'
+```
+
+### Reference images
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "prompt": "Place the product from the first image into the scene from the second image",
+    "images": [
+      "https://example.com/product.png",
+      "https://example.com/setting.jpg"
+    ],
+    "size": "16:9",
+    "resolution": "1.5K",
+    "output_format": "png"
+  }'
+```
+
+### Layer decomposition
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "images": ["https://example.com/poster.png"],
+    "layer_decomposition": true,
+    "max_images": 10,
+    "text_recognition": true,
+    "size": "1K"
+  }'
+```
+
+Do not send `background` for layer decomposition. `output_format` applies to the base image. Split layers are transparent PNGs.
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "doubao-seedream-5-5-2k",
+    "created_at": 1710000000
+  }
+}
+```
+
+`data.model` is the billing model used for the prepay: `doubao-seedream-5-5-1k` for the low tier, `doubao-seedream-5-5-2k` for the high tier.
+
+## Query the task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+Status moves from `queued` to `processing`, then `completed` or `failed`.
+
+Read `data.result.image_url` (first image) and `data.result.image_urls` (all images). In layer mode, the first `image_urls` item is the base image and the rest are layers. The query response returns image URLs, not recognized text.

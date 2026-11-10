@@ -136,7 +136,7 @@
                   },
                   "ratio": {
                     "type": "string",
-                    "description": "画面比例。支持的值：auto (自动), 1:1 (正方), 3:2 (横图), 2:3 (竖图), 4:3 (横图), 3:4 (竖图), 5:4 (横图), 4:5 (竖图), 16:9 (横图), 9:16 (竖图), 2:1 (横图), 1:2 (竖图), 3:1 (横图), 1:3 (竖图), 21:9 (横图), 9:21 (竖图)。doubao-seedream-5-0-pro 仅支持 1:1、4:3、3:4、16:9、9:16、3:2、2:3、21:9、auto。",
+                    "description": "画面比例。支持的值：auto (自动), 1:1 (正方), 3:2 (横图), 2:3 (竖图), 4:3 (横图), 3:4 (竖图), 5:4 (横图), 4:5 (竖图), 16:9 (横图), 9:16 (竖图), 2:1 (横图), 1:2 (竖图), 3:1 (横图), 1:3 (竖图), 21:9 (横图), 9:21 (竖图)。doubao-seedream-5-0-pro 仅支持 1:1、4:3、3:4、16:9、9:16、3:2、2:3、21:9、auto。doubao-seedream-5-5 可用 ratio 或 size 传 1K、1.5K、2K、宽高比或精确像素，详见该模型文档。",
                     "enum": [
                       "auto",
                       "1:1",
@@ -162,11 +162,11 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "参考图 URL 或 base64 列表。doubao-seedream-5-0-pro 最多 10 张；单张：格式 jpeg/png/webp/bmp/tiff/gif/heic/heif，宽高比 [1/16,16]，宽高 >14px，≤30MB，总像素 ≤6000×6000"
+                    "description": "参考图 URL 或 base64 列表。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 最多 10 张；单张：格式 jpeg/png/webp/bmp/tiff/gif/heic/heif，宽高比 [1/16,16]，宽高 >14px，≤30MB，总像素 ≤6000×6000。5.5 未传 images 时使用 image_urls，且每张参考图都计费"
                   },
                   "resolution": {
                     "type": "string",
-                    "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2.1 等：1k、2k、4k。nano-banana-2：0.5k、1k（默认）、2k、4k，按分辨率分别计费。nano-banana-pro 的 4k 单独计费（`nano-banana-pro-4k`）。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
+                    "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。doubao-seedream-5-5：1K、1.5K、2K，省略时按 2K，不支持 3K / 4K。gpt-image-2、nano-banana-2.1 等：1k、2k、4k。nano-banana-2：0.5k、1k（默认）、2k、4k，按分辨率分别计费。nano-banana-pro 的 4k 单独计费（`nano-banana-pro-4k`）。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
                     "enum": [
                       "1k",
                       "2k",
@@ -187,14 +187,14 @@
                   },
                   "n": {
                     "type": "integer",
-                    "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。",
+                    "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 必须为 1。",
                     "minimum": 1,
                     "maximum": 4,
                     "default": 1
                   },
                   "background": {
                     "type": "string",
-                    "description": "背景模式（gpt-image-1.5）。auto / opaque / transparent；transparent 需搭配 output_format=png。",
+                    "description": "背景模式。gpt-image-1.5 与 doubao-seedream-5-5：auto / opaque / transparent；transparent 需搭配 output_format=png。Seedream 5.5 图层拆分时不要传 background。",
                     "enum": [
                       "auto",
                       "opaque",
@@ -213,7 +213,7 @@
                   },
                   "output_format": {
                     "type": "string",
-                    "description": "输出格式。gpt-image-1.5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
+                    "description": "输出格式。gpt-image-1.5 与 doubao-seedream-5-5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
                     "enum": [
                       "png",
                       "jpeg"
@@ -223,6 +223,35 @@
                   "mask_url": {
                     "type": "string",
                     "description": "局部重绘遮罩图 URL（gpt-image-1.5），需同时传 images。"
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "尺寸，doubao-seedream-5-5 在未传 ratio 时使用。可为 1K、1.5K、2K、auto、宽高比或精确像素。"
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考图 URL。doubao-seedream-5-5 在 images 为空时使用。"
+                  },
+                  "layer_decomposition": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 图层拆分。为 true 时必须恰好 1 张输入图，且不能传 background。"
+                  },
+                  "max_images": {
+                    "type": "integer",
+                    "description": "doubao-seedream-5-5 图层拆分输出上限，含底图。2–100，默认 30。",
+                    "minimum": 2,
+                    "maximum": 100
+                  },
+                  "text_recognition": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 图层拆分时请求文字识别。查询结果返回图片地址。"
+                  },
+                  "watermark": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 是否添加水印，默认 false。"
                   }
                 }
               }
@@ -2915,7 +2944,7 @@
           },
           "ratio": {
             "type": "string",
-            "description": "画面比例。支持的值：auto (自动), 1:1 (正方), 3:2 (横图), 2:3 (竖图), 4:3 (横图), 3:4 (竖图), 5:4 (横图), 4:5 (竖图), 16:9 (横图), 9:16 (竖图), 2:1 (横图), 1:2 (竖图), 3:1 (横图), 1:3 (竖图), 21:9 (横图), 9:21 (竖图)。doubao-seedream-5-0-pro 仅支持 1:1、4:3、3:4、16:9、9:16、3:2、2:3、21:9、auto。",
+            "description": "画面比例。支持的值：auto (自动), 1:1 (正方), 3:2 (横图), 2:3 (竖图), 4:3 (横图), 3:4 (竖图), 5:4 (横图), 4:5 (竖图), 16:9 (横图), 9:16 (竖图), 2:1 (横图), 1:2 (竖图), 3:1 (横图), 1:3 (竖图), 21:9 (横图), 9:21 (竖图)。doubao-seedream-5-0-pro 仅支持 1:1、4:3、3:4、16:9、9:16、3:2、2:3、21:9、auto。doubao-seedream-5-5 可用 ratio 或 size 传 1K、1.5K、2K、宽高比或精确像素，详见该模型文档。",
             "enum": [
               "auto",
               "1:1",
@@ -2941,11 +2970,11 @@
             "items": {
               "type": "string"
             },
-            "description": "参考图 URL 或 base64 列表。doubao-seedream-5-0-pro 最多 10 张；单张：格式 jpeg/png/webp/bmp/tiff/gif/heic/heif，宽高比 [1/16,16]，宽高 >14px，≤30MB，总像素 ≤6000×6000"
+            "description": "参考图 URL 或 base64 列表。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 最多 10 张；单张：格式 jpeg/png/webp/bmp/tiff/gif/heic/heif，宽高比 [1/16,16]，宽高 >14px，≤30MB，总像素 ≤6000×6000。5.5 未传 images 时使用 image_urls，且每张参考图都计费"
           },
           "resolution": {
             "type": "string",
-            "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。gpt-image-2、nano-banana-2.1 等：1k、2k、4k。nano-banana-2：0.5k、1k（默认）、2k、4k，按分辨率分别计费。nano-banana-pro 的 4k 单独计费（`nano-banana-pro-4k`）。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
+            "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。doubao-seedream-5-5：1K、1.5K、2K，省略时按 2K，不支持 3K / 4K。gpt-image-2、nano-banana-2.1 等：1k、2k、4k。nano-banana-2：0.5k、1k（默认）、2k、4k，按分辨率分别计费。nano-banana-pro 的 4k 单独计费（`nano-banana-pro-4k`）。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
             "enum": [
               "1k",
               "2k",
@@ -2966,14 +2995,14 @@
           },
           "n": {
             "type": "integer",
-            "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。",
+            "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 必须为 1。",
             "minimum": 1,
             "maximum": 4,
             "default": 1
           },
           "background": {
             "type": "string",
-            "description": "背景模式（gpt-image-1.5）。auto / opaque / transparent；transparent 需搭配 output_format=png。",
+            "description": "背景模式。gpt-image-1.5 与 doubao-seedream-5-5：auto / opaque / transparent；transparent 需搭配 output_format=png。Seedream 5.5 图层拆分时不要传 background。",
             "enum": [
               "auto",
               "opaque",
@@ -2992,7 +3021,7 @@
           },
           "output_format": {
             "type": "string",
-            "description": "输出格式。gpt-image-1.5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
+            "description": "输出格式。gpt-image-1.5 与 doubao-seedream-5-5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
             "enum": [
               "png",
               "jpeg"
@@ -3002,6 +3031,35 @@
           "mask_url": {
             "type": "string",
             "description": "局部重绘遮罩图 URL（gpt-image-1.5），需同时传 images。"
+          },
+          "size": {
+            "type": "string",
+            "description": "尺寸，doubao-seedream-5-5 在未传 ratio 时使用。可为 1K、1.5K、2K、auto、宽高比或精确像素。"
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "参考图 URL。doubao-seedream-5-5 在 images 为空时使用。"
+          },
+          "layer_decomposition": {
+            "type": "boolean",
+            "description": "doubao-seedream-5-5 图层拆分。为 true 时必须恰好 1 张输入图，且不能传 background。"
+          },
+          "max_images": {
+            "type": "integer",
+            "description": "doubao-seedream-5-5 图层拆分输出上限，含底图。2–100，默认 30。",
+            "minimum": 2,
+            "maximum": 100
+          },
+          "text_recognition": {
+            "type": "boolean",
+            "description": "doubao-seedream-5-5 图层拆分时请求文字识别。查询结果返回图片地址。"
+          },
+          "watermark": {
+            "type": "boolean",
+            "description": "doubao-seedream-5-5 是否添加水印，默认 false。"
           }
         }
       },

@@ -136,7 +136,7 @@
                   },
                   "ratio": {
                     "type": "string",
-                    "description": "Aspect ratio. Supported values: auto, 1:1, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 16:9, 9:16, 2:1, 1:2, 3:1, 1:3, 21:9, 9:21. doubao-seedream-5-0-pro only supports 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, auto.",
+                    "description": "Aspect ratio. Supported values: auto, 1:1, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 16:9, 9:16, 2:1, 1:2, 3:1, 1:3, 21:9, 9:21. doubao-seedream-5-0-pro only supports 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, auto. doubao-seedream-5-5 accepts 1K, 1.5K, 2K, an aspect ratio, or exact pixels via ratio or size; see that model's page.",
                     "enum": [
                       "auto",
                       "1:1",
@@ -162,11 +162,11 @@
                     "items": {
                       "type": "string"
                     },
-                    "description": "Reference image URLs or base64 strings. doubao-seedream-5-0-pro: max 10; per image: jpeg/png/webp/bmp/tiff/gif/heic/heif, aspect ratio [1/16,16], sides >14px, ≤30MB, pixels ≤6000×6000"
+                    "description": "Reference image URLs or base64 strings. doubao-seedream-5-0-pro and doubao-seedream-5-5: max 10; per image: jpeg/png/webp/bmp/tiff/gif/heic/heif, aspect ratio [1/16,16], sides >14px, ≤30MB, pixels ≤6000×6000. Seedream 5.5 uses image_urls when images is empty, and bills every reference image"
                   },
                   "resolution": {
                     "type": "string",
-                    "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2.1, etc.: 1k, 2k, 4k. nano-banana-2: 0.5k, 1k (default), 2k, 4k, billed separately by resolution. nano-banana-pro 4k is billed as `nano-banana-pro-4k`. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
+                    "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. doubao-seedream-5-5: 1K, 1.5K, 2K, omitted size bills as 2K, 3K and 4K are not supported. gpt-image-2, nano-banana-2.1, etc.: 1k, 2k, 4k. nano-banana-2: 0.5k, 1k (default), 2k, 4k, billed separately by resolution. nano-banana-pro 4k is billed as `nano-banana-pro-4k`. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
                     "enum": [
                       "1k",
                       "2k",
@@ -187,14 +187,14 @@
                   },
                   "n": {
                     "type": "integer",
-                    "description": "Number of images. gpt-image-1.5: 1–4 (clamped).",
+                    "description": "Number of images. gpt-image-1.5: 1–4 (clamped). doubao-seedream-5-0-pro and doubao-seedream-5-5 require 1.",
                     "minimum": 1,
                     "maximum": 4,
                     "default": 1
                   },
                   "background": {
                     "type": "string",
-                    "description": "Background mode (gpt-image-1.5): auto / opaque / transparent. Use png with transparent.",
+                    "description": "Background mode. gpt-image-1.5 and doubao-seedream-5-5: auto / opaque / transparent. Use png with transparent. Do not send background for Seedream 5.5 layer decomposition.",
                     "enum": [
                       "auto",
                       "opaque",
@@ -213,7 +213,7 @@
                   },
                   "output_format": {
                     "type": "string",
-                    "description": "Output format. gpt-image-1.5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
+                    "description": "Output format. gpt-image-1.5 and doubao-seedream-5-5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
                     "enum": [
                       "png",
                       "jpeg"
@@ -223,6 +223,35 @@
                   "mask_url": {
                     "type": "string",
                     "description": "Inpainting mask URL (gpt-image-1.5); requires images."
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "Size used by doubao-seedream-5-5 when ratio is omitted. Accepts 1K, 1.5K, 2K, auto, an aspect ratio, or exact pixels."
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Reference image URLs. doubao-seedream-5-5 uses this when images is empty."
+                  },
+                  "layer_decomposition": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 layer decomposition. When true, send exactly one input image and do not send background."
+                  },
+                  "max_images": {
+                    "type": "integer",
+                    "description": "doubao-seedream-5-5 layer output cap, including the base image. 2–100, default 30.",
+                    "minimum": 2,
+                    "maximum": 100
+                  },
+                  "text_recognition": {
+                    "type": "boolean",
+                    "description": "Request text recognition during doubao-seedream-5-5 layer decomposition. The query response returns image URLs."
+                  },
+                  "watermark": {
+                    "type": "boolean",
+                    "description": "Whether doubao-seedream-5-5 adds a watermark. Default false."
                   }
                 }
               }
@@ -2804,7 +2833,7 @@
           },
           "ratio": {
             "type": "string",
-            "description": "Aspect ratio. Supported values: auto, 1:1, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 16:9, 9:16, 2:1, 1:2, 3:1, 1:3, 21:9, 9:21. doubao-seedream-5-0-pro only supports 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, auto.",
+            "description": "Aspect ratio. Supported values: auto, 1:1, 3:2, 2:3, 4:3, 3:4, 5:4, 4:5, 16:9, 9:16, 2:1, 1:2, 3:1, 1:3, 21:9, 9:21. doubao-seedream-5-0-pro only supports 1:1, 4:3, 3:4, 16:9, 9:16, 3:2, 2:3, 21:9, auto. doubao-seedream-5-5 accepts 1K, 1.5K, 2K, an aspect ratio, or exact pixels via ratio or size; see that model's page.",
             "enum": [
               "auto",
               "1:1",
@@ -2830,11 +2859,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Reference image URLs or base64 strings. doubao-seedream-5-0-pro: max 10; per image: jpeg/png/webp/bmp/tiff/gif/heic/heif, aspect ratio [1/16,16], sides >14px, ≤30MB, pixels ≤6000×6000"
+            "description": "Reference image URLs or base64 strings. doubao-seedream-5-0-pro and doubao-seedream-5-5: max 10; per image: jpeg/png/webp/bmp/tiff/gif/heic/heif, aspect ratio [1/16,16], sides >14px, ≤30MB, pixels ≤6000×6000. Seedream 5.5 uses image_urls when images is empty, and bills every reference image"
           },
           "resolution": {
             "type": "string",
-            "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. gpt-image-2, nano-banana-2.1, etc.: 1k, 2k, 4k. nano-banana-2: 0.5k, 1k (default), 2k, 4k, billed separately by resolution. nano-banana-pro 4k is billed as `nano-banana-pro-4k`. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
+            "description": "Image resolution. doubao-seedream-5-0-pro: 1k, 2k (default 2k), 4k not supported. doubao-seedream-5-5: 1K, 1.5K, 2K, omitted size bills as 2K, 3K and 4K are not supported. gpt-image-2, nano-banana-2.1, etc.: 1k, 2k, 4k. nano-banana-2: 0.5k, 1k (default), 2k, 4k, billed separately by resolution. nano-banana-pro 4k is billed as `nano-banana-pro-4k`. Note: gpt-image-2 with 4K only supports aspect ratios 16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21.",
             "enum": [
               "1k",
               "2k",
@@ -2855,14 +2884,14 @@
           },
           "n": {
             "type": "integer",
-            "description": "Number of images. gpt-image-1.5: 1–4 (clamped).",
+            "description": "Number of images. gpt-image-1.5: 1–4 (clamped). doubao-seedream-5-0-pro and doubao-seedream-5-5 require 1.",
             "minimum": 1,
             "maximum": 4,
             "default": 1
           },
           "background": {
             "type": "string",
-            "description": "Background mode (gpt-image-1.5): auto / opaque / transparent. Use png with transparent.",
+            "description": "Background mode. gpt-image-1.5 and doubao-seedream-5-5: auto / opaque / transparent. Use png with transparent. Do not send background for Seedream 5.5 layer decomposition.",
             "enum": [
               "auto",
               "opaque",
@@ -2881,7 +2910,7 @@
           },
           "output_format": {
             "type": "string",
-            "description": "Output format. gpt-image-1.5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
+            "description": "Output format. gpt-image-1.5 and doubao-seedream-5-5: png / jpeg. Async gpt-image-2.6 also accepts webp / gif. gif is an animation: text-to-image only, n is 1, omit ratio or send auto, and do not send images or mask_url.",
             "enum": [
               "png",
               "jpeg"
@@ -2891,6 +2920,35 @@
           "mask_url": {
             "type": "string",
             "description": "Inpainting mask URL (gpt-image-1.5); requires images."
+          },
+          "size": {
+            "type": "string",
+            "description": "Size used by doubao-seedream-5-5 when ratio is omitted. Accepts 1K, 1.5K, 2K, auto, an aspect ratio, or exact pixels."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reference image URLs. doubao-seedream-5-5 uses this when images is empty."
+          },
+          "layer_decomposition": {
+            "type": "boolean",
+            "description": "doubao-seedream-5-5 layer decomposition. When true, send exactly one input image and do not send background."
+          },
+          "max_images": {
+            "type": "integer",
+            "description": "doubao-seedream-5-5 layer output cap, including the base image. 2–100, default 30.",
+            "minimum": 2,
+            "maximum": 100
+          },
+          "text_recognition": {
+            "type": "boolean",
+            "description": "Request text recognition during doubao-seedream-5-5 layer decomposition. The query response returns image URLs."
+          },
+          "watermark": {
+            "type": "boolean",
+            "description": "Whether doubao-seedream-5-5 adds a watermark. Default false."
           }
         }
       },

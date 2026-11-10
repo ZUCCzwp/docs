@@ -1,0 +1,174 @@
+---
+title: 'Seedream 5.5 图像生成'
+openapi: 'POST /api/open-api/v1/images'
+---
+
+创建 **Seedream 5.5** 异步图片任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态。
+
+<Note>
+本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `doubao-seedream-5-5` 即可使用本模型。
+</Note>
+
+## 模型说明
+
+| 项目 | 说明 |
+|------|------|
+| 模型名 | `doubao-seedream-5-5`（别名 `seedream-5-5`、`seedream-5.5`） |
+| 计费 | **输出档位 × 张数 + 每张参考图**（没有首张免费） |
+| 模式 | 图片生成（文生图 / 最多 10 张参考图）、图层拆分 |
+| 尺寸 | `1K`、`1.5K`、`2K`；省略时按 `2K`。不支持 `3K` / `4K` |
+| 输出 | `png`（默认）或 `jpeg` |
+
+## 模式
+
+| 模式 | 触发方式 | 输入图 | 提示词 |
+|------|----------|--------|--------|
+| 图片生成 | 默认 | 0–10 张 | 必填 |
+| 图层拆分 | `layer_decomposition: true` | 恰好 1 张 | 可省略 |
+
+## 计费说明
+
+| 项目 | 计费模型名 | 说明 |
+|------|-----------|------|
+| 低档 | `doubao-seedream-5-5-1k` | `1K`、`1.5K`，以及实际像素不超过 2,610,000 的输出 |
+| 高档 | `doubao-seedream-5-5-2k` | `2K`、`auto`、省略尺寸，以及实际像素超过 2,610,000 的输出 |
+| 参考图 | `doubao-seedream-5-5-ref` | **每张参考图都计费**；图层拆分的那 1 张输入图也计费 |
+
+单价以控制台当前报价为准。
+
+图片生成预扣 **1 张**所选档位，再加上参考图张数 × 参考图单价。精确像素按宽 × 高选择档位。
+
+图层拆分预扣 `max_images` × 所选档位（未传 `max_images` 时按 **30** 张，含底图），再加上 **1 张**参考图。`1K` / `1.5K` 为低档，`2K` / `auto` / 省略为高档。
+
+完成后按实际输出张数、每张实际像素档位和参考图数量结算，多退少补。底图和每个图层各算一张。失败任务全额退款。
+
+```text
+预扣 = 输出张数 × 所选档位单价 + 参考图张数 × 参考图单价
+实付 = 各结果图档位单价之和 + 参考图张数 × 参考图单价
+```
+
+<Info>
+**单次一张成品**：图片生成的 `n` 必须为 `1`。图层数量用 `max_images` 控制，范围 `2`–`100`。图层拆分可能需要数分钟，请保存 `task_id` 并持续查询，不要重复提交。
+</Info>
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `doubao-seedream-5-5` |
+| `prompt` | string | 图片生成必填 | 图层拆分可省略 |
+| `ratio` | string | 否 | 尺寸。也可用 `size`，未传 `ratio` 时生效 |
+| `resolution` | string | 否 | 与宽高比配合：`1K`、`1.5K`、`2K`。宽高比未传分辨率时按 `2K` |
+| `images` | string[] | 否 | 参考图 URL 或 Data URI。未传时使用 `image_urls`。图片生成最多 10 张 |
+| `background` | string | 否 | `auto`、`opaque`、`transparent`。`transparent` 必须输出 PNG |
+| `output_format` | string | 否 | `png`（默认）或 `jpeg` |
+| `watermark` | boolean | 否 | 是否加水印，默认 `false` |
+| `n` | int | 否 | 必须为 `1` |
+| `layer_decomposition` | boolean | 否 | `true` 时拆分图层 |
+| `max_images` | int | 否 | 仅图层拆分。`2`–`100`，默认 `30`，包含底图 |
+| `text_recognition` | boolean | 否 | 仅图层拆分。请求文字图层识别；查询结果仍返回图片 |
+
+## 尺寸写法
+
+| 写法 | 示例 | 规则 |
+|------|------|------|
+| 档位 | `"size": "2K"` | `1K` / `1.5K` / `2K`。省略或 `auto` 按 `2K` |
+| 宽高比 + 档位 | `"size": "16:9", "resolution": "1.5K"` | 比例：`1:1`、`4:3`、`3:4`、`16:9`、`9:16`、`3:2`、`2:3`、`21:9`、`2:1`、`1:2`。也接受 `16x9` |
+| 精确像素 | `"size": "2048x1152"` | 仅图片生成。总像素 921,600–4,624,220，宽高比在 1/16–16。不要同时传 `resolution` |
+
+图层拆分的 `size` 只接受 `1K`、`1.5K`、`2K`、`auto`。同时传 `size` 和 `resolution` 时以 `size` 为准；只传 `resolution` 时用它作为档位。
+
+## 参考图限制（单张）
+
+| 项目 | 限制 |
+|------|------|
+| 格式 | `jpeg`、`png`、`webp`、`bmp`、`tiff`、`gif`、`heic`、`heif` |
+| 宽高比（宽/高） | \[1/16, 16\] |
+| 宽高（px） | 均 **> 14** |
+| 文件大小 | ≤ **30MB** |
+| 总像素 | ≤ **6000×6000** |
+
+- 公网 URL 须使用完整 `https://` 地址。
+- Base64 须为完整 Data URI：`data:image/{格式};base64,{数据}`。
+
+## 示例
+
+### 文生图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "prompt": "边缘干净的橘色猫咪贴纸",
+    "size": "2K",
+    "background": "transparent",
+    "output_format": "png"
+  }'
+```
+
+### 参考图
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "prompt": "把第一张图里的产品放进第二张图的场景",
+    "images": [
+      "https://example.com/product.png",
+      "https://example.com/setting.jpg"
+    ],
+    "size": "16:9",
+    "resolution": "1.5K",
+    "output_format": "png"
+  }'
+```
+
+### 图层拆分
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "doubao-seedream-5-5",
+    "images": ["https://example.com/poster.png"],
+    "layer_decomposition": true,
+    "max_images": 10,
+    "text_recognition": true,
+    "size": "1K"
+  }'
+```
+
+图层拆分不要传 `background`。`output_format` 只影响底图，拆出的图层为透明 PNG。
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "img_abc123",
+    "status": "queued",
+    "model": "doubao-seedream-5-5-2k",
+    "created_at": 1710000000
+  }
+}
+```
+
+`data.model` 是本次预扣使用的计费模型名（低档为 `doubao-seedream-5-5-1k`，高档为 `doubao-seedream-5-5-2k`）。
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+任务状态：`queued` → `processing` → `completed` / `failed`。
+
+完成后读取 `data.result.image_url`（第一张）和 `data.result.image_urls`（全部）。图层模式下，`image_urls` 的第一张是底图，其后是拆出的图层。查询响应返回图片地址，不返回文字识别文本。

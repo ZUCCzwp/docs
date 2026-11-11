@@ -29,19 +29,22 @@ This model **does not** support `file_url` / `link_url`. Use [`wan3.0-gz`](/en/a
 | First frame | `first_image` |
 | First and last frame | `first_image` + `last_image` |
 | Reference media | `reference_images` / `reference_videos` / `reference_audios` |
+| Video edit | `task_type: "edit"` + `reference_videos` + edit-intent `prompt` |
+| Video extend | `task_type: "extend"` + `reference_videos` + extend-intent `prompt` |
 
-First/last frames (`first_image` / `last_image`) **cannot be combined** with reference media (reference images/videos/audios).
+First/last frames (`first_image` / `last_image`) **cannot be combined** with reference media (reference images/videos/audios). Edit / extend also do not support first/last frames.
 
 Aliases `wan30-gl` and `wan-3.0-gl` normalize to `wan3.0-gl`. You may also pass billing models `wan3.0-gl-480p` / `wan3.0-gl-720p` / `wan3.0-gl-1080p` directly; the suffix then sets the resolution.
 
 ## Parameter constraints
 
-- **Prompt**: Provide a prompt or at least one input (frames or reference images/videos/audios). Refer to media as "图1", "视频1", "音频1" (image 1, video 1, audio 1), numbered by order within each media array.
-- **Duration**: 2–30 seconds (default `5`).
-- **Aspect ratio** (`aspect_ratio` / `ratio`): `adaptive`, `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`).
+- **Prompt**: Provide a prompt or at least one input (frames or reference images/videos/audios). For `edit` / `extend`, prompt is required and should state the edit or extend intent. Refer to media as "图1", "视频1", "音频1" (image 1, video 1, audio 1), numbered by order within each media array.
+- **Duration**: 2–30 seconds (default `5`). `edit` requires `-1`. `extend` accepts `-1` (auto) or the total length after extension (2–30).
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `adaptive`, `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`). `edit` / `extend` require `adaptive`.
+- **Task type** (`task_type`): optional `edit` / `extend` for this model only. Empty means normal generation.
 - **Resolution**: `480P`, `720P`, `1080P` (case-insensitive), default `720P`.
 - **Reference images**: `reference_images` or `images`, max **10**, public HTTPS URLs.
-- **Reference videos**: `reference_videos` or `videos`, max **5**, public HTTPS URLs.
+- **Reference videos**: `reference_videos` or `videos`, max **5**, public HTTPS URLs; at least one for `edit` / `extend`.
 - **Reference audios**: `reference_audios`, max **5**, public HTTPS URLs.
 - **First / last frame**: `first_image` / `last_image`, one public URL each; `last_image` requires `first_image`.
 
@@ -50,11 +53,12 @@ Aliases `wan30-gl` and `wan-3.0-gl` normalize to `wan3.0-gl`. You may also pass 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `model` | string | Yes | `wan3.0-gl`, or a resolution billing model |
-| `prompt` | string | No | Text prompt; required when no input media is provided |
-| `duration` | integer | No | Duration in seconds, 2–30, default 5 |
-| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio` |
+| `prompt` | string | No | Text prompt; required when no input media is provided; required for `edit` / `extend` |
+| `duration` | integer | No | Duration in seconds, 2–30, default 5; `edit` must be `-1`; `extend` allows `-1` or total length |
+| `aspect_ratio` | string | No | Aspect ratio; takes precedence over `ratio`; `edit` / `extend` require `adaptive` |
 | `ratio` | string | No | Alias for `aspect_ratio` |
 | `resolution` | string | No | Output resolution: `480P` / `720P` / `1080P`, default `720P` |
+| `task_type` | string | No | `edit` for video edit / `extend` for video extension |
 | `reference_images` | string[] | No | Reference image URLs (0–10) |
 | `images` | string[] | No | Alias for `reference_images` when the latter is empty |
 | `reference_videos` | string[] | No | Reference video URLs (0–5) |
@@ -105,17 +109,74 @@ curl -X POST https://api.viraltok.ai/api/v1/videos \
 }
 ```
 
+### Video edit
+
+Requires `task_type: "edit"`, at least one `reference_videos` entry, `aspect_ratio: "adaptive"`, and `duration: -1`. The prompt should state the edit intent.
+
+```bash
+curl -X POST https://api.viraltok.ai/api/v1/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-gl",
+    "task_type": "edit",
+    "prompt": "Edit the video: change daytime to rain",
+    "duration": -1,
+    "aspect_ratio": "adaptive",
+    "resolution": "720P",
+    "reference_videos": ["https://example.com/input.mp4"]
+  }'
+```
+
+### Video extend (auto duration)
+
+Requires `task_type: "extend"`, at least one `reference_videos` entry, and `aspect_ratio: "adaptive"`. Use `duration: -1` to let the model choose the output length after extension.
+
+```bash
+curl -X POST https://api.viraltok.ai/api/v1/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-gl",
+    "task_type": "extend",
+    "prompt": "Extend the video forward while keeping motion continuity",
+    "duration": -1,
+    "aspect_ratio": "adaptive",
+    "resolution": "720P",
+    "reference_videos": ["https://example.com/input.mp4"]
+  }'
+```
+
+### Video extend (fixed total duration)
+
+You can also pass the total length after extension. For example, a ~5s input plus 2s of extension uses `"duration": 7`.
+
+```bash
+curl -X POST https://api.viraltok.ai/api/v1/videos \
+  -H "Authorization: Bearer $JIMMYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "wan3.0-gl",
+    "task_type": "extend",
+    "prompt": "Extend forward by 2 seconds; the person keeps walking",
+    "duration": 7,
+    "aspect_ratio": "adaptive",
+    "resolution": "720P",
+    "reference_videos": ["https://example.com/input.mp4"]
+  }'
+```
+
 ## Billing
 
 - Mode: `per_second`
 - Request model: `wan3.0-gl` (or a resolution billing model)
 - Billing model: `wan3.0-gl-{resolution}` (`wan3.0-gl-480p` / `wan3.0-gl-720p` / `wan3.0-gl-1080p`); unit price differs by resolution
 - Without `resolution`, billed as `720P`
-- On create, prepaid by request `duration`; after success, settled to actual billed seconds (refund or surcharge)
+- On create, prepaid by request `duration`; when `duration=-1`, prepaid from the probeable reference video length, then settled to actual billed seconds
 - After completion, task query returns actual billed seconds in `data.usage.duration`
 
 ```text
-prepaid = unit_price × duration
+prepaid = unit_price × duration (or probed seconds when duration=-1)
 settled = unit_price × actual_billed_seconds
 ```
 

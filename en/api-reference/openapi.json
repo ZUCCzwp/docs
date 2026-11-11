@@ -1753,6 +1753,34 @@
                     ]
                   }
                 },
+                "glEdit": {
+                  "summary": "Wan 3.0 Official Channel video edit",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "edit",
+                    "prompt": "Edit the video: change daytime to rain",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
+                "glExtend": {
+                  "summary": "Wan 3.0 Official Channel video extend",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "extend",
+                    "prompt": "Extend the video forward while keeping motion continuity",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
                 "prime": {
                   "summary": "Create a Wan 3.0 Prime task",
                   "value": {
@@ -2911,6 +2939,24 @@
                   "generate_audio": {
                     "type": "boolean",
                     "description": "Generate audio when supported"
+                  },
+                  "task_type": {
+                    "type": "string",
+                    "enum": [
+                      "edit",
+                      "extend"
+                    ],
+                    "description": "wan3.0-gl only: edit / extend. Requires a reference video and aspect_ratio=adaptive; edit requires duration=-1."
+                  },
+                  "omni_reference_task_type": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "reference",
+                      "edit",
+                      "extend"
+                    ],
+                    "description": "seedance-2.5 with reference media only."
                   }
                 }
               },
@@ -3104,6 +3150,34 @@
                     "resolution": "720P",
                     "reference_images": [
                       "https://example.com/person.png"
+                    ]
+                  }
+                },
+                "glEdit": {
+                  "summary": "Wan 3.0 Official Channel video edit",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "edit",
+                    "prompt": "Edit the video: change daytime to rain",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
+                "glExtend": {
+                  "summary": "Wan 3.0 Official Channel video extend",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "extend",
+                    "prompt": "Extend the video forward while keeping motion continuity",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
                     ]
                   }
                 },
@@ -5529,9 +5603,17 @@
           },
           "duration": {
             "type": "integer",
-            "minimum": 2,
+            "minimum": -1,
             "maximum": 30,
-            "description": "Video duration in seconds. wan3.0 / wan3.0-prime: 4–30 (wan3.0 defaults to 4, wan3.0-prime defaults to 5). wan3.0-gz / wan3.0-gl / wan3.0-prime-gl: 2–30, default 5."
+            "description": "Video duration in seconds. wan3.0 / wan3.0-prime: 4–30 (wan3.0 defaults to 4, wan3.0-prime defaults to 5). wan3.0-gz / wan3.0-gl / wan3.0-prime-gl: 2–30, default 5. For wan3.0-gl edit, duration must be -1; for extend, -1 (auto) or total length after extension."
+          },
+          "task_type": {
+            "type": "string",
+            "enum": [
+              "edit",
+              "extend"
+            ],
+            "description": "wan3.0-gl only: edit requires a reference video, aspect_ratio=adaptive, and duration=-1; extend requires a reference video and aspect_ratio=adaptive (duration=-1 or total length 2–30)."
           },
           "aspect_ratio": {
             "type": "string",

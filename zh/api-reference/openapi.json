@@ -1753,6 +1753,34 @@
                     ]
                   }
                 },
+                "glEdit": {
+                  "summary": "Wan 3.0官链视频编辑",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "edit",
+                    "prompt": "编辑视频，把白天场景换成雨天",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
+                "glExtend": {
+                  "summary": "Wan 3.0官链视频延长",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "extend",
+                    "prompt": "向后延长视频，保持运镜与主体连贯",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
                 "prime": {
                   "summary": "创建 Wan 3.0 Prime 任务",
                   "value": {
@@ -3024,6 +3052,24 @@
                   "generate_audio": {
                     "type": "boolean",
                     "description": "是否生成音频（视模型）"
+                  },
+                  "task_type": {
+                    "type": "string",
+                    "enum": [
+                      "edit",
+                      "extend"
+                    ],
+                    "description": "仅 wan3.0-gl：edit 视频编辑 / extend 视频延长。须参考视频，aspect_ratio=adaptive；edit 的 duration 须为 -1。"
+                  },
+                  "omni_reference_task_type": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "reference",
+                      "edit",
+                      "extend"
+                    ],
+                    "description": "仅 seedance-2.5 带参考素材时可用。"
                   }
                 }
               },
@@ -3217,6 +3263,34 @@
                     "resolution": "720P",
                     "reference_images": [
                       "https://example.com/person.png"
+                    ]
+                  }
+                },
+                "glEdit": {
+                  "summary": "Wan 3.0官链视频编辑",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "edit",
+                    "prompt": "编辑视频，把白天场景换成雨天",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
+                    ]
+                  }
+                },
+                "glExtend": {
+                  "summary": "Wan 3.0官链视频延长",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "task_type": "extend",
+                    "prompt": "向后延长视频，保持运镜与主体连贯",
+                    "duration": -1,
+                    "aspect_ratio": "adaptive",
+                    "resolution": "720P",
+                    "reference_videos": [
+                      "https://example.com/input.mp4"
                     ]
                   }
                 },
@@ -5755,9 +5829,17 @@
           },
           "duration": {
             "type": "integer",
-            "minimum": 2,
+            "minimum": -1,
             "maximum": 30,
-            "description": "视频时长，单位秒。wan3.0 / wan3.0-prime 支持 4–30，wan3.0 默认 4，wan3.0-prime 默认 5；wan3.0-gz / wan3.0-gl / wan3.0-prime-gl 支持 2–30，默认 5。"
+            "description": "视频时长，单位秒。wan3.0 / wan3.0-prime 支持 4–30，wan3.0 默认 4，wan3.0-prime 默认 5；wan3.0-gz / wan3.0-gl / wan3.0-prime-gl 支持 2–30，默认 5。wan3.0-gl 的 edit 须为 -1；extend 可为 -1（智能时长）或延长后的总时长。"
+          },
+          "task_type": {
+            "type": "string",
+            "enum": [
+              "edit",
+              "extend"
+            ],
+            "description": "仅 wan3.0-gl：edit 视频编辑（须参考视频、aspect_ratio=adaptive、duration=-1）；extend 视频延长（须参考视频、aspect_ratio=adaptive；duration=-1 或总时长 2–30）。"
           },
           "aspect_ratio": {
             "type": "string",

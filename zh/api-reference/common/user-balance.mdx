@@ -1,11 +1,15 @@
 ---
 title: '查询用户账户余额'
-openapi: 'GET /api/open-api/v1/user/balance'
+openapi: 'GET /api/v1/user/balance'
 ---
 
 查询当前 API Key 所属用户的**吉米币账户余额**。OpenAPI 调用产生的费用从该账户扣除；创建任务前可先调用本接口确认可用余额是否充足。
 
 余额过低时也可改为接收推送，见 [余额告警 Webhook](/zh/api-reference/common/balance-webhook)。
+
+<Note>
+**备注（兼容路径）**：`GET /api/open-api/v1/user/balance` 仍可用，行为与 `GET /api/v1/user/balance` 相同。
+</Note>
 
 ### 响应字段
 
@@ -26,7 +30,7 @@ openapi: 'GET /api/open-api/v1/user/balance'
 ### 示例
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/user/balance' \
+curl -X GET 'https://api.viraltok.ai/api/v1/user/balance' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
 

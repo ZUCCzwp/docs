@@ -1,7 +1,11 @@
 ---
 title: 'Understand Video'
-openapi: 'POST /api/open-api/v1/videos/understand'
+openapi: 'POST /api/v1/videos/understand'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/videos/understand` still works and matches `POST /api/v1/videos/understand`.
+</Note>
+
 
 Synchronous Gemini video understanding. Pass a base64 video in `contents[].parts[].inline_data`, or a public `video_url` for the server to download and inject (max 80MB).
 

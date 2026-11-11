@@ -1,14 +1,18 @@
 ---
 title: 'GPT Image 2 编辑图片'
-openapi: 'POST /api/open-api/v1/images/edits'
+openapi: 'POST /api/v1/images/edits'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/images/edits` 仍可用，行为与 `POST /api/v1/images/edits` 相同。
+</Note>
+
 
 <Note>
 本接口为**同步**调用，兼容 OpenAI `POST /v1/images/edits`。使用 `multipart/form-data` 上传源图，请求成功后**立即扣费**，并在响应 `data` 中直接返回编辑后的图片（`b64_json` 或 `url`）。
 </Note>
 
 <Note>
-同步图片编辑可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/edits`）。
+同步图片编辑可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/v1/images/edits`）。
 </Note>
 
 ## 计费（gpt-image-2）

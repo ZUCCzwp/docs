@@ -7,7 +7,7 @@ icon: 'terminal'
 This guide shows how to point **OpenAI Codex** (CLI, IDE extension, or any desktop client that reads the same `config.toml`) at ViraltokAI LLM models such as `gpt-5.6-sol`, `gpt-5.6-terra`, and `claude-sonnet-5`, with pay-as-you-go JimiCoin billing from response `usage`. Use [Messages](/en/api-reference/chat/messages) for `claude-opus-5-5`.
 
 <Info>
-**Responses API is the default.** Codex and ViraltokAI both treat `POST /api/open-api/v1/responses` as the primary OpenAI Responses path. Fall back to Chat Completions only for legacy toolchains or when CC Switch cannot use a Responses upstream.
+**Responses API is the default.** Codex and ViraltokAI both treat `POST /api/v1/responses` as the primary OpenAI Responses path. Fall back to Chat Completions only for legacy toolchains or when CC Switch cannot use a Responses upstream.
 </Info>
 
 <Note>
@@ -36,9 +36,9 @@ Codex **cloud sessions** cannot be switched to custom third-party models with th
 
 | Approach | Priority | Codex protocol | ViraltokAI endpoint |
 | :--- | :--- | :--- | :--- |
-| **Direct Responses** | **Default / recommended** | Responses | `POST /api/open-api/v1/responses` |
-| **CC Switch + Responses upstream** | When you need a local proxy | Responses → passthrough | `POST /api/open-api/v1/responses` |
-| **CC Switch + Chat conversion** | Fallback only | Responses → adapter → Chat | `POST /api/open-api/v1/chat/completions` |
+| **Direct Responses** | **Default / recommended** | Responses | `POST /api/v1/responses` |
+| **CC Switch + Responses upstream** | When you need a local proxy | Responses → passthrough | `POST /api/v1/responses` |
+| **CC Switch + Chat conversion** | Fallback only | Responses → adapter → Chat | `POST /api/v1/chat/completions` |
 
 Both direct and CC Switch setups share the same **API root** (do not append `/responses` or `/chat/completions` yourself):
 
@@ -92,7 +92,7 @@ Quick probe with curl (expect auth or validation JSON, not `404 page not found`)
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" \
-  -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+  -X POST 'https://api.viraltok.ai/api/v1/responses' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{"model":"gpt-5.6-sol","input":"hi"}'

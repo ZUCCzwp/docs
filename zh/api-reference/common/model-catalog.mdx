@@ -1,12 +1,16 @@
 ---
 title: '查询探测模型定价'
-openapi: 'GET /api/openapi/model/catalog'
+openapi: 'GET /api/v1/models'
 ---
 
 探测并返回 ViraltokAI OpenAPI **公开模型定价**：包含当前可用的计费模型 ID、展示名称、类型、默认单价与计费方式。提交生成任务前，可先用本接口确认应传入的 `model` 值并估算费用。
 
 <Note>
 本接口返回的是**平台默认单价**。若你在控制台为账户配置了某模型的专属价格，实际扣费以创建/查询响应中的 `cost` 为准（按账户定制价结算）。列表中的 `unit_price` 始终为公开基准价。
+</Note>
+
+<Note>
+**备注（兼容路径）**：`GET /api/openapi/model/catalog` 仍可用，行为与 `GET /api/v1/models` 相同。
 </Note>
 
 ### 鉴权
@@ -52,13 +56,13 @@ openapi: 'GET /api/openapi/model/catalog'
 查询全部模型：
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog'
+curl -X GET 'https://api.viraltok.ai/api/v1/models'
 ```
 
 搜索 Seedance 相关模型：
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog?search=seedance'
+curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
 ```
 
 ```json

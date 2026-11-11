@@ -1,12 +1,15 @@
 ---
 title: '创建 Seedance 满血版视频'
-openapi: 'POST /api/open-api/v1/seedance/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/seedance/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
 创建 Seedance **满血版**（Manxue）视频生成任务。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取视频地址。
 
 <Warning>
-**请勿**把 `seedance-2.5` / `seedance2.5-gz` / `seedance-2.5-720p` 等 Seedance 2.5 型号发到本接口。官链使用 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create)，官转使用 [创建 Seedance 2.5官转视频](/zh/api-reference/seedance/25/create-gz)：`POST /api/open-api/v1/seedance25/videos`。误用 `/seedance/videos` 会落到 Seedance 2.0 满血线路。
+**请勿**在兼容路径 `/api/open-api/v1/seedance/videos` 上提交 `seedance-2.5` / `seedance2.5-gz` / `seedance-2.5-720p` 等 2.5 型号（会落到 Seedance 2.0 满血线路）。请在 `POST /api/v1/videos` 设置正确 `model`，或查看 [Seedance 2.5 官链](/zh/api-reference/seedance/25/create) / [官转](/zh/api-reference/seedance/25/create-gz)。
 </Warning>
 
 <Note>
@@ -63,7 +66,7 @@ openapi: 'POST /api/open-api/v1/seedance/videos'
 # 1. 提交审核（见 assets-audit 文档）
 # 2. 轮询审核状态直至 Active
 # 3. 创建视频
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -93,7 +96,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ## 查询任务
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

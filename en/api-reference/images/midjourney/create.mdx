@@ -1,15 +1,18 @@
 ---
 title: 'Midjourney text-to-image'
 ---
+<Note>
+**Compatibility note**: Legacy `/api/open-api/v1/midjourney/...` still works and matches `/api/v1/midjourney/...`.
+</Note>
 
-Create an async **Midjourney** Imagine task. The response includes a `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/open-api/v1/images/{taskId}`) until `status=completed`, then read `result.image_urls` and `result.buttons`.
+Create an async **Midjourney** Imagine task. The response includes a `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/v1/images/{taskId}`) until `status=completed`, then read `result.image_urls` and `result.buttons`.
 
 Follow-up actions: [Upscale / variation / expand](/en/api-reference/images/midjourney/actions). Image-to-video: [Create Midjourney image-to-video](/en/api-reference/images/midjourney/video).
 
 <Note>
-Use `POST /api/open-api/v1/midjourney/generations` (same as `/generations/imagine`). Do not send `model` in the body.
+Use `POST /api/v1/midjourney/generations` (same as `/generations/imagine`). Do not send `model` in the body.
 
-Do not post Midjourney to `POST /api/open-api/v1/images`.
+Do not post Midjourney to `POST /api/v1/images`.
 </Note>
 
 ## Overview
@@ -17,7 +20,7 @@ Do not post Midjourney to `POST /api/open-api/v1/images`.
 | Item | Value |
 |------|------|
 | Model | `midjourney` |
-| Endpoint | `POST /api/open-api/v1/midjourney/generations` |
+| Endpoint | `POST /api/v1/midjourney/generations` |
 | Billing | See billing reference below |
 | Speed | `relax` (default) / `fast` / `turbo` |
 | Version | `8.2` / `8.1` / `7` / `6.1` / `5.2` / `5.1`; `niji=true` + `7` / `6` → `niji7` / `niji6` |
@@ -50,7 +53,7 @@ See the Chinese page for the full structured-parameter list.
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

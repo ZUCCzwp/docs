@@ -1,7 +1,11 @@
 ---
 title: 'SoundClone - Create Audio Task'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/soundCloning/audios'
+openapi: 'en/api-reference/openapi.json POST /api/v1/soundCloning/audios'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/soundCloning/audios` still works and matches `POST /api/v1/soundCloning/audios`.
+</Note>
+
 
 <Note>
 Use the `modelId` from a completed [preview task](/en/api-reference/sound-clone/clone-create). Poll [Query SoundClone Task](/en/api-reference/common/sound-clone-query) for the final `audioUrl`.
@@ -41,7 +45,7 @@ Character counting matches preview: Unicode runes, excluding `<#x#>` markers.
 
 ```bash
 curl --request POST \
-  --url 'https://api.viraltok.ai/api/open-api/v1/soundCloning/audios' \
+  --url 'https://api.viraltok.ai/api/v1/soundCloning/audios' \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{

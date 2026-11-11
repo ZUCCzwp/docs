@@ -1,7 +1,11 @@
 ---
 title: 'Create VEO video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/veo/frames'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/veo/frames` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 <Note>
   On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`.

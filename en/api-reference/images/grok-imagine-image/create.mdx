@@ -1,14 +1,18 @@
 ---
 title: 'Grok Imagine Image generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create an async **Grok Imagine Image** task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed. When `n > 1`, also read `result.image_urls` for all images.
 
 Higher quality: [Grok Imagine Image 2.0](/en/api-reference/images/grok-imagine-image-2/create).
 
 <Note>
-This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-image"`.
+This model uses `POST /api/v1/images` with `"model": "grok-imagine-image"`.
 </Note>
 
 ## Model overview
@@ -54,7 +58,7 @@ Edit mode also supports `auto`.
 ### Text-to-image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -69,7 +73,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Image edit
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,10 +1,73 @@
 ---
 title: '创建视频'
-openapi: 'POST /api/open-api/v1/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
-## 已下线
+统一异步视频创建入口。提交时在 body 中设置 `model`，服务端按模型路由到对应产品能力；成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 获取地址。
 
-Sora 视频生成已下线，本接口不再接受新的 Sora 任务。
+产品参数细节见各模型文档页（Seedance、Kling、Wan、Veo、Grok、Flux3、Muse 等）。
 
-请改用控制台与文档中仍开放的视频模型（例如 Veo、Seedance、Grok、Wan 等），并通过对应创建接口提交任务，再使用 [查询视频任务](/zh/api-reference/common/query) 轮询结果。
+<Note>
+**备注（兼容路径）**：以下旧路径仍可调用，行为与 `POST /api/v1/videos` 相同：
+- `POST /api/open-api/v1/videos`
+- `POST /api/open-api/v1/seedance/videos`、`/seedance25/videos`、`/kling/videos`、`/wan/videos`、`/flux3/videos`、`/minimax/videos`、`/muse/videos`、`/grok/videos`、`/gemini/omni/videos`、`/veo/frames` 等产品路径
+</Note>
+
+## 通用字段（推荐）
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 公开模型 ID（以控制台 / 定价为准） |
+| `prompt` | string | 视模型 | 文本提示词 |
+| `duration` | int | 视模型 | 时长（秒） |
+| `aspect_ratio` | string | 否 | 画幅，如 `16:9`、`9:16` |
+| `resolution` | string | 否 | 分辨率，如 `720p`、`1080p` |
+| `images` | string[] | 否 | 参考图 URL 列表 |
+| `videos` | string[] | 否 | 参考视频 URL 列表 |
+| `audios` | string[] | 否 | 参考音频 URL 列表 |
+| `first_frame_url` | string | 否 | 首帧图 URL |
+| `last_frame_url` | string | 否 | 尾帧图 URL |
+| `video_url` | string | 否 | 单视频输入（超分、去字幕、翻译等） |
+| `generate_audio` | bool | 否 | 是否生成音频（视模型） |
+
+仍接受旧字段别名：`ratio` / `orientation` / `size`（→ `aspect_ratio`），`image_urls` / `reference_images`（→ `images`），`first_image` / `first_frame_image`（→ `first_frame_url`）等。
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5",
+    "prompt": "一只猫在阳光下走动",
+    "duration": 5,
+    "aspect_ratio": "16:9"
+  }'
+```
+
+## 响应示例
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "task_abc123",
+    "status": "queued",
+    "model": "seedance-2.5",
+    "created_at": 1710000000
+  }
+}
+```
+
+## 查询任务
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+<Note>
+**备注（兼容路径）**：`GET /api/open-api/v1/videos/{task_id}` 仍可查询。
+</Note>

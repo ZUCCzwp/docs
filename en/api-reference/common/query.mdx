@@ -1,7 +1,11 @@
 ---
 title: 'Query Video Task'
-openapi: 'GET /api/open-api/v1/videos/{taskId}'
+openapi: 'GET /api/v1/videos/{taskId}'
 ---
+
+<Note>
+**Note (compatibility)**: `GET /api/open-api/v1/videos/{taskId}` still works and matches `GET /api/v1/videos/{taskId}`.
+</Note>
 
 > [!IMPORTANT]
 > The video download URL (`video_url`) is valid for **3 days**. Please download or transfer it in time.

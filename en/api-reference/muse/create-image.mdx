@@ -1,8 +1,11 @@
 ---
 title: 'Create Muse Image'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/muse/images'
+openapi: 'en/api-reference/openapi.json POST /api/v1/images'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/muse/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 This endpoint is async. Save the `task_id` from the create response, then poll [Query Image Task](/en/api-reference/images/query). When complete, read the image URL from `result.image_url`.
 </Note>
@@ -31,7 +34,7 @@ Aliases such as `muse-image` normalize to `muse-images`.
 
 <RequestExample>
 ```bash Text-to-image
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -43,7 +46,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
 ```
 
 ```bash Image-to-image
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

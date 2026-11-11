@@ -1,18 +1,22 @@
 ---
 title: 'GPT Image 2.6 Edit Image'
-openapi: 'POST /api/open-api/v1/images/edits'
+openapi: 'POST /api/v1/images/edits'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/edits` still works and matches `POST /api/v1/images/edits`.
+</Note>
+
 
 Create a **GPT Image 2.6** synchronous image edit. Compatible with OpenAI `POST /v1/images/edits`. Upload the source image with `multipart/form-data`. Billing is applied immediately on success, and the result is returned in `data` (`url` or `b64_json`).
 
 <Note>
 Set `model` to `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst`.
 
-You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/open-api/v1/images/edits`).
+You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/v1/images/edits`).
 </Note>
 
 <Warning>
-Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/open-api/v1/images`).
+Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/v1/images`).
 </Warning>
 
 ## Model
@@ -44,7 +48,7 @@ Same as [GPT Image 2.6 Text-to-Image](/en/api-reference/images/gpt-image-2.6/gen
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/edits' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/edits' \
   -H 'Authorization: Bearer sk_xxx' \
   -F 'model=gpt-image-2.6-flare' \
   -F 'prompt=Replace the background with a sunset beach and keep the subject' \

@@ -7,7 +7,7 @@ icon: 'terminal'
 本指南说明如何将 **OpenAI Codex**（CLI、IDE 扩展或读取同一套 `config.toml` 的桌面客户端）指向 ViraltokAI 的 LLM 接口，使用 `gpt-5.6-sol`、`gpt-5.6-terra`、`claude-sonnet-5` 等模型，并按 token 从吉米币（JimiCoin）扣费。`claude-opus-5-5` 请走 [Messages](/zh/api-reference/chat/messages)。
 
 <Info>
-**默认走 Responses API。** Codex 与 ViraltokAI 均以对 `POST /api/open-api/v1/responses` 的 OpenAI Responses 协议为首选路径。仅在旧工具链或 CC Switch 无法使用 Responses 上游格式时，才回退到 Chat Completions。
+**默认走 Responses API。** Codex 与 ViraltokAI 均以对 `POST /api/v1/responses` 的 OpenAI Responses 协议为首选路径。仅在旧工具链或 CC Switch 无法使用 Responses 上游格式时，才回退到 Chat Completions。
 </Info>
 
 <Note>
@@ -36,9 +36,9 @@ Codex 云端会话目前**不能**通过自定义 `model_provider` 切换为第�
 
 | 方式 | 优先级 | Codex 协议 | ViraltokAI 端点 |
 | :--- | :--- | :--- | :--- |
-| **直连 Responses** | **默认 / 推荐** | Responses | `POST /api/open-api/v1/responses` |
-| **CC Switch + Responses 上游** | 需本地代理时 | Responses → 直连 | `POST /api/open-api/v1/responses` |
-| **CC Switch + Chat 转换** | 仅作回退 | Responses → 转换 → Chat | `POST /api/open-api/v1/chat/completions` |
+| **直连 Responses** | **默认 / 推荐** | Responses | `POST /api/v1/responses` |
+| **CC Switch + Responses 上游** | 需本地代理时 | Responses → 直连 | `POST /api/v1/responses` |
+| **CC Switch + Chat 转换** | 仅作回退 | Responses → 转换 → Chat | `POST /api/v1/chat/completions` |
 
 两种方式的 **Base URL 根路径相同**（不要重复拼接 `/responses` 或 `/chat/completions`）：
 
@@ -92,7 +92,7 @@ model = "gpt-5.6-sol"
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" \
-  -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+  -X POST 'https://api.viraltok.ai/api/v1/responses' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{"model":"gpt-5.6-sol","input":"hi"}'

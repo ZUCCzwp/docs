@@ -1,14 +1,18 @@
 ---
 title: 'Query Asset Audit Status'
-openapi: 'POST /api/open-api/v1/seedance/assets/status'
+openapi: 'POST /api/v1/seedance/assets/status'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/seedance/assets/status` still works and matches `POST /api/v1/seedance/assets/status`.
+</Note>
+
 
 Check audit status for submitted assets (full / Manxue route). Do not use an `asset_id` in video creation until status is `Active`.
 
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/assets/status' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/assets/status' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

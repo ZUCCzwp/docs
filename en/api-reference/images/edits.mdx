@@ -1,14 +1,18 @@
 ---
 title: 'GPT Image 2 Edit Image'
-openapi: 'POST /api/open-api/v1/images/edits'
+openapi: 'POST /api/v1/images/edits'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/edits` still works and matches `POST /api/v1/images/edits`.
+</Note>
+
 
 <Note>
 This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/edits`. Upload the source image via `multipart/form-data`. On success, billing is applied immediately and the edited image is returned in `data` (`b64_json` or `url`).
 </Note>
 
 <Note>
-For synchronous image editing, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/edits`).
+For synchronous image editing, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/v1/images/edits`).
 </Note>
 
 ## Billing (gpt-image-2)

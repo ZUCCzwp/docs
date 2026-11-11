@@ -1,10 +1,73 @@
 ---
 title: 'Create Video'
-openapi: 'POST /api/open-api/v1/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
-## Discontinued
+Unified async video create endpoint. Set `model` in the body; the API routes by model. On success you get a `task_id` — poll [Query video task](/en/api-reference/common/query) and read `result.video_url` when completed.
 
-Sora video generation is offline. This endpoint no longer accepts new Sora tasks.
+See each model page for product-specific fields (Seedance, Kling, Wan, Veo, Grok, Flux3, Muse, …).
 
-Use other video models still listed in the console and docs (for example Veo, Seedance, Grok, Wan), submit via their create endpoints, then poll [Query video task](/en/api-reference/common/query).
+<Note>
+**Note (compatibility)**: These legacy paths still work and match `POST /api/v1/videos`:
+- `POST /api/open-api/v1/videos`
+- Product paths such as `POST /api/open-api/v1/seedance/videos`, `/seedance25/videos`, `/kling/videos`, `/wan/videos`, `/flux3/videos`, `/minimax/videos`, `/muse/videos`, `/grok/videos`, `/gemini/omni/videos`, `/veo/frames`, etc.
+</Note>
+
+## Common fields (preferred)
+
+| Field | Type | Required | Description |
+|------|------|----------|-------------|
+| `model` | string | Yes | Public model ID (see console / pricing) |
+| `prompt` | string | Model-dependent | Text prompt |
+| `duration` | int | Model-dependent | Duration in seconds |
+| `aspect_ratio` | string | No | e.g. `16:9`, `9:16` |
+| `resolution` | string | No | e.g. `720p`, `1080p` |
+| `images` | string[] | No | Reference image URLs |
+| `videos` | string[] | No | Reference video URLs |
+| `audios` | string[] | No | Reference audio URLs |
+| `first_frame_url` | string | No | First-frame image URL |
+| `last_frame_url` | string | No | Last-frame image URL |
+| `video_url` | string | No | Single video input (super-res, remove-subtitle, translate, …) |
+| `generate_audio` | bool | No | Generate audio when supported |
+
+Legacy field aliases still accepted: `ratio` / `orientation` / `size` (→ `aspect_ratio`), `image_urls` / `reference_images` (→ `images`), `first_image` / `first_frame_image` (→ `first_frame_url`), etc.
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance-2.5",
+    "prompt": "A cat walking in sunlight",
+    "duration": 5,
+    "aspect_ratio": "16:9"
+  }'
+```
+
+## Response example
+
+```json
+{
+  "code": 0,
+  "msg": "ok",
+  "data": {
+    "task_id": "task_abc123",
+    "status": "queued",
+    "model": "seedance-2.5",
+    "created_at": 1710000000
+  }
+}
+```
+
+## Query task
+
+```bash
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
+  -H 'Authorization: Bearer sk_xxx'
+```
+
+<Note>
+**Note (compatibility)**: `GET /api/open-api/v1/videos/{task_id}` still works.
+</Note>

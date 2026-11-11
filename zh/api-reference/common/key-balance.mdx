@@ -1,9 +1,13 @@
 ---
 title: '查询 API Key 额度余额'
-openapi: 'GET /api/open-api/v1/key/balance'
+openapi: 'GET /api/v1/key/balance'
 ---
 
 查询当前 API Key 的**调用额度**（与账户吉米币余额独立）。若在控制台为该 Key 设置了 `total_quota`，则按额度限制；未设置时视为不限额。
+
+<Note>
+**备注（兼容路径）**：`GET /api/open-api/v1/key/balance` 仍可用，行为与 `GET /api/v1/key/balance` 相同。
+</Note>
 
 ### 响应字段
 
@@ -31,7 +35,7 @@ openapi: 'GET /api/open-api/v1/key/balance'
 ### 示例
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/key/balance' \
+curl -X GET 'https://api.viraltok.ai/api/v1/key/balance' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
 

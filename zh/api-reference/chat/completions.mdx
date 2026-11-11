@@ -1,12 +1,16 @@
 ---
 title: 'Chat Completions'
-openapi: 'POST /api/open-api/v1/chat/completions'
+openapi: 'POST /api/v1/chat/completions'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/chat/completions` 仍可用，行为与 `POST /api/v1/chat/completions` 相同。
+</Note>
+
 
 兼容 OpenAI 的 **Chat Completions** 对话接口，支持 ViraltokAI LLM 模型。传入多轮 `messages` 获取助手回复，可选流式输出。按响应 `usage` 中的 token **按量计费**，从账户吉米币（JimiCoin）扣减。
 
 <Info>
-**Codex 等 Agent 工具默认请走 Responses API**（`POST /api/open-api/v1/responses`），而非本页 Chat Completions。详见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。本接口适用于脚本、后端 SDK 及需要 `messages` 格式的集成。
+**Codex 等 Agent 工具默认请走 Responses API**（`POST /api/v1/responses`），而非本页 Chat Completions。详见 [Codex 集成](/zh/api-reference/llm/integrations/codex)。本接口适用于脚本、后端 SDK 及需要 `messages` 格式的集成。
 </Info>
 
 <Note>
@@ -22,7 +26,7 @@ Authorization: Bearer <API_KEY>
 ### 接口地址
 
 ```http
-POST https://api.viraltok.ai/api/open-api/v1/chat/completions
+POST https://api.viraltok.ai/api/v1/chat/completions
 Content-Type: application/json
 ```
 
@@ -58,7 +62,7 @@ Content-Type: application/json
 ### 非流式示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+curl -X POST 'https://api.viraltok.ai/api/v1/chat/completions' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -98,7 +102,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 设置 `"stream": true`。响应为 SSE（`data: {…}` 多行，以 `data: [DONE]` 结束）。**最后一个带 `usage` 的 chunk** 用于计费。
 
 ```bash
-curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+curl -N -X POST 'https://api.viraltok.ai/api/v1/chat/completions' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

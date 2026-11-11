@@ -28,20 +28,40 @@ API 密钥：您刚创建的密钥
 
 ### 视频生成示例
 
+<Note>
+**备注（兼容路径）**：旧 `/api/open-api/v1/...` 产品路径（如 `/seedance/videos`、`/kling/videos`）以及 `/api/open-api/v1/videos|/images` 仍可调用。
+</Note>
+
+使用统一入口 `POST /api/v1/videos`，通过 `model` 选择产品。
+
 ```bash theme={null}
 curl --request POST \
-  --url https://api.viraltok.ai/api/open-api/v1/videos \
+  --url https://api.viraltok.ai/api/v1/videos \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json' \
   --data '
 {
-  "model": "<string>",
-  "prompt": "<string>",
-  "duration": 123,
-  "orientation": "landscape",
-  "images": [
-    "<string>"
-  ]
+  "model": "seedance-2.5",
+  "prompt": "一只猫在阳光下走动",
+  "duration": 5,
+  "aspect_ratio": "16:9"
+}
+'
+```
+
+### 图片生成示例
+
+```bash theme={null}
+curl --request POST \
+  --url https://api.viraltok.ai/api/v1/images \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "model": "gpt-image-2",
+  "prompt": "赛博朋克城市雨夜",
+  "aspect_ratio": "16:9",
+  "resolution": "2k"
 }
 '
 ```
@@ -52,9 +72,11 @@ curl --request POST \
 
 ```bash theme={null}
 curl --request GET \
-  --url https://api.viraltok.ai/api/open-api/v1/videos/{taskId} \
+  --url https://api.viraltok.ai/api/v1/videos/{taskId} \
   --header 'Authorization: Bearer <token>'
 ```
+
+图片任务使用 `GET /api/v1/images/{taskId}`。
 
 ## 下一步
 

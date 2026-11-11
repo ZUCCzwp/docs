@@ -1,7 +1,11 @@
 ---
 title: '视频理解'
-openapi: 'POST /api/open-api/v1/videos/understand'
+openapi: 'POST /api/v1/videos/understand'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/videos/understand` 仍可用，行为与 `POST /api/v1/videos/understand` 相同。
+</Note>
+
 
 同步调用 Gemini 对视频进行理解分析。可直接传 base64 视频（`contents[].parts[].inline_data`），或传公网 `video_url` 由服务端下载后注入（单文件 ≤ 80MB）。
 

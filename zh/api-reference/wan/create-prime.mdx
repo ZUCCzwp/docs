@@ -1,13 +1,17 @@
 ---
 title: '创建 Wan 3.0 Prime 视频'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/wan/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/open-api/v1/wan/videos`。通过 `model: "wan3.0-prime"` 选择本型号，独立计费。需要 Prime 官链时见 [`wan3.0-prime-gl`](/zh/api-reference/wan/create-prime-gl)。
+本接口与 [创建 Wan 3.0 视频](/zh/api-reference/wan/create) 共用 `POST /api/v1/videos`。通过 `model: "wan3.0-prime"` 选择本型号，独立计费。需要 Prime 官链时见 [`wan3.0-prime-gl`](/zh/api-reference/wan/create-prime-gl)。
 
 ## 支持的模型
 
@@ -72,7 +76,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
 ### 参考生视频
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

@@ -1,7 +1,11 @@
 ---
 title: 'Remove background'
-openapi: 'POST /api/open-api/v1/images/remove-bg'
+openapi: 'POST /api/v1/images/remove-bg'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/remove-bg` still works and matches `POST /api/v1/images/remove-bg`.
+</Note>
+
 
 <Note>
 This is a **synchronous** endpoint. On success it **charges immediately** (billing model `viraltok-remove-bg`) and returns the result as `b64_json` by default — no polling required. Pass `response_format=url` to get `image_url` instead.
@@ -14,7 +18,7 @@ Per-request billing under model name `viraltok-remove-bg`. Unit price follows co
 ## Request example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/remove-bg' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/remove-bg' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

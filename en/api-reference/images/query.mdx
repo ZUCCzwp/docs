@@ -1,7 +1,11 @@
 ---
 title: 'Query Image Task'
-openapi: 'GET /api/open-api/v1/images/{taskId}'
+openapi: 'GET /api/v1/images/{taskId}'
 ---
+
+<Note>
+**Note (compatibility)**: `GET /api/open-api/v1/images/{taskId}` still works and matches `GET /api/v1/images/{taskId}`.
+</Note>
 
 > [!IMPORTANT]
 > The image download URL (`image_url`) is valid for **3 days**. Please download or transfer it in time.

@@ -1,14 +1,17 @@
 ---
 title: 'Create Seedance 2.5 Official Channel Video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/seedance25/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
 <Warning>
-These models require `POST /api/open-api/v1/seedance25/videos`. Do **not** call `/api/open-api/v1/seedance/videos` (Seedance 2.0 / Full routes); that would land on the Full (Manxue) channel.
+These models require `POST /api/v1/videos`. Do **not** call `/api/v1/videos` (Seedance 2.0 / Full routes); that would land on the Full (Manxue) channel.
 </Warning>
 
 This page covers `seedance-2.5` only. For `seedance2.5-gz`, see [Create Seedance 2.5 Official Video](/en/api-reference/seedance/25/create-gz). For `seedance2.5-dreamina`, see [Create Seedance 2.5 Dreamina Video](/en/api-reference/seedance/25/create-dreamina).
@@ -91,7 +94,7 @@ cost = unit_price × duration
 Standard:
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -109,7 +112,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
 Video editing (`edit`):
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,12 +1,16 @@
 ---
 title: 'Probe model pricing'
-openapi: 'GET /api/openapi/model/catalog'
+openapi: 'GET /api/v1/models'
 ---
 
 Probe **public model pricing** for active ViraltokAI OpenAPI billing models: model IDs, display names, types, default unit prices, and billing modes. Use this endpoint to discover which `model` values you can pass to create endpoints and to estimate cost before submitting tasks.
 
 <Note>
 This endpoint returns **platform default prices**. If your account has custom per-model pricing configured in the console, actual charges on create/query responses use your account rate instead. The list always shows the public baseline `unit_price`.
+</Note>
+
+<Note>
+**Compatibility note**: `GET /api/openapi/model/catalog` still works and matches `GET /api/v1/models`.
 </Note>
 
 ### Authentication
@@ -52,13 +56,13 @@ Actual task cost appears in the `cost` field on create and query responses after
 List all models:
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog'
+curl -X GET 'https://api.viraltok.ai/api/v1/models'
 ```
 
 Search for Seedance models:
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/openapi/model/catalog?search=seedance'
+curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
 ```
 
 ```json

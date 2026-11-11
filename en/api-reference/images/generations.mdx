@@ -1,7 +1,11 @@
 ---
 title: 'GPT Image 2 Text-to-Image'
-openapi: 'POST /api/open-api/v1/images/generations'
+openapi: 'POST /api/v1/images/generations'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/generations` still works and matches `POST /api/v1/images/generations`.
+</Note>
+
 
 <Note>
 This is a **synchronous** endpoint compatible with OpenAI `POST /v1/images/generations`. On success, billing is applied immediately and image results are returned in `data` (`b64_json` or `url`) — no task polling required.
@@ -10,7 +14,7 @@ Unlike [GPT Image 2 Image Generation](/en/api-reference/images/create) (async `P
 </Note>
 
 <Note>
-For synchronous text-to-image, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/open-api/v1/images/generations`).
+For synchronous text-to-image, use the **direct image endpoint** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, e.g. `POST /api/v1/images/generations`).
 </Note>
 
 ## Billing (gpt-image-2)

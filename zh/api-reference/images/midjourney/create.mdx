@@ -1,15 +1,18 @@
 ---
 title: 'Midjourney 文生图'
 ---
+<Note>
+**备注（兼容路径）**：旧前缀 `/api/open-api/v1/midjourney/...` 仍可用，行为与 `/api/v1/midjourney/...` 相同。
+</Note>
 
 创建 **Midjourney** 异步绘图任务（Imagine / 垫图）。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态。完成后从 `result.image_urls` 获取四宫格单图，从 `result.buttons` 读取可继续的操作。
 
 二次操作见 [放大 / 变体 / 扩图](/zh/api-reference/images/midjourney/actions)，图生视频见 [创建Midjourney 图生视频](/zh/api-reference/images/midjourney/video)。
 
 <Note>
-接口路径：`POST /api/open-api/v1/midjourney/generations`（与 `/generations/imagine` 行为一致）。请求体不需要传 `model`。
+接口路径：`POST /api/v1/midjourney/generations`（与 `/generations/imagine` 行为一致）。请求体不需要传 `model`。
 
-请勿把 Midjourney 发到 `POST /api/open-api/v1/images`。
+请勿把 Midjourney 发到 `POST /api/v1/images`。
 </Note>
 
 ## 模型说明
@@ -17,7 +20,7 @@ title: 'Midjourney 文生图'
 | 项目 | 说明 |
 |------|------|
 | 模型名 | `midjourney`（按操作计费） |
-| 接口 | `POST /api/open-api/v1/midjourney/generations` |
+| 接口 | `POST /api/v1/midjourney/generations` |
 | 计费 | 见下方计费参考 |
 | 模式 | 文生图；传入 `images` 时为垫图 |
 | 速度 | `speed`: `relax`（默认）/ `fast` / `turbo` |
@@ -66,7 +69,7 @@ title: 'Midjourney 文生图'
 ### 文生图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -80,7 +83,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
 ### 参数写在 prompt 里
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -91,7 +94,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
 ### 垫图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -104,7 +107,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
 
 ## 查询结果
 
-使用 [查询图片任务](/zh/api-reference/images/query) 轮询：`GET /api/open-api/v1/images/{taskId}`。建议 3–5 秒一次，直到 `status=completed`。
+使用 [查询图片任务](/zh/api-reference/images/query) 轮询：`GET /api/v1/images/{taskId}`。建议 3–5 秒一次，直到 `status=completed`。
 
 | 字段 | 说明 |
 |------|------|
@@ -117,6 +120,6 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations' \
 `status=modal` 表示需要调用 `/modal` 补参。图片地址有效期约 **3 天**，请及时转存。
 
 ```bash
-curl 'https://api.viraltok.ai/api/open-api/v1/images/task_xxx' \
+curl 'https://api.viraltok.ai/api/v1/images/task_xxx' \
   -H 'Authorization: Bearer sk_xxx'
 ```

@@ -1,12 +1,16 @@
 ---
 title: 'Create Full Super-Resolution SP Video'
-openapi: 'POST /api/open-api/v1/seedance/videos'
+openapi: 'POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/seedance/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create a Seedance **Full Super-Resolution SP** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/open-api/v1/seedance/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
+This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/v1/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
 </Note>
 
 ## Models and Routes
@@ -60,7 +64,7 @@ Deduct corresponding computing credits directly based on the selected `model`:
 ### Full Super-Resolution SP — first-frame to video
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -75,7 +79,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ### Reference images
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -93,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ### Using uploaded assets
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -123,7 +127,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ## Poll for result
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

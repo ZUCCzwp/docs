@@ -1,7 +1,11 @@
 ---
 title: 'Messages'
-openapi: 'POST /api/open-api/v1/messages'
+openapi: 'POST /api/v1/messages'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/messages` 仍可用，行为与 `POST /api/v1/messages` 相同。
+</Note>
+
 
 Claude Opus 5.5 的 **Messages** 接口，协议与 Anthropic Messages 一致。传入 `messages` 获取助手回复，可选流式输出。按响应 `usage` 中的 token **按量计费**，从账户吉米币（JimiCoin）扣减。
 
@@ -20,7 +24,7 @@ Claude Opus 5.5 的 **Messages** 接口，协议与 Anthropic Messages 一致。
 ### 接口地址
 
 ```http
-POST https://api.viraltok.ai/api/open-api/v1/messages
+POST https://api.viraltok.ai/api/v1/messages
 Content-Type: application/json
 ```
 
@@ -55,7 +59,7 @@ Claude SDK / Claude Code 的 Base URL 填 `https://api.viraltok.ai/api/open-api`
 ### 非流式示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+curl -X POST 'https://api.viraltok.ai/api/v1/messages' \
   -H 'x-api-key: YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -H 'anthropic-version: 2023-06-01' \
@@ -92,7 +96,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
 设置 `"stream": true`。响应为 Messages SSE。计费读取 `message_start` 与 `message_delta` 中的 `usage`。
 
 ```bash
-curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+curl -N -X POST 'https://api.viraltok.ai/api/v1/messages' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

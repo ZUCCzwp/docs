@@ -1,7 +1,11 @@
 ---
 title: 'Create digital human task'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/digital-human/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/digital-human/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create a digital-human lip-sync video from a face video and a driving audio track. After submission you receive a `task_id`. Poll via [Query Video Task](/en/api-reference/common/query) and read `result.video_url` when completed.
 
@@ -35,7 +39,7 @@ cost = unit_price × ceil(video_duration_seconds)
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -65,7 +69,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

@@ -1,12 +1,16 @@
 ---
 title: '上传文件'
-openapi: 'POST /api/open-api/v1/files/upload'
+openapi: 'POST /api/v1/files/upload'
 ---
 
 将图片、视频或音频文件上传至服务器，获取可公网访问的 URL，用于视频生成、图片编辑等接口的参考素材。
 
 <Note>
 单文件大小不超过 **100 MB**。字段名固定为 `file`，使用 `multipart/form-data` 格式。
+</Note>
+
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/files/upload` 仍可用，行为与 `POST /api/v1/files/upload` 相同。
 </Note>
 
 ## 支持格式

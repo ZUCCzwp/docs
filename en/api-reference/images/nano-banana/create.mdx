@@ -1,12 +1,16 @@
 ---
 title: 'Nano Banana Image Generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create an async **Nano Banana** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `data.result.image_url` when completed.
 
 <Note>
-This model uses the async endpoint `POST /api/open-api/v1/images`.
+This model uses the async endpoint `POST /api/v1/images`.
 Set `model` to one of:
 `nano-banana`, `nano-banana-2`, `nano-banana-2.1`, `nano-banana-pro`.
 </Note>
@@ -65,7 +69,7 @@ The `model` on the task response is the billing model used for that request. Pri
 ### Text-to-image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -79,7 +83,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Nano Banana 2.1
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -93,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Reference image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -125,7 +129,7 @@ This sample matches the `resolution: 2k` request above. `model` is the billing m
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

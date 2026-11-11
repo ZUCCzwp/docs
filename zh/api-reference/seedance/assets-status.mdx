@@ -1,14 +1,18 @@
 ---
 title: '查询素材审核状态'
-openapi: 'POST /api/open-api/v1/seedance/assets/status'
+openapi: 'POST /api/v1/seedance/assets/status'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/seedance/assets/status` 仍可用，行为与 `POST /api/v1/seedance/assets/status` 相同。
+</Note>
+
 
 查询已提交素材的审核状态，用于满血版线路。在状态为 `Active` 之前，请勿将该 `asset_id` 用于创建视频。
 
 ## 请求示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/assets/status' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/assets/status' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

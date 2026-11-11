@@ -1,7 +1,11 @@
 ---
 title: 'SoundClone - 提交音频生成任务'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/soundCloning/audios'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/soundCloning/audios'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/soundCloning/audios` 仍可用，行为与 `POST /api/v1/soundCloning/audios` 相同。
+</Note>
+
 
 <Note>
 使用 [试听任务](/zh/api-reference/sound-clone/clone-create) 完成后返回的 `modelId` 提交正式音频生成。任务创建后请通过 [查询声音克隆任务](/zh/api-reference/common/sound-clone-query) 轮询获取 `audioUrl`。
@@ -47,7 +51,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/soundCloning/audio
 
 ```bash
 curl --request POST \
-  --url 'https://api.viraltok.ai/api/open-api/v1/soundCloning/audios' \
+  --url 'https://api.viraltok.ai/api/v1/soundCloning/audios' \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{

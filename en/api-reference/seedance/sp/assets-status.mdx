@@ -1,7 +1,11 @@
 ---
 title: 'SP Batch Query Asset Status'
-openapi: 'POST /api/open-api/v1/seedance/sp/assets/status'
+openapi: 'POST /api/v1/seedance/sp/assets/status'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/seedance/sp/assets/status` still works and matches `POST /api/v1/seedance/sp/assets/status`.
+</Note>
+
 
 Batch query processing status for Seedance Full Super-Resolution SP assets.
 
@@ -14,7 +18,7 @@ Batch query processing status for Seedance Full Super-Resolution SP assets.
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/status' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/sp/assets/status' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

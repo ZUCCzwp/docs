@@ -1,8 +1,11 @@
 ---
 title: '创建 Muse 图片'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/muse/images'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/images'
 ---
 
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/muse/images` 仍可调用，行为与 `POST /api/v1/images` 相同；新接入请优先使用统一入口。
+</Note>
 <Note>
 本接口采用异步处理。提交后保存 `task_id`，通过 [查询图片任务](/zh/api-reference/images/query) 轮询状态。完成后从 `result.image_url` 读取图片地址。
 </Note>
@@ -31,7 +34,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/muse/images'
 
 <RequestExample>
 ```bash 文生图
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -43,7 +46,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
 ```
 
 ```bash 参考图生图
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

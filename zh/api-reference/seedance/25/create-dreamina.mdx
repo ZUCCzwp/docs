@@ -1,16 +1,20 @@
 ---
 title: '创建 Seedance 2.5 Dreamina 视频'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/seedance25/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/open-api/v1/seedance25/videos`。通过 `model: "seedance2.5-dreamina"` 选择本型号。
+本接口与 [创建 Seedance 2.5官链视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/v1/videos`。通过 `model: "seedance2.5-dreamina"` 选择本型号。
 
 <Warning>
-**不要**调用 `/api/open-api/v1/seedance/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
+**不要**调用 `/api/v1/videos`（那是 Seedance 2.0 / 满血等线路）。误用会落到满血渠道。
 </Warning>
 
 ## 支持的模型
@@ -71,7 +75,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/seedance25/videos'
 ### 文生视频
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -86,7 +90,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
 ### 多模态参考
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance25/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

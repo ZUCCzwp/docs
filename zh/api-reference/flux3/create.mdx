@@ -1,8 +1,11 @@
 ---
 title: '创建 Flux 3 视频'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/flux3/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/flux3/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
 <Note>
   成功后返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 取视频。草稿任务额外返回 `result.draft_cache_url`，用于草稿增强。
 </Note>
@@ -43,7 +46,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/flux3/videos'
 文生草稿（固定 720p，计费 `flux-3-draft`）：
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -57,7 +60,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
 草稿增强（固定 1080p，计费 `flux-3-enhance`）：
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

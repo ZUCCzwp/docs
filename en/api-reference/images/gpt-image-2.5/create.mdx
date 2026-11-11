@@ -1,12 +1,16 @@
 ---
 title: 'GPT Image 2.5 Image Generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create a **GPT Image 2.5** async image task. On success you get a `task_id`; poll [Query Image Task](/en/api-reference/images/query) until completion, then read `result.image_url` (and `result.image_urls` when `n > 1`).
 
 <Note>
-Path: `POST /api/open-api/v1/images`. Set `model` to `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`.
+Path: `POST /api/v1/images`. Set `model` to `gpt-image-2.5-flare` or `gpt-image-2.5-sunburst`.
 
 - `gpt-image-2.5-flare`: faster generation for everyday high-quality output, batches, and prototypes
 - `gpt-image-2.5-sunburst`: higher edit precision for product/creative finish work and multi-turn edits
@@ -66,7 +70,7 @@ Unit prices follow the console / pricing page. Independent from sync generations
 ### Text-to-image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -82,7 +86,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Sunburst fine edit
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -97,7 +101,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Multi-reference edit
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -132,7 +136,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

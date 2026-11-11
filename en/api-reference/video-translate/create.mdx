@@ -1,7 +1,11 @@
 ---
 title: 'Create video-translate task'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/video-translate/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/video-translate/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Submit a video translation task: translate spoken audio into a target language and produce a dubbed video. On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`. If captions were requested, also read `result.caption_url`.
 
@@ -232,13 +236,13 @@ cost = unit_price × ceil(video_duration_seconds)
 Poll every 5–10 seconds until `completed` / `failed`. Result URLs are kept about **3 days** — download promptly. Read `result.video_url` for the video; with captions enabled, also `result.caption_url`.
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 
 <RequestExample>
 ```bash Precision
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -250,7 +254,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
 ```
 
 ```bash Speed
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

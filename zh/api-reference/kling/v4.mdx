@@ -1,13 +1,16 @@
 ---
 title: '创建 Kling V4 视频'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/kling/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-将 `model` 设为 `kling-v4`，调用 `POST /api/open-api/v1/kling/videos`。支持文生视频、图生视频、参考生视频、视频编辑和视频续写。输出 `720p` 或 `1080p`，时长 3–30 秒，成片始终带立体声音轨。
+将 `model` 设为 `kling-v4`，调用 `POST /api/v1/videos`。支持文生视频、图生视频、参考生视频、视频编辑和视频续写。输出 `720p` 或 `1080p`，时长 3–30 秒，成片始终带立体声音轨。
 
 ## 模式
 
@@ -70,7 +73,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
 ### 文生视频
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -85,7 +88,7 @@ curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
 ### 图生视频
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -100,7 +103,7 @@ curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
 ### 视频编辑
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -115,7 +118,7 @@ curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
 ### 视频续写
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

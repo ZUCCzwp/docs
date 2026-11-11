@@ -1,13 +1,16 @@
 ---
 title: 'Create a Kling V4 video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/kling/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/kling/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 A successful call returns `task_id`. Poll [Query video task](/en/api-reference/common/query) and read the finished video from `result.video_url`.
 </Note>
 
-Set `model` to `kling-v4` and call `POST /api/open-api/v1/kling/videos`. You can create a video from text, images, or references, edit a video, or extend one. Output is `720p` or `1080p`, 3–30 seconds, and always includes a stereo soundtrack.
+Set `model` to `kling-v4` and call `POST /api/v1/videos`. You can create a video from text, images, or references, edit a video, or extend one. Output is `720p` or `1080p`, 3–30 seconds, and always includes a stereo soundtrack.
 
 ## Modes
 
@@ -70,7 +73,7 @@ These values fail: `mode`, `negative_prompt`, `watermark: true`, and turning aud
 ### Text to video
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -85,7 +88,7 @@ curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
 ### Image to video
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -100,7 +103,7 @@ Image 1 is the first frame and image 2 is the last frame. You can omit `prompt` 
 ### Video edit
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -115,7 +118,7 @@ curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
 ### Video extend
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/kling/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

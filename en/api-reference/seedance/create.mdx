@@ -1,12 +1,15 @@
 ---
 title: 'Create Seedance Full Video'
-openapi: 'POST /api/open-api/v1/seedance/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/seedance/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 Create a Seedance **Full (Manxue)** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Warning>
-Do **not** send Seedance 2.5 models (`seedance-2.5`, `seedance-2.5-720p`, `seedance2.5-gz`, etc.) to this endpoint. Use [Create Seedance 2.5 Official Channel Video](/en/api-reference/seedance/25/create) or [Create Seedance 2.5 Official Video](/en/api-reference/seedance/25/create-gz): `POST /api/open-api/v1/seedance25/videos`. Hitting `/seedance/videos` routes them onto the Seedance 2.0 Full line.
+Do **not** submit Seedance 2.5 models (`seedance-2.5`, `seedance-2.5-720p`, `seedance2.5-gz`, etc.) on the compatibility path `/api/open-api/v1/seedance/videos` — they land on the Seedance 2.0 Full line. Use `POST /api/v1/videos` with the correct `model`, or see [Seedance 2.5 Official Channel](/en/api-reference/seedance/25/create) / [Official](/en/api-reference/seedance/25/create-gz).
 </Warning>
 
 <Note>
@@ -63,7 +66,7 @@ Full (Manxue) routes are billed **per second**. Each `model` has its own unit pr
 # 1. Submit assets for audit (see assets-audit doc)
 # 2. Poll audit status until Active
 # 3. Create video
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -93,7 +96,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/videos' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

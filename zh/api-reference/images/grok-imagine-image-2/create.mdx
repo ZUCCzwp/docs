@@ -1,14 +1,18 @@
 ---
 title: 'Grok Imagine Image 2.0 图像生成'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/images` 仍可调用，行为与 `POST /api/v1/images` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 创建 **Grok Imagine Image 2.0** 高质量异步图片生成任务。支持 `quality` 档位（`low` / `medium`），细节与排版表现优于标准版。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
 
 标准版见 [Grok Imagine Image](/zh/api-reference/images/grok-imagine-image/create)。
 
 <Note>
-本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `grok-imagine-image-2` 即可使用本模型。
+本接口使用 `POST /api/v1/images`。将 `model` 设为 `grok-imagine-image-2` 即可使用本模型。
 </Note>
 
 ## 模型说明
@@ -16,7 +20,7 @@ openapi: 'POST /api/open-api/v1/images'
 | 项目 | 说明 |
 |------|------|
 | 模型名 | `grok-imagine-image-2`（别名 `grok-imagine-image-2.0`、`grok-imagine-image-quality`） |
-| 接口 | `POST /api/open-api/v1/images`（异步；传入 `images` 时进入编辑模式） |
+| 接口 | `POST /api/v1/images`（异步；传入 `images` 时进入编辑模式） |
 | 计费 | **分辨率 + quality 基础价 × `n`**；图生图另加 **参考图加收**（从第 1 张起） |
 | 模式 | 文生图；传入 `images` 时为图编辑（最多 3 张参考图） |
 | 分辨率 | `1k`、`2k`（默认 `1k`） |
@@ -73,7 +77,7 @@ openapi: 'POST /api/open-api/v1/images'
 ### 文生图（medium）
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -89,7 +93,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 文生图（low，草稿）
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -104,7 +108,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 图编辑
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

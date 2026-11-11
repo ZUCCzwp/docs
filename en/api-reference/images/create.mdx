@@ -1,12 +1,18 @@
 ---
 title: 'GPT Image 2 Image Generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create an async **GPT Image 2** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
 
 <Note>
-Endpoint: `POST /api/open-api/v1/images` with `"model": "gpt-image-2"`.
+Set `"model": "gpt-image-2"`.
+
+The unified image create routes by `model`. Prefer `aspect_ratio` and `images` (`ratio` / `image_urls` remain accepted aliases).
 
 Other async image models: [GPT Image 2.6](/en/api-reference/images/gpt-image-2.6/create), [GPT Image 2.5](/en/api-reference/images/gpt-image-2.5/create), [GPT Image 1.5](/en/api-reference/images/gpt-image-1.5/create), [Seedream 5.0 Pro](/en/api-reference/images/seedream-5-0-pro/create), [Seedream 5.5](/en/api-reference/images/seedream-5-5/create), [Grok Imagine Image](/en/api-reference/images/grok-imagine-image/create), [Grok Imagine Image 2.0](/en/api-reference/images/grok-imagine-image-2/create), [Nano Banana](/en/api-reference/images/nano-banana/create), [Midjourney](/en/api-reference/images/midjourney/create), [Muse Images](/en/api-reference/muse/create-image).
 
@@ -20,7 +26,7 @@ For **OpenAI-compatible sync** APIs, use [GPT Image 2 Text-to-Image](/en/api-ref
 | Model | `gpt-image-2` |
 | Billing | **Quality-tier unit price × `n`** (async) |
 | Modes | Text-to-image, reference-image generation (`images`) |
-| Ratio | `ratio` (e.g. `1:1`, `16:9`), default `auto` |
+| Ratio | `aspect_ratio` / `ratio` (e.g. `1:1`, `16:9`), default `auto` |
 | Resolution | `resolution`: `1k` / `2k` / `4k` |
 | Quality | `quality`: `auto` / `low` / `medium` / `high` |
 
@@ -51,7 +57,8 @@ Sync generations/edits use separate billing models `gpt-image-2-sync` / `gpt-ima
 |-------|------|----------|-------------|
 | `model` | string | Yes | `gpt-image-2` |
 | `prompt` | string | Yes | Image prompt |
-| `ratio` | string | No | Aspect ratio, default `auto` |
+| `aspect_ratio` | string | No | Preferred aspect ratio, default `auto` |
+| `ratio` | string | No | Alias of `aspect_ratio` |
 | `resolution` | string | No | `1k` / `2k` / `4k`, default `1k` |
 | `quality` | string | No | `auto` / `low` / `medium` / `high` |
 | `n` | int | No | Image count, default `1` |
@@ -66,13 +73,13 @@ When `resolution=4k`, some ratios may be unsupported. Common supported ratios in
 ### Text-to-image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "gpt-image-2",
     "prompt": "Cyberpunk city at night in the rain, neon signs, cinematic framing",
-    "ratio": "16:9",
+    "aspect_ratio": "16:9",
     "resolution": "2k",
     "quality": "auto",
     "n": 1
@@ -82,13 +89,13 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Reference image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "gpt-image-2",
     "prompt": "Keep the subject outline, replace background with a sunset beach",
-    "ratio": "1:1",
+    "aspect_ratio": "1:1",
     "resolution": "1k",
     "quality": "high",
     "images": ["https://example.com/ref.png"]
@@ -113,7 +120,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

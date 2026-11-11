@@ -1,8 +1,11 @@
 ---
 title: 'Create Grok Imagine 1.5 Video'
-openapi: 'POST /api/open-api/v1/grok/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/grok/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
@@ -25,7 +28,7 @@ Aliases such as `grok-1.5` and `grok_1_5` normalize to `grok-imagine-video-1.5`.
 ## Example Request
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/grok/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

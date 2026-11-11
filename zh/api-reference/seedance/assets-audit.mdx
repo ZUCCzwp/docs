@@ -1,7 +1,11 @@
 ---
 title: '提交素材审核'
-openapi: 'POST /api/open-api/v1/seedance/assets/audit'
+openapi: 'POST /api/v1/seedance/assets/audit'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/seedance/assets/audit` 仍可用，行为与 `POST /api/v1/seedance/assets/audit` 相同。
+</Note>
+
 
 将图片、视频、音频素材 URL 提交至 Seedance 平台审核。**仅满血版**（`sd2_mx_*`）创建视频前必须使用本接口；满血版超分可直接传公网 URL，无需审核。
 
@@ -14,7 +18,7 @@ openapi: 'POST /api/open-api/v1/seedance/assets/audit'
 ## 请求示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/assets/audit' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/assets/audit' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

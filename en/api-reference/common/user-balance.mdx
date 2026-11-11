@@ -1,11 +1,15 @@
 ---
 title: 'Query User Account Balance'
-openapi: 'GET /api/open-api/v1/user/balance'
+openapi: 'GET /api/v1/user/balance'
 ---
 
 Returns the **JimiCoin account balance** for the user who owns the API key. OpenAPI usage is billed against this account. Call this endpoint before creating tasks to confirm sufficient `available` balance.
 
 You can also receive a push when the balance is low. See [Balance alert webhook](/en/api-reference/common/balance-webhook).
+
+<Note>
+**Compatibility note**: `GET /api/open-api/v1/user/balance` still works and matches `GET /api/v1/user/balance`.
+</Note>
 
 ### Response fields
 
@@ -26,7 +30,7 @@ You can also receive a push when the balance is low. See [Balance alert webhook]
 ### Example
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/user/balance' \
+curl -X GET 'https://api.viraltok.ai/api/v1/user/balance' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
 

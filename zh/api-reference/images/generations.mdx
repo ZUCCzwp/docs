@@ -1,7 +1,11 @@
 ---
 title: 'GPT Image 2 文生图'
-openapi: 'POST /api/open-api/v1/images/generations'
+openapi: 'POST /api/v1/images/generations'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/images/generations` 仍可用，行为与 `POST /api/v1/images/generations` 相同。
+</Note>
+
 
 <Note>
 本接口为**同步**调用，兼容 OpenAI `POST /v1/images/generations`。请求成功后**立即扣费**，并在响应 `data` 中直接返回图片结果（`b64_json` 或 `url`），无需轮询任务。
@@ -10,7 +14,7 @@ openapi: 'POST /api/open-api/v1/images/generations'
 </Note>
 
 <Note>
-同步文生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/open-api/v1/images/generations`）。
+同步文生图可使用**生图直连地址** `https://img.viraltok.ai`（路径与 `api.viraltok.ai` 相同，例如 `POST /api/v1/images/generations`）。
 </Note>
 
 ## 计费（gpt-image-2）

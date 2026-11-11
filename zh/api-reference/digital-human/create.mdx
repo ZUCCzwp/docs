@@ -1,7 +1,11 @@
 ---
 title: '创建数字人任务'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/digital-human/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/digital-human/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 提交数字人口型驱动视频生成任务：传入人脸视频与驱动音频，生成口型匹配的数字人视频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取结果。
 
@@ -35,7 +39,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/digital-human/vide
 ## 示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -65,7 +69,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/digital-human/videos' \
 ## 查询任务
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

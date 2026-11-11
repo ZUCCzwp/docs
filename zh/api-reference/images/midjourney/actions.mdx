@@ -1,8 +1,12 @@
 ---
 title: 'Midjourney 二次操作'
 ---
+<Note>
+**备注（兼容路径）**：旧前缀 `/api/open-api/v1/midjourney/...` 仍可用，行为与 `/api/v1/midjourney/...` 相同。
+</Note>
 
-对已完成的 Imagine / Variation 任务做放大、变体、扩图、局部重绘等。均返回新的 `task_id`，用 [查询图片任务](/zh/api-reference/images/query) 轮询：`GET /api/open-api/v1/images/{taskId}`。Describe 完成后读 `result.descriptions`。
+
+对已完成的 Imagine / Variation 任务做放大、变体、扩图、局部重绘等。均返回新的 `task_id`，用 [查询图片任务](/zh/api-reference/images/query) 轮询：`GET /api/v1/images/{taskId}`。Describe 完成后读 `result.descriptions`。
 
 <Note>
 `task_id` 传本平台返回的任务 ID（`task_...`），不要传上游 ID。系统会自动映射。
@@ -12,20 +16,20 @@ title: 'Midjourney 二次操作'
 
 | 功能 | 路径 | 计费 |
 |------|------|------|
-| 多图融合 | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
-| 图生文 | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney` |
-| 图片编辑 | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
-| 放大选图 | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney` |
-| 变体 | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
-| 强变体 | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
-| 弱变体 | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
-| 重新生成 | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney` |
-| 缩放扩图 | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney` |
-| 平移扩图 | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney` |
-| 局部重绘入口 | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney` |
-| Modal 补参 | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney` |
-| 强重塑 | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
-| 弱重塑 | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
+| 多图融合 | `POST /api/v1/midjourney/generations/blend` | `midjourney` |
+| 图生文 | `POST /api/v1/midjourney/generations/describe` | `midjourney` |
+| 图片编辑 | `POST /api/v1/midjourney/generations/edits` | `midjourney` |
+| 放大选图 | `POST /api/v1/midjourney/generations/upscale` | `midjourney` |
+| 变体 | `POST /api/v1/midjourney/generations/variation` | `midjourney` |
+| 强变体 | `POST /api/v1/midjourney/generations/high-variation` | `midjourney` |
+| 弱变体 | `POST /api/v1/midjourney/generations/low-variation` | `midjourney` |
+| 重新生成 | `POST /api/v1/midjourney/generations/reroll` | `midjourney` |
+| 缩放扩图 | `POST /api/v1/midjourney/generations/zoom` | `midjourney` |
+| 平移扩图 | `POST /api/v1/midjourney/generations/pan` | `midjourney` |
+| 局部重绘入口 | `POST /api/v1/midjourney/generations/inpaint` | `midjourney` |
+| Modal 补参 | `POST /api/v1/midjourney/generations/modal` | `midjourney` |
+| 强重塑 | `POST /api/v1/midjourney/generations/remix-strong` | `midjourney` |
+| 弱重塑 | `POST /api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
 表中是普通价，`fast` 与此相同。`speed=turbo` 改为 `midjourney-turbo`，高于普通价。图生文、放大选图也按是否 turbo 计价。完整对照见 [计费参考](/zh/api-reference/images/midjourney/create#计费参考)。Remix 仅 v8.1 / v8.2。
 
@@ -43,7 +47,7 @@ title: 'Midjourney 二次操作'
 ### 放大第 1 张
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/upscale' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{"task_id": "task_xxx", "index": 1}'
@@ -52,7 +56,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/ups
 ### 变体
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/variation' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/variation' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{"task_id": "task_xxx", "index": 3, "speed": "turbo"}'
@@ -61,7 +65,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/var
 ### Blend
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/blend' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/blend' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -76,7 +80,7 @@ Blend 需要 2–4 张图，不支持 `prompt`。可用 `dimensions`：`SQUARE` 
 ### Edits
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/edits' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/edits' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -101,7 +105,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/edi
 
 ```text
 POST /midjourney/generations
-  → GET /api/open-api/v1/images/{taskId} 至 completed
+  → GET /api/v1/images/{taskId} 至 completed
   → /upscale 或 /variation 或 /reroll
   → 单图可继续 /zoom /inpaint（再 /modal）
 ```

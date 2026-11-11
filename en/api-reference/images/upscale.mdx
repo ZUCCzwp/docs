@@ -1,7 +1,11 @@
 ---
 title: 'Image upscale'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/images/upscale'
+openapi: 'en/api-reference/openapi.json POST /api/v1/images/upscale'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/upscale` still works and matches `POST /api/v1/images/upscale`.
+</Note>
+
 
 <Note>
 This is a **synchronous** endpoint. On success it **charges immediately** (billing model `viraltok-image-upscale`) and returns the result as `b64_json` by default — no polling required. Pass `response_format=url` to get `image_url` instead.
@@ -49,7 +53,7 @@ Upscaling can take several to tens of seconds. Set client timeout to **≥ 180 s
 
 <RequestExample>
 ```bash 2x upscale
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/upscale' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -62,7 +66,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
 ```
 
 ```bash Upscale to 1080p
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/upscale' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,12 +1,18 @@
 ---
 title: 'GPT Image 2 图像生成'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/images` 仍可调用，行为与 `POST /api/v1/images` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 创建 **GPT Image 2** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址。
 
 <Note>
-接口路径：`POST /api/open-api/v1/images`，将 `model` 设为 `gpt-image-2`。
+将 `model` 设为 `gpt-image-2`。
+
+统一入口按 `model` 路由异步生图；推荐字段优先使用 `aspect_ratio`、`images`（仍接受 `ratio` / `image_urls` 等旧别名）。
 
 其他异步图片模型见：[GPT Image 2.6](/zh/api-reference/images/gpt-image-2.6/create)、[GPT Image 2.5](/zh/api-reference/images/gpt-image-2.5/create)、[GPT Image 1.5](/zh/api-reference/images/gpt-image-1.5/create)、[Seedream 5.0 Pro](/zh/api-reference/images/seedream-5-0-pro/create)、[Seedream 5.5](/zh/api-reference/images/seedream-5-5/create)、[Grok Imagine Image](/zh/api-reference/images/grok-imagine-image/create)、[Grok Imagine Image 2.0](/zh/api-reference/images/grok-imagine-image-2/create)、[Nano Banana](/zh/api-reference/images/nano-banana/create)、[Midjourney](/zh/api-reference/images/midjourney/create)、[Muse Images](/zh/api-reference/muse/create-image)。
 
@@ -20,7 +26,7 @@ openapi: 'POST /api/open-api/v1/images'
 | 模型名 | `gpt-image-2` |
 | 计费 | **画质档位单价 × 张数 `n`**（异步） |
 | 模式 | 文生图、参考图生图（`images`） |
-| 比例 | `ratio`（如 `1:1`、`16:9`），默认 `auto` |
+| 比例 | `aspect_ratio` / `ratio`（如 `1:1`、`16:9`），默认 `auto` |
 | 分辨率 | `resolution`：`1k` / `2k` / `4k` |
 | 画质 | `quality`：`auto` / `low` / `medium` / `high` |
 
@@ -51,7 +57,8 @@ openapi: 'POST /api/open-api/v1/images'
 |------|------|------|------|
 | `model` | string | 是 | 固定为 `gpt-image-2` |
 | `prompt` | string | 是 | 图像生成提示词 |
-| `ratio` | string | 否 | 画面比例，默认 `auto`；支持常见比例如 `1:1`、`16:9`、`9:16` 等 |
+| `aspect_ratio` | string | 否 | 画面比例（推荐）；默认 `auto` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
 | `resolution` | string | 否 | `1k` / `2k` / `4k`，默认 `1k` |
 | `quality` | string | 否 | `auto` / `low` / `medium` / `high` |
 | `n` | int | 否 | 生成张数，默认 `1` |
@@ -66,13 +73,13 @@ openapi: 'POST /api/open-api/v1/images'
 ### 文生图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "gpt-image-2",
     "prompt": "赛博朋克城市雨夜，霓虹招牌特写，电影画幅",
-    "ratio": "16:9",
+    "aspect_ratio": "16:9",
     "resolution": "2k",
     "quality": "auto",
     "n": 1
@@ -82,13 +89,13 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 参考图生图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "gpt-image-2",
     "prompt": "保持主体轮廓，换成日落海滩背景",
-    "ratio": "1:1",
+    "aspect_ratio": "1:1",
     "resolution": "1k",
     "quality": "high",
     "images": ["https://example.com/ref.png"]
@@ -113,7 +120,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ## 查询任务
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

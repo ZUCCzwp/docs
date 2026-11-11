@@ -1,12 +1,16 @@
 ---
 title: 'Chat Completions'
-openapi: 'POST /api/open-api/v1/chat/completions'
+openapi: 'POST /api/v1/chat/completions'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/chat/completions` still works and matches `POST /api/v1/chat/completions`.
+</Note>
+
 
 OpenAI-compatible **Chat Completions** for ViraltokAI LLM models. Send multi-turn `messages`, receive assistant replies, and optionally stream tokens. Billing is **pay-as-you-go** from your JimiCoin balance using token counts returned in `usage`.
 
 <Info>
-**Agent tools such as Codex default to the Responses API** (`POST /api/open-api/v1/responses`), not this Chat Completions page. See [Codex integration](/en/api-reference/llm/integrations/codex). Use this endpoint for scripts, backend SDKs, and integrations that require the `messages` format.
+**Agent tools such as Codex default to the Responses API** (`POST /api/v1/responses`), not this Chat Completions page. See [Codex integration](/en/api-reference/llm/integrations/codex). Use this endpoint for scripts, backend SDKs, and integrations that require the `messages` format.
 </Info>
 
 <Note>
@@ -22,7 +26,7 @@ Authorization: Bearer <API_KEY>
 ### Endpoint
 
 ```http
-POST https://api.viraltok.ai/api/open-api/v1/chat/completions
+POST https://api.viraltok.ai/api/v1/chat/completions
 Content-Type: application/json
 ```
 
@@ -58,7 +62,7 @@ Additional OpenAI-compatible fields are forwarded when present.
 ### Non-stream example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+curl -X POST 'https://api.viraltok.ai/api/v1/chat/completions' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -98,7 +102,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
 Set `"stream": true`. The response is Server-Sent Events (`data: {…}` lines, ending with `data: [DONE]`). The **last chunk** that includes `usage` is used for billing.
 
 ```bash
-curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+curl -N -X POST 'https://api.viraltok.ai/api/v1/chat/completions' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,10 +1,11 @@
 ---
 title: 'Create Wan 3.0 Video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
 
-
-
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/wan/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>

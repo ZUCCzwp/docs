@@ -1,12 +1,16 @@
 ---
 title: 'GPT Image 2.6 图像生成'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/images` 仍可调用，行为与 `POST /api/v1/images` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 创建 **GPT Image 2.6** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
 
 <Note>
-接口路径：`POST /api/open-api/v1/images`，将 `model` 设为 `gpt-image-2.6-flare` 或 `gpt-image-2.6-sunburst`。
+接口路径：`POST /api/v1/images`，将 `model` 设为 `gpt-image-2.6-flare` 或 `gpt-image-2.6-sunburst`。
 
 - `gpt-image-2.6-flare`：生成更快，适合日常高质量出图、批量与快速原型
 - `gpt-image-2.6-sunburst`：更强调编辑精度，适合成品级商品图与多轮精细编辑
@@ -73,7 +77,7 @@ openapi: 'POST /api/open-api/v1/images'
 ### 文生图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -89,7 +93,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 动图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -104,7 +108,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 参考图编辑
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -134,7 +138,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ## 查询任务
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

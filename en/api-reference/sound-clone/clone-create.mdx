@@ -1,7 +1,11 @@
 ---
 title: 'SoundClone - Create Preview Task'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/soundCloning/clones'
+openapi: 'en/api-reference/openapi.json POST /api/v1/soundCloning/clones'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/soundCloning/clones` still works and matches `POST /api/v1/soundCloning/clones`.
+</Note>
+
 
 <Note>
 SoundClone tasks are **async**. The create response returns a task `id`. Poll [Query SoundClone Task](/en/api-reference/common/sound-clone-query) until completion to obtain `modelId` and preview `audioUrl`, then call [Create Audio Task](/en/api-reference/sound-clone/audio-create) for production audio.
@@ -38,7 +42,7 @@ Preview is billed **by character count** in units of **10,000 characters** (`pri
 
 ```bash
 curl --request POST \
-  --url 'https://api.viraltok.ai/api/open-api/v1/soundCloning/clones' \
+  --url 'https://api.viraltok.ai/api/v1/soundCloning/clones' \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{

@@ -1,18 +1,22 @@
 ---
 title: 'GPT Image 2.6 Text-to-Image'
-openapi: 'POST /api/open-api/v1/images/generations'
+openapi: 'POST /api/v1/images/generations'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/images/generations` still works and matches `POST /api/v1/images/generations`.
+</Note>
+
 
 Create a **GPT Image 2.6** synchronous text-to-image request. Compatible with OpenAI `POST /v1/images/generations`. Billing is applied immediately on success, and the image is returned in `data` (`url` or `b64_json`). No polling.
 
 <Note>
 Set `model` to `gpt-image-2.6-flare` or `gpt-image-2.6-sunburst`.
 
-You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/open-api/v1/images/generations`).
+You can call the **direct image host** `https://img.viraltok.ai` (same paths as `api.viraltok.ai`, for example `POST /api/v1/images/generations`).
 </Note>
 
 <Warning>
-Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/open-api/v1/images`).
+Sync calls return the image immediately. For async tasks, use [GPT Image 2.6 Image Generation](/en/api-reference/images/gpt-image-2.6/create) (`POST /api/v1/images`).
 </Warning>
 
 ## Model
@@ -56,7 +60,7 @@ Unit prices follow the console / pricing page. Async `POST /images` bills by `qu
 ## Examples
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -69,7 +73,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
 ```
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/generations' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/generations' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,8 +1,12 @@
 ---
 title: 'Midjourney follow-up actions'
 ---
+<Note>
+**Compatibility note**: Legacy `/api/open-api/v1/midjourney/...` still works and matches `/api/v1/midjourney/...`.
+</Note>
 
-Run upscale, variation, zoom, pan, inpaint, blend, describe, and edits against a completed Imagine task. Each call returns a new `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/open-api/v1/images/{taskId}`). Describe results are in `result.descriptions`.
+
+Run upscale, variation, zoom, pan, inpaint, blend, describe, and edits against a completed Imagine task. Each call returns a new `task_id`. Poll [Query image task](/en/api-reference/images/query) (`GET /api/v1/images/{taskId}`). Describe results are in `result.descriptions`.
 
 <Note>
 Pass the platform `task_id` (`task_...`). The service maps it to the original generation.
@@ -12,27 +16,27 @@ Pass the platform `task_id` (`task_...`). The service maps it to the original ge
 
 | Action | Path | Billing |
 |------|------|------|
-| Blend | `POST /api/open-api/v1/midjourney/generations/blend` | `midjourney` |
-| Describe | `POST /api/open-api/v1/midjourney/generations/describe` | `midjourney` |
-| Edits | `POST /api/open-api/v1/midjourney/generations/edits` | `midjourney` |
-| Upscale | `POST /api/open-api/v1/midjourney/generations/upscale` | `midjourney` |
-| Variation | `POST /api/open-api/v1/midjourney/generations/variation` | `midjourney` |
-| High variation | `POST /api/open-api/v1/midjourney/generations/high-variation` | `midjourney` |
-| Low variation | `POST /api/open-api/v1/midjourney/generations/low-variation` | `midjourney` |
-| Reroll | `POST /api/open-api/v1/midjourney/generations/reroll` | `midjourney` |
-| Zoom | `POST /api/open-api/v1/midjourney/generations/zoom` | `midjourney` |
-| Pan | `POST /api/open-api/v1/midjourney/generations/pan` | `midjourney` |
-| Inpaint | `POST /api/open-api/v1/midjourney/generations/inpaint` | `midjourney` |
-| Modal | `POST /api/open-api/v1/midjourney/generations/modal` | `midjourney` |
-| Remix strong | `POST /api/open-api/v1/midjourney/generations/remix-strong` | `midjourney` |
-| Remix subtle | `POST /api/open-api/v1/midjourney/generations/remix-subtle` | `midjourney` |
+| Blend | `POST /api/v1/midjourney/generations/blend` | `midjourney` |
+| Describe | `POST /api/v1/midjourney/generations/describe` | `midjourney` |
+| Edits | `POST /api/v1/midjourney/generations/edits` | `midjourney` |
+| Upscale | `POST /api/v1/midjourney/generations/upscale` | `midjourney` |
+| Variation | `POST /api/v1/midjourney/generations/variation` | `midjourney` |
+| High variation | `POST /api/v1/midjourney/generations/high-variation` | `midjourney` |
+| Low variation | `POST /api/v1/midjourney/generations/low-variation` | `midjourney` |
+| Reroll | `POST /api/v1/midjourney/generations/reroll` | `midjourney` |
+| Zoom | `POST /api/v1/midjourney/generations/zoom` | `midjourney` |
+| Pan | `POST /api/v1/midjourney/generations/pan` | `midjourney` |
+| Inpaint | `POST /api/v1/midjourney/generations/inpaint` | `midjourney` |
+| Modal | `POST /api/v1/midjourney/generations/modal` | `midjourney` |
+| Remix strong | `POST /api/v1/midjourney/generations/remix-strong` | `midjourney` |
+| Remix subtle | `POST /api/v1/midjourney/generations/remix-subtle` | `midjourney` |
 
 The table shows the regular price. `fast` uses that same price. `speed=turbo` bills as `midjourney-turbo`, which is higher. Describe and upscale follow the same turbo split. See the [billing reference](/en/api-reference/images/midjourney/create#billing-reference). Remix is v8.1 / v8.2 only.
 
 Common fields: `task_id`, `index` (`1`–`4`), `custom_id` (from `buttons[].customId`), `speed`.
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/upscale' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{"task_id": "task_xxx", "index": 1}'

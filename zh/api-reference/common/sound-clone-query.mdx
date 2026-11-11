@@ -1,12 +1,16 @@
 ---
 title: '查询声音克隆任务'
-openapi: 'zh/api-reference/openapi.json GET /api/open-api/v1/audios/{id}'
+openapi: 'zh/api-reference/openapi.json GET /api/v1/audios/{id}'
 ---
 
 <Note>
 使用提交 [试听任务](/zh/api-reference/sound-clone/clone-create) 或 [正式音频任务](/zh/api-reference/sound-clone/audio-create) 返回的 `id` 查询任务状态与结果。本路径专用于 **SoundClone** 声音克隆任务。
 
 响应格式：`{ "code": 20000, "msg": "ok", "data": { ... } }`。
+</Note>
+
+<Note>
+**备注（兼容路径）**：`GET /api/open-api/v1/audios/{id}` 仍可用，行为与 `GET /api/v1/audios/{id}` 相同。
 </Note>
 
 ## 路径参数
@@ -46,7 +50,7 @@ openapi: 'zh/api-reference/openapi.json GET /api/open-api/v1/audios/{id}'
 
 ```bash
 curl --request GET \
-  --url 'https://api.viraltok.ai/api/open-api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
+  --url 'https://api.viraltok.ai/api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
   --header 'Authorization: Bearer sk_xxx'
 ```
 

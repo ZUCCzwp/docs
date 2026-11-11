@@ -1,12 +1,16 @@
 ---
 title: 'Upload File'
-openapi: 'POST /api/open-api/v1/files/upload'
+openapi: 'POST /api/v1/files/upload'
 ---
 
 Upload an image, video, or audio file and receive a publicly accessible URL. Use the returned URL as reference media in video generation, image editing, and other API endpoints.
 
 <Note>
 Maximum file size is **100 MB**. The form field name must be `file`, sent as `multipart/form-data`.
+</Note>
+
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/files/upload` still works and matches `POST /api/v1/files/upload`.
 </Note>
 
 ## Supported formats

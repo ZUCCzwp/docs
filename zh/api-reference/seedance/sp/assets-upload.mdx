@@ -1,7 +1,11 @@
 ---
 title: 'SP 上传素材'
-openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
+openapi: 'POST /api/v1/seedance/sp/assets/upload'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/seedance/sp/assets/upload` 仍可用，行为与 `POST /api/v1/seedance/sp/assets/upload` 相同。
+</Note>
+
 
 将图片、视频、音频或文本素材上传至 Seedance 满血版超分素材库。返回的 `asset_id` 可在 [创建满血版超分视频](/zh/api-reference/seedance/sp/create) 中通过 `asset://{asset_id}` 引用。
 
@@ -20,7 +24,7 @@ openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
 ## 请求示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/upload' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/sp/assets/upload' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

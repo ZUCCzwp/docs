@@ -1,14 +1,18 @@
 ---
 title: 'Grok Imagine Image 2.0 image generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create an async **Grok Imagine Image 2.0** task with optional `quality` tiers (`low` / `medium`) for stronger detail and typography than the standard tier. Returns `task_id` on success — poll with [Query image task](/en/api-reference/images/query). When complete, read `result.image_url`; when `n > 1`, also use `result.image_urls`.
 
 Standard tier: [Grok Imagine Image](/en/api-reference/images/grok-imagine-image/create).
 
 <Note>
-This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-image-2"`.
+This model uses `POST /api/v1/images` with `"model": "grok-imagine-image-2"`.
 </Note>
 
 ## Model overview
@@ -16,7 +20,7 @@ This model uses `POST /api/open-api/v1/images` with `"model": "grok-imagine-imag
 | Item | Details |
 |------|---------|
 | Model | `grok-imagine-image-2` (aliases `grok-imagine-image-2.0`, `grok-imagine-image-quality`) |
-| API | `POST /api/open-api/v1/images` (async; pass `images` for edit mode) |
+| API | `POST /api/v1/images` (async; pass `images` for edit mode) |
 | Billing | **Resolution + quality base × `n`**; edit mode adds **reference surcharge** (from the first ref) |
 | Modes | Text-to-image; pass `images` for edit (max 3 references) |
 | Resolution | `1k`, `2k` (default `1k`) |
@@ -73,7 +77,7 @@ Edit mode also supports `auto`.
 ### Text-to-image (medium)
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -89,7 +93,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Text-to-image (low draft)
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -104,7 +108,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Edit
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

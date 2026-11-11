@@ -1,7 +1,11 @@
 ---
 title: 'Create video super-resolution task'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/super-resolution/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/super-resolution/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create a video super-resolution task that enhances a publicly accessible low-resolution video. After submission you receive a `task_id`. Poll via [Query Video Task](/en/api-reference/common/query) and read `result.video_url` when completed.
 
@@ -42,7 +46,7 @@ cost = unit_price × ceil(video_duration_seconds)
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/super-resolution/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -70,7 +74,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/super-resolution/videos' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

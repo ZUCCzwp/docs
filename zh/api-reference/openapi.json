@@ -19,8 +19,8 @@
   "paths": {
     "/api/open-api/v1/videos": {
       "post": {
-        "summary": "Create Video Task",
-        "description": "Sora 视频已下线，本接口不再接受新的 Sora 任务。请改用其他仍开放的视频创建接口，并轮询 GET /api/open-api/v1/videos/{taskId}。",
+        "summary": "创建视频（兼容别名）",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。兼容别名。推荐改用 POST /api/v1/videos（按 model 统一创建）。本路径与产品路径仍可用。",
         "operationId": "createVideo",
         "requestBody": {
           "required": true,
@@ -29,9 +29,7 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "model",
-                  "prompt",
-                  "duration"
+                  "model"
                 ],
                 "properties": {
                   "model": {
@@ -60,6 +58,10 @@
                       "type": "string"
                     },
                     "description": "参考图 URL 列表"
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "description": "Preferred aspect ratio"
                   }
                 }
               }
@@ -77,7 +79,14 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/videos/{taskId}": {
@@ -113,7 +122,7 @@
     "/api/open-api/v1/images": {
       "post": {
         "summary": "GPT Image 2 图像生成",
-        "description": "创建异步图片生成任务。按 `model` 选择产品变体；提交成功后轮询任务结果。各模型参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/images`）。兼容别名。推荐改用 POST /api/v1/images（按 model 统一创建）。创建异步图片生成任务。按 `model` 选择产品变体；提交成功后轮询任务结果。各模型参数与计费见对应文档页。",
         "operationId": "createImage",
         "requestBody": {
           "required": true,
@@ -269,7 +278,14 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/images \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/images/{taskId}": {
@@ -305,7 +321,7 @@
     "/api/open-api/v1/images/understand": {
       "post": {
         "summary": "图片理解",
-        "description": "基于 Gemini-3.5-flash 对上传的图片进行理解分析（支持电商产品宣传分析等功能）。",
+        "description": "兼容别名，推荐改用 `/api/v1/images/understand`。 基于 Gemini-3.5-flash 对上传的图片进行理解分析（支持电商产品宣传分析等功能）。",
         "operationId": "understandImage",
         "requestBody": {
           "required": true,
@@ -334,7 +350,7 @@
     "/api/open-api/v1/messages": {
       "post": {
         "summary": "Messages",
-        "description": "Claude Opus 5.5 的 Anthropic Messages 接口。仅支持 claude-opus-5-5。鉴权可用 Authorization Bearer 或 x-api-key。未传 max_tokens 时按 8192 处理。stream=true 返回 Messages SSE。按 usage token 从吉米币扣费。",
+        "description": "兼容别名，推荐改用 `/api/v1/messages`。 Claude Opus 5.5 的 Anthropic Messages 接口。仅支持 claude-opus-5-5。鉴权可用 Authorization Bearer 或 x-api-key。未传 max_tokens 时按 8192 处理。stream=true 返回 Messages SSE。按 usage token 从吉米币扣费。",
         "operationId": "messages",
         "requestBody": {
           "required": true,
@@ -342,7 +358,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["messages"],
+                "required": [
+                  "messages"
+                ],
                 "properties": {
                   "model": {
                     "type": "string",
@@ -386,7 +404,7 @@
     "/api/open-api/v1/chat/completions": {
       "post": {
         "summary": "Chat Completions",
-        "description": "兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
+        "description": "兼容别名，推荐改用 `/api/v1/chat/completions`。 兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
         "operationId": "chatCompletions",
         "requestBody": {
           "required": true,
@@ -430,7 +448,7 @@
     "/api/open-api/v1/images/upscale": {
       "post": {
         "summary": "图片高清放大",
-        "description": "同步图片高清放大。成功后立即扣费（计费模型 viraltok-image-upscale，费用 = 单价 × pass_count），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "description": "兼容别名，推荐改用 `/api/v1/images/upscale`。 同步图片高清放大。成功后立即扣费（计费模型 viraltok-image-upscale，费用 = 单价 × pass_count），默认返回 b64_json；需要 URL 时传 response_format=url。",
         "operationId": "upscaleImage",
         "requestBody": {
           "required": true,
@@ -466,7 +484,7 @@
     "/api/open-api/v1/images/remove-bg": {
       "post": {
         "summary": "AI 智能去背景",
-        "description": "同步去背景接口。成功后立即扣费（计费模型 viraltok-remove-bg），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "description": "兼容别名，推荐改用 `/api/v1/images/remove-bg`。 同步去背景接口。成功后立即扣费（计费模型 viraltok-remove-bg），默认返回 b64_json；需要 URL 时传 response_format=url。",
         "operationId": "removeBackground",
         "requestBody": {
           "required": true,
@@ -495,7 +513,7 @@
     "/api/open-api/v1/images/generations": {
       "post": {
         "summary": "GPT Image 2 文生图",
-        "description": "同步文生图，兼容 OpenAI `POST /v1/images/generations`。成功响应后立即扣费。参数与计费见对应文档页。",
+        "description": "兼容别名，推荐改用 `/api/v1/images/generations`。 同步文生图，兼容 OpenAI `POST /v1/images/generations`。成功响应后立即扣费。参数与计费见对应文档页。",
         "operationId": "generateOpenAIImage",
         "requestBody": {
           "required": true,
@@ -524,7 +542,7 @@
     "/api/open-api/v1/images/edits": {
       "post": {
         "summary": "GPT Image 2 编辑图片",
-        "description": "同步图片编辑，兼容 OpenAI `POST /v1/images/edits`。成功响应后立即扣费。参数与计费见对应文档页。",
+        "description": "兼容别名，推荐改用 `/api/v1/images/edits`。 同步图片编辑，兼容 OpenAI `POST /v1/images/edits`。成功响应后立即扣费。参数与计费见对应文档页。",
         "operationId": "editOpenAIImage",
         "requestBody": {
           "required": true,
@@ -553,7 +571,7 @@
     "/api/open-api/v1/veo/frames": {
       "post": {
         "summary": "创建 VEO 视频",
-        "description": "创建 VEO 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 VEO 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createVeoFramesVideo",
         "requestBody": {
           "required": true,
@@ -622,13 +640,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/seedance/videos": {
       "post": {
         "summary": "创建 Seedance 视频任务",
-        "description": "创建 Seedance 2.0 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。各变体参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Seedance 2.0 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。各变体参数与计费见对应文档页。",
         "operationId": "createSeedanceVideo",
         "requestBody": {
           "required": true,
@@ -761,13 +786,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/seedance/assets/audit": {
       "post": {
         "summary": "提交素材审核",
-        "description": "提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
+        "description": "兼容别名，推荐改用 `/api/v1/seedance/assets/audit`。 提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
         "operationId": "submitSeedanceAudit",
         "requestBody": {
           "required": true,
@@ -796,7 +828,7 @@
     "/api/open-api/v1/seedance/assets/status": {
       "post": {
         "summary": "查询素材审核状态",
-        "description": "查询已提交审核素材的状态。",
+        "description": "兼容别名，推荐改用 `/api/v1/seedance/assets/status`。 查询已提交审核素材的状态。",
         "operationId": "querySeedanceAuditStatus",
         "requestBody": {
           "required": true,
@@ -825,7 +857,7 @@
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP 上传素材",
-        "description": "上传图片、视频、音频或文本素材到 Seedance 满血版超分素材库。返回 asset_id 可用于 asset:// 引用。",
+        "description": "兼容别名，推荐改用 `/api/v1/seedance/sp/assets/upload`。 上传图片、视频、音频或文本素材到 Seedance 满血版超分素材库。返回 asset_id 可用于 asset:// 引用。",
         "operationId": "uploadSeedanceSpAsset",
         "requestBody": {
           "required": true,
@@ -854,7 +886,7 @@
     "/api/open-api/v1/seedance/sp/assets/detail": {
       "post": {
         "summary": "SP 查询素材详情",
-        "description": "查询单个 Seedance SP 素材的处理状态与详情。",
+        "description": "兼容别名，推荐改用 `/api/v1/seedance/sp/assets/detail`。 查询单个 Seedance SP 素材的处理状态与详情。",
         "operationId": "querySeedanceSpAssetDetail",
         "requestBody": {
           "required": true,
@@ -883,7 +915,7 @@
     "/api/open-api/v1/seedance/sp/assets/status": {
       "post": {
         "summary": "SP 批量查询素材状态",
-        "description": "批量查询 Seedance SP 素材的处理状态。",
+        "description": "兼容别名，推荐改用 `/api/v1/seedance/sp/assets/status`。 批量查询 Seedance SP 素材的处理状态。",
         "operationId": "querySeedanceSpAssetBatchStatus",
         "requestBody": {
           "required": true,
@@ -912,7 +944,7 @@
     "/api/open-api/v1/gemini/omni/videos": {
       "post": {
         "summary": "创建 Gemini Omni 视频任务",
-        "description": "创建 Gemini Omni 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Gemini Omni 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
         "operationId": "createGeminiOmniVideo",
         "requestBody": {
           "required": true,
@@ -935,13 +967,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/grok/videos": {
       "post": {
         "summary": "创建 Grok Imagine 1.5 视频",
-        "description": "创建 Grok Imagine 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Grok Imagine 1.5 视频生成任务。任务创建后，请使用通用视频任务查询接口获取生成状态和结果。",
         "operationId": "createGrokVideo",
         "requestBody": {
           "required": true,
@@ -964,13 +1003,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"MODEL_ID\",\n  \"prompt\": \"your prompt\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/muse/videos": {
       "post": {
         "summary": "创建 Muse 视频",
-        "description": "创建 Muse（`muse-videos`）视频任务。文生视频或最多 9 张参考图；约 10 秒、720p、带声音。提交后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Muse（`muse-videos`）视频任务。文生视频或最多 9 张参考图；约 10 秒、720p、带声音。提交后使用 GET /api/v1/videos/{taskId} 查询结果。",
         "operationId": "createMuseVideo",
         "requestBody": {
           "required": true,
@@ -1000,13 +1046,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"muse-videos\",\n  \"prompt\": \"日落时海浪轻拍沙滩，镜头缓慢平移，保留自然海浪声，无文字\",\n  \"aspect_ratio\": \"16:9\",\n  \"duration\": 10,\n  \"resolution\": \"720p\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/muse/images": {
       "post": {
         "summary": "创建 Muse 图片",
-        "description": "创建 Muse（`muse-images`）图片任务。文生图或最多 9 张参考图；每次 1 张 WebP。提交后使用 GET /api/open-api/v1/images/{taskId} 查询结果。",
+        "description": "兼容别名（推荐 `/api/v1/images`）。本路径为兼容别名。 创建 Muse（`muse-images`）图片任务。文生图或最多 9 张参考图；每次 1 张 WebP。提交后使用 GET /api/v1/images/{taskId} 查询结果。",
         "operationId": "createMuseImage",
         "requestBody": {
           "required": true,
@@ -1035,13 +1088,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/images \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"muse-images\",\n  \"prompt\": \"一只红色陶瓷杯放在白色桌面上，柔和棚拍灯光，产品摄影，无文字\",\n  \"aspect_ratio\": \"1:1\",\n  \"n\": 1\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/minimax/videos": {
       "post": {
         "summary": "创建 MiniMax H3 视频任务",
-        "description": "创建 MiniMax H3 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 MiniMax H3 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createMinimaxH3Video",
         "requestBody": {
           "required": true,
@@ -1243,13 +1303,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"minimax-h3\",\n  \"prompt\": \"电影感产品展示，自然光\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\",\n  \"size\": \"2560x1440\",\n  \"reference_images\": [\n    \"https://example.com/reference.png\"\n  ],\n  \"reference_audios\": [\n    \"https://example.com/reference.mp3\"\n  ]\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/kling/videos": {
       "post": {
         "summary": "创建 Kling 视频任务",
-        "description": "创建 Kling 视频任务。`kling-o3` 与 `kling-v4` 共用本接口。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Kling 视频任务。`kling-o3` 与 `kling-v4` 共用本接口。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createKlingO3Video",
         "requestBody": {
           "required": true,
@@ -1354,14 +1421,23 @@
                     "type": "array",
                     "items": {
                       "type": "object",
-                      "required": ["url", "role"],
+                      "required": [
+                        "url",
+                        "role"
+                      ],
                       "properties": {
                         "url": {
                           "type": "string"
                         },
                         "role": {
                           "type": "string",
-                          "enum": ["first_frame", "last_frame", "keyframe", "middle_frame", "reference_image"]
+                          "enum": [
+                            "first_frame",
+                            "last_frame",
+                            "keyframe",
+                            "middle_frame",
+                            "reference_image"
+                          ]
                         }
                       }
                     },
@@ -1410,13 +1486,21 @@
                   },
                   "generation_type": {
                     "type": "string",
-                    "enum": ["auto", "reference", "edit", "extend"],
+                    "enum": [
+                      "auto",
+                      "reference",
+                      "edit",
+                      "extend"
+                    ],
                     "default": "auto",
                     "description": "kling-v4 模式。auto 按素材自动选择。reference 为参考生视频。edit 为视频编辑。extend 为视频续写。"
                   },
                   "audio_setting": {
                     "type": "string",
-                    "enum": ["origin", "auto"],
+                    "enum": [
+                      "origin",
+                      "auto"
+                    ],
                     "description": "kling-v4 声音处理。origin 保留原声，auto 重新生成。仅用于视频编辑或带参考视频的参考生视频。"
                   },
                   "generate_audio": {
@@ -1487,13 +1571,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"kling-o3\",\n  \"prompt\": \"电影感产品展示，自然光\",\n  \"duration\": 6,\n  \"aspect_ratio\": \"16:9\",\n  \"resolution\": \"720p\",\n  \"reference_images\": [\n    \"https://example.com/reference.png\"\n  ],\n  \"generate_audio\": false\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/wan/videos": {
       "post": {
         "summary": "创建 Wan 3.0 视频任务",
-        "description": "创建 Wan 3.0 视频任务（`wan3.0` / `wan3.0-gz` / `wan3.0-gl` / `wan3.0-prime` / `wan3.0-prime-gl`）。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Wan 3.0 视频任务（`wan3.0` / `wan3.0-gz` / `wan3.0-gl` / `wan3.0-prime` / `wan3.0-prime-gl`）。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createWan30Video",
         "requestBody": {
           "required": true,
@@ -1719,13 +1810,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"wan3.0\",\n  \"prompt\": \"电影感产品展示，自然光\",\n  \"duration\": 4,\n  \"aspect_ratio\": \"9:16\",\n  \"resolution\": \"480P\",\n  \"reference_images\": [\n    \"https://example.com/reference.png\"\n  ],\n  \"reference_videos\": [\n    \"https://example.com/reference.mp4\"\n  ],\n  \"reference_audios\": [\n    \"https://example.com/reference.mp3\"\n  ]\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/super-resolution/videos": {
       "post": {
         "summary": "创建视频超分任务",
-        "description": "提交视频超分任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 提交视频超分任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createSuperResolutionVideo",
         "requestBody": {
           "required": true,
@@ -1773,13 +1871,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"superResolution-1080p-lowfps\",\n  \"video_url\": \"https://example.com/input-low-resolution.mp4\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/digital-human/videos": {
       "post": {
         "summary": "创建数字人任务",
-        "description": "提交数字人唇形同步视频任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 提交数字人唇形同步视频任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createDigitalHumanVideo",
         "requestBody": {
           "required": true,
@@ -1829,13 +1934,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"digitalHuman\",\n  \"audio_url\": \"https://example.com/drive-audio.mp3\",\n  \"video_url\": \"https://example.com/face-video.mp4\",\n  \"model_version\": 2\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/remove-subtitle/videos": {
       "post": {
         "summary": "创建去字幕任务",
-        "description": "提交视频去字幕任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 提交视频去字幕任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createRemoveSubtitleVideo",
         "requestBody": {
           "required": true,
@@ -1883,13 +1995,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"video_remove_subtitle\",\n  \"video_url\": \"https://example.com/input.mp4\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/video-translate/videos": {
       "post": {
         "summary": "创建视频翻译任务",
-        "description": "提交视频翻译任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 提交视频翻译任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createVideoTranslate",
         "requestBody": {
           "required": true,
@@ -1939,13 +2058,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"video-translate-precision\",\n  \"video_url\": \"https://example.com/input.mp4\",\n  \"output_language\": \"zh\",\n  \"enable_caption\": true\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/soundCloning/clones": {
       "post": {
         "summary": "SoundClone - 提交试听任务",
-        "description": "提交声音克隆试听任务，生成试听音频并返回声音模型 ID。任务创建后请使用 GET /api/open-api/v1/audios/{id} 查询结果。",
+        "description": "兼容别名，推荐改用 `/api/v1/soundCloning/clones`。 提交声音克隆试听任务，生成试听音频并返回声音模型 ID。任务创建后请使用 GET /api/open-api/v1/audios/{id} 查询结果。",
         "operationId": "createSoundClonePreview",
         "requestBody": {
           "required": true,
@@ -2002,7 +2128,7 @@
     "/api/open-api/v1/soundCloning/audios": {
       "post": {
         "summary": "SoundClone - 提交音频生成任务",
-        "description": "使用试听任务得到的 modelId 提交正式音频生成任务。",
+        "description": "兼容别名，推荐改用 `/api/v1/soundCloning/audios`。 使用试听任务得到的 modelId 提交正式音频生成任务。",
         "operationId": "createSoundCloneAudio",
         "requestBody": {
           "required": true,
@@ -2064,7 +2190,7 @@
     "/api/open-api/v1/audios/{id}": {
       "get": {
         "summary": "SoundClone - 查询结果",
-        "description": "查询声音克隆试听或正式音频任务的状态与结果。",
+        "description": "兼容别名，推荐改用 `/api/v1/audios/{id}`。 查询声音克隆试听或正式音频任务的状态与结果。",
         "operationId": "querySoundCloneResult",
         "parameters": [
           {
@@ -2114,7 +2240,7 @@
     "/api/open-api/v1/user/balance": {
       "get": {
         "summary": "查询用户账户余额",
-        "description": "查询当前 API Key 所属用户的吉米币账户余额（总余额、历史净消费、可用余额）。used_coin 为账户全量消费减退款，含所有 Key；OpenAPI 调用费用从该账户扣除。",
+        "description": "兼容别名，推荐改用 `/api/v1/user/balance`。 查询当前 API Key 所属用户的吉米币账户余额（总余额、历史净消费、可用余额）。used_coin 为账户全量消费减退款，含所有 Key；OpenAPI 调用费用从该账户扣除。",
         "operationId": "getUserBalance",
         "responses": {
           "200": {
@@ -2147,7 +2273,7 @@
     "/api/open-api/v1/key/balance": {
       "get": {
         "summary": "查询 API Key 额度余额",
-        "description": "查询当前 API Key 的调用额度（总额度、已用、剩余）。total_quota 为 0 时表示不限额。used_quota 为本 Key 已成功扣费的 OpenAPI 调用费用累计，用于额度上限校验；与 /user/balance 的 used_coin（账户全量净消费）统计维度不同。",
+        "description": "兼容别名，推荐改用 `/api/v1/key/balance`。 查询当前 API Key 的调用额度（总额度、已用、剩余）。total_quota 为 0 时表示不限额。used_quota 为本 Key 已成功扣费的 OpenAPI 调用费用累计，用于额度上限校验；与 /user/balance 的 used_coin（账户全量净消费）统计维度不同。",
         "operationId": "getApiKeyBalance",
         "responses": {
           "200": {
@@ -2182,7 +2308,7 @@
     "/api/openapi/model/catalog": {
       "get": {
         "summary": "查询探测模型定价",
-        "description": "探测并返回当前启用的 OpenAPI 计费模型公开定价及默认单价、计费方式。列表为平台基准价；账户定制价在扣费时生效。",
+        "description": "兼容别名，推荐改用 GET /api/v1/models。探测并返回当前启用的 OpenAPI 计费模型公开定价及默认单价、计费方式。列表为平台基准价；账户定制价在扣费时生效。",
         "operationId": "listModelCatalog",
         "security": [],
         "parameters": [
@@ -2236,7 +2362,7 @@
     "/api/open-api/v1/files/upload": {
       "post": {
         "summary": "上传文件",
-        "description": "上传图片、视频或音频文件，返回可公网访问的文件 URL。单文件最大 100 MB。",
+        "description": "兼容别名，推荐改用 `/api/v1/files/upload`。 上传图片、视频或音频文件，返回可公网访问的文件 URL。单文件最大 100 MB。",
         "operationId": "uploadFile",
         "requestBody": {
           "required": true,
@@ -2280,7 +2406,7 @@
     "/api/open-api/v1/videos/understand": {
       "post": {
         "summary": "视频理解",
-        "description": "基于 Gemini 对视频进行理解分析。支持 contents 内联 base64 视频，或传 video_url 由服务端下载注入（≤80MB）。默认同步模型 gemini-3.7-flash。",
+        "description": "兼容别名，推荐改用 `/api/v1/videos/understand`。 基于 Gemini 对视频进行理解分析。支持 contents 内联 base64 视频，或传 video_url 由服务端下载注入（≤80MB）。默认同步模型 gemini-3.7-flash。",
         "operationId": "understandVideo",
         "requestBody": {
           "required": true,
@@ -2309,7 +2435,7 @@
     "/api/open-api/v1/seedance25/videos": {
       "post": {
         "summary": "创建 Seedance 2.5 视频任务",
-        "description": "创建 Seedance 2.5 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。各变体参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Seedance 2.5 视频生成任务。按 `model` 选择产品变体；提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。各变体参数与计费见对应文档页。",
         "operationId": "createSeedance25Video",
         "requestBody": {
           "required": true,
@@ -2529,13 +2655,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"seedance-2.5\",\n  \"prompt\": \"电影感产品展示，自然光\",\n  \"duration\": 4,\n  \"aspect_ratio\": \"16:9\",\n  \"resolution\": \"720p\",\n  \"reference_images\": [\n    \"https://example.com/reference.png\"\n  ],\n  \"reference_videos\": [\n    \"https://example.com/reference.mp4\"\n  ],\n  \"reference_audios\": [\n    \"https://example.com/reference.mp3\"\n  ]\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/flux3/videos": {
       "post": {
         "summary": "创建 Flux 3 视频",
-        "description": "创建 Flux 3 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
+        "description": "兼容别名（推荐 `/api/v1/videos`）。本路径为兼容别名。 创建 Flux 3 视频任务。按 `model` 选择产品变体；提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。参数与计费见对应文档页。",
         "operationId": "createFlux3Video",
         "requestBody": {
           "required": true,
@@ -2660,13 +2793,20 @@
               }
             }
           }
-        }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"flux-3-draft\",\n  \"prompt\": \"一只小熊猫在苔藓圆木上行走\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\"\n}'"
+          }
+        ]
       }
     },
     "/api/open-api/v1/midjourney/generations": {
       "post": {
         "summary": "创建 Midjourney Imagine 任务",
-        "description": "创建 Midjourney 文生图 / 垫图任务。提交成功后使用 GET /api/open-api/v1/images/{taskId} 查询结果。",
+        "description": "兼容别名，推荐改用 `/api/v1/midjourney/generations`。 创建 Midjourney 文生图 / 垫图任务。提交成功后使用 GET /api/v1/images/{taskId} 查询结果。",
         "operationId": "createMidjourneyGenerations",
         "requestBody": {
           "required": true,
@@ -2716,7 +2856,8 @@
               }
             }
           }
-        }
+        },
+        "description": "兼容别名，推荐改用 `/api/v1/midjourney/generations/imagine`。"
       }
     },
     "/api/open-api/v1/midjourney/generations/upscale": {
@@ -2743,14 +2884,1527 @@
               }
             }
           }
-        }
+        },
+        "description": "兼容别名，推荐改用 `/api/v1/midjourney/generations/upscale`。"
       }
     },
     "/api/open-api/v1/midjourney/generations/video": {
       "post": {
         "summary": "创建 Midjourney 图生视频任务",
-        "description": "创建 Midjourney 图生视频任务。提交成功后使用 GET /api/open-api/v1/videos/{taskId} 查询结果。",
+        "description": "兼容别名，推荐改用 `/api/v1/midjourney/generations/video`。 创建 Midjourney 图生视频任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。",
         "operationId": "createMidjourneyVideo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos": {
+      "post": {
+        "summary": "创建视频",
+        "description": "统一异步视频创建入口，按 body.model 路由。旧 /api/open-api/v1/videos 与各产品路径仍为兼容别名。提交后用 GET /api/v1/videos/{taskId} 查询。",
+        "operationId": "createVideoV1",
+        "tags": [
+          "Videos"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "公开模型 ID。按 model 路由到对应视频产品。"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "文本提示词（视模型必填）"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "description": "时长（秒），视模型"
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "description": "画幅（推荐）。如 16:9、9:16"
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "description": "aspect_ratio 别名"
+                  },
+                  "orientation": {
+                    "type": "string",
+                    "enum": [
+                      "landscape",
+                      "portrait"
+                    ],
+                    "description": "aspect_ratio 别名（landscape→16:9，portrait→9:16）"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "description": "分辨率，如 720p、1080p"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考图 URL 列表（推荐）"
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "images 别名"
+                  },
+                  "reference_images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "images 别名"
+                  },
+                  "videos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考视频 URL 列表"
+                  },
+                  "audios": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考音频 URL 列表"
+                  },
+                  "first_frame_url": {
+                    "type": "string",
+                    "description": "首帧图 URL"
+                  },
+                  "last_frame_url": {
+                    "type": "string",
+                    "description": "尾帧图 URL"
+                  },
+                  "first_image": {
+                    "type": "string",
+                    "description": "first_frame_url 别名"
+                  },
+                  "last_image": {
+                    "type": "string",
+                    "description": "last_frame_url 别名"
+                  },
+                  "video_url": {
+                    "type": "string",
+                    "description": "单视频输入（超分、去字幕、翻译等）"
+                  },
+                  "generate_audio": {
+                    "type": "boolean",
+                    "description": "是否生成音频（视模型）"
+                  }
+                }
+              },
+              "examples": {
+                "default": {
+                  "summary": "创建数字人任务",
+                  "value": {
+                    "model": "digitalHuman",
+                    "audio_url": "https://example.com/drive-audio.mp3",
+                    "video_url": "https://example.com/face-video.mp4",
+                    "model_version": 2
+                  }
+                },
+                "flux3_default": {
+                  "summary": "Flux 3 文生草稿",
+                  "value": {
+                    "model": "flux-3-draft",
+                    "prompt": "一只小熊猫在苔藓圆木上行走",
+                    "duration": 5,
+                    "aspect_ratio": "16:9"
+                  }
+                },
+                "enhance": {
+                  "summary": "Flux 3 草稿增强",
+                  "value": {
+                    "model": "flux-3-enhance",
+                    "duration": 5,
+                    "draft_cache_url": "https://example.com/draft-cache.bin"
+                  }
+                },
+                "kling_default": {
+                  "summary": "创建 Kling O3 任务",
+                  "value": {
+                    "model": "kling-o3",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 6,
+                    "aspect_ratio": "16:9",
+                    "resolution": "720p",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "generate_audio": false
+                  }
+                },
+                "minimax_default": {
+                  "summary": "创建 MiniMax H3 任务",
+                  "value": {
+                    "model": "minimax-h3",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "size": "2560x1440",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "gz": {
+                  "summary": "创建 MiniMax H3官转任务（含参考视频）",
+                  "value": {
+                    "model": "minimax-h3-gz",
+                    "prompt": "一个男孩在海边打篮球，黄昏，海浪拍岸，电影感运镜",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "resolution": "768P",
+                    "reference_images": [
+                      "https://example.com/char.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/ref_motion.mp4"
+                    ]
+                  }
+                },
+                "h3-768p": {
+                  "summary": "创建 MiniMax H3 768P 任务",
+                  "value": {
+                    "model": "minimax-h3-768p",
+                    "prompt": "电影感产品展示，自然光，缓慢推镜",
+                    "duration": 6,
+                    "aspect_ratio": "16:9"
+                  }
+                },
+                "/api/open-api/v1/muse/videos": {
+                  "summary": "/api/open-api/v1/muse/videos",
+                  "value": {
+                    "model": "muse-videos",
+                    "prompt": "日落时海浪轻拍沙滩，镜头缓慢平移，保留自然海浪声，无文字",
+                    "aspect_ratio": "16:9",
+                    "duration": 10,
+                    "resolution": "720p"
+                  }
+                },
+                "remove-subtitle_default": {
+                  "summary": "创建去字幕任务",
+                  "value": {
+                    "model": "video_remove_subtitle",
+                    "video_url": "https://example.com/input.mp4"
+                  }
+                },
+                "seedance25_default": {
+                  "summary": "创建 Seedance 2.5 任务",
+                  "value": {
+                    "model": "seedance-2.5",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 4,
+                    "aspect_ratio": "16:9",
+                    "resolution": "720p",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "omniEdit": {
+                  "summary": "Seedance 2.5 视频编辑（任务类型引导）",
+                  "value": {
+                    "model": "seedance-2.5",
+                    "prompt": "给画面加一群飞鸟",
+                    "omni_reference_task_type": "edit",
+                    "aspect_ratio": "adaptive",
+                    "duration": -1,
+                    "resolution": "480p",
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ]
+                  }
+                },
+                "super-resolution_default": {
+                  "summary": "创建超分任务",
+                  "value": {
+                    "model": "superResolution-1080p-lowfps",
+                    "video_url": "https://example.com/input-low-resolution.mp4"
+                  }
+                },
+                "video-translate_default": {
+                  "summary": "创建视频翻译任务",
+                  "value": {
+                    "model": "video-translate-precision",
+                    "video_url": "https://example.com/input.mp4",
+                    "output_language": "zh",
+                    "enable_caption": true
+                  }
+                },
+                "wan_default": {
+                  "summary": "创建 Wan 3.0 任务",
+                  "value": {
+                    "model": "wan3.0",
+                    "prompt": "电影感产品展示，自然光",
+                    "duration": 4,
+                    "aspect_ratio": "9:16",
+                    "resolution": "480P",
+                    "reference_images": [
+                      "https://example.com/reference.png"
+                    ],
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ],
+                    "reference_audios": [
+                      "https://example.com/reference.mp3"
+                    ]
+                  }
+                },
+                "wan_gz": {
+                  "summary": "创建 Wan 3.0官转任务",
+                  "value": {
+                    "model": "wan3.0-gz",
+                    "prompt": "图1 中的人物在海边奔跑，电影感运镜",
+                    "duration": 5,
+                    "aspect_ratio": "9:16",
+                    "resolution": "720P",
+                    "reference_images": [
+                      "https://example.com/person.png"
+                    ]
+                  }
+                },
+                "gl": {
+                  "summary": "创建 Wan 3.0官链任务",
+                  "value": {
+                    "model": "wan3.0-gl",
+                    "prompt": "图1 中的人物在海边奔跑，电影感运镜",
+                    "duration": 5,
+                    "aspect_ratio": "9:16",
+                    "resolution": "720P",
+                    "reference_images": [
+                      "https://example.com/person.png"
+                    ]
+                  }
+                },
+                "prime": {
+                  "summary": "创建 Wan 3.0 Prime 任务",
+                  "value": {
+                    "model": "wan3.0-prime",
+                    "prompt": "清晨海面，薄雾缓缓散开，电影感推镜",
+                    "duration": 8,
+                    "aspect_ratio": "21:9",
+                    "resolution": "1080P",
+                    "generate_audio": false,
+                    "prompt_extend": true,
+                    "watermark": false
+                  }
+                },
+                "primeGl": {
+                  "summary": "创建 Wan 3.0 Prime官链任务",
+                  "value": {
+                    "model": "wan3.0-prime-gl",
+                    "prompt": "图1 中的人物在海边奔跑，电影感运镜",
+                    "duration": 5,
+                    "aspect_ratio": "9:16",
+                    "resolution": "720P",
+                    "reference_images": [
+                      "https://example.com/person.png"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"digitalHuman\",\n  \"audio_url\": \"https://example.com/drive-audio.mp3\",\n  \"video_url\": \"https://example.com/face-video.mp4\",\n  \"model_version\": 2\n}'"
+          }
+        ]
+      }
+    },
+    "/api/v1/videos/{taskId}": {
+      "get": {
+        "summary": "查询视频任务",
+        "description": "查询视频任务状态与结果。兼容别名：GET /api/v1/videos/{taskId}。",
+        "operationId": "queryVideoV1",
+        "tags": [
+          "Videos"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "任务 ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task status and result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images": {
+      "post": {
+        "summary": "创建图片",
+        "description": "统一异步图片创建入口，按 body.model 路由。旧 /api/open-api/v1/images 与 /muse/images 等仍为兼容别名。提交后用 GET /api/v1/images/{taskId} 查询。",
+        "operationId": "createImageV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "模型名称。如 `gpt-image-2`、`gpt-image-1.5`、`nano-banana` 等，详见各模型文档页。"
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "用于生成图片的文本提示词"
+                  },
+                  "ratio": {
+                    "type": "string",
+                    "description": "画面比例。支持的值：auto (自动), 1:1 (正方), 3:2 (横图), 2:3 (竖图), 4:3 (横图), 3:4 (竖图), 5:4 (横图), 4:5 (竖图), 16:9 (横图), 9:16 (竖图), 2:1 (横图), 1:2 (竖图), 3:1 (横图), 1:3 (竖图), 21:9 (横图), 9:21 (竖图)。doubao-seedream-5-0-pro 仅支持 1:1、4:3、3:4、16:9、9:16、3:2、2:3、21:9、auto。doubao-seedream-5-5 可用 ratio 或 size 传 1K、1.5K、2K、宽高比或精确像素，详见该模型文档。",
+                    "enum": [
+                      "auto",
+                      "1:1",
+                      "3:2",
+                      "2:3",
+                      "4:3",
+                      "3:4",
+                      "5:4",
+                      "4:5",
+                      "16:9",
+                      "9:16",
+                      "2:1",
+                      "1:2",
+                      "3:1",
+                      "1:3",
+                      "21:9",
+                      "9:21"
+                    ],
+                    "default": "auto"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考图 URL 或 base64 列表。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 最多 10 张；单张：格式 jpeg/png/webp/bmp/tiff/gif/heic/heif，宽高比 [1/16,16]，宽高 >14px，≤30MB，总像素 ≤6000×6000。5.5 未传 images 时使用 image_urls，且每张参考图都计费"
+                  },
+                  "resolution": {
+                    "type": "string",
+                    "description": "图片分辨率。doubao-seedream-5-0-pro：1k、2k（默认 2k），不支持 4k。doubao-seedream-5-5：1K、1.5K、2K，省略时按 2K，不支持 3K / 4K。gpt-image-2、nano-banana-2.1 等：1k、2k、4k。nano-banana-2：0.5k、1k（默认）、2k、4k，按分辨率分别计费。nano-banana-pro 的 4k 单独计费（`nano-banana-pro-4k`）。注意：gpt-image-2 开启 4k 时仅支持以下比例：16:9 / 9:16 / 2:1 / 1:2 / 21:9 / 9:21。",
+                    "enum": [
+                      "1k",
+                      "2k",
+                      "4k"
+                    ],
+                    "default": "1k"
+                  },
+                  "quality": {
+                    "type": "string",
+                    "description": "画质档位。gpt-image-2 / gpt-image-1.5：low / medium / high / auto。异步 gpt-image-2.6 另支持 xhigh / max，且 auto / low / medium / high / xhigh / max 单价不同。同步 gpt-image-2.6 不按画质分价。",
+                    "enum": [
+                      "low",
+                      "medium",
+                      "high",
+                      "auto"
+                    ],
+                    "default": "low"
+                  },
+                  "n": {
+                    "type": "integer",
+                    "description": "生成张数。gpt-image-1.5：1–4；超出范围会按边界裁剪。doubao-seedream-5-0-pro 与 doubao-seedream-5-5 必须为 1。",
+                    "minimum": 1,
+                    "maximum": 4,
+                    "default": 1
+                  },
+                  "background": {
+                    "type": "string",
+                    "description": "背景模式。gpt-image-1.5 与 doubao-seedream-5-5：auto / opaque / transparent；transparent 需搭配 output_format=png。Seedream 5.5 图层拆分时不要传 background。",
+                    "enum": [
+                      "auto",
+                      "opaque",
+                      "transparent"
+                    ],
+                    "default": "auto"
+                  },
+                  "moderation": {
+                    "type": "string",
+                    "description": "审核强度（gpt-image-1.5）。auto / low。",
+                    "enum": [
+                      "auto",
+                      "low"
+                    ],
+                    "default": "auto"
+                  },
+                  "output_format": {
+                    "type": "string",
+                    "description": "输出格式。gpt-image-1.5 与 doubao-seedream-5-5：png / jpeg。异步 gpt-image-2.6 另支持 webp / gif；gif 为动图，仅文生图，n 为 1，ratio 省略或 auto，不能传 images 或 mask_url。",
+                    "enum": [
+                      "png",
+                      "jpeg"
+                    ],
+                    "default": "png"
+                  },
+                  "mask_url": {
+                    "type": "string",
+                    "description": "局部重绘遮罩图 URL（gpt-image-1.5），需同时传 images。"
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "尺寸，doubao-seedream-5-5 在未传 ratio 时使用。可为 1K、1.5K、2K、auto、宽高比或精确像素。"
+                  },
+                  "image_urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "参考图 URL。doubao-seedream-5-5 在 images 为空时使用。"
+                  },
+                  "layer_decomposition": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 图层拆分。为 true 时必须恰好 1 张输入图，且不能传 background。"
+                  },
+                  "max_images": {
+                    "type": "integer",
+                    "description": "doubao-seedream-5-5 图层拆分输出上限，含底图。2–100，默认 30。",
+                    "minimum": 2,
+                    "maximum": 100
+                  },
+                  "text_recognition": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 图层拆分时请求文字识别。查询结果返回图片地址。"
+                  },
+                  "watermark": {
+                    "type": "boolean",
+                    "description": "doubao-seedream-5-5 是否添加水印，默认 false。"
+                  },
+                  "aspect_ratio": {
+                    "type": "string",
+                    "description": "画面比例（推荐）；ratio/size 为别名"
+                  }
+                }
+              },
+              "examples": {
+                "gpt_image_26_flare": {
+                  "summary": "GPT Image 2.6 Flare",
+                  "value": {
+                    "model": "gpt-image-2.6-flare",
+                    "prompt": "A cozy reading nook with warm lamp light",
+                    "aspect_ratio": "1:1",
+                    "quality": "high"
+                  }
+                },
+                "gpt_image_26_sunburst": {
+                  "summary": "GPT Image 2.6 Sunburst",
+                  "value": {
+                    "model": "gpt-image-2.6-sunburst",
+                    "prompt": "Product photo of sneakers on marble",
+                    "aspect_ratio": "1:1"
+                  }
+                },
+                "nano_banana": {
+                  "summary": "Nano Banana",
+                  "value": {
+                    "model": "nano-banana",
+                    "prompt": "Watercolor mountain lake",
+                    "aspect_ratio": "1:1"
+                  }
+                },
+                "muse_images": {
+                  "summary": "Muse Images",
+                  "value": {
+                    "model": "muse-images",
+                    "prompt": "Soft portrait, cinematic lighting",
+                    "aspect_ratio": "3:4"
+                  }
+                },
+                "seedream_55": {
+                  "summary": "Seedream 5.5",
+                  "value": {
+                    "model": "seedream-5.5",
+                    "prompt": "Chinese ink landscape",
+                    "aspect_ratio": "16:9"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageGenerationResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Images"
+        ],
+        "x-codeSamples": [
+          {
+            "lang": "bash",
+            "label": "curl",
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/images \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"gpt-image-2.6-flare\",\n  \"prompt\": \"A cozy reading nook with warm lamp light\",\n  \"aspect_ratio\": \"1:1\",\n  \"quality\": \"high\"\n}'"
+          }
+        ]
+      }
+    },
+    "/api/v1/images/{taskId}": {
+      "get": {
+        "summary": "查询图片任务",
+        "description": "查询图片任务状态与结果。兼容别名：GET /api/v1/images/{taskId}。",
+        "operationId": "queryImageV1",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "要查询的任务 ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "任务状态和结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoQueryResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Images"
+        ]
+      }
+    },
+    "/api/v1/models": {
+      "get": {
+        "summary": "模型目录",
+        "description": "公开模型目录。推荐 GET /api/v1/models。兼容别名：GET /api/openapi/model/catalog。可选 query：search。",
+        "operationId": "listModelsV1",
+        "security": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "可选，按 model_name、display_name、model_type、series、remark 子串过滤",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelCatalogApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "list": [
+                          {
+                            "model_name": "seedance2.5",
+                            "display_name": "Seedance 2.5",
+                            "model_type": "video",
+                            "price_mode": "per_second",
+                            "unit_price": 0.05,
+                            "official_price": 0.08,
+                            "remark": "",
+                            "group": "Seedance 2.5 Video"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/files/upload": {
+      "post": {
+        "summary": "上传文件",
+        "description": "上传图片、视频或音频文件，返回可公网访问的文件 URL。单文件最大 100 MB。",
+        "operationId": "uploadFileV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/FileUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileUploadApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "上传成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "url": "https://cdn.example.com/openapi/upload/20240628/abc123.jpg",
+                        "filename": "photo.jpg",
+                        "size": 102400,
+                        "mime_type": "image/jpeg"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/balance": {
+      "get": {
+        "summary": "查询用户账户余额",
+        "description": "查询当前 API Key 所属用户的吉米币账户余额（总余额、历史净消费、可用余额）。used_coin 为账户全量消费减退款，含所有 Key；OpenAPI 调用费用从该账户扣除。",
+        "operationId": "getUserBalanceV1",
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "查询成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "balance": 100.5,
+                        "used_coin": 20.3,
+                        "available": 80.2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/key/balance": {
+      "get": {
+        "summary": "查询 API Key 额度余额",
+        "description": "查询当前 API Key 的调用额度（总额度、已用、剩余）。total_quota 为 0 时表示不限额。used_quota 为本 Key 已成功扣费的 OpenAPI 调用费用累计，用于额度上限校验；与 /user/balance 的 used_coin（账户全量净消费）统计维度不同。",
+        "operationId": "getApiKeyBalanceV1",
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiKeyBalanceApiResponse"
+                },
+                "examples": {
+                  "success": {
+                    "summary": "查询成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "name": "production-key",
+                        "total_quota": 1000,
+                        "used_quota": 120.5,
+                        "available_quota": 879.5,
+                        "unlimited": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/audios/{id}": {
+      "get": {
+        "summary": "SoundClone - 查询结果",
+        "description": "查询声音克隆试听或正式音频任务的状态与结果。",
+        "operationId": "querySoundCloneResultV1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "任务 ID，来自提交试听或提交音频生成接口",
+            "schema": {
+              "type": "string"
+            },
+            "example": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "任务状态与结果",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneQueryApiResponse"
+                },
+                "examples": {
+                  "completed": {
+                    "summary": "试听任务已完成",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningClone",
+                        "status": "completed",
+                        "modelId": "model_123456789",
+                        "audioUrl": "https://example.com/preview-audio.mp3",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/generations": {
+      "post": {
+        "summary": "GPT Image 2 文生图",
+        "description": "推荐 `POST /api/v1/images/generations`。同步文生图，兼容 OpenAI `POST /v1/images/generations`。成功响应后立即扣费。参数与计费见对应文档页。",
+        "operationId": "generateOpenAIImageV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageGenerationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "生成成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/edits": {
+      "post": {
+        "summary": "GPT Image 2 编辑图片",
+        "description": "推荐 `POST /api/v1/images/edits`。同步图片编辑，兼容 OpenAI `POST /v1/images/edits`。成功响应后立即扣费。参数与计费见对应文档页。",
+        "operationId": "editOpenAIImageV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenAIImageEditRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "编辑成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenAIImageSyncResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/understand": {
+      "post": {
+        "summary": "图片理解",
+        "description": "推荐 `POST /api/v1/images/understand`。基于 Gemini-3.5-flash 对上传的图片进行理解分析（支持电商产品宣传分析等功能）。",
+        "operationId": "understandImageV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageUnderstandingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "图片理解成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageUnderstandingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/remove-bg": {
+      "post": {
+        "summary": "AI 智能去背景",
+        "description": "推荐 `POST /api/v1/images/remove-bg`。同步去背景接口。成功后立即扣费（计费模型 viraltok-remove-bg），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "operationId": "removeBackgroundV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveBackgroundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "去背景成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveBackgroundResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/images/upscale": {
+      "post": {
+        "summary": "图片高清放大",
+        "description": "推荐 `POST /api/v1/images/upscale`。同步图片高清放大。成功后立即扣费（计费模型 viraltok-image-upscale，费用 = 单价 × pass_count），默认返回 b64_json；需要 URL 时传 response_format=url。",
+        "operationId": "upscaleImageV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpscaleImageRequest"
+              },
+              "example": {
+                "image_url": "https://example.com/photo.jpg",
+                "upscale_mode": "factor",
+                "upscale_factor": 2,
+                "output_format": "jpg",
+                "response_format": "b64_json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "高清放大成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpscaleImageResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/videos/understand": {
+      "post": {
+        "summary": "视频理解",
+        "description": "推荐 `POST /api/v1/videos/understand`。基于 Gemini 对视频进行理解分析。支持 contents 内联 base64 视频，或传 video_url 由服务端下载注入（≤80MB）。默认同步模型 gemini-3.7-flash。",
+        "operationId": "understandVideoV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoUnderstandingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "视频理解成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImageUnderstandingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/soundCloning/clones": {
+      "post": {
+        "summary": "SoundClone - 提交试听任务",
+        "description": "推荐 `POST /api/v1/soundCloning/clones`。提交声音克隆试听任务，生成试听音频并返回声音模型 ID。任务创建后请使用 GET /api/open-api/v1/audios/{id} 查询结果。",
+        "operationId": "createSoundClonePreviewV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SoundCloneCloneRequest"
+              },
+              "examples": {
+                "preview": {
+                  "summary": "提交试听",
+                  "value": {
+                    "fileUrl": "https://example.com/source-audio.mp3",
+                    "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
+                    "soundVersion": "v1",
+                    "language": "Chinese"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneApiResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningClone",
+                        "status": "queued",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/soundCloning/audios": {
+      "post": {
+        "summary": "SoundClone - 提交音频生成任务",
+        "description": "推荐 `POST /api/v1/soundCloning/audios`。使用试听任务得到的 modelId 提交正式音频生成任务。",
+        "operationId": "createSoundCloneAudioV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SoundCloneAudioRequest"
+              },
+              "examples": {
+                "production": {
+                  "summary": "提交正式音频",
+                  "value": {
+                    "modelId": "model_123456789",
+                    "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
+                    "language": "Chinese",
+                    "soundVersion": "v1",
+                    "emotion": "neutral",
+                    "speed": 1,
+                    "vol": 1,
+                    "pitch": 0,
+                    "subtitleEnable": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SoundCloneApiResponse"
+                },
+                "examples": {
+                  "queued": {
+                    "summary": "创建成功",
+                    "value": {
+                      "code": 20000,
+                      "msg": "ok",
+                      "data": {
+                        "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
+                        "object": "audio",
+                        "created": 1781777280,
+                        "model": "soundCloningAudio",
+                        "status": "queued",
+                        "error": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/chat/completions": {
+      "post": {
+        "summary": "Chat Completions",
+        "description": "推荐 `POST /api/v1/chat/completions`。兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
+        "operationId": "chatCompletionsV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatCompletionsRequest"
+              },
+              "example": {
+                "model": "gpt-5.6-sol",
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "用一句话打个招呼。"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat 完成 JSON，或 stream=true 时的 text/event-stream",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletionsResponse"
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "OpenAI 风格 SSE（data: {...}，以 data: [DONE] 结束）"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/messages": {
+      "post": {
+        "summary": "Messages",
+        "description": "推荐 `POST /api/v1/messages`。Claude Opus 5.5 的 Anthropic Messages 接口。仅支持 claude-opus-5-5。鉴权可用 Authorization Bearer 或 x-api-key。未传 max_tokens 时按 8192 处理。stream=true 返回 Messages SSE。按 usage token 从吉米币扣费。",
+        "operationId": "messagesV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "default": "claude-opus-5-5",
+                    "description": "计费模型 ID。默认 claude-opus-5-5。claude-opus-5.5 与 claude-opus-55 会归一化。"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "minItems": 1
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "default": 8192
+                  },
+                  "stream": {
+                    "type": "boolean"
+                  },
+                  "system": {}
+                }
+              },
+              "example": {
+                "model": "claude-opus-5-5",
+                "max_tokens": 256,
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "用一句话打个招呼。"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Messages JSON，或 stream=true 时的 SSE"
+          }
+        }
+      }
+    },
+    "/api/v1/seedance/assets/audit": {
+      "post": {
+        "summary": "提交素材审核",
+        "description": "推荐 `POST /api/v1/seedance/assets/audit`。提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
+        "operationId": "submitSeedanceAuditV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditSubmitRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "提交成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditSubmitResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seedance/assets/status": {
+      "post": {
+        "summary": "查询素材审核状态",
+        "description": "推荐 `POST /api/v1/seedance/assets/status`。查询已提交审核素材的状态。",
+        "operationId": "querySeedanceAuditStatusV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceAuditStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seedance/sp/assets/upload": {
+      "post": {
+        "summary": "SP 上传素材",
+        "description": "推荐 `POST /api/v1/seedance/sp/assets/upload`。上传图片、视频、音频或文本素材到 Seedance 满血版超分素材库。返回 asset_id 可用于 asset:// 引用。",
+        "operationId": "uploadSeedanceSpAssetV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetUploadRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetUploadResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seedance/sp/assets/detail": {
+      "post": {
+        "summary": "SP 查询素材详情",
+        "description": "推荐 `POST /api/v1/seedance/sp/assets/detail`。查询单个 Seedance SP 素材的处理状态与详情。",
+        "operationId": "querySeedanceSpAssetDetailV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetDetailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seedance/sp/assets/status": {
+      "post": {
+        "summary": "SP 批量查询素材状态",
+        "description": "推荐 `POST /api/v1/seedance/sp/assets/status`。批量查询 Seedance SP 素材的处理状态。",
+        "operationId": "querySeedanceSpAssetBatchStatusV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeedanceSpAssetBatchStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/midjourney/generations": {
+      "post": {
+        "summary": "创建 Midjourney Imagine 任务",
+        "description": "推荐 `POST /api/v1/midjourney/generations`。创建 Midjourney 文生图 / 垫图任务。提交成功后使用 GET /api/v1/images/{taskId} 查询结果。",
+        "operationId": "createMidjourneyGenerationsV1",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/midjourney/generations/imagine": {
+      "post": {
+        "summary": "创建 Midjourney Imagine 任务（显式入口）",
+        "operationId": "createMidjourneyImagineV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "推荐 `POST /api/v1/midjourney/generations/imagine`。"
+      }
+    },
+    "/api/v1/midjourney/generations/upscale": {
+      "post": {
+        "summary": "Midjourney 放大选图",
+        "operationId": "createMidjourneyUpscaleV1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MidjourneyGenerationsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "任务创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoGenerationResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "推荐 `POST /api/v1/midjourney/generations/upscale`。"
+      }
+    },
+    "/api/v1/midjourney/generations/video": {
+      "post": {
+        "summary": "创建 Midjourney 图生视频任务",
+        "description": "推荐 `POST /api/v1/midjourney/generations/video`。创建 Midjourney 图生视频任务。提交成功后使用 GET /api/v1/videos/{taskId} 查询结果。",
+        "operationId": "createMidjourneyVideoV1",
         "requestBody": {
           "content": {
             "application/json": {

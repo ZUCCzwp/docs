@@ -27,20 +27,40 @@ API Key: The key you just created
 
 ### Video Generation Example
 
+<Note>
+**Note (compatibility)**: Legacy `/api/open-api/v1/...` product paths (e.g. `/seedance/videos`, `/kling/videos`) and `/api/open-api/v1/videos|/images` still work.
+</Note>
+
+Use the unified endpoint `POST /api/v1/videos` and select the product with `model`.
+
 ```bash theme={null}
 curl --request POST \
-  --url https://api.viraltok.ai/api/open-api/v1/videos \
+  --url https://api.viraltok.ai/api/v1/videos \
   --header 'Authorization: Bearer <token>' \
   --header 'Content-Type: application/json' \
   --data '
 {
-  "model": "<string>",
-  "prompt": "<string>",
-  "duration": 123,
-  "orientation": "landscape",
-  "images": [
-    "<string>"
-  ]
+  "model": "seedance-2.5",
+  "prompt": "A cat walking in sunlight",
+  "duration": 5,
+  "aspect_ratio": "16:9"
+}
+'
+```
+
+### Image Generation Example
+
+```bash theme={null}
+curl --request POST \
+  --url https://api.viraltok.ai/api/v1/images \
+  --header 'Authorization: Bearer <token>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "model": "gpt-image-2",
+  "prompt": "Cyberpunk city at night in the rain",
+  "aspect_ratio": "16:9",
+  "resolution": "2k"
 }
 '
 ```
@@ -51,9 +71,11 @@ Since we use an asynchronous processing mode, you need to query the task status 
 
 ```bash theme={null}
 curl --request GET \
-  --url https://api.viraltok.ai/api/open-api/v1/videos/{taskId} \
+  --url https://api.viraltok.ai/api/v1/videos/{taskId} \
   --header 'Authorization: Bearer <token>'
 ```
+
+For image tasks, use `GET /api/v1/images/{taskId}`.
 
 ## Next Steps
 

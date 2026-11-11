@@ -1,7 +1,11 @@
 ---
 title: '图片高清放大'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/images/upscale'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/images/upscale'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/images/upscale` 仍可用，行为与 `POST /api/v1/images/upscale` 相同。
+</Note>
+
 
 <Note>
 本接口为**同步**调用。请求成功后**立即扣费**（计费模型 `viraltok-image-upscale`），默认在响应 `data` 中返回 `b64_json`，无需轮询。需要 URL 时传 `response_format=url`。
@@ -49,7 +53,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/images/upscale'
 
 <RequestExample>
 ```bash 2x 放大
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/upscale' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -62,7 +66,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
 ```
 
 ```bash 放大到 1080p
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/upscale' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/upscale' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

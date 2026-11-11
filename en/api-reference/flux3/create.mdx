@@ -1,8 +1,11 @@
 ---
 title: 'Create Flux 3 video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/flux3/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/flux3/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
   On success you get a `task_id`. Poll with [Query video task](/en/api-reference/common/query), then read `result.video_url`. Draft tasks also return `result.draft_cache_url` for enhance.
 </Note>
@@ -43,7 +46,7 @@ Drafts are always 720p previews; enhance is always 1080p. **Do not send `resolut
 Text-to-video draft (fixed 720p, bills `flux-3-draft`):
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -57,7 +60,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
 Draft enhance (fixed 1080p, bills `flux-3-enhance`):
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/flux3/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

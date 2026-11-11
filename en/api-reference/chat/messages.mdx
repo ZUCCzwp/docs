@@ -1,7 +1,11 @@
 ---
 title: 'Messages'
-openapi: 'POST /api/open-api/v1/messages'
+openapi: 'POST /api/v1/messages'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/messages` still works and matches `POST /api/v1/messages`.
+</Note>
+
 
 **Messages** API for Claude Opus 5.5. The request and response follow the Anthropic Messages protocol. Send `messages`, receive an assistant reply, and optionally stream. Billing is **pay-as-you-go** from your JimiCoin balance using token counts in `usage`.
 
@@ -20,7 +24,7 @@ Send either `Authorization: Bearer <API_KEY>` or `x-api-key: <API_KEY>`.
 ### Endpoint
 
 ```http
-POST https://api.viraltok.ai/api/open-api/v1/messages
+POST https://api.viraltok.ai/api/v1/messages
 Content-Type: application/json
 ```
 
@@ -55,7 +59,7 @@ Other Messages fields are forwarded.
 ### Non-stream example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+curl -X POST 'https://api.viraltok.ai/api/v1/messages' \
   -H 'x-api-key: YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -H 'anthropic-version: 2023-06-01' \
@@ -92,7 +96,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
 Set `"stream": true`. The response is Messages SSE. Billing reads `usage` from `message_start` and `message_delta`.
 
 ```bash
-curl -N -X POST 'https://api.viraltok.ai/api/open-api/v1/messages' \
+curl -N -X POST 'https://api.viraltok.ai/api/v1/messages' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

@@ -1,13 +1,17 @@
 ---
 title: 'Create MiniMax H3 Official Video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/minimax/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-This uses the same endpoint as [Create MiniMax H3 Video](/en/api-reference/minimax/create): `POST /api/open-api/v1/minimax/videos`. Select this product with `model: "minimax-h3-gz"`. The per-second 768P product is on that page as [`minimax-h3-768p`](/en/api-reference/minimax/create#minimax-h3-768p).
+This uses the same endpoint as [Create MiniMax H3 Video](/en/api-reference/minimax/create): `POST /api/v1/videos`. Select this product with `model: "minimax-h3-gz"`. The per-second 768P product is on that page as [`minimax-h3-768p`](/en/api-reference/minimax/create#minimax-h3-768p).
 
 ## Supported models
 
@@ -94,7 +98,7 @@ cost = video per-second unit_price × (reference video duration + duration)
 ### Text-to-video
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -109,7 +113,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
 ### First and last frame
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -125,7 +129,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
 ### Multimodal reference (including video)
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

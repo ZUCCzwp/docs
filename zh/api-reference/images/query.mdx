@@ -1,7 +1,11 @@
 ---
 title: '查询图片任务'
-openapi: 'GET /api/open-api/v1/images/{taskId}'
+openapi: 'GET /api/v1/images/{taskId}'
 ---
+
+<Note>
+**备注（兼容路径）**：`GET /api/open-api/v1/images/{taskId}` 仍可查询，行为与 `GET /api/v1/images/{taskId}` 相同。
+</Note>
 
 > 图片下载地址（`image_url`）的保存有效期为 **3天**，请及时转存。
 

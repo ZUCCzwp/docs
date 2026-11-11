@@ -7,7 +7,7 @@ icon: 'asterisk'
 本指南说明如何在 **Claude Code** 中使用 ViraltokAI 的 LLM 能力。`claude-opus-5-5` 直接走 [Messages](/zh/api-reference/chat/messages)。其他模型仍可通过 **CC Switch** 转到 Chat Completions。
 
 <Info>
-脚本或后端调用 `claude-opus-5-5` 时，直接请求 `POST /api/open-api/v1/messages`。OpenAI 兼容模型请走 [Responses](/zh/api-reference/llm/integrations/codex) 或 [Chat Completions](/zh/api-reference/chat/completions)。
+脚本或后端调用 `claude-opus-5-5` 时，直接请求 `POST /api/v1/messages`。OpenAI 兼容模型请走 [Responses](/zh/api-reference/llm/integrations/codex) 或 [Chat Completions](/zh/api-reference/chat/completions)。
 </Info>
 
 ## 开始之前
@@ -82,7 +82,7 @@ Claude Code  →  Anthropic Messages  →  CC Switch（127.0.0.1）  →  Viralt
 OpenAI 兼容集成**默认使用 Responses**：
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
+curl -X POST 'https://api.viraltok.ai/api/v1/responses' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -94,7 +94,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/responses' \
 若你的 SDK 只支持 Chat Completions，可使用 [Chat Completions](/zh/api-reference/chat/completions)：
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/chat/completions' \
+curl -X POST 'https://api.viraltok.ai/api/v1/chat/completions' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

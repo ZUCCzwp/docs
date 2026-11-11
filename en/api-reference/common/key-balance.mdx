@@ -1,9 +1,13 @@
 ---
 title: 'Query API Key Quota Balance'
-openapi: 'GET /api/open-api/v1/key/balance'
+openapi: 'GET /api/v1/key/balance'
 ---
 
 Returns the **quota balance** for the current API key (separate from the user's JimiCoin account). If `total_quota` was set in the console, usage is capped by quota; otherwise the key is unlimited.
+
+<Note>
+**Compatibility note**: `GET /api/open-api/v1/key/balance` still works and matches `GET /api/v1/key/balance`.
+</Note>
 
 ### Response fields
 
@@ -31,7 +35,7 @@ Billing still debits the user's JimiCoin account. `total_quota` / `used_quota` o
 ### Example
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/key/balance' \
+curl -X GET 'https://api.viraltok.ai/api/v1/key/balance' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
 

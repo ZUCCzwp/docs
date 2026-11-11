@@ -1,7 +1,11 @@
 ---
 title: 'SP Upload Asset'
-openapi: 'POST /api/open-api/v1/seedance/sp/assets/upload'
+openapi: 'POST /api/v1/seedance/sp/assets/upload'
 ---
+<Note>
+**Compatibility note**: `POST /api/open-api/v1/seedance/sp/assets/upload` still works and matches `POST /api/v1/seedance/sp/assets/upload`.
+</Note>
+
 
 Upload image, video, audio, or text assets to the Seedance Full Super-Resolution SP asset library. Use the returned `asset_id` as `asset://{asset_id}` in [Create Full Super-Resolution SP Video](/en/api-reference/seedance/sp/create).
 
@@ -20,7 +24,7 @@ This endpoint is for **Full Super-Resolution SP** (`sd2_sp_*`) and **Seedance 2.
 ## Example
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/seedance/sp/assets/upload' \
+curl -X POST 'https://api.viraltok.ai/api/v1/seedance/sp/assets/upload' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

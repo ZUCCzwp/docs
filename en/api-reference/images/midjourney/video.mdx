@@ -1,13 +1,17 @@
 ---
 title: 'Create Midjourney image-to-video'
 ---
+<Note>
+**Compatibility note**: Legacy `/api/open-api/v1/midjourney/...` still works and matches `/api/v1/midjourney/...`.
+</Note>
+
 
 Create a Midjourney **image-to-video** task (~5s). Text-only video is not supported; a first frame is required.
 
 <Note>
-`POST /api/open-api/v1/midjourney/generations/video`
+`POST /api/v1/midjourney/generations/video`
 
-Poll [Query video task](/en/api-reference/common/query) (`GET /api/open-api/v1/videos/{taskId}`) for `result.video_url` / `result.video_urls`.
+Poll [Query video task](/en/api-reference/common/query) (`GET /api/v1/videos/{taskId}`) for `result.video_url` / `result.video_urls`.
 </Note>
 
 Billing: `midjourney-video` (480p) or `midjourney-video-720p` × `batch_size` (`1` / `2` / `4`).
@@ -15,7 +19,7 @@ Billing: `midjourney-video` (480p) or `midjourney-video-720p` × `batch_size` (`
 Pass either `images` (first frame) or `task_id` (a completed Imagine task), not both.
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/midjourney/generations/video' \
+curl -X POST 'https://api.viraltok.ai/api/v1/midjourney/generations/video' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

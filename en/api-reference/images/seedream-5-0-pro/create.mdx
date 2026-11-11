@@ -1,12 +1,16 @@
 ---
 title: 'Seedream 5.0 Pro Image Generation'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/images` still works and matches `POST /api/v1/images`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 Create an async **Seedream 5.0 Pro** image task. After submission you receive a `task_id`. Poll via [Query Image Task](/en/api-reference/images/query) and read `result.image_url` when completed.
 
 <Note>
-This model uses `POST /api/open-api/v1/images` with `"model": "doubao-seedream-5-0-pro"`.
+This model uses `POST /api/v1/images` with `"model": "doubao-seedream-5-0-pro"`.
 </Note>
 
 ## Model overview
@@ -68,7 +72,7 @@ Example (console prices may change): 2K + 3 references → `0.72 + (3 - 1) × 0.
 ### Text-to-image
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -82,7 +86,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### Image reference
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -112,7 +116,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ## Query task
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/images/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/images/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 

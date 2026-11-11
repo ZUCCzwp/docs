@@ -1,12 +1,16 @@
 ---
 title: 'Query SoundClone Task'
-openapi: 'en/api-reference/openapi.json GET /api/open-api/v1/audios/{id}'
+openapi: 'en/api-reference/openapi.json GET /api/v1/audios/{id}'
 ---
 
 <Note>
 Query preview or production audio tasks by the `id` returned from [Create Preview](/en/api-reference/sound-clone/clone-create) or [Create Audio](/en/api-reference/sound-clone/audio-create). This path is dedicated to **SoundClone** tasks.
 
 Response envelope: `{ "code": 20000, "msg": "ok", "data": { ... } }`.
+</Note>
+
+<Note>
+**Compatibility note**: `GET /api/open-api/v1/audios/{id}` still works and matches `GET /api/v1/audios/{id}`.
 </Note>
 
 ## Path parameters
@@ -46,7 +50,7 @@ Poll every **5–10 seconds** until `status` is `completed` or `failed`.
 
 ```bash
 curl --request GET \
-  --url 'https://api.viraltok.ai/api/open-api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
+  --url 'https://api.viraltok.ai/api/v1/audios/audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a' \
   --header 'Authorization: Bearer sk_xxx'
 ```
 

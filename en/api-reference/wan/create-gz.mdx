@@ -1,13 +1,17 @@
 ---
 title: 'Create Wan 3.0 Official Video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/wan/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/wan/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
 
 <Note>
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
 </Note>
 
-This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/open-api/v1/wan/videos`. Select this model with `model: "wan3.0-gz"`; it is billed separately. Without a reference document or webpage, you can also use [`wan3.0-gl`](/en/api-reference/wan/create-gl).
+This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create) at `POST /api/v1/videos`. Select this model with `model: "wan3.0-gz"`; it is billed separately. Without a reference document or webpage, you can also use [`wan3.0-gl`](/en/api-reference/wan/create-gl).
 
 ## Supported models
 
@@ -68,7 +72,7 @@ Aliases `wan30-gz` and `wan-3.0-gz` normalize to `wan3.0-gz`. You may also pass 
 ### Reference media
 
 ```bash
-curl -X POST https://api.viraltok.ai/api/open-api/v1/wan/videos \
+curl -X POST https://api.viraltok.ai/api/v1/videos \
   -H "Authorization: Bearer $JIMMYAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

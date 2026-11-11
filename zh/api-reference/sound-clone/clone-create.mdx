@@ -1,7 +1,11 @@
 ---
 title: 'SoundClone - 提交试听任务'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/soundCloning/clones'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/soundCloning/clones'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/soundCloning/clones` 仍可用，行为与 `POST /api/v1/soundCloning/clones` 相同。
+</Note>
+
 
 <Note>
 声音克隆为**异步任务**。提交成功后返回任务 `id`，请使用 [查询声音克隆任务](/zh/api-reference/common/sound-clone-query) 轮询；试听完成后可获取 `modelId` 与试听音频 `audioUrl`，用于后续 [提交音频生成任务](/zh/api-reference/sound-clone/audio-create)。
@@ -38,7 +42,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/soundCloning/clone
 
 ```bash
 curl --request POST \
-  --url 'https://api.viraltok.ai/api/open-api/v1/soundCloning/clones' \
+  --url 'https://api.viraltok.ai/api/v1/soundCloning/clones' \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{

@@ -1,7 +1,11 @@
 ---
 title: '创建视频翻译任务'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/video-translate/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/video-translate/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 提交视频翻译任务：将源视频口播翻译并合成到目标语言。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态。完成后从 `result.video_url` 获取成片；若开启字幕，另有 `result.caption_url`。
 
@@ -232,13 +236,13 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/video-translate/vi
 建议每 5–10 秒轮询一次，状态变为 `completed` / `failed` 后停止。结果 URL 保存约 **3 天**，请及时转存。完成后从 `result.video_url` 取成片；开启字幕时另有 `result.caption_url`。
 
 ```bash
-curl -X GET 'https://api.viraltok.ai/api/open-api/v1/videos/{task_id}' \
+curl -X GET 'https://api.viraltok.ai/api/v1/videos/{task_id}' \
   -H 'Authorization: Bearer sk_xxx'
 ```
 
 <RequestExample>
 ```bash 高精度
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -250,7 +254,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
 ```
 
 ```bash 快速
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/video-translate/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

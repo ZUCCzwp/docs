@@ -1,14 +1,18 @@
 ---
 title: 'Grok Imagine Image 图像生成'
-openapi: 'POST /api/open-api/v1/images'
+openapi: 'POST /api/v1/images'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/images` 仍可调用，行为与 `POST /api/v1/images` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 创建 **Grok Imagine Image** 异步图片生成任务。提交成功后返回 `task_id`，请使用 [查询图片任务](/zh/api-reference/images/query) 轮询状态，完成后从 `result.image_url` 获取图片地址；当 `n > 1` 时还可从 `result.image_urls` 获取全部图片。
 
 更高画质请用 [Grok Imagine Image 2.0](/zh/api-reference/images/grok-imagine-image-2/create)。
 
 <Note>
-本接口使用 `POST /api/open-api/v1/images`。将 `model` 设为 `grok-imagine-image` 即可使用本模型。
+本接口使用 `POST /api/v1/images`。将 `model` 设为 `grok-imagine-image` 即可使用本模型。
 </Note>
 
 ## 模型说明
@@ -54,7 +58,7 @@ openapi: 'POST /api/open-api/v1/images'
 ### 文生图
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -69,7 +73,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
 ### 图编辑
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

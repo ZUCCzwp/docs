@@ -1,8 +1,11 @@
 ---
 title: 'Create Muse Video'
-openapi: 'en/api-reference/openapi.json POST /api/open-api/v1/muse/videos'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 ---
 
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/muse/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
 <Note>
 This endpoint is async. Save the `task_id` from the create response, then poll [Query Video Task](/en/api-reference/common/query). When complete, read the MP4 URL from `result.video_url`.
 </Note>
@@ -32,7 +35,7 @@ Aliases such as `muse` and `muse-video` normalize to `muse-videos`.
 
 <RequestExample>
 ```bash Text-to-video
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -45,7 +48,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
 ```
 
 ```bash Image-to-video
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/muse/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

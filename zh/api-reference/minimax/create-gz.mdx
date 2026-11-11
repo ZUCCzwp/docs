@@ -1,13 +1,17 @@
 ---
 title: '创建 MiniMax H3官转视频'
-openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 ---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/minimax/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
 
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
 
-本接口与 [创建 MiniMax H3 视频](/zh/api-reference/minimax/create) 共用 `POST /api/open-api/v1/minimax/videos`。通过 `model: "minimax-h3-gz"` 选择本型号。768P 按秒产品在同一页，模型 ID 是 [`minimax-h3-768p`](/zh/api-reference/minimax/create#minimax-h3-768p)。
+本接口与 [创建 MiniMax H3 视频](/zh/api-reference/minimax/create) 共用 `POST /api/v1/videos`。通过 `model: "minimax-h3-gz"` 选择本型号。768P 按秒产品在同一页，模型 ID 是 [`minimax-h3-768p`](/zh/api-reference/minimax/create#minimax-h3-768p)。
 
 ## 支持的模型
 
@@ -94,7 +98,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/open-api/v1/minimax/videos'
 ### 文生视频
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -109,7 +113,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
 ### 首尾帧图生视频
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -125,7 +129,7 @@ curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
 ### 多模态参考（含参考视频）
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/minimax/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

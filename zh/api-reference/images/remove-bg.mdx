@@ -1,7 +1,11 @@
 ---
 title: 'AI 智能去背景'
-openapi: 'POST /api/open-api/v1/images/remove-bg'
+openapi: 'POST /api/v1/images/remove-bg'
 ---
+<Note>
+**备注（兼容路径）**：`POST /api/open-api/v1/images/remove-bg` 仍可用，行为与 `POST /api/v1/images/remove-bg` 相同。
+</Note>
+
 
 <Note>
 本接口为**同步**调用。请求成功后**立即扣费**（计费模型 `viraltok-remove-bg`），默认在响应 `data` 中返回 `b64_json`，无需轮询。需要 URL 时传 `response_format=url`。
@@ -14,7 +18,7 @@ openapi: 'POST /api/open-api/v1/images/remove-bg'
 ## 请求示例
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/images/remove-bg' \
+curl -X POST 'https://api.viraltok.ai/api/v1/images/remove-bg' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -d '{

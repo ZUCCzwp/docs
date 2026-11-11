@@ -1,8 +1,11 @@
 ---
 title: '创建 Grok Imagine 1.5 视频'
-openapi: 'POST /api/open-api/v1/grok/videos'
+openapi: 'POST /api/v1/videos'
 ---
 
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/grok/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
 <Note>
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
 </Note>
@@ -25,7 +28,7 @@ openapi: 'POST /api/open-api/v1/grok/videos'
 ## 示例请求
 
 ```bash
-curl -X POST 'https://api.viraltok.ai/api/open-api/v1/grok/videos' \
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{

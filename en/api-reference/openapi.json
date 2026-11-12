@@ -5717,7 +5717,7 @@
           },
           "first_image": {
             "type": "string",
-            "description": "First frame image URL. wan3.0-gz / wan3.0-gl / wan3.0-prime / wan3.0-prime-gl only; cannot be combined with reference images/videos/audios. For wan3.0-gz, also cannot be combined with file_url or link_url."
+            "description": "First frame image URL. wan3.0-gz / wan3.0-gl / wan3.0-prime / wan3.0-prime-gl only; cannot be combined with reference images/videos/audios. For wan3.0-gz / wan3.0-gl, also cannot be combined with file_url or link_url."
           },
           "last_image": {
             "type": "string",
@@ -5725,11 +5725,11 @@
           },
           "file_url": {
             "type": "string",
-            "description": "Reference document URL (docx/pptx/pdf/xlsx/txt/md, etc., ≤100MB, ≤50 pages). wan3.0-gz only; mutually exclusive with link_url; prompt optional."
+            "description": "Reference document URL (docx/pptx/pdf/xlsx/txt/md, etc., ≤100MB, ≤50 pages). wan3.0-gz / wan3.0-gl; mutually exclusive with link_url; prompt optional. Not available for wan3.0-gl edit / extend."
           },
           "link_url": {
             "type": "string",
-            "description": "Reference webpage URL; must be public and require no login. wan3.0-gz only; mutually exclusive with file_url."
+            "description": "Reference webpage URL; must be public and require no login. wan3.0-gz / wan3.0-gl; mutually exclusive with file_url. Not available for wan3.0-gl edit / extend."
           }
         },
         "example": {

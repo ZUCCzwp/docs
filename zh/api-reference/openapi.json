@@ -5943,7 +5943,7 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL。仅 wan3.0-gz / wan3.0-gl / wan3.0-prime / wan3.0-prime-gl 支持；不能与参考图/视频/音频同时使用（wan3.0-gz 还不能与 file_url、link_url 同时使用）。"
+            "description": "首帧图片 URL。仅 wan3.0-gz / wan3.0-gl / wan3.0-prime / wan3.0-prime-gl 支持；不能与参考图/视频/音频同时使用（wan3.0-gz / wan3.0-gl 还不能与 file_url、link_url 同时使用）。"
           },
           "last_image": {
             "type": "string",
@@ -5951,11 +5951,11 @@
           },
           "file_url": {
             "type": "string",
-            "description": "参考文件 URL（docx/pptx/pdf/xlsx/txt/md 等，≤100MB、≤50 页）。仅 wan3.0-gz 支持；与 link_url 二选一，可不传 prompt。"
+            "description": "参考文件 URL（docx/pptx/pdf/xlsx/txt/md 等，≤100MB、≤50 页）。wan3.0-gz / wan3.0-gl 支持；与 link_url 二选一，可不传 prompt。wan3.0-gl 的 edit / extend 不可用。"
           },
           "link_url": {
             "type": "string",
-            "description": "参考网页 URL，须公开免登录。仅 wan3.0-gz 支持；与 file_url 二选一。"
+            "description": "参考网页 URL，须公开免登录。wan3.0-gz / wan3.0-gl 支持；与 file_url 二选一。wan3.0-gl 的 edit / extend 不可用。"
           }
         },
         "example": {

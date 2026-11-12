@@ -17,9 +17,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 
 | model | 说明 |
 |-------|------|
-| `wan3.0-gl` | Wan 3.0官链视频生成，支持文生视频、首帧/首尾帧生视频、参考生视频（参考图最多 10 张、参考视频最多 5 个、参考音频最多 5 段），时长 2–30 秒，分辨率 480p/720p/1080p |
-
-本型号**不支持** `file_url` / `link_url`。需要参考文件或网页时请使用 [`wan3.0-gz`](/zh/api-reference/wan/create-gz)。
+| `wan3.0-gl` | Wan 3.0官链视频生成，支持文生视频、首帧/首尾帧生视频、参考生视频（参考图最多 10 张、参考视频最多 5 个、参考音频最多 5 段）、参考文件生视频、参考网页生视频，时长 2–30 秒，分辨率 480p/720p/1080p |
 
 ## 生成模式
 
@@ -29,16 +27,18 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 | 首帧生视频 | `first_image` |
 | 首尾帧生视频 | `first_image` + `last_image` |
 | 参考生视频 | `reference_images` / `reference_videos` / `reference_audios` |
+| 参考文件生视频 | `file_url`（可不传 `prompt`） |
+| 参考网页生视频 | `link_url` |
 | 视频编辑 | `task_type: "edit"` + `reference_videos` + `prompt`（含编辑意图） |
 | 视频延长 | `task_type: "extend"` + `reference_videos` + `prompt`（含延长意图） |
 
-首尾帧（`first_image` / `last_image`）与参考素材（参考图/视频/音频）**不能混用**。编辑 / 延长也不支持首尾帧。
+首尾帧（`first_image` / `last_image`）与参考素材（参考图/视频/音频、`file_url`、`link_url`）**不能混用**；`file_url` 与 `link_url` 只能二选一。参考图/视频/音频与 `file_url` 或 `link_url` 可同时使用。编辑 / 延长不支持首尾帧，也不支持 `file_url` / `link_url`。
 
 `wan30-gl`、`wan-3.0-gl` 会归一化为 `wan3.0-gl`。也可直接传计费型号 `wan3.0-gl-480p` / `wan3.0-gl-720p` / `wan3.0-gl-1080p`，此时后缀即分辨率。
 
 ## 参数限制
 
-- **提示词（prompt）**：与素材（首尾帧、参考图/视频/音频）至少填写一项；`edit` / `extend` 时必填，并写明编辑或延长意图。可用「图1」「视频1」「音频1」指代素材，编号按同类素材在数组中的顺序。
+- **提示词（prompt）**：与素材（首尾帧、参考图/视频/音频、文件、网页）至少填写一项；`edit` / `extend` 时必填，并写明编辑或延长意图。可用「图1」「视频1」「音频1」指代素材，编号按同类素材在数组中的顺序。
 - **时长（duration）**：2–30 秒，默认 `5`。`edit` 须为 `-1`；`extend` 可为 `-1`（智能时长）或延长后的总时长（2–30）。
 - **画幅比例（aspect_ratio / ratio）**：`adaptive`（自适应）、`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`，默认 `16:9`。`edit` / `extend` 须为 `adaptive`。
 - **任务类型（task_type）**：可选 `edit` / `extend`（仅本型号）。空表示普通生成。
@@ -47,6 +47,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 - **参考视频**：`reference_videos` 或 `videos`，最多 **5** 个，须为公网可访问 URL；`edit` / `extend` 至少 1 个。
 - **参考音频**：`reference_audios`，最多 **5** 段，须为公网可访问 URL。
 - **首帧 / 尾帧**：`first_image` / `last_image` 各 1 张公网 URL；传 `last_image` 时必须同时传 `first_image`。
+- **参考文件**：`file_url`，1 个公网 URL；支持 docx / doc / xlsx / xls / pptx / ppt / pdf / txt / key / pages / numbers / md 等，不超过 100MB、50 页。`edit` / `extend` 不可用。
+- **参考网页**：`link_url`，1 个公开、免登录的网页 URL。`edit` / `extend` 不可用。
 
 ## 请求参数
 
@@ -66,6 +68,8 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 | `reference_audios` | string[] | 否 | 参考音频 URL 列表（0–5） |
 | `first_image` | string | 否 | 首帧图片 URL |
 | `last_image` | string | 否 | 尾帧图片 URL，需同时传 `first_image` |
+| `file_url` | string | 否 | 参考文件 URL，与 `link_url` 二选一 |
+| `link_url` | string | 否 | 参考网页 URL，与 `file_url` 二选一 |
 
 ## 请求示例
 
@@ -106,6 +110,28 @@ curl -X POST https://api.viraltok.ai/api/v1/videos \
   "duration": 8,
   "aspect_ratio": "21:9",
   "resolution": "1080P"
+}
+```
+
+### 参考文件生视频
+
+```json
+{
+  "model": "wan3.0-gl",
+  "file_url": "https://example.com/product.pptx",
+  "resolution": "720P",
+  "duration": 10
+}
+```
+
+### 参考网页生视频
+
+```json
+{
+  "model": "wan3.0-gl",
+  "prompt": "把这篇文章做成一支科普短片",
+  "link_url": "https://example.com/article/123",
+  "duration": 15
 }
 ```
 

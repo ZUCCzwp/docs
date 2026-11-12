@@ -17,9 +17,7 @@ This endpoint is shared with [Create Wan 3.0 Video](/en/api-reference/wan/create
 
 | model | Notes |
 |-------|-------|
-| `wan3.0-gl` | Wan 3.0 Official Channel video generation. Supports text-to-video, first-frame / first-and-last-frame video, and reference video (up to 10 images, 5 videos, 5 audios). 2–30s duration, 480p/720p/1080p. |
-
-This model **does not** support `file_url` / `link_url`. Use [`wan3.0-gz`](/en/api-reference/wan/create-gz) when you need a reference document or webpage.
+| `wan3.0-gl` | Wan 3.0 Official Channel video generation. Supports text-to-video, first-frame / first-and-last-frame video, reference video (up to 10 images, 5 videos, 5 audios), a reference document, and a reference webpage. 2–30s duration, 480p/720p/1080p. |
 
 ## Generation modes
 
@@ -29,16 +27,18 @@ This model **does not** support `file_url` / `link_url`. Use [`wan3.0-gz`](/en/a
 | First frame | `first_image` |
 | First and last frame | `first_image` + `last_image` |
 | Reference media | `reference_images` / `reference_videos` / `reference_audios` |
+| Reference document | `file_url` (`prompt` optional) |
+| Reference webpage | `link_url` |
 | Video edit | `task_type: "edit"` + `reference_videos` + edit-intent `prompt` |
 | Video extend | `task_type: "extend"` + `reference_videos` + extend-intent `prompt` |
 
-First/last frames (`first_image` / `last_image`) **cannot be combined** with reference media (reference images/videos/audios). Edit / extend also do not support first/last frames.
+First/last frames (`first_image` / `last_image`) **cannot be combined** with reference media (reference images/videos/audios, `file_url`, `link_url`). `file_url` and `link_url` are mutually exclusive. Reference images/videos/audios may be combined with `file_url` or `link_url`. Edit / extend do not support first/last frames, `file_url`, or `link_url`.
 
 Aliases `wan30-gl` and `wan-3.0-gl` normalize to `wan3.0-gl`. You may also pass billing models `wan3.0-gl-480p` / `wan3.0-gl-720p` / `wan3.0-gl-1080p` directly; the suffix then sets the resolution.
 
 ## Parameter constraints
 
-- **Prompt**: Provide a prompt or at least one input (frames or reference images/videos/audios). For `edit` / `extend`, prompt is required and should state the edit or extend intent. Refer to media as "图1", "视频1", "音频1" (image 1, video 1, audio 1), numbered by order within each media array.
+- **Prompt**: Provide a prompt or at least one input (frames, reference images/videos/audios, a document, or a webpage). For `edit` / `extend`, prompt is required and should state the edit or extend intent. Refer to media as "图1", "视频1", "音频1" (image 1, video 1, audio 1), numbered by order within each media array.
 - **Duration**: 2–30 seconds (default `5`). `edit` requires `-1`. `extend` accepts `-1` (auto) or the total length after extension (2–30).
 - **Aspect ratio** (`aspect_ratio` / `ratio`): `adaptive`, `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9` (default `16:9`). `edit` / `extend` require `adaptive`.
 - **Task type** (`task_type`): optional `edit` / `extend` for this model only. Empty means normal generation.
@@ -47,6 +47,8 @@ Aliases `wan30-gl` and `wan-3.0-gl` normalize to `wan3.0-gl`. You may also pass 
 - **Reference videos**: `reference_videos` or `videos`, max **5**, public HTTPS URLs; at least one for `edit` / `extend`.
 - **Reference audios**: `reference_audios`, max **5**, public HTTPS URLs.
 - **First / last frame**: `first_image` / `last_image`, one public URL each; `last_image` requires `first_image`.
+- **Reference document**: `file_url`, one public URL; docx / doc / xlsx / xls / pptx / ppt / pdf / txt / key / pages / numbers / md, etc., ≤ 100MB and ≤ 50 pages. Not available for `edit` / `extend`.
+- **Reference webpage**: `link_url`, one public webpage that requires no login. Not available for `edit` / `extend`.
 
 ## Request parameters
 
@@ -66,6 +68,8 @@ Aliases `wan30-gl` and `wan-3.0-gl` normalize to `wan3.0-gl`. You may also pass 
 | `reference_audios` | string[] | No | Reference audio URLs (0–5) |
 | `first_image` | string | No | First frame image URL |
 | `last_image` | string | No | Last frame image URL; requires `first_image` |
+| `file_url` | string | No | Reference document URL; mutually exclusive with `link_url` |
+| `link_url` | string | No | Reference webpage URL; mutually exclusive with `file_url` |
 
 ## Examples
 
@@ -106,6 +110,28 @@ curl -X POST https://api.viraltok.ai/api/v1/videos \
   "duration": 8,
   "aspect_ratio": "21:9",
   "resolution": "1080P"
+}
+```
+
+### Reference document
+
+```json
+{
+  "model": "wan3.0-gl",
+  "file_url": "https://example.com/product.pptx",
+  "resolution": "720P",
+  "duration": 10
+}
+```
+
+### Reference webpage
+
+```json
+{
+  "model": "wan3.0-gl",
+  "prompt": "Turn this article into a short science video",
+  "link_url": "https://example.com/article/123",
+  "duration": 15
 }
 ```
 

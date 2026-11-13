@@ -2614,7 +2614,7 @@
                       "edit",
                       "extend"
                     ],
-                    "description": "任务类型引导，仅 seedance-2.5 带参考素材时可用，把子任务校验提前到提交阶段。auto 由模型判定；reference 参考生视频；edit 视频编辑，须含参考视频且 aspect_ratio=adaptive、duration=-1；extend 视频延长，须含参考视频且 aspect_ratio=adaptive。首帧 / 首尾帧任务不要传。"
+                    "description": "任务类型引导。seedance-2.5 与 seedance2.5-dreamina 带参考素材时可用，把子任务校验提前到提交阶段。auto 由模型判定；reference 参考生视频；edit 视频编辑，须含参考视频且 aspect_ratio=adaptive、duration=-1；extend 视频延长，须含参考视频且 aspect_ratio=adaptive。首帧 / 首尾帧任务不要传。"
                   }
                 },
                 "example": {
@@ -3072,7 +3072,7 @@
                       "image_to_video",
                       "reference_to_video"
                     ],
-                    "description": "seedance-2.5 带参考素材时可用 auto、reference、edit、extend。gemini-omni-1.2 传入视频时必填，还可取 text_to_video、image_to_video、reference_to_video。不要与 generation_type 同时传。"
+                    "description": "seedance-2.5 与 seedance2.5-dreamina 带参考素材时可用 auto、reference、edit、extend。gemini-omni-1.2 传入视频时必填，还可取 text_to_video、image_to_video、reference_to_video。不要与 generation_type 同时传。"
                   },
                   "system_prompt": {
                     "type": "string",
@@ -7282,7 +7282,7 @@
               "edit",
               "extend"
             ],
-            "description": "任务类型引导，仅 seedance-2.5 带参考素材时可用，把子任务校验提前到提交阶段。auto 由模型判定；reference 参考生视频；edit 视频编辑，须含参考视频且 aspect_ratio=adaptive、duration=-1；extend 视频延长，须含参考视频且 aspect_ratio=adaptive。首帧 / 首尾帧任务不要传。"
+            "description": "任务类型引导。seedance-2.5 与 seedance2.5-dreamina 带参考素材时可用，把子任务校验提前到提交阶段。auto 由模型判定；reference 参考生视频；edit 视频编辑，须含参考视频且 aspect_ratio=adaptive、duration=-1；extend 视频延长，须含参考视频且 aspect_ratio=adaptive。首帧 / 首尾帧任务不要传。"
           }
         },
         "example": {

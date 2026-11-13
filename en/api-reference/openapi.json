@@ -2614,7 +2614,7 @@
                       "edit",
                       "extend"
                     ],
-                    "description": "Task type hint. seedance-2.5 with reference material only; moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
+                    "description": "Task type hint for seedance-2.5 and seedance2.5-dreamina when reference material is sent. Moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
                   }
                 },
                 "example": {
@@ -2959,7 +2959,7 @@
                       "image_to_video",
                       "reference_to_video"
                     ],
-                    "description": "seedance-2.5 with reference media accepts auto, reference, edit, and extend. gemini-omni-1.2 requires a task type when a video is sent, and also accepts text_to_video, image_to_video, and reference_to_video. Do not send it with generation_type."
+                    "description": "seedance-2.5 and seedance2.5-dreamina with reference media accept auto, reference, edit, and extend. gemini-omni-1.2 requires a task type when a video is sent, and also accepts text_to_video, image_to_video, and reference_to_video. Do not send it with generation_type."
                   },
                   "system_prompt": {
                     "type": "string",
@@ -7046,7 +7046,7 @@
               "edit",
               "extend"
             ],
-            "description": "Task type hint. seedance-2.5 with reference material only; moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
+            "description": "Task type hint for seedance-2.5 and seedance2.5-dreamina when reference material is sent. Moves subtask validation to submission time. auto lets the model decide; reference generates a new video from references; edit requires a reference video plus aspect_ratio=adaptive and duration=-1; extend requires a reference video plus aspect_ratio=adaptive. Do not send it for first-frame or first-and-last-frame tasks."
           }
         },
         "example": {

@@ -21,21 +21,21 @@ Do **not** call `/api/v1/videos` (Seedance 2.0 / Full routes). That would land o
 
 | model | Notes |
 |-------|-------|
-| `seedance2.5-dreamina` | Seedance 2.5 Dreamina: independent billing; text-to-video plus reference images / videos / audios |
+| `seedance2.5-dreamina` | Seedance 2.5 Dreamina: independent billing; text-to-video, reference images / videos / audios, and video edit |
 
 Aliases such as `seedance-2.5-dreamina` and `seedance25-dreamina` normalize to `seedance2.5-dreamina`. Billing names `seedance2.5-480p-dreamina`, `seedance2.5-720p-dreamina`, and `seedance2.5-1080p-dreamina` are also accepted.
 
 ## Parameter constraints
 
 - **Prompt**: Required, 1–5000 characters.
-- **Duration**: 5–30 seconds. Default `5` when omitted.
-- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`. Default `16:9`.
+- **Duration**: 5–30 seconds. Default `5` when omitted. Video edit (`edit`) must use `-1`; omitting duration fills in `-1`.
+- **Aspect ratio** (`aspect_ratio` / `ratio`): `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`. Default `16:9`. `edit` / `extend` fill in `adaptive` when omitted.
 - **Resolution**: `480p`, `720p`, `1080p` (default `720p`).
 - **Reference images**: max **30**.
-- **Reference videos**: max **10**.
+- **Reference videos**: max **10**. Each clip and the total stay within 30.2 seconds.
 - **Reference audios**: max **10**.
 - **generate_audio**: default `true`.
-- **Not supported**: `first_image` / `last_image` and `omni_reference_task_type`.
+- **Not supported**: `first_image` / `last_image`.
 
 ## Request parameters
 
@@ -54,10 +54,28 @@ Aliases such as `seedance-2.5-dreamina` and `seedance25-dreamina` normalize to `
 | `reference_audios` | string[] | No | Reference audio URLs (0–10) |
 | `audios` | string[] | No | Alias for `reference_audios` |
 | `generate_audio` | boolean | No | Generate audio; default `true` |
+| `omni_reference_task_type` | string | No | Task type hint: `auto` / `reference` / `edit` / `extend`. Available when you send reference material |
+
+## Task type hint
+
+When you send reference material, use `omni_reference_task_type` to declare which subtask you want. It moves subtask validation to submission time, so an invalid combination fails immediately instead of after the task starts running.
+
+| Value | Use | Constraints |
+|-------|-----|-------------|
+| `auto` | Default. The model chooses reference, edit, or extend | Duration stays 5–30 seconds |
+| `reference` | New video from reference images, videos, or audios | No extra ratio or duration limits |
+| `edit` | Video edit: replace a subject, add or remove objects, inpaint a region | At least one public `reference_videos` URL; `aspect_ratio` must be `adaptive`; `duration` must be `-1`; the prompt should include a verb such as edit, add, delete, change, or replace |
+| `extend` | Continue the video forward or backward | Requires `reference_videos`; `aspect_ratio` must be `adaptive`; duration stays 5–30 seconds; the prompt should include a verb such as extend or continue |
+
+To avoid repeating fields, `edit` fills `aspect_ratio` with `adaptive` and `duration` with `-1` when you omit them. `extend` fills `aspect_ratio` with `adaptive` when you omit it.
+
+Omitting the field keeps ordinary generation. Do not send first-frame or last-frame fields.
 
 ## Billing
 
-Creation precharges by resolution (the same precharge model and seconds whether or not you send reference videos). After the task succeeds, usage is settled from actual tokens (overage charged / unused refunded in one delta). Tasks with reference videos use a different per-million-token price (JimiCoin; Console-configurable).
+Creation precharges by resolution (reference videos do not change the precharge model). After the task succeeds, usage is settled from actual tokens (overage charged / unused refunded in one delta). Tasks with reference videos use a different per-million-token price (JimiCoin; Console-configurable).
+
+`edit` sends `duration: -1`, so the output length is unknown at creation. Precharge seconds are the reference-video duration rounded up, clamped to 4–30 seconds. The reference video must be a public mp4 whose duration can be read; if it cannot, creation fails immediately. Settlement still uses actual tokens.
 
 - Precharge mode: `per_second`
 - Precharge models: `seedance2.5-480p-dreamina` / `seedance2.5-720p-dreamina` / `seedance2.5-1080p-dreamina`
@@ -65,7 +83,7 @@ Creation precharges by resolution (the same precharge model and seconds whether 
 - With reference videos, settlement uses `seedance2.5-video-480p-dreamina-token` / `seedance2.5-video-720p-dreamina-token` / `seedance2.5-video-1080p-dreamina-token`
 
 ```text
-precharge = unit price × output seconds
+precharge = unit price × precharge seconds
 due JimiCoin = completion_tokens / 1,000,000 × per-million-token price
 after success, charge or refund the delta vs precharge
 ```
@@ -102,5 +120,22 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
     "reference_images": ["https://example.com/reference.png"],
     "reference_videos": ["https://example.com/reference.mp4"],
     "reference_audios": ["https://example.com/reference.mp3"]
+  }'
+```
+
+### Video edit
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-dreamina",
+    "prompt": "Add a flock of birds to the shot",
+    "omni_reference_task_type": "edit",
+    "aspect_ratio": "adaptive",
+    "duration": -1,
+    "resolution": "720p",
+    "reference_videos": ["https://example.com/reference.mp4"]
   }'
 ```

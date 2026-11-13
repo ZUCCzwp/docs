@@ -141,6 +141,7 @@ curl -s -o /dev/null -w "%{http_code}\n" \
 | `gpt-5.6-sol` | 常用默认模型 |
 | `gpt-5.6-terra` | GPT-5.6 Terra 档位 |
 | `claude-sonnet-5` | Claude Sonnet 档位 |
+| `deepseek-v4.1-flash` | DeepSeek V4.1 Flash |
 | `claude-opus-5-5` | Claude Opus 5.5。仅 [Messages](/zh/api-reference/chat/messages)，不要用于 Responses 或 Chat Completions |
 
 部分别名（如 `gpt-5.6`、`gpt5.6-sol`）会在 Chat Completions 路径下归一化为 `gpt-5.6-sol`。`claude-opus-5.5`、`claude-opus-55` 会在 [Messages](/zh/api-reference/chat/messages) 路径归一化为 `claude-opus-5-5`。Responses 路径请使用上表中支持 Responses 的**完整模型 ID**。

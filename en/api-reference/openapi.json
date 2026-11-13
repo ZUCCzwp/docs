@@ -7304,7 +7304,7 @@
           "model": {
             "type": "string",
             "default": "gpt-5.6-sol",
-            "description": "Billing model ID. Defaults to gpt-5.6-sol. Also supports gpt-5.6-terra and claude-sonnet-5. Use /api/open-api/v1/messages for claude-opus-5-5."
+            "description": "Billing model ID. Defaults to gpt-5.6-sol. Also supports gpt-5.6-terra, claude-sonnet-5, and deepseek-v4.1-flash. Use /api/open-api/v1/messages for claude-opus-5-5."
           },
           "messages": {
             "type": "array",

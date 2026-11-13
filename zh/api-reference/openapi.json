@@ -404,7 +404,7 @@
     "/api/open-api/v1/chat/completions": {
       "post": {
         "summary": "Chat Completions",
-        "description": "兼容别名，推荐改用 `/api/v1/chat/completions`。 兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
+        "description": "兼容别名，推荐改用 `/api/v1/chat/completions`。 兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5、deepseek-v4.1-flash）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
         "operationId": "chatCompletions",
         "requestBody": {
           "required": true,
@@ -4174,7 +4174,7 @@
     "/api/v1/chat/completions": {
       "post": {
         "summary": "Chat Completions",
-        "description": "推荐 `POST /api/v1/chat/completions`。兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
+        "description": "推荐 `POST /api/v1/chat/completions`。兼容 OpenAI 的 Chat Completions，支持 ViraltokAI LLM（默认模型 gpt-5.6-sol，另有 gpt-5.6-terra、claude-sonnet-5、deepseek-v4.1-flash）。按 usage token 从吉米币按量扣费。stream=true 时返回 SSE，计费以最后一个带 usage 的 chunk 为准。claude-opus-5-5 请使用 /api/open-api/v1/messages。",
         "operationId": "chatCompletionsV1",
         "requestBody": {
           "required": true,
@@ -7540,7 +7540,7 @@
           "model": {
             "type": "string",
             "default": "gpt-5.6-sol",
-            "description": "计费模型 ID。默认 gpt-5.6-sol，也支持 gpt-5.6-terra、claude-sonnet-5。claude-opus-5-5 请使用 /api/open-api/v1/messages。"
+            "description": "计费模型 ID。默认 gpt-5.6-sol，也支持 gpt-5.6-terra、claude-sonnet-5、deepseek-v4.1-flash。claude-opus-5-5 请使用 /api/open-api/v1/messages。"
           },
           "messages": {
             "type": "array",

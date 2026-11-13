@@ -3067,9 +3067,24 @@
                       "auto",
                       "reference",
                       "edit",
-                      "extend"
+                      "extend",
+                      "text_to_video",
+                      "image_to_video",
+                      "reference_to_video"
                     ],
-                    "description": "仅 seedance-2.5 带参考素材时可用。"
+                    "description": "seedance-2.5 带参考素材时可用 auto、reference、edit、extend。gemini-omni-1.2 传入视频时必填，还可取 text_to_video、image_to_video、reference_to_video。不要与 generation_type 同时传。"
+                  },
+                  "system_prompt": {
+                    "type": "string",
+                    "description": "gemini-omni-1.2 系统指令。首尾帧模式不能传。"
+                  },
+                  "nsfw_check": {
+                    "type": "boolean",
+                    "description": "gemini-omni-1.2 是否在提交前做内容审核，默认 false。"
+                  },
+                  "seconds": {
+                    "type": "integer",
+                    "description": "gemini-omni-1.2 的 duration 别名。同时传入时必须相等。"
                   }
                 }
               },
@@ -3318,6 +3333,16 @@
                     "reference_images": [
                       "https://example.com/person.png"
                     ]
+                  }
+                },
+                "geminiOmni12": {
+                  "summary": "创建 Gemini Omni 1.2 视频",
+                  "value": {
+                    "model": "gemini-omni-1.2",
+                    "prompt": "Aerial shot over a misty mountain lake at sunrise.",
+                    "duration": 10,
+                    "resolution": "1080p",
+                    "aspect_ratio": "9:16"
                   }
                 }
               }
@@ -6338,9 +6363,10 @@
               "Gemini-Omini",
               "Omni-Flash-Ext",
               "gemini-omni",
-              "gemini-omni-1.1"
+              "gemini-omni-1.1",
+              "gemini-omni-1.2"
             ],
-            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini。gemini-omni-1.1 按分辨率按秒计费。"
+            "description": "模型名称。Gemini-Omini、Omni-Flash-Ext、gemini-omni 归一化为 Gemini-Omini。gemini-omni-1.1 与 gemini-omni-1.2 按分辨率按秒计费。"
           },
           "prompt": {
             "type": "string",
@@ -6349,7 +6375,7 @@
           "duration": {
             "type": "integer",
             "default": 6,
-            "description": "视频时长，单位为秒。Gemini-Omini 默认 6，仅支持 4、6、8、10。传入 video_urls 时不要传 duration。gemini-omni-1.1 不使用该字段。"
+            "description": "视频时长，单位为秒。Gemini-Omini 默认 6，仅支持 4、6、8、10。传入 video_urls 时不要传 duration。gemini-omni-1.1 不使用该字段。gemini-omni-1.2 默认 10：文生/首帧/多图参考为 3–15 秒，首尾帧和续写为 3–10 秒，编辑不能传。"
           },
           "resolution": {
             "type": "string",
@@ -6360,7 +6386,7 @@
               "1080p",
               "4k"
             ],
-            "description": "视频分辨率，默认 720p。360p 仅用于 gemini-omni-1.1。2160p 按 4k 处理。"
+            "description": "视频分辨率，默认 720p。360p 用于 gemini-omni-1.1 与 gemini-omni-1.2。2160p 按 4k 处理。"
           },
           "aspect_ratio": {
             "type": "string",
@@ -6393,28 +6419,50 @@
             "default": "reference",
             "enum": [
               "frame",
-              "reference"
+              "reference",
+              "edit",
+              "extend"
             ],
-            "description": "生成类型。frame: 首帧模式（image_urls 只可以上传 1 张图片，作为视频首帧）；reference: 参考模式（image_urls 可以上传 1 张或 3 张图片，作为参考图）。默认为 reference。"
+            "description": "生成类型。Gemini-Omini：frame 为首帧（image_urls 1 张），reference 为参考图（1 张或 3 张），默认 reference。gemini-omni-1.2 还可传 edit、extend，且不能与 omni_reference_task_type 同时传。"
           },
           "video_urls": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "参考视频 URL 列表（目前最多支持 1 个视频）。上传参考视频时不要传 duration。gemini-omni-1.1 的参考视频不超过 10 秒，且不能和 extend_from_task_id 同时传。"
+            "description": "参考视频 URL 列表（目前最多支持 1 个视频）。Gemini-Omini 上传参考视频时不要传 duration。gemini-omni-1.1 不超过 10 秒。gemini-omni-1.2 不超过 15 秒、64MB，且必须同时传任务类型，不能和 extend_from_task_id 同时传。"
           },
           "first_frame_image": {
             "type": "string",
-            "description": "gemini-omni-1.1 首帧图片 URL。不要和 image_urls 同时传。"
+            "description": "gemini-omni-1.1 / gemini-omni-1.2 首帧图片 URL。不要和 image_urls 同时传。"
           },
           "last_frame_image": {
             "type": "string",
-            "description": "gemini-omni-1.1 尾帧图片 URL。必须同时传 first_frame_image。"
+            "description": "gemini-omni-1.1 / gemini-omni-1.2 尾帧图片 URL。必须同时传 first_frame_image。gemini-omni-1.2 首尾帧时长为 3–10 秒，且不能传 system_prompt 或 negative_prompt。"
           },
           "extend_from_task_id": {
             "type": "string",
-            "description": "上一轮已完成的 Gemini Omni 1.1 任务 task_id，用于续写。不能和 video_urls 同时传。"
+            "description": "上一轮已完成的同型号任务 task_id，用于编辑或续写。不能和 video_urls 同时传。gemini-omni-1.2 须同时传任务类型，原成片不超过 15 秒。"
+          },
+          "omni_reference_task_type": {
+            "type": "string",
+            "description": "gemini-omni-1.2 任务类型。传入视频时必填：edit、extend、reference、text_to_video、image_to_video、reference_to_video、auto。auto 在带视频时按 edit 处理。不能与 generation_type 同时传。"
+          },
+          "negative_prompt": {
+            "type": "string",
+            "description": "gemini-omni-1.2 不希望出现的内容。首尾帧模式不能传。"
+          },
+          "system_prompt": {
+            "type": "string",
+            "description": "gemini-omni-1.2 系统指令。首尾帧模式不能传。"
+          },
+          "nsfw_check": {
+            "type": "boolean",
+            "description": "gemini-omni-1.2 是否在提交前做内容审核，默认 false。"
+          },
+          "seconds": {
+            "type": "integer",
+            "description": "gemini-omni-1.2 的 duration 别名。同时传入时必须相等。"
           }
         },
         "example": {

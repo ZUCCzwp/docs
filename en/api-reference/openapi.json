@@ -2954,9 +2954,24 @@
                       "auto",
                       "reference",
                       "edit",
-                      "extend"
+                      "extend",
+                      "text_to_video",
+                      "image_to_video",
+                      "reference_to_video"
                     ],
-                    "description": "seedance-2.5 with reference media only."
+                    "description": "seedance-2.5 with reference media accepts auto, reference, edit, and extend. gemini-omni-1.2 requires a task type when a video is sent, and also accepts text_to_video, image_to_video, and reference_to_video. Do not send it with generation_type."
+                  },
+                  "system_prompt": {
+                    "type": "string",
+                    "description": "gemini-omni-1.2 system instruction. Not allowed in first-and-last-frame mode."
+                  },
+                  "nsfw_check": {
+                    "type": "boolean",
+                    "description": "gemini-omni-1.2 content check before submit. Defaults to false."
+                  },
+                  "seconds": {
+                    "type": "integer",
+                    "description": "gemini-omni-1.2 alias of duration. If both are sent, they must be equal."
                   }
                 }
               },
@@ -3205,6 +3220,16 @@
                     "reference_images": [
                       "https://example.com/person.png"
                     ]
+                  }
+                },
+                "geminiOmni12": {
+                  "summary": "Create a Gemini Omni 1.2 video",
+                  "value": {
+                    "model": "gemini-omni-1.2",
+                    "prompt": "Aerial shot over a misty mountain lake at sunrise.",
+                    "duration": 10,
+                    "resolution": "1080p",
+                    "aspect_ratio": "9:16"
                   }
                 }
               }
@@ -6112,9 +6137,10 @@
               "Gemini-Omini",
               "Omni-Flash-Ext",
               "gemini-omni",
-              "gemini-omni-1.1"
+              "gemini-omni-1.1",
+              "gemini-omni-1.2"
             ],
-            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini. gemini-omni-1.1 is billed per second by resolution."
+            "description": "Model name. Gemini-Omini, Omni-Flash-Ext, and gemini-omni normalize to Gemini-Omini. gemini-omni-1.1 and gemini-omni-1.2 are billed per second by resolution."
           },
           "prompt": {
             "type": "string",
@@ -6123,7 +6149,7 @@
           "duration": {
             "type": "integer",
             "default": 6,
-            "description": "Video duration in seconds. Gemini-Omini defaults to 6 and only supports 4, 6, 8, or 10. Do not send duration together with video_urls. gemini-omni-1.1 ignores this field."
+            "description": "Video duration in seconds. Gemini-Omini defaults to 6 and only supports 4, 6, 8, or 10. Do not send duration together with video_urls. gemini-omni-1.1 ignores this field. gemini-omni-1.2 defaults to 10: 3–15 for text, first frame, and reference; 3–10 for first-and-last frame and extend. Edit does not accept duration."
           },
           "resolution": {
             "type": "string",
@@ -6134,7 +6160,7 @@
               "1080p",
               "4k"
             ],
-            "description": "Video resolution. Defaults to 720p. 360p is for gemini-omni-1.1. 2160p is treated as 4k."
+            "description": "Video resolution. Defaults to 720p. 360p is for gemini-omni-1.1 and gemini-omni-1.2. 2160p is treated as 4k."
           },
           "aspect_ratio": {
             "type": "string",
@@ -6167,28 +6193,50 @@
             "default": "reference",
             "enum": [
               "frame",
-              "reference"
+              "reference",
+              "edit",
+              "extend"
             ],
-            "description": "Generation type. frame: first frame mode (image_urls can only accept 1 image as the first frame of the video); reference: reference mode (image_urls can accept 1 or 3 images as style/subject reference). Defaults to reference."
+            "description": "Generation type. Gemini-Omini: frame is first-frame mode (one image_urls entry) and reference accepts 1 or 3 images. Defaults to reference. gemini-omni-1.2 also accepts edit and extend. Do not send it with omni_reference_task_type."
           },
           "video_urls": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Reference video URL list (currently supports up to 1 video). Note: duration is not required when uploading a reference video, and duration and video_urls cannot be passed at the same time. For gemini-omni-1.1 the clip must be 10 seconds or shorter, and cannot be combined with extend_from_task_id."
+            "description": "Reference video URL list (currently supports up to 1 video). Gemini-Omini does not accept duration together with a reference video. gemini-omni-1.1 clips must be 10 seconds or shorter. gemini-omni-1.2 clips must be 15 seconds or shorter and 64MB or smaller, require a task type, and cannot be combined with extend_from_task_id."
           },
           "first_frame_image": {
             "type": "string",
-            "description": "gemini-omni-1.1 first frame image URL. Do not send it together with image_urls."
+            "description": "gemini-omni-1.1 / gemini-omni-1.2 first frame image URL. Do not send it together with image_urls."
           },
           "last_frame_image": {
             "type": "string",
-            "description": "gemini-omni-1.1 last frame image URL. Requires first_frame_image."
+            "description": "gemini-omni-1.1 / gemini-omni-1.2 last frame image URL. Requires first_frame_image. gemini-omni-1.2 first-and-last-frame duration is 3–10 seconds and cannot include system_prompt or negative_prompt."
           },
           "extend_from_task_id": {
             "type": "string",
-            "description": "gemini-omni-1.1 task_id of a completed Gemini Omni 1.1 video to continue. Mutually exclusive with video_urls."
+            "description": "task_id of a completed video of the same model, used to edit or extend. Mutually exclusive with video_urls. gemini-omni-1.2 also requires a task type, and the original video must be 15 seconds or shorter."
+          },
+          "omni_reference_task_type": {
+            "type": "string",
+            "description": "gemini-omni-1.2 task type. Required when a video is sent: edit, extend, reference, text_to_video, image_to_video, reference_to_video, or auto. auto with a video is treated as edit. Do not send it with generation_type."
+          },
+          "negative_prompt": {
+            "type": "string",
+            "description": "gemini-omni-1.2 negative prompt. Not allowed in first-and-last-frame mode."
+          },
+          "system_prompt": {
+            "type": "string",
+            "description": "gemini-omni-1.2 system instruction. Not allowed in first-and-last-frame mode."
+          },
+          "nsfw_check": {
+            "type": "boolean",
+            "description": "gemini-omni-1.2 content check before submit. Defaults to false."
+          },
+          "seconds": {
+            "type": "integer",
+            "description": "gemini-omni-1.2 alias of duration. If both are sent, they must be equal."
           }
         },
         "example": {

@@ -1,0 +1,95 @@
+---
+title: '创建 Gemini Omni 1.2 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
+---
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/gemini/omni/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址。
+</Note>
+
+本接口与 [创建 Gemini Omni 视频](/zh/api-reference/gemini-omni/create) 共用 `POST /api/v1/videos`。将 `model` 设为 `gemini-omni-1.2` 即使用本型号。
+
+`prompt` 在所有模式都必填。
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `gemini-omni-1.2` | Gemini Omni 1.2。分辨率 `360p` / `720p` / `1080p` / `4k`，按秒计费 |
+
+支持文生视频、首帧、首尾帧、多图参考、视频编辑和续写。
+
+## 计费
+
+费用 = 所选分辨率的每秒单价 × 计费秒数。单价在控制台配置，计费型号如下。
+
+| 分辨率 | 计费型号 |
+|--------|----------|
+| `360p` | `gemini-omni-1.2-360p` |
+| `720p`（默认） | `gemini-omni-1.2-720p` |
+| `1080p` | `gemini-omni-1.2-1080p` |
+| `4k` | `gemini-omni-1.2-4k` |
+
+`2160p` 按 `4k` 处理。默认比例是 `16:9`。`portrait` 映射为 `9:16`，`landscape` 映射为 `16:9`。只支持这两种比例。
+
+| 模式 | 计费秒数 |
+|------|----------|
+| 文生 / 首帧 / 多图参考 | `duration`，不传按 10 秒，范围 3–15 |
+| 首尾帧 | `duration`，不传按 10 秒，范围 3–10 |
+| 编辑 | 源视频时长。扣除 0.15 秒后向上取整，最少 1 秒。不要传 `duration` |
+| 续写 | 新增秒数 `duration`，不传按 10 秒，范围 3–10。原视频不计费 |
+
+`seconds` 是 `duration` 的别名。两个字段同时传入时必须相等。
+
+## 请求字段
+
+- `first_frame_image` / `last_frame_image`：首帧、尾帧。只传尾帧会失败。首尾帧不要和 `image_urls` 同时传。
+- `image_urls`：参考图，1–10 张，须为公网 `http(s)` 地址。只传 1 张且未指定任务类型时按参考图处理。
+- `image_with_roles`：等价写法。`role` 为 `first_frame` 或 `last_frame` 时分别作为首帧、尾帧，各限 1 张；其他值按参考图。
+- `generation_type`：`frame`（首帧）、`reference`、`edit`、`extend`。`frame` 且 `image_urls` 只有 1 张时，这张图作为首帧。
+- `omni_reference_task_type`：`edit`、`extend`、`reference`、`text_to_video`、`image_to_video`、`reference_to_video`、`auto`。不要和 `generation_type` 同时传。
+- 传入 `video_urls` 或 `extend_from_task_id` 时必须指定任务类型。`auto` 按编辑处理。推荐显式传 `edit` 或 `extend`。
+- `video_urls`：最多 1 段视频，公网 `http(s)` 地址，时长不超过 15 秒，大小不超过 64MB。不能和 `extend_from_task_id` 同时传。编辑和续写不要再传图片。
+- `extend_from_task_id`：上一轮已完成的 Gemini Omni 1.2 任务 `task_id`。原成片须不超过 15 秒，且时长可识别。
+- `system_prompt` / `negative_prompt`：系统指令和反向提示词。首尾帧模式不能传。
+- `nsfw_check`：提交前是否做内容审核，默认 `false`。
+
+```bash
+curl --request POST \
+  --url https://api.viraltok.ai/api/v1/videos \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "model": "gemini-omni-1.2",
+    "prompt": "Aerial shot over a misty mountain lake at sunrise.",
+    "duration": 10,
+    "resolution": "1080p",
+    "aspect_ratio": "9:16"
+  }'
+```
+
+编辑时不要传 `duration`：
+
+```json
+{
+  "model": "gemini-omni-1.2",
+  "prompt": "Make the violin invisible. Keep everything else the same.",
+  "video_urls": ["https://example.com/clip.mp4"],
+  "omni_reference_task_type": "edit"
+}
+```
+
+续写只对新增片段计费：
+
+```json
+{
+  "model": "gemini-omni-1.2",
+  "prompt": "Continue the scene: the dancer bows.",
+  "video_urls": ["https://example.com/clip.mp4"],
+  "omni_reference_task_type": "extend",
+  "duration": 4
+}
+```

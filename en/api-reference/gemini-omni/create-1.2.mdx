@@ -1,0 +1,95 @@
+---
+title: 'Create Gemini Omni 1.2 video'
+openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
+---
+<Note>
+**Note (compatibility)**: The legacy path `/api/open-api/v1/gemini/omni/videos` still works and matches `POST /api/v1/videos`; prefer the unified endpoint for new integrations.
+</Note>
+
+<Note>
+After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`.
+</Note>
+
+This call shares `POST /api/v1/videos` with [Create Gemini Omni Video](/en/api-reference/gemini-omni/create). Set `model` to `gemini-omni-1.2`.
+
+`prompt` is required in every mode.
+
+## Supported models
+
+| model | Notes |
+|-------|-------|
+| `gemini-omni-1.2` | Gemini Omni 1.2. Resolutions `360p` / `720p` / `1080p` / `4k`, billed per second |
+
+Text-to-video, first frame, first and last frame, multi-image reference, video edit, and extend are supported.
+
+## Billing
+
+Charge = per-second price of the selected resolution × billed seconds. Prices are set in the console. Billing models:
+
+| Resolution | Billing model |
+|------------|---------------|
+| `360p` | `gemini-omni-1.2-360p` |
+| `720p` (default) | `gemini-omni-1.2-720p` |
+| `1080p` | `gemini-omni-1.2-1080p` |
+| `4k` | `gemini-omni-1.2-4k` |
+
+`2160p` is treated as `4k`. The default aspect ratio is `16:9`. `portrait` maps to `9:16`, and `landscape` maps to `16:9`. Only these two ratios are supported.
+
+| Mode | Billed seconds |
+|------|----------------|
+| Text, first frame, or multi-image reference | `duration`, default 10, range 3–15 |
+| First and last frame | `duration`, default 10, range 3–10 |
+| Edit | Source video length. Subtract 0.15 seconds, then round up, minimum 1 second. Do not send `duration` |
+| Extend | New segment `duration`, default 10, range 3–10. The original video is not billed |
+
+`seconds` is an alias of `duration`. If both are sent, they must be equal.
+
+## Request fields
+
+- `first_frame_image` / `last_frame_image`: start and end frames. A last frame without a first frame fails. Do not send frames together with `image_urls`.
+- `image_urls`: 1–10 reference images. Each value must be a public `http(s)` URL. A single image with no task type is treated as a reference image.
+- `image_with_roles`: the same images with roles. `first_frame` and `last_frame` allow one image each. Any other role is a reference image.
+- `generation_type`: `frame`, `reference`, `edit`, or `extend`. With `frame` and a single `image_urls` entry, that image is the first frame.
+- `omni_reference_task_type`: `edit`, `extend`, `reference`, `text_to_video`, `image_to_video`, `reference_to_video`, or `auto`. Do not send it together with `generation_type`.
+- A task type is required when you send `video_urls` or `extend_from_task_id`. `auto` is treated as edit. Prefer `edit` or `extend`.
+- `video_urls`: at most one public `http(s)` video, no longer than 15 seconds and no larger than 64MB. Do not send it with `extend_from_task_id`. Edit and extend do not accept images.
+- `extend_from_task_id`: `task_id` of a completed Gemini Omni 1.2 task. The original video must be 15 seconds or shorter, and its length must be readable.
+- `system_prompt` / `negative_prompt`: system instruction and negative prompt. Do not send them in first-and-last-frame mode.
+- `nsfw_check`: whether to run a content check before submit. Defaults to `false`.
+
+```bash
+curl --request POST \
+  --url https://api.viraltok.ai/api/v1/videos \
+  --header 'Authorization: Bearer YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "model": "gemini-omni-1.2",
+    "prompt": "Aerial shot over a misty mountain lake at sunrise.",
+    "duration": 10,
+    "resolution": "1080p",
+    "aspect_ratio": "9:16"
+  }'
+```
+
+Do not send `duration` for an edit:
+
+```json
+{
+  "model": "gemini-omni-1.2",
+  "prompt": "Make the violin invisible. Keep everything else the same.",
+  "video_urls": ["https://example.com/clip.mp4"],
+  "omni_reference_task_type": "edit"
+}
+```
+
+Extend bills only the new segment:
+
+```json
+{
+  "model": "gemini-omni-1.2",
+  "prompt": "Continue the scene: the dancer bows.",
+  "video_urls": ["https://example.com/clip.mp4"],
+  "omni_reference_task_type": "extend",
+  "duration": 4
+}
+```

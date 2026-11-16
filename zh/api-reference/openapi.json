@@ -4994,7 +4994,7 @@
               },
               "usage": {
                 "type": "object",
-                "description": "用量信息。seedance2.5-gz / seedance2.5-dreamina 等按 token 结算的任务返回 completion_tokens；wan3.0-gl / wan3.0-prime-gl 等按秒结算的任务返回 duration。",
+                "description": "用量信息。seedance2.5-gz / seedance2.5-dreamina 等按 token 结算的任务返回 completion_tokens；wan3.0-gl / wan3.0-prime-gl、视频超分等按秒结算的任务返回 duration。",
                 "properties": {
                   "completion_tokens": {
                     "type": "integer",
@@ -5007,7 +5007,7 @@
                   "duration": {
                     "type": "number",
                     "format": "double",
-                    "description": "实际计费秒数（可含小数）。wan3.0-gl / wan3.0-prime-gl 等按秒多退少补任务完成后返回。",
+                    "description": "实际计费秒数（可含小数）。wan3.0-gl / wan3.0-prime-gl、视频超分等按秒多退少补任务完成后返回。",
                     "example": 23.5
                   }
                 }

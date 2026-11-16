@@ -36,11 +36,13 @@ Resolution and frame rate are determined by `model` — no extra fields required
 ## Billing
 
 - Mode: `per_second`
-- Duration: probed from `video_url`, **ceiled** to whole seconds (minimum 1)
+- When `video_url` duration can be read, precharge `ceil(duration)` seconds (minimum 1)
+- When duration cannot be read, precharge 15 seconds
+- After the task completes, settle to `ceil(actual duration)` and refund or charge the difference
 - Unit price: from console pricing for the selected `model`
 
 ```text
-cost = unit_price × ceil(video_duration_seconds)
+cost = unit_price × ceil(actual_video_duration_seconds)
 ```
 
 ## Example

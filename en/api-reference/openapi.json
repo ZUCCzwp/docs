@@ -4768,7 +4768,7 @@
               },
               "usage": {
                 "type": "object",
-                "description": "Usage info. Token-settled tasks such as seedance2.5-gz / seedance2.5-dreamina return completion_tokens; per-second settled tasks such as wan3.0-gl / wan3.0-prime-gl return duration.",
+                "description": "Usage info. Token-settled tasks such as seedance2.5-gz / seedance2.5-dreamina return completion_tokens; per-second settled tasks such as wan3.0-gl / wan3.0-prime-gl and super-resolution return duration.",
                 "properties": {
                   "completion_tokens": {
                     "type": "integer",
@@ -4781,7 +4781,7 @@
                   "duration": {
                     "type": "number",
                     "format": "double",
-                    "description": "Actual billed seconds (may be fractional). Returned after wan3.0-gl / wan3.0-prime-gl and similar per-second settle tasks complete.",
+                    "description": "Actual billed seconds (may be fractional). Returned after per-second settle tasks such as wan3.0-gl / wan3.0-prime-gl and super-resolution complete.",
                     "example": 23.5
                   }
                 }

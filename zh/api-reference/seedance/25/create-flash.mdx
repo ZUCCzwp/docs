@@ -1,0 +1,136 @@
+---
+title: '创建 Seedance 2.5 Flash 视频'
+openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
+---
+
+<Note>
+**备注（兼容路径）**：旧接口 `/api/open-api/v1/seedance25/videos` 仍可调用，行为与 `POST /api/v1/videos` 相同；新接入请优先使用统一入口。
+</Note>
+
+<Note>
+创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
+</Note>
+
+本接口与 [创建 Seedance 2.5 官链视频](/zh/api-reference/seedance/25/create) 共用 `POST /api/v1/videos`。通过 `model: "seedance2.5-flash"` 选择本型号。
+
+<Warning>
+不要在 `/api/open-api/v1/seedance/videos` 上提交 `seedance2.5-flash`。那条路径是 Seedance 2.0。
+</Warning>
+
+## 支持的模型
+
+| model | 说明 |
+|-------|------|
+| `seedance2.5-flash` | Seedance 2.5 Flash：文生视频、参考图 / 视频 / 音频、首尾帧、视频编辑与延长。分辨率 `480p` / `720p`，最长 30 秒 |
+
+`seedance-2.5-flash`、`seedance-2-5-flash`、`seedance25-flash` 会归一化为 `seedance2.5-flash`。也可直接传计费名：`seedance2.5-flash-480p`、`seedance2.5-flash-720p`。
+
+不支持样片字段 `draft` / `draft_task_id`。
+
+## 参数限制
+
+- **提示词（prompt）**：必填，长度 1–5000。可用 `@图片1` / `@视频1` / `@音频1` 指代参考素材，下标从 1 开始。
+- **时长（duration）**：4–30 秒，或 `-1` 自动时长。未传默认 `5`。视频编辑只能传 `-1` 或省略，输出时长跟随源视频。
+- **画幅比例（aspect_ratio / ratio）**：`16:9`、`9:16`、`1:1`、`4:3`、`3:4`、`21:9`、`adaptive`。未传默认 `adaptive`。首尾帧、视频编辑、视频延长只能使用 `adaptive`。
+- **分辨率（resolution）**：`480p`、`720p`，默认 `720p`。`1080p` 会在提交时拒绝。
+- **参考图**：`reference_images` 与首尾帧合计最多 **10** 张。
+- **参考视频**：最多 **5** 个。
+- **参考音频**：最多 **5** 段。可以只传音频。
+- **首尾帧**：`first_image` / `last_image`。没有参考视频和音频时，不能和 `reference_images` 同时使用。有参考视频或音频时，首尾帧会作为参考图参与任务。
+- **omni_reference_task_type**：带参考素材时可选 `auto`、`reference`、`edit`、`extend`。`edit` 至少 1 个参考视频，比例 `adaptive`，时长 `-1` 或省略。`extend` 至少 1 个参考视频，比例 `adaptive`。
+- **generate_audio**：默认 `true`。
+- **watermark**：默认 `false`。
+- **output_format**：`mp4`（默认）或 `mov`。
+- **nsfw_check**：默认 `false`。设为 `true` 时，提交前审核提示词和参考图；命中则直接返回错误，不创建任务。
+
+## 请求参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | 固定传 `seedance2.5-flash`，或对应计费名 |
+| `prompt` | string | 是 | 文本提示词 |
+| `duration` | integer | 否 | 时长秒数，默认 `5`；`-1` 为自动时长 |
+| `aspect_ratio` | string | 否 | 画幅比例，优先于 `ratio` |
+| `ratio` | string | 否 | `aspect_ratio` 别名 |
+| `resolution` | string | 否 | `480p` / `720p`，默认 `720p` |
+| `first_image` | string | 否 | 首帧图 URL |
+| `last_image` | string | 否 | 尾帧图 URL |
+| `reference_images` | string[] | 否 | 参考图 URL |
+| `images` | string[] | 否 | `reference_images` 别名 |
+| `reference_videos` | string[] | 否 | 参考视频 URL（0–5） |
+| `videos` | string[] | 否 | `reference_videos` 别名 |
+| `reference_audios` | string[] | 否 | 参考音频 URL（0–5） |
+| `audios` | string[] | 否 | `reference_audios` 别名 |
+| `omni_reference_task_type` | string | 否 | `auto` / `reference` / `edit` / `extend` |
+| `generate_audio` | boolean | 否 | 是否生成配音，默认 `true` |
+| `watermark` | boolean | 否 | 是否加水印，默认 `false` |
+| `output_format` | string | 否 | `mp4` / `mov`，默认 `mp4` |
+| `nsfw_check` | boolean | 否 | 提交前审核提示词和参考图，默认 `false` |
+
+## 计费说明
+
+创建时按分辨率预扣。任务成功后按实际 token 用量结算，多退少补。含参考视频与不含参考视频使用不同的百万 token 单价（吉米币，控制台可配）。
+
+- 预扣方式：`per_second`
+- 预扣模型：`seedance2.5-flash-480p` / `seedance2.5-flash-720p`
+- 带参考视频时改为 `seedance2.5-flash-video-480p` / `seedance2.5-flash-video-720p`
+- 结算模型：`seedance2.5-flash-token`；含参考视频为 `seedance2.5-flash-video-token`
+- 未传 `duration` 时按 **5 秒**预扣
+- `duration = -1`，或视频编辑省略时长时，按 **30 秒**预扣
+- 含参考视频时，预扣秒数再加 **30 秒**
+
+```text
+预扣 = 对应单价 × 预扣秒数
+应付吉米币 = completion_tokens / 1,000,000 × 百万 token 单价
+成功后按应付与预扣差额多退少补
+```
+
+## 示例请求
+
+### 文生视频
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-flash",
+    "prompt": "电影感镜头，一只狐狸穿过洒满阳光的树林，镜头缓慢跟随",
+    "duration": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p"
+  }'
+```
+
+### 首尾帧
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-flash",
+    "prompt": "从首帧平滑过渡到尾帧",
+    "first_image": "https://example.com/first.jpg",
+    "last_image": "https://example.com/last.jpg",
+    "aspect_ratio": "adaptive",
+    "duration": 5,
+    "resolution": "720p"
+  }'
+```
+
+### 视频编辑
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "seedance2.5-flash",
+    "prompt": "编辑 @视频1：把阴天换成晴朗日落，保持运镜",
+    "reference_videos": ["https://example.com/source.mp4"],
+    "omni_reference_task_type": "edit",
+    "aspect_ratio": "adaptive",
+    "duration": -1
+  }'
+```

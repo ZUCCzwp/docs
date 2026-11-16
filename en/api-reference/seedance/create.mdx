@@ -9,7 +9,7 @@ openapi: 'POST /api/v1/videos'
 Create a Seedance **Full (Manxue)** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Warning>
-Do **not** submit Seedance 2.5 models (`seedance-2.5`, `seedance-2.5-720p`, `seedance2.5-gz`, etc.) on the compatibility path `/api/open-api/v1/seedance/videos` — they land on the Seedance 2.0 Full line. Use `POST /api/v1/videos` with the correct `model`, or see [Seedance 2.5 Official Channel](/en/api-reference/seedance/25/create) / [Official](/en/api-reference/seedance/25/create-gz).
+Do **not** submit Seedance 2.5 models (`seedance-2.5`, `seedance-2.5-720p`, `seedance2.5-gz`, `seedance2.5-flash`, etc.) on the compatibility path `/api/open-api/v1/seedance/videos` — they land on the Seedance 2.0 Full line. Use `POST /api/v1/videos` with the correct `model`, or see [Seedance 2.5 Official Channel](/en/api-reference/seedance/25/create) / [Official](/en/api-reference/seedance/25/create-gz) / [Flash](/en/api-reference/seedance/25/create-flash).
 </Warning>
 
 <Note>

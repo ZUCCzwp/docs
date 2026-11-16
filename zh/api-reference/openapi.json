@@ -2481,9 +2481,10 @@
                     "enum": [
                       "seedance-2.5",
                       "seedance2.5-gz",
+                      "seedance2.5-flash",
                       "seedance2.5-dreamina"
                     ],
-                    "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-dreamina` 等，详见各文档页。"
+                    "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-flash`、`seedance2.5-dreamina` 等，详见各文档页。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2536,11 +2537,11 @@
                   },
                   "first_image": {
                     "type": "string",
-                    "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "首帧图片 URL。seedance2.5-gz / seedance2.5-flash 支持；与 reference_images / images 不可同时使用。有参考视频或音频时，seedance2.5-flash 会把首尾帧当作参考图。"
                   },
                   "last_image": {
                     "type": "string",
-                    "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+                    "description": "尾帧图片 URL。seedance2.5-gz / seedance2.5-flash 支持；与 reference_images / images 不可同时使用。有参考视频或音频时，seedance2.5-flash 会把首尾帧当作参考图。"
                   },
                   "reference_images": {
                     "type": "array",
@@ -2592,11 +2593,11 @@
                   },
                   "generate_audio": {
                     "type": "boolean",
-                    "description": "是否生成配音。seedance2.5-gz / seedance2.5-dreamina 支持，默认 true。"
+                    "description": "是否生成配音。seedance2.5-gz / seedance2.5-flash / seedance2.5-dreamina 支持，默认 true。"
                   },
                   "watermark": {
                     "type": "boolean",
-                    "description": "是否添加水印。仅 seedance2.5-gz，默认 false。"
+                    "description": "是否添加水印。seedance2.5-gz / seedance2.5-flash 支持，默认 false。"
                   },
                   "output_format": {
                     "type": "string",
@@ -2604,7 +2605,7 @@
                       "mp4",
                       "mov"
                     ],
-                    "description": "输出封装格式。仅 seedance2.5-gz，默认 mp4。"
+                    "description": "输出封装格式。seedance2.5-gz / seedance2.5-flash 支持，默认 mp4，也可传 mov。"
                   },
                   "omni_reference_task_type": {
                     "type": "string",
@@ -4994,7 +4995,7 @@
               },
               "usage": {
                 "type": "object",
-                "description": "用量信息。seedance2.5-gz / seedance2.5-dreamina 等按 token 结算的任务返回 completion_tokens；wan3.0-gl / wan3.0-prime-gl、视频超分等按秒结算的任务返回 duration。",
+                "description": "用量信息。seedance2.5-gz / seedance2.5-flash / seedance2.5-dreamina 等按 token 结算的任务返回 completion_tokens；wan3.0-gl / wan3.0-prime-gl、视频超分等按秒结算的任务返回 duration。",
                 "properties": {
                   "completion_tokens": {
                     "type": "integer",
@@ -7149,9 +7150,10 @@
             "enum": [
               "seedance-2.5",
               "seedance2.5-gz",
+              "seedance2.5-flash",
               "seedance2.5-dreamina"
             ],
-            "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-dreamina` 等，详见各文档页。"
+            "description": "模型名称。如 `seedance-2.5`、`seedance2.5-gz`、`seedance2.5-flash`、`seedance2.5-dreamina` 等，详见各文档页。"
           },
           "prompt": {
             "type": "string",
@@ -7204,11 +7206,11 @@
           },
           "first_image": {
             "type": "string",
-            "description": "首帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "首帧图片 URL。seedance2.5-gz / seedance2.5-flash 支持；与 reference_images / images 不可同时使用。有参考视频或音频时，seedance2.5-flash 会把首尾帧当作参考图。"
           },
           "last_image": {
             "type": "string",
-            "description": "尾帧图片 URL。seedance2.5-gz 支持；与 reference_images / images 不可同时使用。"
+            "description": "尾帧图片 URL。seedance2.5-gz / seedance2.5-flash 支持；与 reference_images / images 不可同时使用。有参考视频或音频时，seedance2.5-flash 会把首尾帧当作参考图。"
           },
           "reference_images": {
             "type": "array",
@@ -7260,11 +7262,11 @@
           },
           "generate_audio": {
             "type": "boolean",
-            "description": "是否生成配音。seedance2.5-gz / seedance2.5-dreamina 支持，默认 true。"
+            "description": "是否生成配音。seedance2.5-gz / seedance2.5-flash / seedance2.5-dreamina 支持，默认 true。"
           },
           "watermark": {
             "type": "boolean",
-            "description": "是否添加水印。仅 seedance2.5-gz，默认 false。"
+            "description": "是否添加水印。seedance2.5-gz / seedance2.5-flash 支持，默认 false。"
           },
           "output_format": {
             "type": "string",
@@ -7272,7 +7274,7 @@
               "mp4",
               "mov"
             ],
-            "description": "输出封装格式。仅 seedance2.5-gz，默认 mp4。"
+            "description": "输出封装格式。seedance2.5-gz / seedance2.5-flash 支持，默认 mp4，也可传 mov。"
           },
           "omni_reference_task_type": {
             "type": "string",

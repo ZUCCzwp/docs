@@ -76,7 +76,8 @@ Omitting the field behaves like `auto`, except that an invalid combination fails
 At submission, the API precharges by resolution and duration. Omitting `duration` defaults to a four-second precharge. Editing requests with adaptive duration (`duration: -1`) are precharged for 30 seconds.
 
 - Precharge models: `seedance-2.5-480p`, `seedance-2.5-720p`, and `seedance-2.5-1080p`.
-- After success, the API uses actual `completion_tokens` and the per-million-token price for `seedance-2.5-token`. It refunds the difference if the final cost is lower, or charges the difference if it is higher.
+- After success, the API bills actual `completion_tokens`. The 480p and 720p resolutions share the `seedance-2.5-token` rate per million tokens. The 1080p resolution uses a separate `seedance-2.5-1080p-token` rate.
+- The API refunds the difference if the final cost is below the precharge, or charges the difference if it is higher.
 
 ```text
 precharge = rate per second for the selected resolution × prepaid seconds

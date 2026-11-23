@@ -143,3 +143,20 @@
 - `llms.txt`：同步两条标准版摘要。
 - `progress.md`：追加本轮记录。
 - 回滚点为 `6cbbad1`。确认无后续编辑后，执行 `git restore --source=6cbbad1 -- en/api-reference/seedance/25/create.mdx zh/api-reference/seedance/25/create.mdx llms.txt`。
+
+## 2026-11-23 - Task: 补充 Seedance 2.5 标准版两档 token 价格说明
+
+### What was done
+
+- 中英文 API 文档说明 480p 和 720p 共用普通档，1080p 使用独立 token 单价。
+
+### Testing
+
+- 核对两种语言的分辨率、计费模型名和费用字段。`git diff --check` 通过。未发布。
+
+### Notes
+
+- `en/api-reference/seedance/25/create.mdx`：说明英文 API 的两档结算价。
+- `zh/api-reference/seedance/25/create.mdx`：同步中文两档说明。
+- `progress.md`：追加本轮记录。
+- 回滚点为 `30339b6`。确认无后续修改后，对上述两个 MDX 文件执行 `git restore --source=30339b6 --` 加对应路径。

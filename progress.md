@@ -160,3 +160,20 @@
 - `zh/api-reference/seedance/25/create.mdx`：同步中文两档说明。
 - `progress.md`：追加本轮记录。
 - 回滚点为 `30339b6`。确认无后续修改后，对上述两个 MDX 文件执行 `git restore --source=30339b6 --` 加对应路径。
+
+## 2026-11-23 - Task: 补充 Seedance 2.5 标准版参考视频结算档位
+
+### What was done
+
+- 中英文 API 文档同步四档结算模型，说明参考视频参与选档，按实际 token 结算。
+
+### Testing
+
+- 校验两种语言的档位顺序、四个计费模型名及相关 API 字段。`git diff --check` 通过。未发布。
+
+### Notes
+
+- `en/api-reference/seedance/25/create.mdx`：更新英文四档结算说明。
+- `zh/api-reference/seedance/25/create.mdx`：更新中文四档结算说明。
+- `progress.md`：追加本轮记录。
+- 回滚点为 `64cb957`。确认无后续编辑后，执行 `git restore --source=64cb957 -- en/api-reference/seedance/25/create.mdx zh/api-reference/seedance/25/create.mdx`。

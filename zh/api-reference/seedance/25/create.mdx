@@ -76,8 +76,14 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 提交时按分辨率和时长预扣。省略 `duration` 时默认按 4 秒预扣。支持自适应时长的编辑任务使用 `duration: -1`，按 30 秒预扣。
 
 - 预扣模型：`seedance-2.5-480p`、`seedance-2.5-720p`、`seedance-2.5-1080p`。
-- 成功后按实际 `completion_tokens` 结算。480p 和 720p 使用 `seedance-2.5-token` 的百万 token 单价，1080p 使用独立的 `seedance-2.5-1080p-token` 单价。
-- 应付低于预扣时退差额，高于预扣时补扣差额。
+成功后按实际 `completion_tokens` 结算。按输出分辨率和 `reference_videos` 是否包含非空参考视频选择百万 token 单价。
+
+| 输出分辨率 | 无参考视频 | 有参考视频 |
+| --- | --- | --- |
+| 480p、720p | `seedance-2.5-token` | `seedance-2.5-video-token` |
+| 1080p | `seedance-2.5-1080p-token` | `seedance-2.5-video-1080p-token` |
+
+应付低于预扣时退差额，高于预扣时补扣差额。
 
 ```text
 预扣金额 = 对应分辨率的每秒单价 × 预扣秒数

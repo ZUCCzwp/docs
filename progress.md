@@ -125,3 +125,21 @@
 - `llms.txt`：移除四条中英文索引。
 - `progress.md`：追加本轮记录。
 - 本机回滚可执行 `git apply --reverse /tmp/jimiai-retire-full-audit-docs-20261123.patch`。
+
+## 2026-11-23 - Task: 同步 Seedance 2.5 标准版预扣和 token 结算文档
+
+### What was done
+
+- 更新中英文标准版用法与 LLM 索引，解释按秒预扣、成功后按实际 token 调整差额、创建与查询响应中的金额。
+
+### Testing
+
+- 检查两份文档中的预扣模型、结算模型、`completion_tokens` 和 `data.cost` 与实现匹配，清除原参考视频时长计费描述。`git diff --check` 通过。未发布。
+
+### Notes
+
+- `en/api-reference/seedance/25/create.mdx`：英文预扣、结算和响应说明。
+- `zh/api-reference/seedance/25/create.mdx`：中文预扣、结算和响应说明。
+- `llms.txt`：同步两条标准版摘要。
+- `progress.md`：追加本轮记录。
+- 回滚点为 `6cbbad1`。确认无后续编辑后，执行 `git restore --source=6cbbad1 -- en/api-reference/seedance/25/create.mdx zh/api-reference/seedance/25/create.mdx llms.txt`。

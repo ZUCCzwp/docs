@@ -71,23 +71,19 @@ To save repetition, `edit` defaults `aspect_ratio` to `adaptive` and `duration` 
 
 Omitting the field behaves like `auto`, except that an invalid combination fails asynchronously after the task starts. Do **not** send this field for first-frame or first-and-last-frame generation.
 
-### Billing for adaptive duration
+## Precharge and settlement
 
-With `duration: -1` the model decides the output length, which is unknown at creation time. The task is billed on the reference video duration rounded up, clamped to 4–30 seconds.
+At submission, the API precharges by resolution and duration. Omitting `duration` defaults to a four-second precharge. Editing requests with adaptive duration (`duration: -1`) are precharged for 30 seconds.
 
-This mode therefore requires a directly reachable reference video (mp4) whose duration can be read; if the duration cannot be read, the request fails at creation. Specify `duration` explicitly when you only send reference images.
-
-## Billing
-
-- Mode: `per_second`
-- Billed by resolution:
-  - `seedance-2.5-480p`
-  - `seedance-2.5-720p`
-  - `seedance-2.5-1080p`
+- Precharge models: `seedance-2.5-480p`, `seedance-2.5-720p`, and `seedance-2.5-1080p`.
+- After success, the API uses actual `completion_tokens` and the per-million-token price for `seedance-2.5-token`. It refunds the difference if the final cost is lower, or charges the difference if it is higher.
 
 ```text
-cost = unit_price × duration
+precharge = rate per second for the selected resolution × prepaid seconds
+final cost = completion_tokens ÷ 1,000,000 × rate per million tokens
 ```
+
+The create response returns the precharge in `data.cost`. After settlement, the task query returns the final cost and the usage ledger records any adjustment. If token usage is temporarily unavailable, the task query continues to show the precharge until actual usage arrives. Failed tasks follow the existing precharge refund rule.
 
 ## Example request
 

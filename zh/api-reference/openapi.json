@@ -796,64 +796,6 @@
         ]
       }
     },
-    "/api/open-api/v1/seedance/assets/audit": {
-      "post": {
-        "summary": "提交素材审核",
-        "description": "兼容别名，推荐改用 `/api/v1/seedance/assets/audit`。 提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
-        "operationId": "submitSeedanceAudit",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SeedanceAuditSubmitRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "提交成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SeedanceAuditSubmitResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/open-api/v1/seedance/assets/status": {
-      "post": {
-        "summary": "查询素材审核状态",
-        "description": "兼容别名，推荐改用 `/api/v1/seedance/assets/status`。 查询已提交审核素材的状态。",
-        "operationId": "querySeedanceAuditStatus",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SeedanceAuditStatusRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "查询成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/open-api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP 上传素材",
@@ -3134,6 +3076,27 @@
                     "model_version": 2
                   }
                 },
+                "seedance20_sp_fast": {
+                  "summary": "Seedance 2.0 SP Fast 无参考视频",
+                  "value": {
+                    "model": "sd2-sp-fast",
+                    "prompt": "一朵云缓缓飘过傍晚的港口",
+                    "duration": 5,
+                    "aspect_ratio": "16:9"
+                  }
+                },
+                "seedance20_sp_fast_reference": {
+                  "summary": "Seedance 2.0 SP Fast 有参考视频",
+                  "value": {
+                    "model": "sd2-sp-fast",
+                    "prompt": "沿用参考视频的运镜，改为傍晚光线",
+                    "duration": 5,
+                    "aspect_ratio": "16:9",
+                    "reference_videos": [
+                      "https://example.com/reference.mp4"
+                    ]
+                  }
+                },
                 "flux3_default": {
                   "summary": "Flux 3 文生草稿",
                   "value": {
@@ -4345,64 +4308,6 @@
         }
       }
     },
-    "/api/v1/seedance/assets/audit": {
-      "post": {
-        "summary": "提交素材审核",
-        "description": "推荐 `POST /api/v1/seedance/assets/audit`。提交原始素材 URL 进行 Seedance 平台审核。仅满血版（sd2_mx_*）创建视频前必须审核；满血版超分 可直接传公网 URL。",
-        "operationId": "submitSeedanceAuditV1",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SeedanceAuditSubmitRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "提交成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SeedanceAuditSubmitResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/seedance/assets/status": {
-      "post": {
-        "summary": "查询素材审核状态",
-        "description": "推荐 `POST /api/v1/seedance/assets/status`。查询已提交审核素材的状态。",
-        "operationId": "querySeedanceAuditStatusV1",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SeedanceAuditStatusRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "查询成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SeedanceAuditStatusResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/seedance/sp/assets/upload": {
       "post": {
         "summary": "SP 上传素材",
@@ -5089,138 +4994,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "SeedanceAuditSubmitRequest": {
-        "type": "object",
-        "properties": {
-          "audio_urls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "音频 URL 列表"
-          },
-          "image_urls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "图片 URL 列表"
-          },
-          "video_urls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "视频 URL 列表"
-          }
-        }
-      },
-      "SeedanceAuditSubmitResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "example": "20000"
-          },
-          "msg": {
-            "type": "string",
-            "example": "ok"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "failed_items": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                },
-                "description": "失败素材列表"
-              },
-              "items": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/SeedanceAuditItem"
-                },
-                "description": "提交成功的审核状态条目列表"
-              }
-            }
-          }
-        }
-      },
-      "SeedanceAuditItem": {
-        "type": "object",
-        "properties": {
-          "asset_id": {
-            "type": "string",
-            "description": "素材 ID"
-          },
-          "original_url": {
-            "type": "string",
-            "description": "原始素材 URL"
-          },
-          "asset_type": {
-            "type": "string",
-            "description": "素材类型 (如 video, image, audio)"
-          },
-          "status": {
-            "type": "string",
-            "description": "审核状态"
-          }
-        }
-      },
-      "SeedanceAuditStatusRequest": {
-        "type": "object",
-        "required": [
-          "asset_ids"
-        ],
-        "properties": {
-          "asset_ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "要查询的素材 ID 列表"
-          }
-        }
-      },
-      "SeedanceAuditStatusResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "example": "20000"
-          },
-          "msg": {
-            "type": "string",
-            "example": "ok"
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "items": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/SeedanceAuditStatusItem"
-                },
-                "description": "素材状态列表"
-              }
-            }
-          }
-        }
-      },
-      "SeedanceAuditStatusItem": {
-        "type": "object",
-        "properties": {
-          "asset_id": {
-            "type": "string",
-            "description": "素材 ID"
-          },
-          "status": {
-            "type": "string",
-            "description": "审核/激活状态 (如 Active 表示可用)"
           }
         }
       },

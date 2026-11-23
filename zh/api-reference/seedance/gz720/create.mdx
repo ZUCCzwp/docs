@@ -11,7 +11,7 @@ openapi: 'POST /api/v1/videos'
 创建成功后会返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 接口轮询任务状态，任务完成后从 `result.video_url` 获取视频地址，并从 `data.usage` 读取 `completion_tokens` / `total_tokens`。
 </Note>
 
-本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/v1/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。Fast 型号见 [创建 Seedance 2.0官转 Fast视频](/zh/api-reference/seedance/fast/create-gz)。
+本接口与 [创建视频](/zh/api-reference/videos/create) 共用 `POST /api/v1/videos`。通过 `model` 以 `seedance2.0-gz` 开头选择本系列。Fast 型号见 [创建 Seedance 2.0官转 Fast视频](/zh/api-reference/seedance/fast/create-gz)。
 
 ## 支持的模型
 

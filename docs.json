@@ -260,15 +260,6 @@
                 "group": "Seedance 2.0",
                 "pages": [
                   {
-                    "group": "Full",
-                    "icon": "film",
-                    "pages": [
-                      "en/api-reference/seedance/create",
-                      "en/api-reference/seedance/assets-audit",
-                      "en/api-reference/seedance/assets-status"
-                    ]
-                  },
-                  {
                     "group": "官转",
                     "icon": "film",
                     "pages": [
@@ -289,7 +280,6 @@
                     "group": "Fast",
                     "icon": "bolt",
                     "pages": [
-                      "en/api-reference/seedance/fast/create",
                       "en/api-reference/seedance/fast/create-sp",
                       "en/api-reference/seedance/fast/create-gz"
                     ]
@@ -592,15 +582,6 @@
                 "group": "Seedance 2.0",
                 "pages": [
                   {
-                    "group": "满血版",
-                    "icon": "film",
-                    "pages": [
-                      "zh/api-reference/seedance/create",
-                      "zh/api-reference/seedance/assets-audit",
-                      "zh/api-reference/seedance/assets-status"
-                    ]
-                  },
-                  {
                     "group": "官转",
                     "icon": "film",
                     "pages": [
@@ -621,7 +602,6 @@
                     "group": "Fast快速版",
                     "icon": "bolt",
                     "pages": [
-                      "zh/api-reference/seedance/fast/create",
                       "zh/api-reference/seedance/fast/create-sp",
                       "zh/api-reference/seedance/fast/create-gz"
                     ]
@@ -758,12 +738,28 @@
   },
   "redirects": [
     {
+      "source": "/en/api-reference/seedance/create",
+      "destination": "/en/api-reference/videos/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/create",
+      "destination": "/zh/api-reference/videos/create"
+    },
+    {
+      "source": "/en/api-reference/seedance/fast/create",
+      "destination": "/en/api-reference/videos/create"
+    },
+    {
+      "source": "/zh/api-reference/seedance/fast/create",
+      "destination": "/zh/api-reference/videos/create"
+    },
+    {
       "source": "/en/api-reference/seedance/md/create",
-      "destination": "/en/api-reference/seedance/create"
+      "destination": "/en/api-reference/videos/create"
     },
     {
       "source": "/zh/api-reference/seedance/md/create",
-      "destination": "/zh/api-reference/seedance/create"
+      "destination": "/zh/api-reference/videos/create"
     },
     {
       "source": "/en/api-reference/seedance/25/create-ar",
@@ -799,11 +795,11 @@
     },
     {
       "source": "/en/api-reference/seedance/20480/create",
-      "destination": "/en/api-reference/seedance/create"
+      "destination": "/en/api-reference/videos/create"
     },
     {
       "source": "/zh/api-reference/seedance/20480/create",
-      "destination": "/zh/api-reference/seedance/create"
+      "destination": "/zh/api-reference/videos/create"
     },
     {
       "source": "/en/api-reference/kling/create",

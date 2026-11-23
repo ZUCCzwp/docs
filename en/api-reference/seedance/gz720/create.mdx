@@ -11,7 +11,7 @@ openapi: 'POST /api/v1/videos'
 After creation, the response returns a `task_id`. Use the [Query Video Task](/en/api-reference/common/query) endpoint to poll task status and read the final video URL from `result.video_url`. Read `completion_tokens` / `total_tokens` from `data.usage`.
 </Note>
 
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/v1/videos`. Select this series with a `model` that starts with `seedance2.0-gz`. Fast models are on [Create Seedance 2.0 Official Fast Video](/en/api-reference/seedance/fast/create-gz).
+This uses the same endpoint as [Create Video](/en/api-reference/videos/create): `POST /api/v1/videos`. Select this series with a `model` that starts with `seedance2.0-gz`. Fast models are on [Create Seedance 2.0 Official Fast Video](/en/api-reference/seedance/fast/create-gz).
 
 ## Supported models
 

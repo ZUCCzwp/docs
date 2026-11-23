@@ -123,12 +123,6 @@
 
 ### Seedance Full Video
 
-- [Create Seedance Full Video](https://docs.viraltok.ai/en/api-reference/seedance/create.md): Create a Full (Manxue) Seedance video task.
-- [Submit Assets for Audit](https://docs.viraltok.ai/en/api-reference/seedance/assets-audit.md): Submit asset URLs for Seedance platform audit before use in video generation.
-- [Query Assets Audit Status](https://docs.viraltok.ai/en/api-reference/seedance/assets-status.md): Query the audit status of submitted assets.
-- [创建 Seedance 满血版视频](https://docs.viraltok.ai/zh/api-reference/seedance/create.md): 创建 Seedance 满血版视频生成任务。
-- [提交素材审核](https://docs.viraltok.ai/zh/api-reference/seedance/assets-audit.md): 提交素材 URL 进行 Seedance 平台审核。
-- [查询素材审核状态](https://docs.viraltok.ai/zh/api-reference/seedance/assets-status.md): 查询已提交素材的审核状态。
 
 ### Mini版
 
@@ -139,11 +133,9 @@
 
 ### Seedance Fast
 
-- [Create Full Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create.md): Create a Seedance Full Fast video task (`sd2_mx_fast_*`, `sd2_mx_video_fast_*`).
-- [Create Full Super-Resolution SP Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-sp.md): Create a Seedance Full Super-Resolution SP Fast video task (`sd2_sp_fast_780p`, `sd2_sp_video_fast_780p`).
+- [Create Full Super-Resolution SP Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-sp.md): Use `sd2-sp-fast` in the studio and API for 720p video. `reference_videos` selects the billing model.
 - [Create Seedance 2.0 Official Fast Video](https://docs.viraltok.ai/en/api-reference/seedance/fast/create-gz.md): Create a Seedance 2.0 Official Fast video task (`seedance2.0-gz-fast*`).
-- [创建满血版Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create.md): 创建 Seedance 满血版 Fast 视频任务（`sd2_mx_fast_*`、`sd2_mx_video_fast_*`）。
-- [创建满血版超分 Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-sp.md): 创建满血版超分 Fast 视频任务（`sd2_sp_fast_780p`、`sd2_sp_video_fast_780p`）。
+- [创建满血版超分 Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-sp.md): 在线制作与 API 均使用 `sd2-sp-fast`，固定输出 720p。根据 `reference_videos` 选择计费模型。
 - [创建 Seedance 2.0官转 Fast视频](https://docs.viraltok.ai/zh/api-reference/seedance/fast/create-gz.md): 创建 Seedance 2.0官转 Fast视频任务（`seedance2.0-gz-fast*`）。
 
 ### Seedance Full Super-Resolution SP

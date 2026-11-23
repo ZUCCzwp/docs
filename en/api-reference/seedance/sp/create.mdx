@@ -10,7 +10,7 @@ openapi: 'POST /api/v1/videos'
 Create a Seedance **Full Super-Resolution SP** video generation task. On success you receive a `task_id`. Poll [Query Video Task](/en/api-reference/common/query) until `completed`, then read the video URL from `result.video_url`.
 
 <Note>
-This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/v1/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
+This uses the same endpoint as [Create Video](/en/api-reference/videos/create): `POST /api/v1/videos`. For Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
 </Note>
 
 ## Models

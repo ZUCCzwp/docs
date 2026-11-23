@@ -21,6 +21,7 @@ Submit a voice-cloning preview task from a source audio or video URL. When the t
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
+| `model` | string | No | Request model. Must be `sound-cloning-clone`. Omitted values default to it; any other value is rejected. |
 | `fileUrl` | string | Yes | Public URL of source audio or video. No local paths or Chinese characters in the URL. Audio: `mp3`, `ogg`, `wav`, `m4a`, `aac`. Video: `mp4`, `avi`, `mov`, `mkv`, `flv`. Spoken content must be **> 15s and < 60s**. |
 | `contentText` | string | No | Preview script, max **270** characters. Uses a default line when omitted. |
 | `soundVersion` | string | No | `v1` (24 languages) or `v2` (40 languages). Default `v1`. |
@@ -46,6 +47,7 @@ curl --request POST \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{
+    "model": "sound-cloning-clone",
     "fileUrl": "https://example.com/source-audio.mp3",
     "contentText": "A short preview sentence for voice cloning.",
     "soundVersion": "v1",
@@ -63,7 +65,7 @@ curl --request POST \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "queued",
     "error": null
   }

@@ -26,7 +26,7 @@ openapi: 'zh/api-reference/openapi.json GET /api/v1/audios/{id}'
 | `id` | string | 任务 ID |
 | `object` | string | 固定为 `audio` |
 | `created` | integer | 任务创建时间戳 |
-| `model` | string | `soundCloningClone`（试听）或 `soundCloningAudio`（正式音频） |
+| `model` | string | `sound-cloning-clone`（试听）或 `sound-cloning-audio`（正式音频） |
 | `status` | string | `queued` / `processing` / `completed` / `failed` |
 | `modelId` | string | 试听任务完成后返回，供正式音频接口使用 |
 | `audioUrl` | string | 试听或正式音频地址 |
@@ -66,7 +66,7 @@ curl --request GET \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "processing",
     "error": null
   }
@@ -83,7 +83,7 @@ curl --request GET \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "completed",
     "modelId": "model_123456789",
     "audioUrl": "https://example.com/preview-audio.mp3",
@@ -102,7 +102,7 @@ curl --request GET \
     "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningAudio",
+    "model": "sound-cloning-audio",
     "status": "completed",
     "audioUrl": "https://example.com/generated-audio.mp3",
     "subtitleFile": "https://example.com/subtitle.srt",

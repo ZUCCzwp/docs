@@ -2112,6 +2112,7 @@
                 "preview": {
                   "summary": "提交试听",
                   "value": {
+                    "model": "sound-cloning-clone",
                     "fileUrl": "https://example.com/source-audio.mp3",
                     "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
                     "soundVersion": "v1",
@@ -2140,7 +2141,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "queued",
                         "error": null
                       }
@@ -2169,6 +2170,7 @@
                 "production": {
                   "summary": "提交正式音频",
                   "value": {
+                    "model": "sound-cloning-audio",
                     "modelId": "model_123456789",
                     "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
                     "language": "Chinese",
@@ -2202,7 +2204,7 @@
                         "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningAudio",
+                        "model": "sound-cloning-audio",
                         "status": "queued",
                         "error": null
                       }
@@ -2250,7 +2252,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "completed",
                         "modelId": "model_123456789",
                         "audioUrl": "https://example.com/preview-audio.mp3",
@@ -2367,14 +2369,50 @@
                       "data": {
                         "list": [
                           {
-                            "model_name": "seedance2.5",
-                            "display_name": "Seedance 2.5",
+                            "model_name": "Seedance 2.5 Video",
+                            "display_name": "Seedance 2.5 Video",
                             "model_type": "video",
+                            "series": "Seedance 2.5",
                             "price_mode": "per_second",
                             "unit_price": 0.05,
-                            "official_price": 0.08,
-                            "remark": "",
-                            "group": "Seedance 2.5 Video"
+                            "group": "Seedance 2.5 Video",
+                            "scheme": {
+                              "endpoint": "/api/v1/videos",
+                              "method": "POST",
+                              "model": "Seedance 2.5 Video",
+                              "duration": {
+                                "min": 4,
+                                "max": 30,
+                                "default": 5,
+                                "unit": "seconds"
+                              },
+                              "resolutions": [
+                                "720p"
+                              ],
+                              "constraints": [
+                                {
+                                  "field": "duration",
+                                  "type": "integer",
+                                  "min": 4,
+                                  "max": 30,
+                                  "description": "生成时长，单位秒"
+                                }
+                              ]
+                            },
+                            "billings": [
+                              {
+                                "model_name": "seedance2.5-720p",
+                                "display_name": "Seedance 2.5 720p",
+                                "price_mode": "per_second",
+                                "unit_price": 0.05,
+                                "duration": {
+                                  "min": 4,
+                                  "max": 30,
+                                  "default": 5,
+                                  "unit": "seconds"
+                                }
+                              }
+                            ]
                           }
                         ]
                       }
@@ -3690,14 +3728,50 @@
                       "data": {
                         "list": [
                           {
-                            "model_name": "seedance2.5",
-                            "display_name": "Seedance 2.5",
+                            "model_name": "Seedance 2.5 Video",
+                            "display_name": "Seedance 2.5 Video",
                             "model_type": "video",
+                            "series": "Seedance 2.5",
                             "price_mode": "per_second",
                             "unit_price": 0.05,
-                            "official_price": 0.08,
-                            "remark": "",
-                            "group": "Seedance 2.5 Video"
+                            "group": "Seedance 2.5 Video",
+                            "scheme": {
+                              "endpoint": "/api/v1/videos",
+                              "method": "POST",
+                              "model": "Seedance 2.5 Video",
+                              "duration": {
+                                "min": 4,
+                                "max": 30,
+                                "default": 5,
+                                "unit": "seconds"
+                              },
+                              "resolutions": [
+                                "720p"
+                              ],
+                              "constraints": [
+                                {
+                                  "field": "duration",
+                                  "type": "integer",
+                                  "min": 4,
+                                  "max": 30,
+                                  "description": "生成时长，单位秒"
+                                }
+                              ]
+                            },
+                            "billings": [
+                              {
+                                "model_name": "seedance2.5-720p",
+                                "display_name": "Seedance 2.5 720p",
+                                "price_mode": "per_second",
+                                "unit_price": 0.05,
+                                "duration": {
+                                  "min": 4,
+                                  "max": 30,
+                                  "default": 5,
+                                  "unit": "seconds"
+                                }
+                              }
+                            ]
                           }
                         ]
                       }
@@ -3857,7 +3931,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "completed",
                         "modelId": "model_123456789",
                         "audioUrl": "https://example.com/preview-audio.mp3",
@@ -4069,6 +4143,7 @@
                 "preview": {
                   "summary": "提交试听",
                   "value": {
+                    "model": "sound-cloning-clone",
                     "fileUrl": "https://example.com/source-audio.mp3",
                     "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
                     "soundVersion": "v1",
@@ -4097,7 +4172,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "queued",
                         "error": null
                       }
@@ -4126,6 +4201,7 @@
                 "production": {
                   "summary": "提交正式音频",
                   "value": {
+                    "model": "sound-cloning-audio",
                     "modelId": "model_123456789",
                     "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
                     "language": "Chinese",
@@ -4159,7 +4235,7 @@
                         "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningAudio",
+                        "model": "sound-cloning-audio",
                         "status": "queued",
                         "error": null
                       }
@@ -6699,6 +6775,14 @@
           "fileUrl"
         ],
         "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "sound-cloning-clone"
+            ],
+            "default": "sound-cloning-clone",
+            "description": "请求模型。不传时默认为 sound-cloning-clone。"
+          },
           "fileUrl": {
             "type": "string",
             "description": "克隆声音的原音频或原视频公网 URL"
@@ -6722,6 +6806,7 @@
           }
         },
         "example": {
+          "model": "sound-cloning-clone",
           "fileUrl": "https://example.com/source-audio.mp3",
           "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
           "soundVersion": "v1",
@@ -6735,6 +6820,14 @@
           "contentText"
         ],
         "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "sound-cloning-audio"
+            ],
+            "default": "sound-cloning-audio",
+            "description": "请求模型。不传时默认为 sound-cloning-audio。"
+          },
           "modelId": {
             "type": "string",
             "description": "试听任务完成后返回的声音模型 ID"
@@ -6798,6 +6891,7 @@
           }
         },
         "example": {
+          "model": "sound-cloning-audio",
           "modelId": "model_123456789",
           "contentText": "欢迎使用声音克隆能力，这是一段用于生成正式音频的文本。",
           "language": "Chinese",
@@ -6826,9 +6920,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "soundCloningClone",
-              "soundCloningAudio"
-            ]
+              "sound-cloning-clone",
+              "sound-cloning-audio"
+            ],
+            "description": "试听为 sound-cloning-clone，正式音频为 sound-cloning-audio。"
           },
           "status": {
             "type": "string",
@@ -6850,7 +6945,7 @@
           "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
           "object": "audio",
           "created": 1781777280,
-          "model": "soundCloningClone",
+          "model": "sound-cloning-clone",
           "status": "queued",
           "error": null
         }
@@ -7049,7 +7144,7 @@
         "properties": {
           "model_name": {
             "type": "string",
-            "description": "公开 OpenAPI 模型 ID"
+            "description": "合并后等于 group。没有 billings 时，这就是创建接口要传的 model"
           },
           "display_name": {
             "type": "string",
@@ -7061,7 +7156,7 @@
           },
           "series": {
             "type": "string",
-            "description": "可选产品系列。多条 catalog 共用，例如 wan3.0 与 wan3.0-gz 同为 wan3"
+            "description": "产品系列。同一 series 且同一 group 合并为一条；没有 series 不合并"
           },
           "price_mode": {
             "type": "string",
@@ -7069,7 +7164,7 @@
           },
           "unit_price": {
             "type": "number",
-            "description": "平台默认单价（吉米币）"
+            "description": "平台默认单价（吉米币）。合并后为各计费中大于 0 的最低价"
           },
           "official_price": {
             "type": "number",
@@ -7081,7 +7176,17 @@
           },
           "group": {
             "type": "string",
-            "description": "可选分组标签"
+            "description": "分组。合并后的 model_name、display_name 与 scheme.model 取此值"
+          },
+          "scheme": {
+            "$ref": "#/components/schemas/ModelScheme"
+          },
+          "billings": {
+            "type": "array",
+            "description": "同一产品下的计费。创建任务使用这里的 model_name",
+            "items": {
+              "$ref": "#/components/schemas/ModelBilling"
+            }
           }
         }
       },
@@ -7894,6 +7999,142 @@
           "prompt": "一只红色陶瓷杯放在白色桌面上，柔和棚拍灯光，产品摄影，无文字",
           "aspect_ratio": "1:1",
           "n": 1
+        }
+      },
+      "DurationScheme": {
+        "type": "object",
+        "description": "允许的生成时长。没有调用方可选时长时省略。",
+        "properties": {
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "default": {
+            "type": "integer"
+          },
+          "unit": {
+            "type": "string",
+            "example": "seconds"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "仅离散档位时返回"
+          },
+          "adaptive": {
+            "type": "boolean",
+            "description": "为 true 时 duration 可传 -1，表示自动时长"
+          }
+        }
+      },
+      "ModelConstraint": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "创建请求里的 JSON 字段名"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "max_count": {
+            "type": "integer"
+          },
+          "max_length": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ModelScheme": {
+        "type": "object",
+        "description": "调用约定。model 与 group 相同。",
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "example": "/api/v1/videos"
+          },
+          "method": {
+            "type": "string",
+            "example": "POST"
+          },
+          "model": {
+            "type": "string",
+            "description": "与 group 相同"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/DurationScheme"
+          },
+          "resolutions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "aspect_ratios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelConstraint"
+            }
+          }
+        }
+      },
+      "ModelBilling": {
+        "type": "object",
+        "description": "同一产品下的一条计费。创建任务时传 model_name。",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "创建接口 model 字段应使用的值"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "price_mode": {
+            "type": "string"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "official_price": {
+            "type": "number"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "sort": {
+            "type": "integer"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/DurationScheme"
+          }
         }
       }
     },

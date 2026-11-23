@@ -26,7 +26,7 @@ Response envelope: `{ "code": 20000, "msg": "ok", "data": { ... } }`.
 | `id` | string | Task ID |
 | `object` | string | Always `audio` |
 | `created` | integer | Creation timestamp |
-| `model` | string | `soundCloningClone` (preview) or `soundCloningAudio` (production) |
+| `model` | string | `sound-cloning-clone` (preview) or `sound-cloning-audio` (production) |
 | `status` | string | `queued` / `processing` / `completed` / `failed` |
 | `modelId` | string | Returned when preview completes; use in create audio |
 | `audioUrl` | string | Preview or production audio URL |
@@ -66,7 +66,7 @@ curl --request GET \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "processing",
     "error": null
   }
@@ -83,7 +83,7 @@ curl --request GET \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "completed",
     "modelId": "model_123456789",
     "audioUrl": "https://example.com/preview-audio.mp3",

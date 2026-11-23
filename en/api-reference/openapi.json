@@ -2112,6 +2112,7 @@
                 "preview": {
                   "summary": "Create preview",
                   "value": {
+                    "model": "sound-cloning-clone",
                     "fileUrl": "https://example.com/source-audio.mp3",
                     "contentText": "A short preview sentence for voice cloning.",
                     "soundVersion": "v1",
@@ -2140,7 +2141,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "queued",
                         "error": null
                       }
@@ -2169,6 +2170,7 @@
                 "production": {
                   "summary": "Create production audio",
                   "value": {
+                    "model": "sound-cloning-audio",
                     "modelId": "model_123456789",
                     "contentText": "Welcome to voice cloning. This is production audio text.",
                     "language": "Chinese",
@@ -2202,7 +2204,7 @@
                         "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningAudio",
+                        "model": "sound-cloning-audio",
                         "status": "queued",
                         "error": null
                       }
@@ -2250,7 +2252,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "completed",
                         "modelId": "model_123456789",
                         "audioUrl": "https://example.com/preview-audio.mp3",
@@ -2367,14 +2369,50 @@
                       "data": {
                         "list": [
                           {
-                            "model_name": "seedance2.5",
-                            "display_name": "Seedance 2.5",
+                            "model_name": "Seedance 2.5 Video",
+                            "display_name": "Seedance 2.5 Video",
                             "model_type": "video",
+                            "series": "Seedance 2.5",
                             "price_mode": "per_second",
                             "unit_price": 0.05,
-                            "official_price": 0.08,
-                            "remark": "",
-                            "group": "Seedance 2.5 Video"
+                            "group": "Seedance 2.5 Video",
+                            "scheme": {
+                              "endpoint": "/api/v1/videos",
+                              "method": "POST",
+                              "model": "Seedance 2.5 Video",
+                              "duration": {
+                                "min": 4,
+                                "max": 30,
+                                "default": 5,
+                                "unit": "seconds"
+                              },
+                              "resolutions": [
+                                "720p"
+                              ],
+                              "constraints": [
+                                {
+                                  "field": "duration",
+                                  "type": "integer",
+                                  "min": 4,
+                                  "max": 30,
+                                  "description": "Duration in seconds"
+                                }
+                              ]
+                            },
+                            "billings": [
+                              {
+                                "model_name": "seedance2.5-720p",
+                                "display_name": "Seedance 2.5 720p",
+                                "price_mode": "per_second",
+                                "unit_price": 0.05,
+                                "duration": {
+                                  "min": 4,
+                                  "max": 30,
+                                  "default": 5,
+                                  "unit": "seconds"
+                                }
+                              }
+                            ]
                           }
                         ]
                       }
@@ -3577,14 +3615,50 @@
                       "data": {
                         "list": [
                           {
-                            "model_name": "seedance2.5",
-                            "display_name": "Seedance 2.5",
+                            "model_name": "Seedance 2.5 Video",
+                            "display_name": "Seedance 2.5 Video",
                             "model_type": "video",
+                            "series": "Seedance 2.5",
                             "price_mode": "per_second",
                             "unit_price": 0.05,
-                            "official_price": 0.08,
-                            "remark": "",
-                            "group": "Seedance 2.5 Video"
+                            "group": "Seedance 2.5 Video",
+                            "scheme": {
+                              "endpoint": "/api/v1/videos",
+                              "method": "POST",
+                              "model": "Seedance 2.5 Video",
+                              "duration": {
+                                "min": 4,
+                                "max": 30,
+                                "default": 5,
+                                "unit": "seconds"
+                              },
+                              "resolutions": [
+                                "720p"
+                              ],
+                              "constraints": [
+                                {
+                                  "field": "duration",
+                                  "type": "integer",
+                                  "min": 4,
+                                  "max": 30,
+                                  "description": "Duration in seconds"
+                                }
+                              ]
+                            },
+                            "billings": [
+                              {
+                                "model_name": "seedance2.5-720p",
+                                "display_name": "Seedance 2.5 720p",
+                                "price_mode": "per_second",
+                                "unit_price": 0.05,
+                                "duration": {
+                                  "min": 4,
+                                  "max": 30,
+                                  "default": 5,
+                                  "unit": "seconds"
+                                }
+                              }
+                            ]
                           }
                         ]
                       }
@@ -3744,7 +3818,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "completed",
                         "modelId": "model_123456789",
                         "audioUrl": "https://example.com/preview-audio.mp3",
@@ -3956,6 +4030,7 @@
                 "preview": {
                   "summary": "Create preview",
                   "value": {
+                    "model": "sound-cloning-clone",
                     "fileUrl": "https://example.com/source-audio.mp3",
                     "contentText": "A short preview sentence for voice cloning.",
                     "soundVersion": "v1",
@@ -3984,7 +4059,7 @@
                         "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningClone",
+                        "model": "sound-cloning-clone",
                         "status": "queued",
                         "error": null
                       }
@@ -4013,6 +4088,7 @@
                 "production": {
                   "summary": "Create production audio",
                   "value": {
+                    "model": "sound-cloning-audio",
                     "modelId": "model_123456789",
                     "contentText": "Welcome to voice cloning. This is production audio text.",
                     "language": "Chinese",
@@ -4046,7 +4122,7 @@
                         "id": "audio_764fb3e7-8af2-4d2d-89a0-e58f8f3eb9c4",
                         "object": "audio",
                         "created": 1781777280,
-                        "model": "soundCloningAudio",
+                        "model": "sound-cloning-audio",
                         "status": "queued",
                         "error": null
                       }
@@ -6467,6 +6543,14 @@
           "fileUrl"
         ],
         "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "sound-cloning-clone"
+            ],
+            "default": "sound-cloning-clone",
+            "description": "Request model. Defaults to sound-cloning-clone when omitted."
+          },
           "fileUrl": {
             "type": "string",
             "description": "Public URL of source audio or video"
@@ -6489,6 +6573,7 @@
           }
         },
         "example": {
+          "model": "sound-cloning-clone",
           "fileUrl": "https://example.com/source-audio.mp3",
           "contentText": "A short preview sentence for voice cloning.",
           "soundVersion": "v1",
@@ -6502,6 +6587,14 @@
           "contentText"
         ],
         "properties": {
+          "model": {
+            "type": "string",
+            "enum": [
+              "sound-cloning-audio"
+            ],
+            "default": "sound-cloning-audio",
+            "description": "Request model. Defaults to sound-cloning-audio when omitted."
+          },
           "modelId": {
             "type": "string"
           },
@@ -6563,6 +6656,7 @@
           }
         },
         "example": {
+          "model": "sound-cloning-audio",
           "modelId": "model_123456789",
           "contentText": "Welcome to voice cloning. This is production audio text.",
           "language": "Chinese",
@@ -6591,9 +6685,10 @@
           "model": {
             "type": "string",
             "enum": [
-              "soundCloningClone",
-              "soundCloningAudio"
-            ]
+              "sound-cloning-clone",
+              "sound-cloning-audio"
+            ],
+            "description": "sound-cloning-clone for preview, sound-cloning-audio for production."
           },
           "status": {
             "type": "string",
@@ -6615,7 +6710,7 @@
           "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
           "object": "audio",
           "created": 1781777280,
-          "model": "soundCloningClone",
+          "model": "sound-cloning-clone",
           "status": "queued",
           "error": null
         }
@@ -6813,7 +6908,7 @@
         "properties": {
           "model_name": {
             "type": "string",
-            "description": "Public OpenAPI model ID"
+            "description": "Equals group after merge. When billings is absent, this is the model value for create"
           },
           "display_name": {
             "type": "string",
@@ -6825,7 +6920,7 @@
           },
           "series": {
             "type": "string",
-            "description": "Optional product series shared by several catalogs, for example wan3.0 and wan3.0-gz both use wan3"
+            "description": "Product series. Same series and same group merge into one item. Rows without a series stay separate"
           },
           "price_mode": {
             "type": "string",
@@ -6833,7 +6928,7 @@
           },
           "unit_price": {
             "type": "number",
-            "description": "Default platform unit price in JimiCoin"
+            "description": "Default platform unit price in JimiCoin. After a merge, the lowest positive billing price"
           },
           "official_price": {
             "type": "number",
@@ -6845,7 +6940,17 @@
           },
           "group": {
             "type": "string",
-            "description": "Optional catalog grouping label"
+            "description": "Catalog group. Merged model_name, display_name, and scheme.model use this value"
+          },
+          "scheme": {
+            "$ref": "#/components/schemas/ModelScheme"
+          },
+          "billings": {
+            "type": "array",
+            "description": "Billing options for this product. Use these model_name values on create",
+            "items": {
+              "$ref": "#/components/schemas/ModelBilling"
+            }
           }
         }
       },
@@ -7597,6 +7702,142 @@
           "prompt": "A red ceramic cup on a white table, soft studio light, product photography, no text",
           "aspect_ratio": "1:1",
           "n": 1
+        }
+      },
+      "DurationScheme": {
+        "type": "object",
+        "description": "Allowed generation duration. Omitted when the caller cannot choose a duration.",
+        "properties": {
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "default": {
+            "type": "integer"
+          },
+          "unit": {
+            "type": "string",
+            "example": "seconds"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Present only for discrete duration steps"
+          },
+          "adaptive": {
+            "type": "boolean",
+            "description": "When true, duration may be -1 for automatic length"
+          }
+        }
+      },
+      "ModelConstraint": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "JSON field name on the create request"
+          },
+          "type": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "min": {
+            "type": "integer"
+          },
+          "max": {
+            "type": "integer"
+          },
+          "max_count": {
+            "type": "integer"
+          },
+          "max_length": {
+            "type": "integer"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ModelScheme": {
+        "type": "object",
+        "description": "Call contract. model matches group.",
+        "properties": {
+          "endpoint": {
+            "type": "string",
+            "example": "/api/v1/videos"
+          },
+          "method": {
+            "type": "string",
+            "example": "POST"
+          },
+          "model": {
+            "type": "string",
+            "description": "Same value as group"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/DurationScheme"
+          },
+          "resolutions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "aspect_ratios": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ModelConstraint"
+            }
+          }
+        }
+      },
+      "ModelBilling": {
+        "type": "object",
+        "description": "One billing option. Pass model_name on create.",
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "description": "Value to send as model on the create endpoint"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "price_mode": {
+            "type": "string"
+          },
+          "unit_price": {
+            "type": "number"
+          },
+          "official_price": {
+            "type": "number"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "sort": {
+            "type": "integer"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/DurationScheme"
+          }
         }
       }
     },

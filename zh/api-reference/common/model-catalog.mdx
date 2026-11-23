@@ -3,7 +3,7 @@ title: '查询探测模型定价'
 openapi: 'GET /api/v1/models'
 ---
 
-探测并返回 ViraltokAI OpenAPI **公开模型定价**：包含当前可用的计费模型 ID、展示名称、类型、默认单价与计费方式。提交生成任务前，可先用本接口确认应传入的 `model` 值并估算费用。
+探测并返回 ViraltokAI OpenAPI **公开模型目录**：计费、调用入口和字段约束。同一 `series` 且同一 `group` 的计费收成一条；创建任务时使用 `billings[].model_name`。没有 `series` 的模型不合并，直接使用该条的 `model_name`。
 
 <Note>
 本接口返回的是**平台默认单价**。若你在控制台为账户配置了某模型的专属价格，实际扣费以创建/查询响应中的 `cost` 为准（按账户定制价结算）。列表中的 `unit_price` 始终为公开基准价。
@@ -25,19 +25,47 @@ openapi: 'GET /api/v1/models'
 
 ### 响应字段
 
-`data.list` 中每一项对应一个启用中的计费模型：
+`data.list` 中每一项是一个产品。同一 `series` 且同一 `group` 合并为一条；`series` 或 `group` 不同则分开。没有 `series` 的模型保持一条计费一条记录。
 
 | 字段 | 类型 | 说明 |
 | :--- | :--- | :--- |
-| `model_name` | string | 公开 OpenAPI 模型 ID，创建接口的 `model` 字段应使用此值 |
-| `display_name` | string | 模型展示名称 |
+| `model_name` | string | 合并后等于 `group`。没有 `billings` 时，创建接口的 `model` 使用此值 |
+| `display_name` | string | 展示名称。合并且有 `group` 时与 `group` 相同 |
 | `model_type` | string | 产品类型（如 `video`、`image`、`audio`、`llm`） |
-| `series` | string | 可选产品系列。多条 catalog 共用同一系列，例如 Wan 3.0 特价 `wan3.0` 与官转 `wan3.0-gz` 都是 `wan3`。各自的 `group` 仍然分开 |
+| `series` | string | 产品系列。例如 Wan 3.0 特价与官转可以同属 `wan3`，但 `group` 不同，因此仍是两条 |
+| `group` | string | 分组。合并后的 `model_name`、`display_name` 和 `scheme.model` 都取此值 |
 | `price_mode` | string | 计费方式（见下表） |
-| `unit_price` | number | 平台默认单价（吉米币） |
+| `unit_price` | number | 平台默认单价（吉米币）。合并后为各计费里大于 0 的最低价 |
 | `official_price` | number | 参考标价（有配置时返回，否则省略） |
 | `remark` | string | 可选说明 |
-| `group` | string | 可选分组标签，便于归类相关模型 |
+| `scheme` | object | 调用约定，见下表。没有可选时长的产品不返回 `duration` |
+| `billings` | array | 该产品下的计费。创建任务时传其中的 `model_name` |
+
+### `billings[]`
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `model_name` | string | 创建接口 `model` 应传的值 |
+| `display_name` | string | 该计费的展示名 |
+| `price_mode` | string | 该计费的计费方式 |
+| `unit_price` | number | 该计费的平台默认单价 |
+| `official_price` | number | 参考标价，未配置时省略 |
+| `remark` | string | 可选说明 |
+| `duration` | object | 该计费自己的时长范围。字段与 `scheme.duration` 相同 |
+
+### `scheme`
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `endpoint` | string | 创建任务的路径，如 `/api/v1/videos` |
+| `method` | string | HTTP 方法，通常为 `POST` |
+| `model` | string | 与外层 `group` 相同 |
+| `duration` | object | `min`、`max`、`default`、`unit`（`seconds`）。离散档位另有 `options`。`adaptive` 为 true 时，`duration` 可传 `-1` 表示自动时长 |
+| `resolutions` | array | 允许的分辨率 |
+| `aspect_ratios` | array | 允许的宽高比 |
+| `constraints` | array | 创建请求的字段限制。`field` 是 JSON 字段名，可含 `required`、`options`、`min`、`max`、`max_count`、`max_length` |
+
+有时长范围时，`constraints` 里会有一条 `field` 为 `duration` 的限制，`min` / `max` 与 `scheme.duration` 一致。合并后的 `scheme.duration` 是各计费时长的并集；每条计费自己的范围看 `billings[].duration`。
 
 ### 计费方式（`price_mode`）
 
@@ -65,6 +93,8 @@ curl -X GET 'https://api.viraltok.ai/api/v1/models'
 curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
 ```
 
+下面只说明字段结构。实际模型 ID、价格和时长以接口返回为准。
+
 ```json
 {
   "code": 20000,
@@ -72,14 +102,32 @@ curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
   "data": {
     "list": [
       {
-        "model_name": "seedance2.5",
-        "display_name": "Seedance 2.5",
+        "model_name": "Seedance 2.5 Video",
+        "display_name": "Seedance 2.5 Video",
         "model_type": "video",
+        "series": "Seedance 2.5",
         "price_mode": "per_second",
         "unit_price": 0.05,
-        "official_price": 0.08,
-        "remark": "",
-        "group": "Seedance 2.5 Video"
+        "group": "Seedance 2.5 Video",
+        "scheme": {
+          "endpoint": "/api/v1/videos",
+          "method": "POST",
+          "model": "Seedance 2.5 Video",
+          "duration": { "min": 4, "max": 30, "default": 5, "unit": "seconds" },
+          "resolutions": ["720p"],
+          "constraints": [
+            { "field": "duration", "type": "integer", "min": 4, "max": 30, "description": "生成时长，单位秒" }
+          ]
+        },
+        "billings": [
+          {
+            "model_name": "seedance2.5-720p",
+            "display_name": "Seedance 2.5 720p",
+            "price_mode": "per_second",
+            "unit_price": 0.05,
+            "duration": { "min": 4, "max": 30, "default": 5, "unit": "seconds" }
+          }
+        ]
       }
     ]
   }

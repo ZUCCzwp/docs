@@ -21,6 +21,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/soundCloning/clones'
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
+| `model` | string | 否 | 请求模型，固定为 `sound-cloning-clone`。不传时默认该值；传入其他值会拒绝。 |
 | `fileUrl` | string | 是 | 克隆声音的原音频或原视频地址。须为公网 URL，不可使用本地路径，链接勿含中文。支持音频 `mp3`/`ogg`/`wav`/`m4a`/`aac`，视频 `mp4`/`avi`/`mov`/`mkv`/`flv`。音视频中实际说话时长须 **大于 15 秒且小于 60 秒**。 |
 | `contentText` | string | 否 | 生成试听音频的文本，小于 **270** 字。不传时使用默认文案。 |
 | `soundVersion` | string | 否 | 声音模型版本：`v1`（24 种语言）或 `v2`（40 种语言）。默认 `v1`。 |
@@ -46,6 +47,7 @@ curl --request POST \
   --header 'Authorization: Bearer sk_xxx' \
   --header 'Content-Type: application/json' \
   --data '{
+    "model": "sound-cloning-clone",
     "fileUrl": "https://example.com/source-audio.mp3",
     "contentText": "在森林的深处，阳光透过树梢洒落，鸟儿的歌声交织成一曲美妙的乐章，诉说着大自然无尽的美丽。",
     "soundVersion": "v1",
@@ -63,7 +65,7 @@ curl --request POST \
     "id": "audio_16b635ba-5889-4fa5-bbcc-bf67a38c353a",
     "object": "audio",
     "created": 1781777280,
-    "model": "soundCloningClone",
+    "model": "sound-cloning-clone",
     "status": "queued",
     "error": null
   }

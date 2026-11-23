@@ -3,7 +3,7 @@ title: 'Probe model pricing'
 openapi: 'GET /api/v1/models'
 ---
 
-Probe **public model pricing** for active ViraltokAI OpenAPI billing models: model IDs, display names, types, default unit prices, and billing modes. Use this endpoint to discover which `model` values you can pass to create endpoints and to estimate cost before submitting tasks.
+Probe the public ViraltokAI OpenAPI **model catalog**: billing, create endpoint, and field limits. Rows that share both `series` and `group` are one item. Pass `billings[].model_name` on create. A row with no `series` stays separate, and its `model_name` is the create value.
 
 <Note>
 This endpoint returns **platform default prices**. If your account has custom per-model pricing configured in the console, actual charges on create/query responses use your account rate instead. The list always shows the public baseline `unit_price`.
@@ -25,19 +25,47 @@ No API key is required. You may call this endpoint without an `Authorization` he
 
 ### Response fields
 
-Each item in `data.list` describes one active billing model:
+Each item in `data.list` is one product. The same `series` and the same `group` merge into one item. A different series or group stays separate. A model with no `series` stays one row per billing name.
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
-| `model_name` | string | Public OpenAPI model ID — use this value in `model` on create endpoints |
-| `display_name` | string | Human-readable model label |
+| `model_name` | string | Equals `group` after a merge. When `billings` is absent, pass this value as `model` on create |
+| `display_name` | string | Label. After a merge with a `group`, this matches `group` |
 | `model_type` | string | Product category (for example `video`, `image`, `audio`, `llm`) |
-| `series` | string | Optional product series shared by several catalogs. Wan 3.0 Special (`wan3.0`) and Official Transfer (`wan3.0-gz`) both use `wan3`, while each keeps its own `group` |
+| `series` | string | Product series. Wan 3.0 variants can share `wan3` and still stay separate when `group` differs |
+| `group` | string | Catalog group. Merged `model_name`, `display_name`, and `scheme.model` use this value |
 | `price_mode` | string | Billing mode (see below) |
-| `unit_price` | number | Default platform unit price in JimiCoin |
+| `unit_price` | number | Default platform unit price in JimiCoin. After a merge, the lowest positive billing price |
 | `official_price` | number | Reference list price when configured; omitted when not set |
-| `remark` | string | Optional notes about the model or pricing |
-| `group` | string | Optional grouping label for related models |
+| `remark` | string | Optional notes |
+| `scheme` | object | Call contract. See below. Products with no caller-chosen duration omit `duration` |
+| `billings` | array | Billing options. Pass one of these `model_name` values on create |
+
+### `billings[]`
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `model_name` | string | Value to send as `model` on the create endpoint |
+| `display_name` | string | Label for this billing option |
+| `price_mode` | string | Billing mode for this option |
+| `unit_price` | number | Default platform unit price for this option |
+| `official_price` | number | Reference list price; omitted when unset |
+| `remark` | string | Optional notes |
+| `duration` | object | This billing option's own duration range. Same shape as `scheme.duration` |
+
+### `scheme`
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `endpoint` | string | Create path, such as `/api/v1/videos` |
+| `method` | string | HTTP method, usually `POST` |
+| `model` | string | Same value as `group` |
+| `duration` | object | `min`, `max`, `default`, and `unit` (`seconds`). Discrete steps also include `options`. When `adaptive` is true, `duration` may be `-1` for automatic length |
+| `resolutions` | array | Allowed resolutions |
+| `aspect_ratios` | array | Allowed aspect ratios |
+| `constraints` | array | Limits for create-request fields. `field` is the JSON name and may include `required`, `options`, `min`, `max`, `max_count`, and `max_length` |
+
+When a duration range exists, `constraints` includes an entry with `field` `duration` whose `min` and `max` match `scheme.duration`. The merged `scheme.duration` is the union of the billing ranges. Read `billings[].duration` for one billing option's own range.
 
 ### Billing modes (`price_mode`)
 
@@ -65,6 +93,8 @@ Search for Seedance models:
 curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
 ```
 
+The sample shows the field shape. Use the live response for model IDs, prices, and duration limits.
+
 ```json
 {
   "code": 20000,
@@ -72,14 +102,32 @@ curl -X GET 'https://api.viraltok.ai/api/v1/models?search=seedance'
   "data": {
     "list": [
       {
-        "model_name": "seedance2.5",
-        "display_name": "Seedance 2.5",
+        "model_name": "Seedance 2.5 Video",
+        "display_name": "Seedance 2.5 Video",
         "model_type": "video",
+        "series": "Seedance 2.5",
         "price_mode": "per_second",
         "unit_price": 0.05,
-        "official_price": 0.08,
-        "remark": "",
-        "group": "Seedance 2.5 Video"
+        "group": "Seedance 2.5 Video",
+        "scheme": {
+          "endpoint": "/api/v1/videos",
+          "method": "POST",
+          "model": "Seedance 2.5 Video",
+          "duration": { "min": 4, "max": 30, "default": 5, "unit": "seconds" },
+          "resolutions": ["720p"],
+          "constraints": [
+            { "field": "duration", "type": "integer", "min": 4, "max": 30, "description": "Duration in seconds" }
+          ]
+        },
+        "billings": [
+          {
+            "model_name": "seedance2.5-720p",
+            "display_name": "Seedance 2.5 720p",
+            "price_mode": "per_second",
+            "unit_price": 0.05,
+            "duration": { "min": 4, "max": 30, "default": 5, "unit": "seconds" }
+          }
+        ]
       }
     ]
   }

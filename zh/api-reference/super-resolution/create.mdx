@@ -9,29 +9,23 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 
 创建视频超分任务，将公网可访问的低分辨率视频增强为更高清视频。提交成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询状态，完成后从 `result.video_url` 获取结果。
 
-## 支持的模型
+## 模型
 
-模型名由目标清晰度 + 帧率档位组成：`lowfps` 为 30 FPS，`highfps` 为 120 FPS。
+请求 `model` 固定为 `superResolution`。目标清晰度用 `resolution`，帧率档位用 `fps`。
 
-| model | 目标清晰度 | 帧率档位 |
-|-------|-----------|---------|
-| `superResolution-720p-lowfps` | 720p | 普通帧率 |
-| `superResolution-720p-highfps` | 720p | 高帧率 |
-| `superResolution-1080p-lowfps` | 1080p | 普通帧率 |
-| `superResolution-1080p-highfps` | 1080p | 高帧率 |
-| `superResolution-2k-lowfps` | 2K | 普通帧率 |
-| `superResolution-2k-highfps` | 2K | 高帧率 |
-| `superResolution-4k-lowfps` | 4K | 普通帧率 |
-| `superResolution-4k-highfps` | 4K | 高帧率 |
-
-分辨率与帧率由 `model` 决定，无需额外传参。
+| 字段 | 取值 | 默认 | 计费名 |
+|------|------|------|--------|
+| `resolution` | `720p`、`1080p`、`2k`、`4k` | `1080p` | |
+| `fps` | `lowfps`（30 FPS）、`highfps`（120 FPS） | `lowfps` | `superResolution-{resolution}-{fps}` |
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | 见上表 |
+| `model` | string | 是 | `superResolution` |
 | `video_url` | string | 是 | 待超分视频的公网 URL，任务处理期间须保持可访问 |
+| `resolution` | string | 否 | `720p`、`1080p`（默认）、`2k`、`4k` |
+| `fps` | string | 否 | `lowfps`（默认，30 FPS）或 `highfps`（120 FPS） |
 
 ## 计费说明
 
@@ -39,7 +33,7 @@ openapi: 'zh/api-reference/openapi.json POST /api/v1/videos'
 - 能解析 `video_url` 时，按 `ceil(时长)` 预扣（不足 1 秒按 1 秒）
 - 解析不到时长时，先按 15 秒预扣
 - 任务完成后按成片实际时长向上取整结算，预扣差额多退少补
-- 单价：以控制台中对应 `model` 配置为准
+- 单价：以控制台中计费名 `superResolution-{resolution}-{fps}` 为准
 
 ```text
 费用 = 模型单价 × ceil(实际视频时长秒数)
@@ -52,7 +46,9 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "superResolution-1080p-lowfps",
+    "model": "superResolution",
+    "resolution": "1080p",
+    "fps": "lowfps",
     "video_url": "https://example.com/input-low-resolution.mp4"
   }'
 ```

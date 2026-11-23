@@ -1864,8 +1864,10 @@
                 "default": {
                   "summary": "Create super-resolution task",
                   "value": {
-                    "model": "superResolution-1080p-lowfps",
-                    "video_url": "https://example.com/input-low-resolution.mp4"
+                    "model": "superResolution",
+                    "video_url": "https://example.com/input-low-resolution.mp4",
+                    "resolution": "1080p",
+                    "fps": "lowfps"
                   }
                 }
               }
@@ -1904,7 +1906,7 @@
           {
             "lang": "bash",
             "label": "curl",
-            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"superResolution-1080p-lowfps\",\n  \"video_url\": \"https://example.com/input-low-resolution.mp4\"\n}'"
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"superResolution\",\n  \"resolution\": \"1080p\",\n  \"fps\": \"lowfps\",\n  \"video_url\": \"https://example.com/input-low-resolution.mp4\"\n}'"
           }
         ]
       }
@@ -2750,14 +2752,9 @@
                   "model": {
                     "type": "string",
                     "enum": [
-                      "flux-3-draft",
-                      "flux-3-i2v-draft",
-                      "flux-3-flf-draft",
-                      "flux-3-keyframes-draft",
-                      "flux-3-extend-draft",
-                      "flux-3-enhance"
+                      "flux-3"
                     ],
-                    "description": "Model ID such as `flux-3-draft` or `flux-3-enhance`. See the docs page."
+                    "description": "Request model. Must be flux-3. Media fields choose the billing name."
                   },
                   "prompt": {
                     "type": "string",
@@ -2831,7 +2828,7 @@
                 "default": {
                   "summary": "Flux 3 draft T2V",
                   "value": {
-                    "model": "flux-3-draft",
+                    "model": "flux-3",
                     "prompt": "A red panda walks along a mossy log",
                     "duration": 5,
                     "aspect_ratio": "16:9"
@@ -2840,7 +2837,7 @@
                 "enhance": {
                   "summary": "Flux 3 Enhance",
                   "value": {
-                    "model": "flux-3-enhance",
+                    "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
                   }
@@ -2865,7 +2862,7 @@
           {
             "lang": "bash",
             "label": "curl",
-            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"flux-3-draft\",\n  \"prompt\": \"A red panda walks along a mossy log\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\"\n}'"
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"flux-3\",\n  \"prompt\": \"A red panda walks along a mossy log\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\"\n}'"
           }
         ]
       }
@@ -3027,7 +3024,7 @@
                 "flux3_default": {
                   "summary": "Flux 3 draft T2V",
                   "value": {
-                    "model": "flux-3-draft",
+                    "model": "flux-3",
                     "prompt": "A red panda walks along a mossy log",
                     "duration": 5,
                     "aspect_ratio": "16:9"
@@ -3036,7 +3033,7 @@
                 "enhance": {
                   "summary": "Flux 3 Enhance",
                   "value": {
-                    "model": "flux-3-enhance",
+                    "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
                   }
@@ -3149,8 +3146,10 @@
                 "super-resolution_default": {
                   "summary": "Create super-resolution task",
                   "value": {
-                    "model": "superResolution-1080p-lowfps",
-                    "video_url": "https://example.com/input-low-resolution.mp4"
+                    "model": "superResolution",
+                    "video_url": "https://example.com/input-low-resolution.mp4",
+                    "resolution": "1080p",
+                    "fps": "lowfps"
                   }
                 },
                 "video-translate_default": {
@@ -5855,24 +5854,39 @@
           "model": {
             "type": "string",
             "enum": [
-              "superResolution-720p-lowfps",
-              "superResolution-720p-highfps",
-              "superResolution-1080p-lowfps",
-              "superResolution-1080p-highfps",
-              "superResolution-2k-lowfps",
-              "superResolution-2k-highfps",
-              "superResolution-4k-lowfps",
-              "superResolution-4k-highfps"
+              "superResolution"
             ],
-            "description": "Super-resolution model. Clarity tier: 720p/1080p/2k/4k; lowfps=30FPS, highfps=120FPS."
+            "description": "Request model. Must be superResolution."
           },
           "video_url": {
             "type": "string",
             "description": "Public URL of the source video; must remain accessible while the task runs."
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p",
+              "2k",
+              "4k"
+            ],
+            "default": "1080p",
+            "description": "Target resolution. Defaults to 1080p."
+          },
+          "fps": {
+            "type": "string",
+            "enum": [
+              "lowfps",
+              "highfps"
+            ],
+            "default": "lowfps",
+            "description": "Frame-rate tier. lowfps is 30 FPS, highfps is 120 FPS. Defaults to lowfps."
           }
         },
         "example": {
-          "model": "superResolution-1080p-lowfps",
+          "model": "superResolution",
+          "resolution": "1080p",
+          "fps": "lowfps",
           "video_url": "https://example.com/input-low-resolution.mp4"
         }
       },
@@ -7536,14 +7550,9 @@
           "model": {
             "type": "string",
             "enum": [
-              "flux-3-draft",
-              "flux-3-i2v-draft",
-              "flux-3-flf-draft",
-              "flux-3-keyframes-draft",
-              "flux-3-extend-draft",
-              "flux-3-enhance"
+              "flux-3"
             ],
-            "description": "Model ID such as `flux-3-draft` or `flux-3-enhance`. See the docs page."
+            "description": "Request model. Must be flux-3. Media fields choose the billing name."
           },
           "prompt": {
             "type": "string",

@@ -13,39 +13,33 @@ openapi: 'POST /api/v1/videos'
 本接口与 [创建 Seedance 满血版视频](/zh/api-reference/seedance/create) 共用 `POST /api/v1/videos`。满血版见满血版文档，Mini 见 [创建Mini视频](/zh/api-reference/seedance/mini/create)，SP Fast 见 [创建满血版超分 Fast视频](/zh/api-reference/seedance/fast/create-sp)。
 </Note>
 
-## 模型与线路
+## 模型
 
-通过 `model` 字段选择满血版超分 子线路：
-
-| 线路 | `model` 取值 | 计费 | 时长 | 素材要求 |
-|------|-------------|------|------|----------|
-| **满血版超分** | `sd2_sp_720p`、`sd2_sp_1080p`、`sd2_sp_2k`、`sd2_sp_4k` | 按秒 | 4–15 秒 | 支持公网 URL 或素材库 |
-| **视频参考** | `sd2_sp_video_720p`、`sd2_sp_video_1080p`、`sd2_sp_video_2k`、`sd2_sp_video_4k` | 按秒 | 4–15 秒 | 同上；支持 `reference_videos` |
+请求 `model` 固定为 `sd2-sp`。分辨率用 `resolution`：`480p`、`720p`（默认）、`1080p`、`2k`、`4k`。时长 4–15 秒。
 
 ## 计费说明
 
-根据选择的 `model` 直接扣除对应算力额度：
+按 **秒** 计费。费用 = 对应计费名的单价 × `duration`。单价以控制台定价为准。
 
-| 项目 | 说明 |
-|------|------|
-| 计费方式 | **单价（元/秒）× `duration`** |
-| 单价来源 | 以控制台定价中对应模型名为准 |
-| 时长 | `duration` 字段，范围 4–15 秒 |
+| 请求 | 计费名 |
+|------|--------|
+| 不带参考视频 | `sd2_sp_{resolution}` |
+| 带 `reference_videos` | `sd2_sp_video_{resolution}` |
 
 
 ## 请求参数
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | 见上表 |
+| `model` | string | 是 | `sd2-sp` |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），4–15，默认 5 |
-| `resolution` | string | 否 | 输出分辨率：`720p`（默认）、`1080p`；**不支持 `480p`** |
+| `resolution` | string | 否 | `480p`、`720p`（默认）、`1080p`、`2k`、`4k` |
 | `ratio` | string | 否 | 画面比例，如 `16:9`、`9:16`、`1:1` |
 | `images` | string[] | 否 | 参考图列表 |
 | `first_image` | string | 否 | 首帧图片 |
 | `last_image` | string | 否 | 尾帧图片 |
-| `reference_videos` | string[] | 否 | 参考视频列表 |
+| `reference_videos` | string[] | 否 | 参考视频。传入后按 `sd2_sp_video_{resolution}` 计费 |
 | `reference_audios` | string[] | 否 | 参考音频；须搭配参考图/视频或首尾帧 |
 
 ## 素材说明
@@ -68,9 +62,10 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "雨夜街头，女孩回头微笑，电影感镜头推进",
     "duration": 5,
+    "resolution": "720p",
     "ratio": "16:9",
     "first_image": "https://example.com/start.png"
   }'
@@ -83,9 +78,10 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "人物缓缓转头，微风拂动发丝",
     "duration": 6,
+    "resolution": "1080p",
     "ratio": "9:16",
     "images": [
       "https://example.com/ref-1.jpg",
@@ -101,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "镜头缓慢推进，光影变化细腻",
     "duration": 8,
     "ratio": "16:9",

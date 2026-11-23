@@ -13,39 +13,33 @@ Create a Seedance **Full Super-Resolution SP** video generation task. On success
 This uses the same endpoint as [Create Seedance Full Video](/en/api-reference/seedance/create): `POST /api/v1/videos`. For Full (Manxue), see the full-route doc; for Mini, see [Mini Create Video](/en/api-reference/seedance/mini/create); for SP Fast, see [Create Full Super-Resolution SP Fast Video](/en/api-reference/seedance/fast/create-sp).
 </Note>
 
-## Models and Routes
+## Models
 
-Choose the Full Super-Resolution SP sub-route via the `model` field:
-
-| Route | `model` value | Billing | Duration | Requirements |
-|-------|---------------|---------|----------|--------------|
-| **Full Super-Resolution SP** | `sd2_sp_720p`, `sd2_sp_1080p`, `sd2_sp_2k`, `sd2_sp_4k` | Per second | 4–15 s | Public URL or asset library |
-| **Video Reference** | `sd2_sp_video_720p`, `sd2_sp_video_1080p`, `sd2_sp_video_2k`, `sd2_sp_video_4k` | Per second | 4–15 s | Same as above; supports `reference_videos` |
+Set `model` to `sd2-sp`. Choose `resolution`: `480p`, `720p` (default), `1080p`, `2k`, or `4k`. Duration is 4–15 seconds.
 
 ## Billing
 
-Deduct corresponding computing credits directly based on the selected `model`:
+Billed **per second**. Cost = that billing name's unit price × `duration`. Unit prices are on the console.
 
-| Item | Description |
-|------|-------------|
-| Calculation | **Unit price (credit/s) × `duration`** |
-| Unit Price | Based on the price for the corresponding model name in the console |
-| Duration | `duration` field, ranging from 4 to 15 seconds |
+| Request | Billing name |
+|---------|--------------|
+| No reference video | `sd2_sp_{resolution}` |
+| With `reference_videos` | `sd2_sp_video_{resolution}` |
 
 
 ## Request fields
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | See table above |
+| `model` | string | Yes | `sd2-sp` |
 | `prompt` | string | Yes | Text prompt |
 | `duration` | int | Yes | Length in seconds, 4–15 (default 5) |
-| `resolution` | string | No | Output resolution: `720p` (default), `1080p`; **`480p` is not supported** |
+| `resolution` | string | No | `480p`, `720p` (default), `1080p`, `2k`, `4k` |
 | `ratio` | string | No | Aspect ratio, e.g. `16:9`, `9:16`, `1:1` |
 | `images` | string[] | No | Reference images |
 | `first_image` | string | No | First frame |
 | `last_image` | string | No | Last frame |
-| `reference_videos` | string[] | No | Reference videos |
+| `reference_videos` | string[] | No | Reference videos. When present, billing uses `sd2_sp_video_{resolution}` |
 | `reference_audios` | string[] | No | Reference audio; must pair with images/videos or frames |
 
 ## Assets
@@ -68,9 +62,10 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "Rainy street at night, girl turns and smiles, cinematic dolly-in",
     "duration": 5,
+    "resolution": "720p",
     "ratio": "16:9",
     "first_image": "https://example.com/start.png"
   }'
@@ -83,9 +78,10 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "Subject slowly turns head, gentle breeze in hair",
     "duration": 6,
+    "resolution": "1080p",
     "ratio": "9:16",
     "images": [
       "https://example.com/ref-1.jpg",
@@ -101,7 +97,7 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "sd2_sp_720p",
+    "model": "sd2-sp",
     "prompt": "Slow dolly in, subtle lighting change",
     "duration": 8,
     "ratio": "16:9",

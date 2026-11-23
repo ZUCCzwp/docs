@@ -1864,8 +1864,10 @@
                 "default": {
                   "summary": "创建超分任务",
                   "value": {
-                    "model": "superResolution-1080p-lowfps",
-                    "video_url": "https://example.com/input-low-resolution.mp4"
+                    "model": "superResolution",
+                    "video_url": "https://example.com/input-low-resolution.mp4",
+                    "resolution": "1080p",
+                    "fps": "lowfps"
                   }
                 }
               }
@@ -1904,7 +1906,7 @@
           {
             "lang": "bash",
             "label": "curl",
-            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"superResolution-1080p-lowfps\",\n  \"video_url\": \"https://example.com/input-low-resolution.mp4\"\n}'"
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"superResolution\",\n  \"resolution\": \"1080p\",\n  \"fps\": \"lowfps\",\n  \"video_url\": \"https://example.com/input-low-resolution.mp4\"\n}'"
           }
         ]
       }
@@ -2750,14 +2752,9 @@
                   "model": {
                     "type": "string",
                     "enum": [
-                      "flux-3-draft",
-                      "flux-3-i2v-draft",
-                      "flux-3-flf-draft",
-                      "flux-3-keyframes-draft",
-                      "flux-3-extend-draft",
-                      "flux-3-enhance"
+                      "flux-3"
                     ],
-                    "description": "模型名称。如 `flux-3-draft`、`flux-3-enhance` 等，详见文档页。"
+                    "description": "请求模型，固定为 flux-3。计费名由素材字段决定，见文档。"
                   },
                   "prompt": {
                     "type": "string",
@@ -2831,7 +2828,7 @@
                 "default": {
                   "summary": "Flux 3 文生草稿",
                   "value": {
-                    "model": "flux-3-draft",
+                    "model": "flux-3",
                     "prompt": "一只小熊猫在苔藓圆木上行走",
                     "duration": 5,
                     "aspect_ratio": "16:9"
@@ -2840,7 +2837,7 @@
                 "enhance": {
                   "summary": "Flux 3 草稿增强",
                   "value": {
-                    "model": "flux-3-enhance",
+                    "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
                   }
@@ -2865,7 +2862,7 @@
           {
             "lang": "bash",
             "label": "curl",
-            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"flux-3-draft\",\n  \"prompt\": \"一只小熊猫在苔藓圆木上行走\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\"\n}'"
+            "source": "curl --request POST \\\n  --url https://api.viraltok.ai/api/v1/videos \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n  \"model\": \"flux-3\",\n  \"prompt\": \"一只小熊猫在苔藓圆木上行走\",\n  \"duration\": 5,\n  \"aspect_ratio\": \"16:9\"\n}'"
           }
         ]
       }
@@ -3140,7 +3137,7 @@
                 "flux3_default": {
                   "summary": "Flux 3 文生草稿",
                   "value": {
-                    "model": "flux-3-draft",
+                    "model": "flux-3",
                     "prompt": "一只小熊猫在苔藓圆木上行走",
                     "duration": 5,
                     "aspect_ratio": "16:9"
@@ -3149,7 +3146,7 @@
                 "enhance": {
                   "summary": "Flux 3 草稿增强",
                   "value": {
-                    "model": "flux-3-enhance",
+                    "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
                   }
@@ -3262,8 +3259,10 @@
                 "super-resolution_default": {
                   "summary": "创建超分任务",
                   "value": {
-                    "model": "superResolution-1080p-lowfps",
-                    "video_url": "https://example.com/input-low-resolution.mp4"
+                    "model": "superResolution",
+                    "video_url": "https://example.com/input-low-resolution.mp4",
+                    "resolution": "1080p",
+                    "fps": "lowfps"
                   }
                 },
                 "video-translate_default": {
@@ -6081,24 +6080,39 @@
           "model": {
             "type": "string",
             "enum": [
-              "superResolution-720p-lowfps",
-              "superResolution-720p-highfps",
-              "superResolution-1080p-lowfps",
-              "superResolution-1080p-highfps",
-              "superResolution-2k-lowfps",
-              "superResolution-2k-highfps",
-              "superResolution-4k-lowfps",
-              "superResolution-4k-highfps"
+              "superResolution"
             ],
-            "description": "视频超分模型。清晰度档位为 720p/1080p/2k/4k；lowfps=30FPS，highfps=120FPS。"
+            "description": "请求模型，固定为 superResolution。"
           },
           "video_url": {
             "type": "string",
             "description": "待超分视频的公网 URL，任务处理期间须保持可访问。"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "720p",
+              "1080p",
+              "2k",
+              "4k"
+            ],
+            "default": "1080p",
+            "description": "目标清晰度。默认 1080p。"
+          },
+          "fps": {
+            "type": "string",
+            "enum": [
+              "lowfps",
+              "highfps"
+            ],
+            "default": "lowfps",
+            "description": "帧率档位。lowfps 为 30 FPS，highfps 为 120 FPS。默认 lowfps。"
           }
         },
         "example": {
-          "model": "superResolution-1080p-lowfps",
+          "model": "superResolution",
+          "resolution": "1080p",
+          "fps": "lowfps",
           "video_url": "https://example.com/input-low-resolution.mp4"
         }
       },
@@ -7772,14 +7786,9 @@
           "model": {
             "type": "string",
             "enum": [
-              "flux-3-draft",
-              "flux-3-i2v-draft",
-              "flux-3-flf-draft",
-              "flux-3-keyframes-draft",
-              "flux-3-extend-draft",
-              "flux-3-enhance"
+              "flux-3"
             ],
-            "description": "模型名称。如 `flux-3-draft`、`flux-3-enhance` 等，详见文档页。"
+            "description": "请求模型，固定为 flux-3。计费名由素材字段决定，见文档。"
           },
           "prompt": {
             "type": "string",

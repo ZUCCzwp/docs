@@ -9,29 +9,23 @@ openapi: 'en/api-reference/openapi.json POST /api/v1/videos'
 
 Create a video super-resolution task that enhances a publicly accessible low-resolution video. After submission you receive a `task_id`. Poll via [Query Video Task](/en/api-reference/common/query) and read `result.video_url` when completed.
 
-## Supported models
+## Model
 
-Model names combine target clarity and frame-rate tier: `lowfps` = 30 FPS, `highfps` = 120 FPS.
+Set `model` to `superResolution`. Choose the target with `resolution` and the frame-rate tier with `fps`.
 
-| model | Target | FPS tier |
-|-------|--------|----------|
-| `superResolution-720p-lowfps` | 720p | Standard |
-| `superResolution-720p-highfps` | 720p | High |
-| `superResolution-1080p-lowfps` | 1080p | Standard |
-| `superResolution-1080p-highfps` | 1080p | High |
-| `superResolution-2k-lowfps` | 2K | Standard |
-| `superResolution-2k-highfps` | 2K | High |
-| `superResolution-4k-lowfps` | 4K | Standard |
-| `superResolution-4k-highfps` | 4K | High |
-
-Resolution and frame rate are determined by `model` — no extra fields required.
+| Field | Values | Default | Billing name |
+|-------|--------|---------|--------------|
+| `resolution` | `720p`, `1080p`, `2k`, `4k` | `1080p` | |
+| `fps` | `lowfps` (30 FPS), `highfps` (120 FPS) | `lowfps` | `superResolution-{resolution}-{fps}` |
 
 ## Request parameters
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `model` | string | Yes | See table above |
+| `model` | string | Yes | `superResolution` |
 | `video_url` | string | Yes | Public URL of the source video; must remain accessible while processing |
+| `resolution` | string | No | `720p`, `1080p` (default), `2k`, `4k` |
+| `fps` | string | No | `lowfps` (default, 30 FPS) or `highfps` (120 FPS) |
 
 ## Billing
 
@@ -39,7 +33,7 @@ Resolution and frame rate are determined by `model` — no extra fields required
 - When `video_url` duration can be read, precharge `ceil(duration)` seconds (minimum 1)
 - When duration cannot be read, precharge 15 seconds
 - After the task completes, settle to `ceil(actual duration)` and refund or charge the difference
-- Unit price: from console pricing for the selected `model`
+- Unit price: console price for billing name `superResolution-{resolution}-{fps}`
 
 ```text
 cost = unit_price × ceil(actual_video_duration_seconds)
@@ -52,7 +46,9 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "superResolution-1080p-lowfps",
+    "model": "superResolution",
+    "resolution": "1080p",
+    "fps": "lowfps",
     "video_url": "https://example.com/input-low-resolution.mp4"
   }'
 ```

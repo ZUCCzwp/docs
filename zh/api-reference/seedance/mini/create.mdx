@@ -15,39 +15,18 @@ openapi: 'POST /api/v1/videos'
 
 ## 模型
 
-| 线路 | 请求 `model` | 计费模型名 | 时长 |
-|------|-------------|-----------|------|
-| Mini 标准 | `seedance2.0-mini` | `seedance2.0-mini-{resolution}` | 4–15 秒 |
-| Mini 视频参考 | `seedance2.0-mini-video` | `seedance2.0-mini-{resolution}-video` | 4–15 秒 |
-
-`{resolution}` 为 `480p`、`720p`（默认）或 `1080p`，由请求字段 `resolution` 指定。
-
-也可直接将 **计费模型名** 作为 `model` 传入（如 `seedance2.0-mini-720p`、`seedance2.0-mini-720p-video`），此时可省略 `resolution` 字段，系统会自动解析分辨率。
+请求 `model` 固定为 `seedance2.0-mini`。分辨率用 `resolution`：`480p`、`720p`（默认）或 `1080p`。时长 4–15 秒。
 
 ## 计费说明
 
-Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
+按 **秒** 计费。费用 = 对应计费名的单价 × 计费秒数。单价以 [控制台定价](https://api.viraltok.ai) 为准。
 
-| 项目 | 说明 |
-|------|------|
-| 计费方式 | **单价（元/秒）× 计费秒数** |
-| 单价来源 | 以 [控制台定价](https://api.viraltok.ai) 中对应计费模型名为准（如 `seedance2.0-mini-720p`） |
-| 分辨率 | `480p`、`720p`（默认）、`1080p`；通过 `resolution` 字段指定 |
-| 生成时长 | `duration` 字段，范围 4–15 秒，默认 5 秒 |
+| 请求 | 计费名 | 计费秒数 |
+|------|--------|----------|
+| 不带参考视频 | `seedance2.0-mini-{resolution}` | `duration` |
+| 带 `reference_videos` | `seedance2.0-mini-{resolution}-video` | `duration` + 第一条参考视频时长（四舍五入到秒） |
 
-### 计费秒数
-
-- **`seedance2.0-mini`**：计费秒数 = 请求的 `duration`。
-- **`seedance2.0-mini-video`**（含参考视频）：计费秒数 = `duration` + **参考视频时长**（取 `reference_videos` 中第一个视频的秒数，四舍五入取整）。若无法获取参考视频时长，则回退为仅按 `duration` 计费。
-
-### 计费示例
-
-假设控制台 `seedance2.0-mini-720p` 单价为 **0.05 元/秒**：
-
-| 场景 | 请求 | 计费秒数 | 费用 |
-|------|------|---------|------|
-| 图生视频 5 秒 | `model: seedance2.0-mini`，`duration: 5`，`resolution: 720p` | 5 | 0.05 × 5 = **0.25 元** |
-| 视频参考 8 秒 + 参考视频 3 秒 | `model: seedance2.0-mini-video`，`duration: 8`，参考视频 3 秒 | 11 | 0.05 × 11 = **0.55 元** |
+参考视频时长读不到时，这条参考视频按 **15 秒** 计入。`duration` 不传时按 5 秒。
 
 <Note>
 实际单价因分辨率与用户专属定价而异，提交前可在控制台查看当前报价。
@@ -57,7 +36,7 @@ Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `model` | string | 是 | `seedance2.0-mini` 或 `seedance2.0-mini-video`；也可传计费模型名如 `seedance2.0-mini-720p` |
+| `model` | string | 是 | `seedance2.0-mini` |
 | `prompt` | string | 是 | 视频生成提示词 |
 | `duration` | int | 是 | 时长（秒），4–15，默认 5 |
 | `resolution` | string | 否 | 输出分辨率：`480p`、`720p`（默认）、`1080p` |
@@ -65,7 +44,7 @@ Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
 | `images` | string[] | 否 | 参考图列表 |
 | `first_image` | string | 否 | 首帧图片 |
 | `last_image` | string | 否 | 尾帧图片 |
-| `reference_videos` | string[] | 否 | 参考视频；仅 `seedance2.0-mini-video` 支持 |
+| `reference_videos` | string[] | 否 | 参考视频。传入后按视频参考计费名结算 |
 | `reference_audios` | string[] | 否 | 参考音频；须搭配参考图、参考视频或首尾帧 |
 
 ## 素材说明
@@ -77,7 +56,6 @@ Mini 线路按 **秒** 计费，不同分辨率对应不同单价。
 ## 约束
 
 - `images`（参考图模式）与 `first_image` / `last_image`（首尾帧模式）**不可同时使用**。
-- `reference_videos` 仅 `seedance2.0-mini-video` 支持。
 - `reference_audios` 不能单独使用，须搭配参考图、参考视频或首尾帧。
 
 ## 示例
@@ -93,21 +71,6 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
     "prompt": "人物缓缓转头，微风拂动发丝",
     "duration": 6,
     "resolution": "720p",
-    "ratio": "9:16",
-    "images": ["https://example.com/ref-1.jpg"]
-  }'
-```
-
-### Mini — 使用计费模型名（省略 resolution）
-
-```bash
-curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
-  -H 'Authorization: Bearer sk_xxx' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "model": "seedance2.0-mini-720p",
-    "prompt": "人物缓缓转头，微风拂动发丝",
-    "duration": 6,
     "ratio": "9:16",
     "images": ["https://example.com/ref-1.jpg"]
   }'
@@ -136,7 +99,7 @@ curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
   -H 'Authorization: Bearer sk_xxx' \
   -H 'Content-Type: application/json' \
   -d '{
-    "model": "seedance2.0-mini-video",
+    "model": "seedance2.0-mini",
     "prompt": "延续参考视频的运动节奏与镜头语言",
     "duration": 8,
     "resolution": "720p",

@@ -1,0 +1,56 @@
+---
+title: '创建 MAGI-2 视频'
+openapi: 'POST /api/v1/videos'
+---
+
+<Note>
+提交 `model: "magi-2"` 到 `POST /api/v1/videos`。成功后返回 `task_id`。请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 获取成片。
+</Note>
+
+## 模型
+
+| model | 说明 |
+|-------|------|
+| `magi-2` | MAGI-2 视频。固定 1080p，可同步生成音频。支持文生视频，也可带参考图、参考视频和参考音频。 |
+
+`magi2`、`magi_2`、`magi-2.0` 会归一化为 `magi-2`。
+
+## 参数
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `model` | string | 是 | `magi-2` |
+| `prompt` | string | 是 | 描述画面，以及每段参考素材的用途 |
+| `images` | string[] | 否 | 参考图 URL，最多 10 张 |
+| `videos` | string[] | 否 | 参考视频 URL，最多 5 个 |
+| `audios` | string[] | 否 | 参考音频 URL，最多 5 段 |
+| `aspect_ratio` | string | 否 | `16:9`（默认）、`9:16`、`1:1`、`4:3`、`3:4`、`21:9` |
+| `duration` | int | 否 | 4–30 秒，默认 5 |
+| `generate_audio` | bool | 否 | 是否同时生成音频，默认 `true`。关闭后价格不变 |
+| `seed` | int | 否 | 随机种子，范围 0–2147483647。不传则随机 |
+
+仍可使用别名：`image_urls` / `reference_images`（→ `images`），`video_urls` / `reference_videos`（→ `videos`），`audio_urls` / `reference_audios`（→ `audios`），`ratio`（→ `aspect_ratio`）。
+
+参考视频和参考音频单段建议 2–30 秒，合计不超过 30 秒。更长的片段会被截断。
+
+输出固定 1080p。不要传 `resolution`。
+
+## 计费
+
+计费模型名为 `magi-2`，按所选 `duration` 的秒数计费。单价以控制台为准。参考图、参考视频、参考音频、画幅和 `generate_audio` 不另计费。
+
+## 示例
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "magi-2",
+    "prompt": "日出时的电影感海浪，细节丰富",
+    "aspect_ratio": "16:9",
+    "duration": 5,
+    "generate_audio": true,
+    "images": ["https://example.com/reference.jpg"]
+  }'
+```

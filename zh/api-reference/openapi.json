@@ -3031,6 +3031,12 @@
                     "type": "boolean",
                     "description": "是否生成音频（视模型）"
                   },
+                  "seed": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647,
+                    "description": "magi-2 随机种子。不传则随机。"
+                  },
                   "task_type": {
                     "type": "string",
                     "enum": [
@@ -3112,6 +3118,19 @@
                     "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
+                  }
+                },
+                "magi2": {
+                  "summary": "创建 MAGI-2 视频",
+                  "value": {
+                    "model": "magi-2",
+                    "prompt": "日出时的电影感海浪，细节丰富",
+                    "aspect_ratio": "16:9",
+                    "duration": 5,
+                    "generate_audio": true,
+                    "images": [
+                      "https://example.com/reference.jpg"
+                    ]
                   }
                 },
                 "kling_default": {

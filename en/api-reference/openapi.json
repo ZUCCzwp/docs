@@ -2918,6 +2918,12 @@
                     "type": "boolean",
                     "description": "Generate audio when supported"
                   },
+                  "seed": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 2147483647,
+                    "description": "Random seed for magi-2. Omit it for a random seed."
+                  },
                   "task_type": {
                     "type": "string",
                     "enum": [
@@ -2999,6 +3005,19 @@
                     "model": "flux-3",
                     "duration": 5,
                     "draft_cache_url": "https://example.com/draft-cache.bin"
+                  }
+                },
+                "magi2": {
+                  "summary": "Create a MAGI-2 video",
+                  "value": {
+                    "model": "magi-2",
+                    "prompt": "A cinematic ocean wave at sunrise, highly detailed",
+                    "aspect_ratio": "16:9",
+                    "duration": 5,
+                    "generate_audio": true,
+                    "images": [
+                      "https://example.com/reference.jpg"
+                    ]
                   }
                 },
                 "kling_default": {

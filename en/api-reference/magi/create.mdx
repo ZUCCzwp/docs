@@ -1,0 +1,56 @@
+---
+title: 'Create MAGI-2 video'
+openapi: 'POST /api/v1/videos'
+---
+
+<Note>
+Send `model: "magi-2"` to `POST /api/v1/videos`. The response includes a `task_id`. Poll [Query video task](/en/api-reference/common/query) and read the finished file from `result.video_url`.
+</Note>
+
+## Model
+
+| model | Notes |
+|-------|-------|
+| `magi-2` | MAGI-2 video. Fixed 1080p output, with optional synchronized audio. Text-to-video, or reference images, videos, and audio. |
+
+`magi2`, `magi_2`, and `magi-2.0` normalize to `magi-2`.
+
+## Parameters
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `model` | string | yes | `magi-2` |
+| `prompt` | string | yes | Describe the video and what each reference is for |
+| `images` | string[] | no | Reference image URLs, up to 10 |
+| `videos` | string[] | no | Reference video URLs, up to 5 |
+| `audios` | string[] | no | Reference audio URLs, up to 5 |
+| `aspect_ratio` | string | no | `16:9` (default), `9:16`, `1:1`, `4:3`, `3:4`, `21:9` |
+| `duration` | int | no | 4–30 seconds, default 5 |
+| `generate_audio` | bool | no | Generate audio with the video. Default `true`. Turning this off does not change the price |
+| `seed` | int | no | Random seed from 0 to 2147483647. Omit it for a random seed |
+
+Aliases still work: `image_urls` / `reference_images` (→ `images`), `video_urls` / `reference_videos` (→ `videos`), `audio_urls` / `reference_audios` (→ `audios`), `ratio` (→ `aspect_ratio`).
+
+Keep each reference video and audio clip between 2 and 30 seconds, and 30 seconds together. Longer clips are trimmed.
+
+Output is fixed at 1080p. Do not send `resolution`.
+
+## Billing
+
+The billing model is `magi-2`. You are charged per second of the selected `duration`. The unit price is the one shown in the console. Reference images, videos, audio, aspect ratio, and `generate_audio` do not add a separate charge.
+
+## Example
+
+```bash
+curl -X POST 'https://api.viraltok.ai/api/v1/videos' \
+  -H 'Authorization: Bearer sk_xxx' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "magi-2",
+    "prompt": "A cinematic ocean wave at sunrise, highly detailed",
+    "aspect_ratio": "16:9",
+    "duration": 5,
+    "generate_audio": true,
+    "images": ["https://example.com/reference.jpg"]
+  }'
+```

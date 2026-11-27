@@ -236,6 +236,12 @@
                 ]
               },
               {
+                "group": "MAGI",
+                "pages": [
+                  "en/api-reference/magi/create"
+                ]
+              },
+              {
                 "group": "Midjourney",
                 "pages": [
                   "en/api-reference/images/midjourney/video"
@@ -555,6 +561,12 @@
                 "group": "Flux 3",
                 "pages": [
                   "zh/api-reference/flux3/create"
+                ]
+              },
+              {
+                "group": "MAGI",
+                "pages": [
+                  "zh/api-reference/magi/create"
                 ]
               },
               {

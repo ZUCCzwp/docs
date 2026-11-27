@@ -5,7 +5,7 @@ openapi: 'POST /api/v1/videos'
 
 统一异步视频创建入口。提交时在 body 中设置 `model`，服务端按模型路由到对应产品能力；成功后返回 `task_id`，请使用 [查询视频任务](/zh/api-reference/common/query) 轮询，完成后从 `result.video_url` 获取地址。
 
-产品参数细节见各模型文档页（Seedance、Kling、Wan、Veo、Grok、Flux3、Muse 等）。
+产品参数细节见各模型文档页（Seedance、Kling、Wan、Veo、Grok、Flux3、Muse、MAGI-2 等）。
 
 <Note>
 **备注（兼容路径）**：以下旧路径仍可调用，行为与 `POST /api/v1/videos` 相同：

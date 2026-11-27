@@ -45,6 +45,8 @@
 - [创建 Gemini Omni 1.2 视频](https://docs.viraltok.ai/zh/api-reference/gemini-omni/create-1.2.md): 创建 Gemini Omni 1.2 视频，按分辨率按秒计费，支持指定时长、编辑和续写。
 - [Create Muse Video](https://docs.viraltok.ai/en/api-reference/muse/create.md): Create a Muse (`muse-videos`) video task (text-to-video or up to 9 reference images; ~10s 720p with audio); billed per_task; poll the common query endpoint.
 - [创建 Muse 视频](https://docs.viraltok.ai/zh/api-reference/muse/create.md): 创建 Muse（`muse-videos`）视频任务（文生视频或最多 9 张参考图；约 10 秒 720p 带声音），按次计费，通过通用查询接口获取结果。
+- [Create MAGI-2 video](https://docs.viraltok.ai/en/api-reference/magi/create.md): Create a MAGI-2 (`magi-2`) 1080p video on POST /api/v1/videos (text, or reference images/videos/audios; 4–30s); billed per second; poll the common query endpoint.
+- [创建 MAGI-2 视频](https://docs.viraltok.ai/zh/api-reference/magi/create.md): 创建 MAGI-2（`magi-2`）1080p 视频，入口为 POST /api/v1/videos（文生或参考图/视频/音频，4–30 秒），按秒计费，通过通用查询接口获取结果。
 
 ### MiniMax Video
 

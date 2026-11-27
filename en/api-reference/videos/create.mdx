@@ -5,7 +5,7 @@ openapi: 'POST /api/v1/videos'
 
 Unified async video create endpoint. Set `model` in the body; the API routes by model. On success you get a `task_id` — poll [Query video task](/en/api-reference/common/query) and read `result.video_url` when completed.
 
-See each model page for product-specific fields (Seedance, Kling, Wan, Veo, Grok, Flux3, Muse, …).
+See each model page for product-specific fields (Seedance, Kling, Wan, Veo, Grok, Flux3, Muse, MAGI-2, …).
 
 <Note>
 **Note (compatibility)**: These legacy paths still work and match `POST /api/v1/videos`:
